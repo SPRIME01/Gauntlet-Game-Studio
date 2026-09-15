@@ -41,6 +41,7 @@ A plan MUST NOT silently rewrite the spec. If implementation evidence contradict
 - Preserve failed, contradictory, and correction evidence; later success does not erase earlier consequence.
 - Never weaken acceptance criteria merely because an implementation fails them.
 - Update `.agents/CURRENT_STATUS.yml` only to reflect observed execution state, settled evidence, blockers, and next-ready work.
+- Update Grafter context.md if there is meaningful change in the codebase.
 
 ## 4. Core architecture invariants
 
