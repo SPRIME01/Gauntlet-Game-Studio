@@ -13,13 +13,12 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: null
+  last_settled_task: T00
   in_flight_task: null
-  workable_task: T00
+  workable_task: T01
   ready_tasks:
-    - T00
+    - T01
   blocked_tasks:
-    T01: [T00]
     T02: [T01]
     T03: [T02]
     T04: [T03]
@@ -52,7 +51,12 @@ active:
   phase: null
   blocker: null
 
-latest_evidence: {}
+latest_evidence:
+  T00:
+    report: artifacts/plan/T00/summary.md
+    confirmation: builder CONFIRM
+    gate: PASS (test -f AGENTS.md && test -f .agents/CURRENT_STATUS.yml, git check-ignore .tmp/donor, just validate-agent-artifacts)
+    teeth: PASS (attack 1 rejected invalid spec path, attack 2 rejected draft status)
 
 observations:
   - status: OBSERVED
@@ -71,20 +75,26 @@ observations:
       There are exactly 6 parallel critical paths of length 17, and the representative critical path
       is [T00, T01, T02, T03, T04, T05, T07, T08, T10, T11, T19, T20, T21, T22, T23, T24, T25].
     evidence: scripts/check-traceability.py
+  - status: OBSERVED
+    statement: >-
+      Task T00 settled: root justfile created with global gate aliases (check, test, lint, validate-agent-artifacts);
+      decision log initialized; teeth checks verified falsification behavior on path violations and draft status.
+    evidence: artifacts/plan/T00/summary.md
 
 next_action:
-  task: T00
+  task: T01
   action: >-
-    Bootstrap settlement infrastructure (T00):
-    1. Confirm .agents/ directory layout and gitignore for .tmp/donor/.
-    2. Establish gate aliases in justfile or package scripts.
-    3. Run initial baseline validation.
+    Establish lean Bun monorepo topology and source boundaries (T01):
+    1. Create root package.json with Bun 1.4 workspaces (packages/*, apps/*), tsconfig.json, and baseline configuration.
+    2. Establish packages/contracts, packages/studio, packages/runtime, packages/adapters, and apps/studio-cli.
+    3. Verify clean isolation from .tmp/donor/ and execute just check, test, lint.
   reason: >-
-    First task in the dependency DAG with no remaining blockers; specification is approved and plan is bound.
+    T00 settled cleanly; T01 is the sole ready task in the DAG critical path.
 
 handoff:
   settled_summary:
     - "SPEC-FREEZE & PLAN-REBIND: Spec approved (SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e), plan approved, multi-class traceability and DAG critical path verified."
+    - "T00: Frozen source bound and settlement infrastructure bootstrapped with justfile gates, decision log, and teeth falsification checks verified."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."

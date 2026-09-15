@@ -1,0 +1,12 @@
+=== TEETH ATTACK 1: Point plan/spec validation at root specs/ or plans/ paths ===
+Exit Code: 1
+FAIL: Plan line 15 references invalid root specs/ path: intended_repository_path: specs/gauntlet-game-studio.spec.yaml
+FAIL: ONE OR MORE CHECKS FAILED.
+
+
+=== TEETH ATTACK 2: Set source status back to draft while attempting execution authorization ===
+Exit Code: 1
+FAIL: Specification status is 'draft', expected 'approved'.
+FAIL: Plan bound SHA-256 (595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e) does not match actual spec SHA-256 (fa4fcd2cb50736abdc6b884f06ee8dd494259b24da46404432236dabbd19d4c9)
+FAIL: ONE OR MORE CHECKS FAILED.
+
