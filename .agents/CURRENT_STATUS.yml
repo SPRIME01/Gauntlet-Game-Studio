@@ -85,6 +85,7 @@ latest_evidence:
   T06:
     report: artifacts/plan/T06/summary.md
     confirmation: peer CONFIRM
+    commit: 2b39419
     gate: PASS (bun run source:verify, bun run third-party:verify)
     teeth: PASS (attack 1 rejected threejs-game-director orchestration, attack 2 rejected unnecessary runtime library vendoring)
 
