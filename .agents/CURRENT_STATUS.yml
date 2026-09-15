@@ -80,6 +80,7 @@ latest_evidence:
   T05:
     report: artifacts/plan/T05/summary.md
     confirmation: builder_with_teeth CONFIRM
+    commit: 5f76132
     gate: PASS (bun run studio -- create .tmp/generated-game-smoke --json, bun run test:generated-game 5/5)
     teeth: PASS (attack 1 verified independent buildability outside monorepo, attack 2 verified zero private relative imports)
 
