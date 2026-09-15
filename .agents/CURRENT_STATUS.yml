@@ -13,14 +13,13 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T03
+  last_settled_task: T04
   in_flight_task: null
-  workable_task: T04
+  workable_task: T05
   ready_tasks:
-    - T04
+    - T05
+    - T06
   blocked_tasks:
-    T05: [T04]
-    T06: [T04]
     T07: [T05, T06]
     T08: [T07]
     T09: [T06, T07, T08]
@@ -28,9 +27,9 @@ execution:
     T11: [T08, T10]
     T12: [T08, T09, T10]
     T13: [T05, T06]
-    T14: [T04, T06, T08, T13]
-    T15: [T04, T06, T10, T11, T13]
-    T16: [T04, T05, T06]
+    T14: [T06, T08, T13]
+    T15: [T06, T10, T11, T13]
+    T16: [T05, T06]
     T17: [T07, T08, T16]
     T18: [T06, T13]
     T19: [T08, T10, T11, T12]
@@ -44,8 +43,8 @@ execution:
   plan_blocker: null
 
 active:
-  task: null
-  phase: null
+  task: T05
+  phase: preregistration
   blocker: null
 
 latest_evidence:
@@ -70,8 +69,14 @@ latest_evidence:
   T03:
     report: artifacts/plan/T03/summary.md
     confirmation: builder_with_teeth CONFIRM
+    commit: 483e283
     gate: PASS (bun run studio -- doctor --json, just doctor, 39 workspace tests)
     teeth: PASS (attack 1 rejected secret leak without echo, attack 2 rejected donor dependency)
+  T04:
+    report: artifacts/plan/T04/summary.md
+    confirmation: independent_adversarial CONFIRM
+    gate: PASS (bun run studio -- capabilities lint --json, bun test packages/studio 9/9)
+    teeth: PASS (attack 1 rejected ambiguous negative affordances, attack 2 rejected >1024 char descriptions and missing negative affordances, attack 3 rejected premature AgentHandoff settlement)
 
 observations:
   - status: OBSERVED
@@ -110,17 +115,21 @@ observations:
       Task T03 settled: studio semantic CLI and doctor preflight diagnostic implemented; just doctor bound;
       teeth checks verified secret hygiene enforcement (no secret echo) and donor dependency rejection.
     evidence: artifacts/plan/T03/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T04 settled: capability registry, capability-first router, skill metadata linter, and AgentHandoff semantics implemented;
+      teeth checks verified negative boundary routing disambiguation, skill description/trigger constraints, and premature settlement rejection.
+    evidence: artifacts/plan/T04/summary.md
 
 next_action:
-  task: T04
+  task: T05
   action: >-
-    Implement capability registry, routing, skill metadata, and AgentHandoff semantics (T04):
-    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T04.prereg.yaml.
-    2. Implement capability registry and capability-first router in packages/studio.
-    3. Implement concise skill metadata linter and AgentHandoff preparation.
-    4. Implement independent adversarial confirmation tests.
+    Implement generated game project template and contract (T05):
+    1. Freeze P2 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T05.prereg.yaml.
+    2. Implement template skeleton in templates/game/.
+    3. Verify template generation and validation tests.
   reason: >-
-    T03 settled cleanly; T04 is the sole ready task on the critical path.
+    T04 settled cleanly; T05 is ready and on the critical path.
 
 handoff:
   settled_summary:
@@ -128,7 +137,8 @@ handoff:
     - "T00: Frozen source bound and settlement infrastructure bootstrapped with justfile gates, decision log, and teeth falsification checks verified (commit 24f7e5b)."
     - "T01: Established lean Bun 1.4 monorepo topology and source boundaries; check-topology verified package discipline and donor isolation (commit 9dd5a03)."
     - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests (commit 193f171)."
-    - "T03: Implemented semantic studio CLI and doctor diagnostics; verified secret hygiene and donor isolation with 39 workspace tests."
+    - "T03: Implemented semantic studio CLI and doctor diagnostics; verified secret hygiene and donor isolation with 39 workspace tests (commit 483e283)."
+    - "T04: Implemented capability registry, routing, skill metadata linter, and AgentHandoff semantics; verified teeth checks and 48 workspace tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."

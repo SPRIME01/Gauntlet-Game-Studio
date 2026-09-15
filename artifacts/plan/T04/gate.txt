@@ -1,0 +1,16 @@
+=== GATE 1: bun run studio -- capabilities lint --json ===
+{
+  "status": "success",
+  "operation": "studio.capabilities.lint",
+  "result": {
+    "valid": true,
+    "issues": []
+  },
+  "diagnostics": {
+    "valid": true,
+    "total_issues": 0
+  }
+}
+
+=== GATE 2: bun test packages/studio ===
+[0m[1mbun test [0m[2mv1.4.0 (34cbb9a40)[0m

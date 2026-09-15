@@ -1,0 +1,49 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T04
+title: Implement capability registry, routing, skill metadata, and AgentHandoff semantics
+proof_level: P3
+timestamp: "2026-09-15T19:03:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T04-001
+    statement: >-
+      Work routes to the smallest appropriate capability without loading massive specialist instructions
+      into generic routing context; AgentHandoff requires real agent execution while CI can verify
+      accepted outputs deterministically.
+    settles:
+      - REQ-GOAL-001
+      - REQ-GOAL-005
+      - REQ-GOAL-010
+      - REQ-CONFIG-003
+      - REQ-CONFIG-006
+      - REQ-ROUTE-001
+      - REQ-ROUTE-002
+      - REQ-ROUTE-003
+      - REQ-ROUTE-004
+      - REQ-ROUTE-005
+      - REQ-ROUTE-006
+      - REQ-SKILL-001
+      - REQ-SKILL-002
+      - REQ-SKILL-003
+      - REQ-SKILL-004
+      - REQ-SKILL-005
+      - REQ-SKILL-006
+      - REQ-SAFE-002
+
+falsifiers:
+  - id: TEETH-T04-001
+    attack: Submit an ambiguous request that overlaps img2threejs and 3dviz.
+    expected: Negative affordances route correctly to img2threejs for depicted object reconstruction and 3dviz for scene composition.
+  - id: TEETH-T04-002
+    attack: Create a skill with >1024 char description or missing negative affordance.
+    expected: Skill metadata linter rejects the skill definition with descriptive lint errors.
+  - id: TEETH-T04-003
+    attack: Mark an AgentHandoff as settled without accepted artifacts.
+    expected: Validation rejects premature settlement; capability result cannot transition to success without valid artifacts.
+
+independent_confirmation:
+  required: true
+  mode: adversarial
+  focus: Routing collisions, skill description bloat, premature AgentHandoff settlement.

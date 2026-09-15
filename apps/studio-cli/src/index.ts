@@ -4,8 +4,21 @@
  * Command-line interface for Gauntlet Game Studio.
  */
 
-import { getDoctorStudioResult, runDoctor, loadStudioConfig } from "@gauntlet/studio";
-import type { StudioResult } from "@gauntlet/contracts";
+import {
+  getDoctorStudioResult,
+  loadStudioConfig,
+  defaultCapabilityRegistry,
+  routeCapability,
+  settleAgentHandoff,
+  lintSkillRegistry,
+} from "@gauntlet/studio";
+import {
+  validateCapabilityResult,
+  type StudioResult,
+  type CapabilityRequest,
+  type AgentHandoff,
+  type ArtifactRef,
+} from "@gauntlet/contracts";
 
 export const CLI_VERSION = "0.2.0";
 
@@ -14,14 +27,15 @@ function printHelp() {
 Gauntlet Game Studio Semantic CLI (v${CLI_VERSION})
 
 Usage:
-  studio <command> [options]
+  studio <command> [subcommand/args] [options]
 
 Commands:
   doctor                       Validate development environment and prerequisites
   config                       Inspect resolved configuration
   create <name>                Scaffold a new game project
   capabilities                 List registered studio capabilities
-  capability <action>          Prepare, accept, or verify capability results
+  capability <prepare|accept|verify-result> [args]
+                               Prepare, accept, or verify capability results
   asset <action>               Asset compiler and provenance inspection
   observe <action>             Run observation scenarios
   verify <action>              Run verification against frozen expectations
@@ -63,7 +77,6 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
     case "config": {
       try {
         const config = loadStudioConfig(process.cwd());
-        // Mask secrets
         const masked = { ...config, secrets: Object.fromEntries(Object.keys(config.secrets).map((k) => [k, "[REDACTED]"])) };
         const res: StudioResult = {
           status: "success",
@@ -107,8 +120,140 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       return 0;
     }
 
-    case "capabilities":
-    case "capability":
+    case "capabilities": {
+      const sub = filteredArgs[1];
+      if (sub === "lint") {
+        const report = lintSkillRegistry(defaultCapabilityRegistry.list());
+        const res: StudioResult = {
+          status: report.valid ? "success" : "failed",
+          operation: "studio.capabilities.lint",
+          result: report,
+          diagnostics: {
+            valid: report.valid,
+            total_issues: report.issues.length,
+          },
+        };
+        if (isJson) {
+          console.log(JSON.stringify(res, null, 2));
+        } else {
+          console.log(`\n=== Capability & Skill Metadata Lint Report ===`);
+          console.log(`Status: ${report.valid ? "VALID" : "INVALID"}`);
+          for (const issue of report.issues) {
+            console.log(` [${issue.severity.toUpperCase()}] ${issue.skill_id}: ${issue.message}`);
+          }
+          console.log("");
+        }
+        return report.valid ? 0 : 1;
+      }
+
+      const caps = defaultCapabilityRegistry.list();
+      const res: StudioResult = {
+        status: "success",
+        operation: "studio.capabilities",
+        result: caps,
+        diagnostics: { total: caps.length },
+      };
+      if (isJson) {
+        console.log(JSON.stringify(res, null, 2));
+      } else {
+        console.log(`\n=== Registered Studio Capabilities (${caps.length}) ===`);
+        for (const c of caps) {
+          console.log(` • ${c.id.padEnd(22)} [${c.providers.join(", ")}]`);
+          console.log(`   ${c.summary}`);
+        }
+        console.log("");
+      }
+      return 0;
+    }
+
+    case "capability": {
+      const sub = filteredArgs[1];
+      if (sub === "prepare") {
+        try {
+          const rawRequest = filteredArgs[2] ? JSON.parse(filteredArgs[2]) : {};
+          const resolution = routeCapability(rawRequest as CapabilityRequest);
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.capability.prepare",
+            result: resolution,
+            diagnostics: { is_agent_handoff: resolution.is_agent_handoff },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.log(`Routed to capability ${resolution.capability.id} via provider ${resolution.provider}`);
+          return 0;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.capability.prepare",
+            diagnostics: { error: msg },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      } else if (sub === "accept") {
+        try {
+          const handoff: AgentHandoff = JSON.parse(filteredArgs[2] || "{}");
+          const artifacts: ArtifactRef[] = JSON.parse(filteredArgs[3] || "[]");
+          const provider = filteredArgs[4] || `agent-skill.${handoff.skill_id}`;
+          const capabilityResult = settleAgentHandoff(handoff, provider, artifacts);
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.capability.accept",
+            result: capabilityResult,
+            diagnostics: { accepted_artifacts: artifacts.length },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.log(`Accepted handoff for request ${handoff.request_id} with ${artifacts.length} artifacts`);
+          return 0;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.capability.accept",
+            diagnostics: { error: msg },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      } else if (sub === "verify-result") {
+        try {
+          const raw = JSON.parse(filteredArgs[2] || "{}");
+          const verified = validateCapabilityResult(raw);
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.capability.verify-result",
+            result: verified,
+            diagnostics: { verified: true, id: verified.id },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.log(`Result ${verified.id} satisfies studio contracts.`);
+          return 0;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.capability.verify-result",
+            diagnostics: { error: msg },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      } else {
+        const res: StudioResult = {
+          status: "failed",
+          operation: "studio.capability",
+          diagnostics: { error: `Unknown capability action: ${sub}` },
+        };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else console.error(`Unknown capability action: ${sub}`);
+        return 1;
+      }
+    }
+
     case "asset":
     case "observe":
     case "verify":
@@ -118,7 +263,7 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         operation: `studio.${command}`,
         diagnostics: {
           message: `Command '${command}' is governed by future task settlement in the active plan DAG.`,
-          unlocked_in: command === "capabilities" || command === "capability" ? "T04" : command === "asset" ? "T13" : "T20",
+          unlocked_in: command === "asset" ? "T13" : "T20",
         },
       };
       if (isJson) console.log(JSON.stringify(res, null, 2));
