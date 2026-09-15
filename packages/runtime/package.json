@@ -9,6 +9,11 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@gauntlet/contracts": "workspace:*"
+    "@gauntlet/contracts": "workspace:*",
+    "koota": "^0.6.6",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.170.0"
   }
 }

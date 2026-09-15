@@ -1,0 +1,19 @@
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/projections.test.ts:
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > maintains stable IDs correlating entities across render, physics, navigation, and audio projections [11.27ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > TEETH-T08-002: Delete a render projection while the Koota entity remains alive (Teeth Check) [19.57ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > TEETH-T08-003: Asset affordance isolation prevents raw asset metadata from polluting game semantics (Teeth Check) [0.48ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > cleans up multi-projection registry on entity despawn without residual handles [0.17ms]
+
+packages/runtime/test/authority.test.ts:
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > spawns entities with authoritative Koota traits and queries them [0.23ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > takes and restores pure semantic snapshots with zero provider classes [30.96ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > assertNoProviderObjectsInState detects and rejects provider classes leaking into state [0.11ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > TEETH-T08-001: Mutate Three.js Object3D directly without updating Koota (Teeth Check) [0.63ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > headless simulation advances identically without any Three.js objects attached (Headless Parity) [7.55ms]
+
+ 9 pass
+ 0 fail
+ 69 expect() calls
+Ran 9 tests across 2 files. [244.00ms]

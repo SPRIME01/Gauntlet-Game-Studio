@@ -13,3 +13,5 @@ export * from "./scheduler";
 export * from "./kernel";
 export * from "./server";
 export * from "./client";
+export * from "./state";
+export * from "./projections";

@@ -131,7 +131,7 @@ describe("Studio CLI, Configuration & Doctor Diagnostic Suite", () => {
     });
 
     it("create command returns 0 with structured result", async () => {
-      const exitCode = await main(["create", "my-test-game", "--json"]);
+      const exitCode = await main(["create", ".tmp/cli-test-game", "--json"]);
       expect(exitCode).toBe(0);
     });
 

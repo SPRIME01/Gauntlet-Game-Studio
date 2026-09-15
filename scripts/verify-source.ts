@@ -33,6 +33,7 @@ if (fs.existsSync(attributionPath)) {
 const packageJsonFiles = [
   path.join(rootDir, "templates/game/package.json"),
   path.join(rootDir, "examples/blackwater-relay/package.json"),
+  path.join(rootDir, "packages/runtime/package.json"),
 ];
 
 const threeResult = verifySingleThreeVersion(packageJsonFiles);

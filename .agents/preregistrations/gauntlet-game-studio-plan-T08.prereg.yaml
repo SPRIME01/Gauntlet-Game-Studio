@@ -1,0 +1,38 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T08
+title: Implement Koota semantic authority and runtime projection correlation
+proof_level: P3
+timestamp: "2026-09-15T19:43:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T08-001
+    statement: >-
+      Koota is the sole semantic game-state authority. Execution projections (Three.js render objects,
+      Rapier physics bodies, Recast navigation agents, asset handles) can be created, updated, destroyed,
+      and inspected without becoming hidden semantic authorities. Runtime adapters maintain stable IDs
+      correlating entities with their projections. Asset affordances (sockets, colliders, nodes, rigs)
+      remain inert until explicitly bound to the game model.
+    settles:
+      - REQ-GOAL-003
+      - REQ-BIND-002
+      - REQ-RUNTIME-001
+      - REQ-RUNTIME-002
+      - REQ-RUNTIME-003
+
+falsifiers:
+  - id: TEETH-T08-001
+    attack: Mutate a Three.js Object3D directly to represent a semantic state transition without updating Koota.
+    expected: Semantic oracle remains unchanged and invariant check rejects settlement; projection mutations never back-propagate implicitly to Koota state.
+  - id: TEETH-T08-002
+    attack: Delete or detach a render projection while the Koota entity remains alive.
+    expected: Game semantics remain fully intact and authoritative; the projection can be recreated and re-correlated without state degradation.
+  - id: TEETH-T08-003
+    attack: Load an asset exposing arbitrary sockets, nodes, and collider descriptors without explicit game binding.
+    expected: Raw asset affordances remain isolated in asset metadata and do not create or alter Koota semantic state until bound.
+
+independent_confirmation:
+  required: true
+  mode: adversarial
+  focus: State isolation from Three.js scene graphs, projection lifecycle correlation, and asset affordance boundaries.

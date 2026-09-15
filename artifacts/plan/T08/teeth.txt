@@ -1,0 +1,18 @@
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/scheduler.test.ts:
+
+packages/runtime/test/projections.test.ts:
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > TEETH-T08-002: Delete a render projection while the Koota entity remains alive (Teeth Check) [31.59ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > TEETH-T08-003: Asset affordance isolation prevents raw asset metadata from polluting game semantics (Teeth Check) [0.79ms]
+
+packages/runtime/test/readiness.test.ts:
+
+packages/runtime/test/authority.test.ts:
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > TEETH-T08-001: Mutate Three.js Object3D directly without updating Koota (Teeth Check) [6.73ms]
+
+ 3 pass
+ 13 filtered out
+ 0 fail
+ 37 expect() calls
+Ran 3 tests across 4 files. [213.00ms]
