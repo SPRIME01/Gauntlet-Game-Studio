@@ -1,0 +1,8 @@
+{
+  "id": "img2threejs",
+  "version": "1.0.0",
+  "role": "agent_skill_source",
+  "capability": "asset.reconstruct",
+  "attribution": "Gauntlet Studio Upstream Agent Skill",
+  "license": "MIT"
+}

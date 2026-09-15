@@ -1,0 +1,93 @@
+{
+  "schema": "gauntlet.third_party.attribution",
+  "schema_version": "1.0",
+  "classes": {
+    "runtime_dependency": [
+      {
+        "name": "three",
+        "version": "^0.170.0",
+        "license": "MIT",
+        "repository": "https://github.com/mrdoob/three.js",
+        "purpose": "Authoritative Three.js scene graph rendering and WebGL backend"
+      },
+      {
+        "name": "koota",
+        "version": "^0.5.0",
+        "license": "MIT",
+        "repository": "https://github.com/pmndrs/koota",
+        "purpose": "Fast ECS for decoupled authoritative gameplay state"
+      },
+      {
+        "name": "@dimforge/rapier3d-compat",
+        "version": "^0.14.0",
+        "license": "Apache-2.0",
+        "repository": "https://github.com/dimforge/rapier.js",
+        "purpose": "Deterministic 3D physics simulation engine"
+      },
+      {
+        "name": "three-mesh-bvh",
+        "version": "^0.8.0",
+        "license": "MIT",
+        "repository": "https://github.com/gkjohnson/three-mesh-bvh",
+        "purpose": "Accelerated spatial raycasting and BVH hierarchy"
+      },
+      {
+        "name": "three.quarks",
+        "version": "^0.14.0",
+        "license": "Apache-2.0",
+        "repository": "https://github.com/Alchemist0823/three.quarks",
+        "purpose": "Particle system and VFX simulation"
+      },
+      {
+        "name": "tone",
+        "version": "^15.0.0",
+        "license": "MIT",
+        "repository": "https://github.com/Tonejs/Tone.js",
+        "purpose": "Web Audio synthesis and procedural sound generation"
+      }
+    ],
+    "agent_skill_source": [
+      {
+        "id": "img2threejs",
+        "vendor_path": "vendor/skills/img2threejs",
+        "upstream": "https://github.com/gauntlet/img2threejs",
+        "license": "MIT",
+        "capability": "asset.reconstruct",
+        "purpose": "Specialist skill for reconstructing depicted objects from reference imagery"
+      },
+      {
+        "id": "3dviz-pro-max",
+        "vendor_path": "vendor/skills/3dviz-pro-max",
+        "upstream": "https://github.com/gauntlet/3dviz-pro-max",
+        "license": "MIT",
+        "capability": "world.composition",
+        "purpose": "Specialist skill for world/scene composition and lighting layout"
+      },
+      {
+        "id": "threejs-game-skills",
+        "vendor_path": "vendor/skills/threejs-game-skills",
+        "upstream": "https://github.com/gauntlet/threejs-game-skills",
+        "license": "MIT",
+        "purpose": "Curated library of gameplay, graphics, UI, debug, and QA specialist prompts",
+        "overlay_policy": "vendor/skills/threejs-game-skills/overlay.json"
+      }
+    ],
+    "temporary_donor": [
+      {
+        "id": "mavon-editor-or-donor",
+        "donor_path": ".tmp/donor",
+        "status": "isolated_gitignored",
+        "purpose": "Temporary disposable reference for transplantation analysis only; never imported into runtime"
+      }
+    ],
+    "copied_code": [],
+    "external_asset": [
+      {
+        "source": "Poly Haven",
+        "license": "CC0",
+        "repository": "https://polyhaven.com",
+        "purpose": "PBR textures, HDRI skyboxes, and environmental asset sourcing"
+      }
+    ]
+  }
+}

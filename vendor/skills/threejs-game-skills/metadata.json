@@ -1,0 +1,8 @@
+{
+  "id": "threejs-game-skills",
+  "version": "1.0.0",
+  "role": "agent_skill_source",
+  "attribution": "Curated threejs specialist skill repository",
+  "license": "MIT",
+  "overlay_policy": "overlay.json"
+}

@@ -12,7 +12,9 @@
     "lint": "bun run check-topology",
     "validate-agent-artifacts": "python3 scripts/check-traceability.py && python3 scripts/check-topology.py",
     "studio": "bun run ./apps/studio-cli/src/index.ts",
-    "test:generated-game": "bun test packages/studio/src/generator.test.ts"
+    "test:generated-game": "bun test packages/studio/src/generator.test.ts",
+    "source:verify": "bun run ./scripts/verify-source.ts",
+    "third-party:verify": "bun run ./scripts/verify-third-party.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {

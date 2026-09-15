@@ -1,0 +1,31 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T06
+title: Bind third-party skills/libraries, overlay policy, and attribution classes
+proof_level: P2
+timestamp: "2026-09-15T19:13:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T06-001
+    statement: >-
+      Third-party material has an explicit ownership and provenance class distinguishing
+      runtime package dependencies, agent-skill sources, temporary code donors, copied code,
+      and external assets. The studio reuses upstream specialist knowledge without inheriting
+      competing orchestration authority (specifically rejecting threejs-game-director).
+    settles:
+      - REQ-GOAL-006
+      - REQ-SOURCE-005
+      - REQ-SOURCE-006
+
+falsifiers:
+  - id: TEETH-T06-001
+    attack: Attempt to register or expose `threejs-game-director` as an orchestration or router skill.
+    expected: Overlay policy validation strictly fails and rejects the competing orchestration authority.
+  - id: TEETH-T06-002
+    attack: Introduce a standard runtime library through `vendor/` when no source or skill adaptation is required.
+    expected: Source-classification lint detects and rejects unnecessary vendoring, enforcing package dependency instead.
+
+peer_confirmation:
+  required: true
+  focus: Overlay policy constraints, director rejection, attribution class distinctions.

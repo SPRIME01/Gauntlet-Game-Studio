@@ -12,3 +12,4 @@ export * from "./capabilities/registry";
 export * from "./skills/linter";
 export * from "./router/router";
 export * from "./generator";
+export * from "./skills/overlay";

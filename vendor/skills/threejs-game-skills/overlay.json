@@ -1,0 +1,23 @@
+{
+  "schema": "gauntlet.skill_overlay",
+  "schema_version": "1.0",
+  "upstream": "threejs-game-skills",
+  "orchestration_authority": "gauntlet-game-studio",
+  "forbidden_skills": [
+    "threejs-game-director",
+    "director",
+    "game-director"
+  ],
+  "allowed_specialists": [
+    "gameplay-camera",
+    "character-controller",
+    "lighting-atmosphere",
+    "audio-effects",
+    "ui-hud",
+    "debug-telemetry",
+    "qa-smoke"
+  ],
+  "quarantined_skills": [
+    "generic-text-to-3d"
+  ]
+}

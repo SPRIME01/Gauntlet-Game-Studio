@@ -13,24 +13,23 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T05
+  last_settled_task: T06
   in_flight_task: null
-  workable_task: T06
+  workable_task: T07
   ready_tasks:
-    - T06
+    - T07
+    - T13
+    - T16
   blocked_tasks:
-    T07: [T06]
     T08: [T07]
-    T09: [T06, T07, T08]
+    T09: [T07, T08]
     T10: [T07, T08]
     T11: [T08, T10]
     T12: [T08, T09, T10]
-    T13: [T06]
-    T14: [T06, T08, T13]
-    T15: [T06, T10, T11, T13]
-    T16: [T06]
+    T14: [T08, T13]
+    T15: [T10, T11, T13]
     T17: [T07, T08, T16]
-    T18: [T06, T13]
+    T18: [T13]
     T19: [T08, T10, T11, T12]
     T20: [T19]
     T21: [T19, T20]
@@ -42,7 +41,7 @@ execution:
   plan_blocker: null
 
 active:
-  task: T06
+  task: T07
   phase: preregistration
   blocker: null
 
@@ -83,6 +82,11 @@ latest_evidence:
     commit: 5f76132
     gate: PASS (bun run studio -- create .tmp/generated-game-smoke --json, bun run test:generated-game 5/5)
     teeth: PASS (attack 1 verified independent buildability outside monorepo, attack 2 verified zero private relative imports)
+  T06:
+    report: artifacts/plan/T06/summary.md
+    confirmation: peer CONFIRM
+    gate: PASS (bun run source:verify, bun run third-party:verify)
+    teeth: PASS (attack 1 rejected threejs-game-director orchestration, attack 2 rejected unnecessary runtime library vendoring)
 
 observations:
   - status: OBSERVED
@@ -131,17 +135,23 @@ observations:
       Task T05 settled: independent game template in templates/game/, createGameProject generator, studio create CLI,
       and examples/blackwater-relay scaffold implemented; teeth checks verified decoupled buildability outside repo and zero private relative imports.
     evidence: artifacts/plan/T05/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T06 settled: third-party notices (THIRD_PARTY_NOTICES.md) and attribution manifest (vendor/attribution.json)
+      distinguishing 5 provenance classes implemented; overlay policy rejecting threejs-game-director established;
+      single Three.js dependency verified across workspaces.
+    evidence: artifacts/plan/T06/summary.md
 
 next_action:
-  task: T06
+  task: T07
   action: >-
-    Bind third-party skills/libraries, overlay policy, and attribution classes (T06):
-    1. Freeze P2 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T06.prereg.yaml.
-    2. Pin specialist skill sources and runtime libraries in vendor/ or package dependencies.
-    3. Define overlay vs dependency vs donor attribution classes.
-    4. Implement peer verification tests.
+    Implement first-party Gauntlet Runtime lifecycle, scheduler, readiness, and headless split (T07):
+    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T07.prereg.yaml.
+    2. Implement runtime kernel with standard Three.js resolution, simulation scheduler, created/booting/ready/failed lifecycle.
+    3. Implement deterministic authoritative tick semantics and separate browser/headless execution modes.
+    4. Implement independent adversarial confirmation tests.
   reason: >-
-    T05 settled cleanly; T06 is the sole ready task unblocking T07 on the critical path.
+    T06 settled cleanly; T07 is ready and on the critical path.
 
 handoff:
   settled_summary:
@@ -151,7 +161,8 @@ handoff:
     - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests (commit 193f171)."
     - "T03: Implemented semantic studio CLI and doctor diagnostics; verified secret hygiene and donor isolation with 39 workspace tests (commit 483e283)."
     - "T04: Implemented capability registry, routing, skill metadata linter, and AgentHandoff semantics; verified teeth checks and 48 workspace tests (commit 8dacb42)."
-    - "T05: Implemented independent game template, createGameProject, studio create CLI, and examples/blackwater-relay scaffold; verified teeth checks and 56 workspace tests."
+    - "T05: Implemented independent game template, createGameProject, studio create CLI, and examples/blackwater-relay scaffold; verified teeth checks and 56 workspace tests (commit 5f76132)."
+    - "T06: Bound third-party skills/libraries, overlay policy (forbidding threejs-game-director), attribution classes, and single Three.js dependency; verified teeth checks and 60 workspace tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
