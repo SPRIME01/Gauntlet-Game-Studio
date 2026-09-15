@@ -1,0 +1,28 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T05
+title: Create independent game template and Blackwater Relay scaffold
+proof_level: P1
+timestamp: "2026-09-15T19:08:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T05-001
+    statement: >-
+      A generated game carries its own project-local specification, studio lock manifest,
+      runtime source/config, tests, asset registry location, .agents/ state, and evidence roots,
+      and remains independently buildable from pinned dependencies without relying on private
+      relative paths to the studio checkout.
+    settles:
+      - REQ-GOAL-007
+      - REQ-OUT-001
+      - REQ-REPO-002
+      - REQ-REPO-003
+
+falsifiers:
+  - id: TEETH-T05-001
+    attack: Generate smoke game project into a directory outside the studio repository and run install and test.
+    expected: The project installs and passes its tests independently from its own package.json and lock manifest.
+  - id: TEETH-T05-002
+    attack: Inspect generated game package.json, tsconfig.json, and source imports for relative path references to the studio monorepo.
+    expected: Zero private relative paths into the studio monorepo; only published or standard workspace-compatible package dependencies.

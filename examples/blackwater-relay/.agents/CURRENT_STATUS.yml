@@ -1,0 +1,7 @@
+schema: agent.current_status
+schema_version: "1.0"
+metadata:
+  game_id: "blackwater-relay"
+  created_at: "2026-09-15"
+execution:
+  status: "initialized"

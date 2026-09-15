@@ -11,6 +11,7 @@ import {
   routeCapability,
   settleAgentHandoff,
   lintSkillRegistry,
+  createGameProject,
 } from "@gauntlet/studio";
 import {
   validateCapabilityResult,
@@ -108,16 +109,33 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
     }
 
     case "create": {
-      const projectName = filteredArgs[1] || "new-game";
-      const res: StudioResult = {
-        status: "success",
-        operation: "studio.create",
-        result: { project_name: projectName, path: `projects/${projectName}` },
-        diagnostics: { message: `Project scaffold contract prepared for ${projectName}` },
-      };
-      if (isJson) console.log(JSON.stringify(res, null, 2));
-      else console.log(`Created project definition: ${projectName}`);
-      return 0;
+      const targetArg = filteredArgs[1] || "new-game";
+      try {
+        const created = createGameProject(targetArg);
+        const res: StudioResult = {
+          status: "success",
+          operation: "studio.create",
+          result: created,
+          diagnostics: {
+            project_name: created.project_name,
+            path: created.path,
+            files_count: created.files.length,
+          },
+        };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else console.log(`Created independent game project '${created.project_name}' at ${created.path} (${created.files.length} files)`);
+        return 0;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const res: StudioResult = {
+          status: "failed",
+          operation: "studio.create",
+          diagnostics: { error: msg },
+        };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else console.error(`Error: ${msg}`);
+        return 1;
+      }
     }
 
     case "capabilities": {

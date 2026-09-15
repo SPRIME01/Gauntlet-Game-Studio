@@ -1,0 +1,30 @@
+=== GATE 1: bun run studio -- create .tmp/generated-game-smoke --json ===
+{
+  "status": "success",
+  "operation": "studio.create",
+  "result": {
+    "project_name": "generated-game-smoke",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/generated-game-smoke",
+    "files": [
+      "artifacts/evidence/.gitkeep",
+      "tsconfig.json",
+      "package.json",
+      "references/.gitkeep",
+      "src/index.ts",
+      "assets/manifest.json",
+      "AGENTS.md",
+      "studio.lock.yaml",
+      "tests/game.test.ts",
+      ".agents/specs/game.spec.yaml",
+      ".agents/CURRENT_STATUS.yml"
+    ]
+  },
+  "diagnostics": {
+    "project_name": "generated-game-smoke",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/generated-game-smoke",
+    "files_count": 11
+  }
+}
+
+=== GATE 2: bun run test:generated-game ===
+[0m[1mbun test [0m[2mv1.4.0 (34cbb9a40)[0m

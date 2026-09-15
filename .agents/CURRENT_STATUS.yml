@@ -13,27 +13,26 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T04
+  last_settled_task: T05
   in_flight_task: null
-  workable_task: T05
+  workable_task: T06
   ready_tasks:
-    - T05
     - T06
   blocked_tasks:
-    T07: [T05, T06]
+    T07: [T06]
     T08: [T07]
     T09: [T06, T07, T08]
     T10: [T07, T08]
     T11: [T08, T10]
     T12: [T08, T09, T10]
-    T13: [T05, T06]
+    T13: [T06]
     T14: [T06, T08, T13]
     T15: [T06, T10, T11, T13]
-    T16: [T05, T06]
+    T16: [T06]
     T17: [T07, T08, T16]
     T18: [T06, T13]
     T19: [T08, T10, T11, T12]
-    T20: [T05, T19]
+    T20: [T19]
     T21: [T19, T20]
     T22: [T10, T11, T13, T14, T15, T16, T17, T18, T20, T21]
     T23: [T12, T22]
@@ -43,7 +42,7 @@ execution:
   plan_blocker: null
 
 active:
-  task: T05
+  task: T06
   phase: preregistration
   blocker: null
 
@@ -78,6 +77,11 @@ latest_evidence:
     commit: 8dacb42
     gate: PASS (bun run studio -- capabilities lint --json, bun test packages/studio 9/9)
     teeth: PASS (attack 1 rejected ambiguous negative affordances, attack 2 rejected >1024 char descriptions and missing negative affordances, attack 3 rejected premature AgentHandoff settlement)
+  T05:
+    report: artifacts/plan/T05/summary.md
+    confirmation: builder_with_teeth CONFIRM
+    gate: PASS (bun run studio -- create .tmp/generated-game-smoke --json, bun run test:generated-game 5/5)
+    teeth: PASS (attack 1 verified independent buildability outside monorepo, attack 2 verified zero private relative imports)
 
 observations:
   - status: OBSERVED
@@ -121,16 +125,22 @@ observations:
       Task T04 settled: capability registry, capability-first router, skill metadata linter, and AgentHandoff semantics implemented;
       teeth checks verified negative boundary routing disambiguation, skill description/trigger constraints, and premature settlement rejection.
     evidence: artifacts/plan/T04/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T05 settled: independent game template in templates/game/, createGameProject generator, studio create CLI,
+      and examples/blackwater-relay scaffold implemented; teeth checks verified decoupled buildability outside repo and zero private relative imports.
+    evidence: artifacts/plan/T05/summary.md
 
 next_action:
-  task: T05
+  task: T06
   action: >-
-    Implement generated game project template and contract (T05):
-    1. Freeze P2 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T05.prereg.yaml.
-    2. Implement template skeleton in templates/game/.
-    3. Verify template generation and validation tests.
+    Bind third-party skills/libraries, overlay policy, and attribution classes (T06):
+    1. Freeze P2 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T06.prereg.yaml.
+    2. Pin specialist skill sources and runtime libraries in vendor/ or package dependencies.
+    3. Define overlay vs dependency vs donor attribution classes.
+    4. Implement peer verification tests.
   reason: >-
-    T04 settled cleanly; T05 is ready and on the critical path.
+    T05 settled cleanly; T06 is the sole ready task unblocking T07 on the critical path.
 
 handoff:
   settled_summary:
@@ -139,7 +149,8 @@ handoff:
     - "T01: Established lean Bun 1.4 monorepo topology and source boundaries; check-topology verified package discipline and donor isolation (commit 9dd5a03)."
     - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests (commit 193f171)."
     - "T03: Implemented semantic studio CLI and doctor diagnostics; verified secret hygiene and donor isolation with 39 workspace tests (commit 483e283)."
-    - "T04: Implemented capability registry, routing, skill metadata linter, and AgentHandoff semantics; verified teeth checks and 48 workspace tests."
+    - "T04: Implemented capability registry, routing, skill metadata linter, and AgentHandoff semantics; verified teeth checks and 48 workspace tests (commit 8dacb42)."
+    - "T05: Implemented independent game template, createGameProject, studio create CLI, and examples/blackwater-relay scaffold; verified teeth checks and 56 workspace tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."

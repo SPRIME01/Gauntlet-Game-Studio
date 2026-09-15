@@ -11,3 +11,4 @@ export * from "./capabilities/catalog";
 export * from "./capabilities/registry";
 export * from "./skills/linter";
 export * from "./router/router";
+export * from "./generator";

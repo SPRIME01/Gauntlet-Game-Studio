@@ -1,0 +1,20 @@
+{
+  "name": "gauntlet-game-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "bun run typecheck",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "build": "bun run check"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "@types/three": "^0.170.0",
+    "typescript": "^5.7.3"
+  }
+}
