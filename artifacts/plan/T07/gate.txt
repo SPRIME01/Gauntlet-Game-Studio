@@ -1,0 +1,11 @@
+=== GATE 1: bun test packages/runtime/test/readiness.test.ts ===
+[0m[1mbun test [0m[2mv1.4.0 (34cbb9a40)[0m
+
+=== GATE 2: bun test packages/runtime/test/scheduler.test.ts ===
+[0m[1mbun test [0m[2mv1.4.0 (34cbb9a40)[0m
+
+=== GATE 3: bun run runtime:headless-smoke ===
+=== Gauntlet Runtime Headless Server Smoke Verification ===
+OK: Executed 60 ticks in headless mode. State: ready
+OK: Authoritative simulation time: 1.0000s
+SUCCESS: Headless runtime smoke verification passed.

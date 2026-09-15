@@ -1,0 +1,14 @@
+=== TEETH 1: Readiness and Booting Barrier (TEETH-T07-001) ===
+bun test packages/runtime/test/readiness.test.ts -t "TEETH"
+packages/runtime/test/readiness.test.ts:
+✓ Runtime Readiness & Subsystem Barriers Suite (T07) > TEETH-T07-001: Rejects scenario start while subsystems are still booting or failed (Teeth Check) [1.48ms]
+ 1 pass
+ 0 fail
+
+=== TEETH 2 & 3: Multiple Schedulers & Headless DOM Leak (TEETH-T07-002, TEETH-T07-003) ===
+bun test packages/runtime/test/scheduler.test.ts -t "TEETH"
+packages/runtime/test/scheduler.test.ts:
+✓ Simulation Scheduler & Headless Split Suite (T07) > TEETH-T07-002: Rejects multiple schedulers and duplicate step owners (Teeth Check) [0.44ms]
+✓ Simulation Scheduler & Headless Split Suite (T07) > TEETH-T07-003: Headless server runs DOM-free and detects simulated DOM/canvas leaks (Teeth Check) [1.12ms]
+ 2 pass
+ 0 fail

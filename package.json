@@ -14,7 +14,8 @@
     "studio": "bun run ./apps/studio-cli/src/index.ts",
     "test:generated-game": "bun test packages/studio/src/generator.test.ts",
     "source:verify": "bun run ./scripts/verify-source.ts",
-    "third-party:verify": "bun run ./scripts/verify-third-party.ts"
+    "third-party:verify": "bun run ./scripts/verify-third-party.ts",
+    "runtime:headless-smoke": "bun run ./packages/runtime/src/headless-smoke.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {

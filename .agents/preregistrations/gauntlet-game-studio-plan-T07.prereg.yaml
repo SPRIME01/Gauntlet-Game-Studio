@@ -1,0 +1,46 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T07
+title: Implement first-party Gauntlet Runtime lifecycle, scheduler, readiness, and headless split
+proof_level: P3
+timestamp: "2026-09-15T19:18:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T07-001
+    statement: >-
+      Gauntlet Runtime owns runtime coordination independently of donor code and prevents
+      duplicate Three.js instances, asynchronous subsystem races, duplicate physics stepping,
+      and browser globals on the headless server. Lifecycle transitions through created,
+      booting, ready, and failed; authoritative simulation scheduler is singular and separate
+      from render cadence; headless server runs with zero DOM/canvas dependencies.
+    settles:
+      - REQ-GOAL-002
+      - REQ-GOAL-008
+      - REQ-GOAL-009
+      - REQ-CONFIG-004
+      - REQ-CONFIG-014
+      - REQ-BIND-001
+      - REQ-BIND-015
+      - REQ-RUNTIME-004
+      - REQ-RUNTIME-005
+      - REQ-RUNTIME-006
+      - REQ-RUNTIME-007
+      - REQ-RUNTIME-008
+      - REQ-RUNTIME-009
+
+falsifiers:
+  - id: TEETH-T07-001
+    attack: Delay or fail asynchronous subsystem initialization (e.g. physics/navigation) and request scenario start.
+    expected: Runtime remains in booting or transitions to failed; execution barriers block premature start and prevent races.
+  - id: TEETH-T07-002
+    attack: Attempt to register a second authoritative simulation scheduler or step physics twice in a single tick.
+    expected: Runtime rejects duplicate scheduler registration and prevents multiple stepping with typed invariant errors.
+  - id: TEETH-T07-003
+    attack: Import DOM/canvas/WebAudio primitives or globals into the headless server entrypoint.
+    expected: Headless compatibility verification detects and fails immediately on DOM/canvas/audio leakage.
+
+independent_confirmation:
+  required: true
+  mode: adversarial
+  focus: Subsystem readiness races, duplicate scheduler stepping, headless DOM isolation.
