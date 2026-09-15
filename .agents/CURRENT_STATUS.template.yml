@@ -1,0 +1,213 @@
+schema: agent.current_status
+schema_version: "1.0"
+
+# ═══════════════════════════════════════════════════════════════════════
+# HOW TO USE THIS FILE
+# ═══════════════════════════════════════════════════════════════════════
+# This is the single source of truth for where a multi-task, multi-session
+# agent-driven build stands. Read it FIRST at the start of any session.
+# Update it BEFORE ending any session, not after - a session that ends
+# without updating this file has produced no durable handoff.
+#
+# CORE INVARIANTS
+#   1. One task in flight at a time. Never start a second task while
+#      execution.in_flight_task is already set to something.
+#   2. Never mark a task settled on the builder's own say-so. Settlement
+#      requires an independent confirmation round (see confirmation
+#      vocabulary below) plus passing gates, recorded in latest_evidence.
+#   3. Tree outranks record. Before treating any task as unstarted, or
+#      any claim in this file as current, reconcile against the actual
+#      repo state (git status, build/test output). This file can go
+#      stale between sessions. The tree cannot lie.
+#   4. One task, one commit. Each settled task lands as a single commit
+#      with explicit pathspecs. Never bundle two tasks together, never
+#      let a commit sweep up unrelated in-progress operator files.
+#   5. "Ready" is not "workable". A task can have every dependency
+#      satisfied (ready_tasks) and still not be actionable right now
+#      because something else is in flight (invariant 1). Don't conflate
+#      the two - see the optional workable_task field below.
+#
+# CONFIRMATION VOCABULARY (used in latest_evidence.confirmation)
+#   - "peer CONFIRM"        a single reviewing agent signed off clean.
+#   - "adversarial CONFIRM" a reviewer actively tried to break it and
+#                            still signed off. If anything was deferred,
+#                            say what and to which task.
+#   - "<role> REVISE (<reason>) -> fixed -> round2 CONFIRM"
+#                            first pass found a real defect, it got fixed,
+#                            a second independent pass confirmed.
+#   - "PENDING"              implementation may be complete but no
+#                            independent confirmation has happened yet.
+#                            NOT settled. Say what's still needed.
+#
+# DEPENDENCY SEMANTICS (execution.blocked_tasks)
+#   Every array is AND. All listed tasks must settle before the task
+#   unblocks. There is no built-in OR. If a task genuinely unblocks on
+#   any-one-of several conditions, do not encode it as an array (that
+#   reads as AND and will mislead the next agent) - write the real
+#   condition in a comment and resolve it into concrete AND-blockers as
+#   soon as you know which branch applies.
+#
+# STARTING A NEW PROJECT FROM THIS TEMPLATE
+#   1. Fill in metadata. Leave plan_version / spec_version at 0.1.0 until
+#      something has actually shipped under an agreed spec.
+#   2. Break the work into tasks with stable IDs (task0, task1, ...).
+#      Compute the dependency DAG once: dependency-free tasks go in
+#      ready_tasks, everything else goes in blocked_tasks with its real
+#      remaining blockers.
+#   3. Work one task at a time. On settlement: clear in_flight_task, add
+#      the task's entry to latest_evidence, recompute
+#      ready_tasks/blocked_tasks, append one line to
+#      handoff.settled_summary.
+#   4. Keep observations short. This is not a log. It's the handful of
+#      facts a cold-start agent would otherwise have to rediscover the
+#      hard way: environment quirks, frozen/locked artifacts, tooling
+#      gaps, things that are surprising and durable.
+#   5. Update next_action every session, even mid-task. It should always
+#      answer "what does the next agent do first."
+#   6. Delete every <angle-bracket> placeholder and every commented-out
+#      example line as you fill this in. Nothing in angle brackets
+#      should survive into a real status file.
+# ═══════════════════════════════════════════════════════════════════════
+
+metadata:
+  plan_id: <plan-id>                  # stable slug, matches your evidence
+                                       # dir name, e.g. "checkout-rewrite"
+  plan_version: "0.1.0"               # bump on real scope changes, not typos
+  spec_id: <spec-id>                  # usually == plan_id; differs only if
+                                       # one spec drives multiple plans
+  spec_version: "0.1.0"
+  initialized: false                  # flip to true after the first burst
+  last_updated: "<YYYY-MM-DD>"        # update every session, no exceptions
+  updated_by: >-
+    <who/what last touched this file, plus a one-line state summary. e.g.
+    "orchestrator (kickoff, no tasks started yet)">
+
+# ─────────────────────────────────────────────────────────────────────────
+# EXECUTION STATE
+# ─────────────────────────────────────────────────────────────────────────
+execution:
+  last_settled_task: null             # most recent task with a CONFIRM in
+                                       # latest_evidence; null if none yet
+  in_flight_task: null                # the ONE task being worked right now;
+                                       # null if nothing is in flight
+
+  # OPTIONAL but recommended: makes "ready" vs "workable" explicit instead
+  # of relying on a comment (see invariant 5 above). Set it to whichever
+  # task is actually actionable right now - usually in_flight_task itself,
+  # or the next ready task once nothing is in flight. null if plan_blocked.
+  # Strip this field if you'd rather keep the file minimal.
+  workable_task: null
+
+  ready_tasks: []                     # dependency-free / all-deps-settled
+                                       # tasks, not yet started. Recompute
+                                       # this every time a task settles.
+    # - task1
+    # - task2
+
+  blocked_tasks: {}                   # task -> its remaining (unsettled)
+                                       # blockers. AND semantics - see
+                                       # "DEPENDENCY SEMANTICS" above.
+    # task3: [task1, task2]           # needs task1 AND task2
+    # task4: [task3]                  # needs task3
+
+  plan_blocked: false                 # true only if NOTHING is workable
+                                       # (every ready path is blocked)
+  plan_blocker: null                  # if plan_blocked, name the single
+                                       # thing unblocking it; else null
+
+# ─────────────────────────────────────────────────────────────────────────
+# ACTIVE TASK
+# ─────────────────────────────────────────────────────────────────────────
+active:
+  task: null                          # matches execution.in_flight_task.
+                                       # null until a task starts.
+  phase: null                         # free text once started, e.g.
+                                       # "implementation", "review",
+                                       # "closure" - whatever phases your
+                                       # actual workflow has.
+  blocker: >-
+    <what's blocking this task's SETTLEMENT right now, and what's already
+    landed and verified. Rewrite this every session - it's the first
+    thing a resuming agent reads. Point to the evidence files that back
+    each claim rather than restating their contents inline.>
+
+# ─────────────────────────────────────────────────────────────────────────
+# EVIDENCE LOG (current state per task, not a history)
+# ─────────────────────────────────────────────────────────────────────────
+# One entry per task that has produced evidence. This is current-state,
+# not a running log - when a task's status changes, overwrite its entry,
+# don't append a new one.
+latest_evidence: {}
+  # task1:
+  #   report: "<path to the task's evidence/report dir or file>"
+  #   confirmation: "<see CONFIRMATION VOCABULARY above>"
+  #   commit: "<commit sha, or a list if it spanned multiple commits>"
+
+# ─────────────────────────────────────────────────────────────────────────
+# OBSERVATIONS - facts a resuming agent needs, not a running commentary.
+# Keep this list short and load-bearing. Two statuses only:
+#   OBSERVED  directly verified this session/burst, evidence attached.
+#             Do not write OBSERVED for something you're inferring or
+#             assuming - only for something you actually checked.
+#   UNKNOWN   a known gap, not yet verified either way. Do not upgrade to
+#             OBSERVED without actually checking.
+# ─────────────────────────────────────────────────────────────────────────
+observations: []
+  # - status: OBSERVED
+  #   statement: >-
+  #     <a fact worth not re-deriving - an environment quirk, a frozen
+  #     artifact and its digest, a tooling gap, a constraint on the host.>
+  #   evidence: "<path to what backs this claim>"
+  # - status: UNKNOWN
+  #   statement: "<the open question, phrased so it's checkable later>"
+  #   evidence: "<where this question originated, if relevant>"
+
+# ─────────────────────────────────────────────────────────────────────────
+# NEXT ACTION
+# ─────────────────────────────────────────────────────────────────────────
+# Should always answer, unambiguously, "what does the next agent do
+# first." Update this every session, even mid-task.
+# ─────────────────────────────────────────────────────────────────────────
+next_action:
+  task: <first-task-id>               # which task the next session works,
+                                       # or "<task-id>-closure" if what's
+                                       # left is confirm-and-close rather
+                                       # than fresh implementation
+  action: >-
+    <concrete next step(s), in enough detail that a cold-start agent
+    doesn't have to reconstruct intent. Use numbered steps for anything
+    with more than one move.>
+  reason: >-
+    <why this is next. At kickoff this is usually just "first task in
+    the DAG with no blockers" - say so explicitly rather than leaving it
+    implicit.>
+
+# ─────────────────────────────────────────────────────────────────────────
+# HANDOFF
+# ─────────────────────────────────────────────────────────────────────────
+handoff:
+  settled_summary: []
+    # One line per settled task or logical group of settled tasks. Batch
+    # older groups together; the most recently settled task gets its own
+    # line with enough detail that a resuming agent doesn't need to open
+    # its evidence dir just to know what it did.
+    # - "T1 <what it built> (<commit sha>)"
+
+  unresolved_summary: []
+    # Every open thread not captured elsewhere: outstanding confirmations,
+    # deferred scope, stale docs owed a refresh, known follow-ups tied to
+    # a later task ID.
+    # - "<what's open> - resolves in <task-id>"
+
+  warnings: []
+    # Only things genuinely dangerous to miss - wrong resident state, an
+    # action explicitly out of scope until a later task, an irreversible
+    # operation to avoid. Not routine notes; those belong elsewhere.
+    # - "Never edit <frozen artifact path> - it's locked; verify with
+    #    `<check command>` before and after every task."
+    # - "Never mark a task settled on builder say-so; settlement requires
+    #    independent confirmation (see CONFIRMATION VOCABULARY above)."
+    # - "Always reconcile git status vs this file vs any in-flight report
+    #    before treating a task as unstarted (tree outranks record)."
+    # - "One task, one commit: use explicit pathspecs, never stage
+    #    scratch dirs or unrelated operator-in-progress files."

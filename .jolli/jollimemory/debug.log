@@ -1,0 +1,80 @@
+[2026-09-15T16:56:54.833Z] INFO  [ExecutableResolver] [trace=f3ce31c80508e9e726809989fae819c0] opencode discovery: 1 candidate(s)=[/home/sprime01/.local/share/pnpm/opencode]; shims=[(none)]; knownPaths present=[(none)] (searched 66 PATH entries)
+[2026-09-15T16:56:56.603Z] INFO  [ExecutableResolver] [trace=f3ce31c80508e9e726809989fae819c0] Resolved opencode executable: /home/sprime01/.local/share/pnpm/opencode (v1.18.13)
+[2026-09-15T16:56:56.611Z] INFO  [SessionTracker] [trace=f3ce31c80508e9e726809989fae819c0] Config saved to /home/sprime01/.jolli/jollimemory
+[2026-09-15T16:57:09.785Z] INFO  [Installer] [trace=f3ce31c80508e9e726809989fae819c0] Installing Jolli Memory hooks
+[2026-09-15T16:57:09.793Z] INFO  [DispatchScripts] [trace=f3ce31c80508e9e726809989fae819c0] Wrote resolve-dist-path, run-hook, and run-cli scripts to /home/sprime01/.jolli/jollimemory
+[2026-09-15T16:57:09.796Z] INFO  [DistPathWriter] [trace=f3ce31c80508e9e726809989fae819c0] Wrote dist-paths/cli (version=0.99.11, distDir=/home/sprime01/.cache/nub/pm/store/@jolli.ai+cli@0.99.11_zod@4.4.3_-da09ec1fbb3fa1b7/node_modules/@jolli.ai/cli/dist)
+[2026-09-15T16:57:09.819Z] INFO  [SkillInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Wrote SKILL.md (revision 2) to /home/sprime01/projects/gauntlet-game-studio/.agents/skills/jolli-recall/SKILL.md
+[2026-09-15T16:57:09.821Z] INFO  [SkillInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Wrote SKILL.md (revision 2) to /home/sprime01/projects/gauntlet-game-studio/.agents/skills/jolli-search/SKILL.md
+[2026-09-15T16:57:09.822Z] INFO  [SkillInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Wrote SKILL.md (revision 5) to /home/sprime01/projects/gauntlet-game-studio/.agents/skills/jolli-local-run/SKILL.md
+[2026-09-15T16:57:09.823Z] INFO  [SkillInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Wrote SKILL.md (revision 4) to /home/sprime01/projects/gauntlet-game-studio/.agents/skills/jolli-remote-run/SKILL.md
+[2026-09-15T16:57:09.825Z] INFO  [SkillInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Wrote SKILL.md (revision 6) to /home/sprime01/projects/gauntlet-game-studio/.agents/skills/jolli/SKILL.md
+[2026-09-15T16:57:09.831Z] INFO  [GitExclude] [trace=f3ce31c80508e9e726809989fae819c0] Updated /home/sprime01/projects/gauntlet-game-studio/.git/info/exclude with 7 Jolli skill exclude paths
+[2026-09-15T16:57:09.832Z] INFO  [McpRegistration] [trace=f3ce31c80508e9e726809989fae819c0] Registered MCP server in /home/sprime01/projects/gauntlet-game-studio/.mcp.json
+[2026-09-15T16:57:09.836Z] INFO  [JsonMcpWriter] [trace=f3ce31c80508e9e726809989fae819c0] Registered MCP server in /home/sprime01/.gemini/settings.json
+[2026-09-15T16:57:09.838Z] INFO  [CodexTomlWriter] [trace=f3ce31c80508e9e726809989fae819c0] Registered Codex MCP server in /home/sprime01/.codex/config.toml
+[2026-09-15T16:57:09.841Z] INFO  [JsonMcpWriter] [trace=f3ce31c80508e9e726809989fae819c0] Registered MCP server in /home/sprime01/.config/opencode/opencode.json
+[2026-09-15T16:57:09.843Z] INFO  [JsonMcpWriter] [trace=f3ce31c80508e9e726809989fae819c0] Registered MCP server in /home/sprime01/.config/devin/config.json
+[2026-09-15T16:57:09.845Z] INFO  [JsonMcpWriter] [trace=f3ce31c80508e9e726809989fae819c0] Registered MCP server in /home/sprime01/.gemini/config/mcp_config.json
+[2026-09-15T16:57:09.846Z] INFO  [JsonMcpWriter] [trace=f3ce31c80508e9e726809989fae819c0] Registered MCP server in /home/sprime01/.kimi-code/mcp.json
+[2026-09-15T16:57:09.848Z] INFO  [GitHookInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Git post-commit hook installed
+[2026-09-15T16:57:09.849Z] INFO  [GitHookInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Git post-rewrite hook installed
+[2026-09-15T16:57:09.850Z] INFO  [GitHookInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Git prepare-commit-msg hook installed
+[2026-09-15T16:57:09.852Z] INFO  [GitHookInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Git post-merge hook installed
+[2026-09-15T16:57:09.853Z] INFO  [GitHookInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Git pre-push hook installed
+[2026-09-15T16:57:09.854Z] INFO  [GeminiHookInstaller] [trace=f3ce31c80508e9e726809989fae819c0] Gemini AfterAgent hook installed
+[2026-09-15T16:57:09.860Z] INFO  [StorageFactory] [trace=f3ce31c80508e9e726809989fae819c0] StorageFactory.create: route=uncutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-15T16:57:09.873Z] INFO  [SchemaV5Migration] [trace=f3ce31c80508e9e726809989fae819c0] Storage backend not initialized yet — skipping schema v5 migration (no data to migrate)
+[2026-09-15T16:57:09.873Z] INFO  [Installer] [trace=f3ce31c80508e9e726809989fae819c0] Schema v5 migration: alreadyDone=false fresh=true migrated=0 skipped=0
+[2026-09-15T16:57:09.877Z] INFO  [Installer] [trace=f3ce31c80508e9e726809989fae819c0] Installation complete
+[2026-09-15T16:57:09.908Z] INFO  [StorageFactory] [trace=f3ce31c80508e9e726809989fae819c0] StorageFactory.create: route=uncutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-15T16:57:09.922Z] INFO  [StorageFactory] [trace=f3ce31c80508e9e726809989fae819c0] StorageFactory.create: route=uncutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-15T16:57:17.338Z] INFO  [BackfillEngine] [trace=f3ce31c80508e9e726809989fae819c0] Back-fill start: cwd=/home/sprime01/projects/gauntlet-game-studio candidates=1 dryRun=false minTier=low
+[2026-09-15T16:57:17.342Z] INFO  [StorageFactory] [trace=f3ce31c80508e9e726809989fae819c0] StorageFactory.create: route=uncutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-15T16:57:17.352Z] INFO  [BackfillEngine] [trace=f3ce31c80508e9e726809989fae819c0] Back-fill: 1/1 commits lack a summary
+[2026-09-15T16:57:18.996Z] INFO  [RawTranscriptScanner] [trace=f3ce31c80508e9e726809989fae819c0] Indexed 0 session(s) from /home/sprime01/.claude/projects
+[2026-09-15T16:57:19.005Z] INFO  [CommitTargetIndex] [trace=f3ce31c80508e9e726809989fae819c0] Target index: 2 commits, 2 files
+[2026-09-15T16:57:19.005Z] INFO  [BackfillEngine] [trace=f3ce31c80508e9e726809989fae819c0] Back-fill indexes: 0 transcript session(s), 2 target commit(s), worktree roots=["/home/sprime01/projects/gauntlet-game-studio"]
+[2026-09-15T16:57:19.015Z] INFO  [CommitAttributor] [trace=f3ce31c80508e9e726809989fae819c0] Attribution: 0 attributed, 1 skipped (of 1 emitted)
+[2026-09-15T16:57:19.019Z] INFO  [GitOps] [trace=f3ce31c80508e9e726809989fae819c0] Commit 2488d697: first commit
+[2026-09-15T16:57:19.023Z] WARN  [GitOps] [trace=f3ce31c80508e9e726809989fae819c0] Diff failed, trying diff of HEAD against empty tree
+[2026-09-15T16:57:19.100Z] INFO  [Summarizer] [trace=f3ce31c80508e9e726809989fae819c0] Generating summary for commit 2488d697
+[2026-09-15T16:57:19.100Z] INFO  [Summarizer] [trace=f3ce31c80508e9e726809989fae819c0] Context: transcript=0, files=0, lines=0+0
+[2026-09-15T16:57:19.101Z] INFO  [LlmClient] [trace=f3ce31c80508e9e726809989fae819c0] LLM call: action=summarize source=local-agent
+[2026-09-15T16:57:28.484Z] WARN  [LocalAgentRunner] [trace=f3ce31c80508e9e726809989fae819c0] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-15T16:57:28.485Z] INFO  [LlmClient] [trace=f3ce31c80508e9e726809989fae819c0] Local agent opencode failed with a setup error; retrying without --pure (failure named no flag; dropping all remaining)
+[2026-09-15T16:57:34.377Z] WARN  [LocalAgentRunner] [trace=f3ce31c80508e9e726809989fae819c0] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-15T16:57:34.377Z] ERROR [LlmClient] [trace=f3ce31c80508e9e726809989fae819c0] Local-agent call failed: action=summarize tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=15275 errorName=LocalAgentSetupError error=Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-15T16:57:34.379Z] ERROR [BackfillEngine] [trace=f3ce31c80508e9e726809989fae819c0] Back-fill failed for 2488d697: Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-15T16:57:34.380Z] INFO  [BackfillEngine] [trace=f3ce31c80508e9e726809989fae819c0] Back-fill complete: generated=0 skipped=0 errors=1 (of 1 candidates)
+[2026-09-15T16:57:34.627Z] INFO  [DashboardServer] dashboard listening on 127.0.0.1:1818
+[2026-09-15T16:57:38.578Z] INFO  [SessionTracker] [trace=f3ce31c80508e9e726809989fae819c0] Pruning stale session c0880ee6-0e11-4b9d-b34b-cb835dff43e0 (age: 254h)
+[2026-09-15T16:57:38.783Z] INFO  [SotImport] [trace=f3ce31c80508e9e726809989fae819c0] orphan import for https://github.com/godspeedai/sea-rs: %o
+[2026-09-15T16:57:38.814Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] bootstrapped sea-rs: 389 events applied
+[2026-09-15T16:57:40.768Z] INFO  [SessionTracker] [trace=f3ce31c80508e9e726809989fae819c0] Pruning stale session c0880ee6-0e11-4b9d-b34b-cb835dff43e0 (age: 254h)
+[2026-09-15T16:57:40.920Z] INFO  [SotImport] [trace=f3ce31c80508e9e726809989fae819c0] orphan import for https://github.com/godspeedai/sea-forge: %o
+[2026-09-15T16:57:40.924Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] bootstrapped sea-forge: 389 events applied
+[2026-09-15T16:57:42.593Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] pruned 3 unreachable commits for local:23b7c2b94dfe9d5619a64d8c7e1ceb37
+[2026-09-15T16:57:43.018Z] INFO  [SotImport] [trace=f3ce31c80508e9e726809989fae819c0] orphan import for local:23b7c2b94dfe9d5619a64d8c7e1ceb37: %o
+[2026-09-15T16:57:43.020Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] bootstrapped gauntlet: 183 events applied
+[2026-09-15T16:57:43.979Z] INFO  [SotImport] [trace=f3ce31c80508e9e726809989fae819c0] orphan import for https://github.com/godspeedai/realitytrace: %o
+[2026-09-15T16:57:43.982Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] bootstrapped realitytrace: 119 events applied
+[2026-09-15T16:57:44.851Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] pruned 6 unreachable commits for https://github.com/godspeedai/gauntlet
+[2026-09-15T16:57:45.294Z] INFO  [SotImport] [trace=f3ce31c80508e9e726809989fae819c0] orphan import for https://github.com/godspeedai/gauntlet: %o
+[2026-09-15T16:57:45.298Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] bootstrapped gauntlet: 183 events applied
+[2026-09-15T16:57:45.396Z] INFO  [Backfill] [trace=f3ce31c80508e9e726809989fae819c0] bootstrapped gauntlet-game-studio: 5 events applied
+[2026-09-15T16:57:45.442Z] INFO  [AutoCutover] [trace=f3ce31c80508e9e726809989fae819c0] auto-cutover deferred for /home/sprime01/projects/gauntlet-game-studio (uncutover): no orphan branch in /home/sprime01/projects/gauntlet-game-studio
