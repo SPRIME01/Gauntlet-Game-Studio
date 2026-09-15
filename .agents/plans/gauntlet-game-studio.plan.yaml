@@ -1,0 +1,3061 @@
+schema: agent.development_plan
+schema_version: '1.0'
+metadata:
+  id: gauntlet-game-studio-plan
+  title: Gauntlet Game Studio Development Settlement Plan
+  status: approved
+  version: 0.2.0
+  created: '2026-09-15'
+  purpose: Project the revised Gauntlet Game Studio normative specification into an executable settlement graph that 
+    builds a first-party Bun/Three.js/Koota/Rapier runtime, strategically mines Mavon only as disposable donor source, 
+    integrates specialist game-production capabilities, proves optional authoritative multiplayer, and settles the 
+    studio through Blackwater Relay plus fresh adversarial evidence.
+source:
+  spec:
+    intended_repository_path: .agents/specs/gauntlet-game-studio.spec.yaml
+    artifact_name: gauntlet-game-studio.spec.yaml
+    spec_id: gauntlet-game-studio
+    spec_version: 0.2.0
+    sha256: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+    authority: normative
+    freeze_note: The bound source specification is approved and frozen at metadata.status=approved with SHA-256 
+      595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e. T00 is ready for execution bootstrap.
+  supporting_sources:
+    - path: AGENTS.md
+      role: Durable agent operating contract; governs execution behavior but does not override normative desired state.
+    - path: .agents/reports/agentic-threejs-game-studio-adversarial-analysis.md
+      role: Non-normative adversarial findings that motivated the v0.2 spec corrections; useful regression context.
+    - path: .tmp/donor/
+      role: Temporary gitignored implementation donor workspace. Non-authoritative, optional, disposable, and forbidden 
+        as runtime/build dependency.
+target_settlement: A clean checkout under Bun 1.4 can generate independent game projects, route requirements through 
+  stable capabilities, run a first-party Gauntlet Runtime with standard Three.js, Koota authority, direct Rapier, 
+  Recast, BVH, audio/VFX/content adapters, Bun native WebSocket baseline networking, and optional server-authoritative 
+  WebRTC multiplayer; deterministic CI verifies committed agent-assisted outputs without model credentials; normal builds 
+  do not require Blender, toktx, WebRTC/geckos, or donor source; Blackwater Relay proves the integrated single-player 
+  and two-client multiplayer paths; state, pixels, telemetry, network evidence, provenance, recovery cases, and fresh 
+  independent confirmations support every REQUIRED claim.
+operating_contract:
+  core_principle: Gauntlet contracts and semantic authority determine the architecture; donor/provider code may fill a 
+    defined affordance but MUST NOT determine module boundaries, semantic authority, orchestration, or proof.
+  rules:
+    - Execute tasks by dependency, not by narrative order.
+    - Independent tasks MAY run in parallel only after all declared dependencies are settled.
+    - Every task MUST leave the repository in a coherent state with all applicable global gates green.
+    - A task is not complete because code exists, a process starts once, the builder reports success, or a happy-path 
+      test passes.
+    - A passing gate proves only what that gate actually observes.
+    - High-risk P3 work requires fresh independent/adversarial confirmation.
+    - Do not generalize from one observation unless the normative requirement is itself general.
+    - Do not silently widen domain, schema, API, config, service, or authority surfaces when an existing representation 
+      can preserve the required distinction.
+    - Runtime/machine/provider-specific facts belong in the project's established config/secret hierarchy rather than 
+      scattered hardcoding.
+    - Preserve failed evidence and correction history.
+    - Design first-party Gauntlet Runtime modules before consulting `.tmp/donor/`; transplant only requirement-serving 
+      mechanisms into those established boundaries.
+    - Koota is semantic authority; Three.js, Rapier, Recast, network state, audio/VFX, Blender, and asset/provider 
+      representations are projections or production artifacts.
+    - Required CI MUST remain deterministic and credential-independent for agent-skill generation; live model runs are 
+      development/regression activities, not deterministic proof.
+    - Normal game build/test/runtime MUST remain independent of `.tmp/donor/` and Blender.
+  claim_states:
+    - OBSERVED
+    - INFERRED
+    - DECIDED
+    - ASSUMED
+    - UNKNOWN
+  correction_protocol:
+    - Preserve the failed evidence.
+    - 'Classify the failure: implementation, oracle/test, representation, missing prerequisite, environmental confound, or
+      source-spec ambiguity.'
+    - Determine whether the governing requirement/invariant remains valid.
+    - Correct the smallest falsified layer.
+    - Rerun the original teeth/falsification check.
+    - Rerun the original confirmation path.
+    - Append the correction round; do not erase the failed round.
+    - Do not weaken acceptance merely because the implementation repeatedly fails it.
+  scope_control: A newly discovered issue enters the current plan only when it blocks a normative requirement or is 
+    itself required by the source specification. Valuable but independent discoveries become future debt/plans. 
+    Attractive architecture with no requirement is rejected from current scope.
+artifacts:
+  current_status: .agents/CURRENT_STATUS.yml
+  decision_log: .agents/decisions/game-studio.jsonl
+  evidence_root: artifacts/plan/
+  reports_root: .agents/reports/
+  preregistration_root: .agents/preregistrations/
+  status_rule: Mutable current status is an operational projection and MUST NOT become a source of desired-state or 
+    normative authority.
+implementation_shape:
+  repository_topology:
+    principle: Start with few proven package boundaries; adapters are modules, not packages, until independent 
+      lifecycle/reuse is demonstrated.
+    tree: |-
+      gauntlet-game-studio/
+      ├── AGENTS.md
+      ├── README.md
+      ├── LICENSE
+      ├── package.json
+      ├── bun.lock
+      ├── justfile
+      ├── .agents/
+      │   ├── CURRENT_STATUS.yml
+      │   ├── specs/gauntlet-game-studio.spec.yaml
+      │   ├── plans/gauntlet-game-studio.plan.yaml
+      │   ├── preregistrations/
+      │   ├── decisions/
+      │   └── reports/
+      ├── apps/
+      │   └── studio-cli/
+      ├── packages/
+      │   ├── contracts/
+      │   ├── studio/
+      │   │   ├── capabilities/
+      │   │   ├── router/
+      │   │   ├── assets/
+      │   │   ├── evidence/
+      │   │   └── gauntlet/
+      │   ├── runtime/
+      │   │   ├── lifecycle/
+      │   │   ├── state/
+      │   │   ├── render/
+      │   │   ├── physics/
+      │   │   ├── terrain/
+      │   │   ├── navigation/
+      │   │   ├── spatial/
+      │   │   ├── network/
+      │   │   ├── audio/
+      │   │   └── observability/
+      │   └── adapters/
+      │       ├── agent-skills/
+      │       ├── assets/
+      │       ├── world/
+      │       ├── vfx/
+      │       ├── audio/
+      │       ├── dcc/
+      │       └── browser/
+      ├── capabilities/
+      ├── skills/
+      │   ├── game-studio-director/
+      │   └── vendor-overrides/
+      ├── vendor/
+      │   ├── img2threejs/
+      │   ├── 3dviz-pro-max/
+      │   └── threejs-game-skills/
+      ├── templates/game/
+      ├── examples/blackwater-relay/
+      ├── scripts/
+      ├── third_party/
+      │   └── mavon-engine/
+      ├── artifacts/
+      │   └── runs/
+      └── .tmp/
+          └── donor/   # gitignored, disposable, never authoritative
+  adapter_matrix:
+    - id: agent-skill.img2threejs
+      kind: agent_skill
+      owner: packages/adapters/src/agent-skills/img2threejs
+      role: Reference-image reconstruction handoff; interactive generation only, deterministic accepted-result 
+        verification in CI.
+    - id: agent-skill.3dviz
+      kind: agent_skill
+      owner: packages/adapters/src/agent-skills/3dviz
+      role: Environment/world composition handoff; composes with terrain/nav rather than owning them.
+    - id: agent-skill.threejs-game-skills
+      kind: agent_skill_overlay
+      owner: packages/adapters/src/agent-skills/threejs-game-skills
+      role: Selected gameplay/graphics/UI/debug/QA specialists; studio director remains sole orchestration authority.
+    - id: terrain.heightfield
+      kind: procedural_generator
+      owner: packages/runtime/src/terrain
+      role: Deterministic mathematical elevation generation directly into canonical TerrainHeightfield; downstream 
+        render/physics/nav derive from canonical samples.
+    - id: physics.rapier
+      kind: package
+      owner: packages/runtime/src/physics
+      role: Preferred 3D physics simulation engine via @dimforge/rapier3d-compat (WASM, async init, stepped by single 
+        runtime scheduler, execution projection).
+    - id: navigation.recast
+      kind: package
+      owner: packages/runtime/src/navigation
+      role: Navmesh/path/crowd projection over accepted world geometry.
+    - id: spatial.three-mesh-bvh
+      kind: package
+      owner: packages/runtime/src/spatial
+      role: Accelerated raycast/LOS/spatial queries without semantic authority.
+    - id: asset.gltf-transform
+      kind: package
+      owner: packages/adapters/src/assets/gltf-transform
+      role: Offline glTF normalization, pruning, compression, and runtime preparation.
+    - id: asset.polyhaven
+      kind: http_source
+      owner: packages/adapters/src/assets/polyhaven
+      role: Initial CC0/HDRI/PBR source adapter with provenance capture.
+    - id: vfx.quarks
+      kind: package
+      owner: packages/adapters/src/vfx/quarks
+      role: Three-native inspectable VFX projection.
+    - id: audio.tone
+      kind: package
+      owner: packages/adapters/src/audio/tone
+      role: Browser procedural audio backend implementing AudioBackend; real gesture unlock required.
+    - id: audio.null
+      kind: runtime_null
+      owner: packages/runtime/src/audio
+      role: Headless/server/test NullAudioBackend implementing AudioBackend; zero Web Audio/Tone.js dependencies.
+    - id: dcc.blender
+      kind: cli_dcc
+      owner: packages/adapters/src/dcc/blender
+      role: Isolated regeneration/escalation to standard committed GLB/glTF derivatives.
+    - id: browser.agent-browser
+      kind: agent_tool
+      owner: packages/adapters/src/browser/agent-browser
+      role: Exploratory browser inspection/debug only; never sole settlement oracle.
+    - id: browser.playwright
+      kind: browser_proof
+      owner: packages/adapters/src/browser/playwright
+      role: Deterministic browser scenarios, traces, screenshots, and proof.
+    - id: network.websocket
+      kind: transport
+      owner: packages/runtime/src/network/transports/websocket
+      role: Baseline Bun native WebSocket transport implementation behind studio-owned transport abstraction.
+    - id: network.geckos
+      kind: transport
+      owner: packages/runtime/src/network/transports/geckos
+      role: Optional WebRTC/UDP-like datagram transport binding behind studio-owned transport abstraction; requires 
+        explicit capability selection and must not block baseline builds.
+  donor_strategy:
+    path: .tmp/donor/
+    relationship: code_donor_only
+    rules:
+      - Do not add donor source to workspaces, package dependencies, runtime resolution, or generated games.
+      - Design Gauntlet Runtime module/contract first; consult donor only after the owning task has a defined 
+        affordance.
+      - Classify each consulted donor mechanism as transplant, rewrite_from_concept, discard, or not_needed.
+      - Retain legally required MIT attribution/provenance for materially copied/transplanted code in 
+        `third_party/mavon-engine/`.
+      - Public APIs/logs/docs are Gauntlet Runtime; no donor branding or compatibility promises.
+      - Fresh checkout without `.tmp/donor/` is a mandatory conformance condition.
+  threejs_game_skills_policy:
+    overlay:
+      - threejs-gameplay-systems
+      - threejs-aaa-graphics-builder
+      - threejs-game-ui-designer
+      - threejs-debug-profiler
+      - threejs-qa-release
+    not_orchestration_authority:
+      - threejs-game-director
+    quarantined_optional_fallbacks:
+      - threejs-3d-generator
+      - threejs-image-generator
+      - threejs-audio-generator
+    fork_rule: Only an individual specialist may be copied into `skills/vendor-overrides/` after external 
+      overlay/configuration is proven insufficient.
+  reference_game:
+    name: Blackwater Relay
+    purpose: Production-shaped conformance vertical slice, not the studio product.
+    premise: A storm-dusk island relay outpost where a player traverses by rover, recovers a power cell, opens the relay
+      gate, interacts with a reference-reconstructed field transceiver, encounters a patrolling service drone, and 
+      activates the beacon.
+    required_routes:
+      - 3dviz environment composition
+      - canonical seeded terrain
+      - img2threejs field-transceiver reconstruction
+      - approved CC0/licensed PBR/HDRI intake
+      - Koota semantic state
+      - standard Three.js rendering
+      - direct Rapier physics
+      - Recast navigation
+      - three-mesh-bvh spatial queries
+      - Quarks VFX
+      - Tone audio through AudioBackend
+      - DOM/CSS HUD
+      - one justified Blender service-drone retarget/bake derivative
+      - glTF-Transform optimization
+      - agent-browser exploration
+      - Playwright deterministic proof
+      - optional two-client authoritative networking over headless Bun server
+    single_player_scenarios:
+      - boot
+      - active-play
+      - transceiver-interaction
+      - patrol-obstacle
+      - beacon-activation
+      - performance-flythrough
+    multiplayer_scenarios:
+      - multiplayer-sync
+      - interest-filtering
+      - multiplayer-latency
+verification:
+  global_gates:
+    - id: G-CHECK
+      command: just check
+    - id: G-TEST
+      command: just test
+    - id: G-LINT
+      command: just lint
+    - id: G-AGENT-ARTIFACTS
+      command: just validate-agent-artifacts
+  gate_binding_rule: T00 creates/binds these aliases to the repository's real commands. Later tasks extend underlying 
+    test suites rather than introducing duplicate global command surfaces. A task runs only global gates applicable to 
+    the implementation state reached so far; missing future capability commands are not treated as passed.
+  proof_levels:
+    P0: Mechanical/deterministic change. Requires a narrow direct gate plus applicable global gates.
+    P1: Normal behavioral work. Requires positive behavior, a meaningful teeth/falsification check, and applicable 
+      global gates.
+    P2: Invariant-sensitive work. Requires an explicit/preregistered claim, adversarial/negative evidence, evidence 
+      artifact, applicable global gates, and review of a plausible alternate failure path.
+    P3: Settlement-critical work. Requires frozen preregistration, builder evidence, explicit adversarial attacks, fresh
+      independent confirmation, and correction/re-confirmation after any failed confirmation.
+dependency_graph:
+  edges:
+    -   - T00
+        - T01
+    -   - T01
+        - T02
+    -   - T02
+        - T03
+    -   - T03
+        - T04
+    -   - T03
+        - T05
+    -   - T04
+        - T05
+    -   - T01
+        - T06
+    -   - T04
+        - T06
+    -   - T02
+        - T07
+    -   - T05
+        - T07
+    -   - T06
+        - T07
+    -   - T07
+        - T08
+    -   - T06
+        - T09
+    -   - T07
+        - T09
+    -   - T08
+        - T09
+    -   - T07
+        - T10
+    -   - T08
+        - T10
+    -   - T08
+        - T11
+    -   - T10
+        - T11
+    -   - T08
+        - T12
+    -   - T09
+        - T12
+    -   - T10
+        - T12
+    -   - T02
+        - T13
+    -   - T03
+        - T13
+    -   - T05
+        - T13
+    -   - T06
+        - T13
+    -   - T04
+        - T14
+    -   - T06
+        - T14
+    -   - T08
+        - T14
+    -   - T13
+        - T14
+    -   - T04
+        - T15
+    -   - T06
+        - T15
+    -   - T10
+        - T15
+    -   - T11
+        - T15
+    -   - T13
+        - T15
+    -   - T04
+        - T16
+    -   - T06
+        - T16
+    -   - T05
+        - T16
+    -   - T07
+        - T17
+    -   - T08
+        - T17
+    -   - T16
+        - T17
+    -   - T03
+        - T18
+    -   - T06
+        - T18
+    -   - T13
+        - T18
+    -   - T08
+        - T19
+    -   - T10
+        - T19
+    -   - T11
+        - T19
+    -   - T12
+        - T19
+    -   - T03
+        - T20
+    -   - T05
+        - T20
+    -   - T19
+        - T20
+    -   - T19
+        - T21
+    -   - T20
+        - T21
+    -   - T10
+        - T22
+    -   - T11
+        - T22
+    -   - T13
+        - T22
+    -   - T14
+        - T22
+    -   - T15
+        - T22
+    -   - T16
+        - T22
+    -   - T17
+        - T22
+    -   - T18
+        - T22
+    -   - T20
+        - T22
+    -   - T21
+        - T22
+    -   - T12
+        - T23
+    -   - T22
+        - T23
+    -   - T23
+        - T24
+    -   - T24
+        - T25
+  critical_path:
+    - T00
+    - T01
+    - T02
+    - T03
+    - T04
+    - T05
+    - T07
+    - T08
+    - T10
+    - T11
+    - T19
+    - T20
+    - T21
+    - T22
+    - T23
+    - T24
+    - T25
+  longest_path_length: 17
+  equal_critical_paths_count: 6
+  equal_critical_paths:
+    - [T00, T01, T02, T03, T04, T05, T07, T08, T09, T12, T19, T20, T21, T22, T23, T24, T25]
+    - [T00, T01, T02, T03, T04, T05, T07, T08, T10, T11, T19, T20, T21, T22, T23, T24, T25]
+    - [T00, T01, T02, T03, T04, T05, T07, T08, T10, T12, T19, T20, T21, T22, T23, T24, T25]
+    - [T00, T01, T02, T03, T04, T06, T07, T08, T09, T12, T19, T20, T21, T22, T23, T24, T25]
+    - [T00, T01, T02, T03, T04, T06, T07, T08, T10, T11, T19, T20, T21, T22, T23, T24, T25]
+    - [T00, T01, T02, T03, T04, T06, T07, T08, T10, T12, T19, T20, T21, T22, T23, T24, T25]
+  parallel_tracks:
+    - name: Control plane and project contract
+      after: T02
+      tasks:
+        - T03
+        - T07
+    - name: Runtime foundations
+      after: T08 and each task's declared prerequisites
+      tasks:
+        - T09
+        - T10
+        - T11
+        - T12
+    - name: Content and production adapters
+      after: T06 and each task's declared prerequisites
+      tasks:
+        - T13
+        - T14
+        - T15
+        - T16
+        - T17
+        - T18
+    - name: Proof and quality
+      after: T19
+      tasks:
+        - T20
+        - T21
+  settlement_sequence:
+    - Freeze authority and establish lean Bun/source boundaries.
+    - Define stable contracts, CLI, capability routing, and generated-game contract.
+    - Build first-party Gauntlet Runtime and Koota authority before consulting donor code.
+    - Mine only requirement-serving Mavon mechanisms into established first-party runtime/network boundaries.
+    - Settle terrain/physics/navigation/network and content/asset specialist routes.
+    - Settle observability, deterministic evidence, and performance.
+    - Integrate Blackwater Relay single-player, then authoritative multiplayer.
+    - Run donor-absent/security/recovery matrix and fresh whole-studio confirmation.
+initial_state:
+  current_task: T00
+  last_settled_task:
+  ready:
+    - T00
+  blocked:
+    T01: &id001
+      - T00
+    T02: &id002
+      - T01
+    T03: &id003
+      - T02
+    T04: &id004
+      - T03
+    T05: &id005
+      - T03
+      - T04
+    T06: &id006
+      - T01
+      - T04
+    T07: &id007
+      - T02
+      - T05
+      - T06
+    T08: &id008
+      - T07
+    T09: &id009
+      - T06
+      - T07
+      - T08
+    T10: &id010
+      - T07
+      - T08
+    T11: &id011
+      - T08
+      - T10
+    T12: &id012
+      - T08
+      - T09
+      - T10
+    T13: &id013
+      - T02
+      - T03
+      - T05
+      - T06
+    T14: &id014
+      - T04
+      - T06
+      - T08
+      - T13
+    T15: &id015
+      - T04
+      - T06
+      - T10
+      - T11
+      - T13
+    T16: &id016
+      - T04
+      - T06
+      - T05
+    T17: &id017
+      - T07
+      - T08
+      - T16
+    T18: &id018
+      - T03
+      - T06
+      - T13
+    T19: &id019
+      - T08
+      - T10
+      - T11
+      - T12
+    T20: &id020
+      - T03
+      - T05
+      - T19
+    T21: &id021
+      - T19
+      - T20
+    T22: &id022
+      - T10
+      - T11
+      - T13
+      - T14
+      - T15
+      - T16
+      - T17
+      - T18
+      - T20
+      - T21
+    T23: &id023
+      - T12
+      - T22
+    T24: &id024
+      - T23
+    T25: &id025
+      - T24
+tasks:
+  T00:
+    title: Freeze governing source and bootstrap settlement infrastructure
+    initial_status: ready
+    depends_on: []
+    proof_level: P1
+    confirmation: builder
+    settles: []
+    changes: Binds execution to an approved/frozen specification revision and creates only the minimal repository-local 
+      machinery required for plan validation, preregistration, evidence, decisions, and stable global gates.
+    proves: The repository can determine whether work is authorized to start, validate spec/plan paths, preserve mutable
+      status separately, and execute stable global gate aliases without relying on nonexistent future scripts.
+    does_not_prove: No studio capability, runtime behavior, provider integration, or reference-game functionality.
+    hot_context:
+      - AGENTS.md
+      - .agents/CURRENT_STATUS.yml
+      - .agents/specs/gauntlet-game-studio.spec.yaml
+      - .agents/plans/gauntlet-game-studio.plan.yaml
+    steps:
+      - 'Do not execute implementation while the source spec declares `metadata.status: draft`; once the exact content is
+        approved/frozen, update the spec status, recompute SHA-256, and rebind this plan before any implementation task.'
+      - Validate `AGENTS.md`, `.agents/CURRENT_STATUS.yml`, `.agents/specs/`, and `.agents/plans/` as the authoritative 
+        artifact paths; remove any competing root `specs/` or `plans/` assumptions.
+      - Create `.agents/preregistrations/`, `.agents/decisions/`, `.agents/reports/`, and the plan evidence root if 
+        absent.
+      - Create the minimal plan/source validation and traceability scripts used by later gates; these scripts must 
+        inspect real files rather than hard-coded expected counts.
+      - Create/bind `just` aliases for global check, test, lint, and agent-artifact validation; later tasks extend the 
+        commands without creating competing gate surfaces.
+      - Verify `.tmp/` is gitignored and `.tmp/donor/` is explicitly non-authoritative.
+    gate:
+      - test -f AGENTS.md && test -f .agents/CURRENT_STATUS.yml
+      - git check-ignore .tmp/donor
+      - just validate-agent-artifacts
+    teeth:
+      - attack: Point plan/spec validation at root `specs/` or `plans/` paths.
+        expected: Validation fails and reports the `.agents/` authoritative paths.
+      - attack: Set source status back to `draft` while attempting execution authorization.
+        expected: Execution authorization remains blocked; implementation tasks are not marked ready.
+    redesign_trigger: If the existing repository has a different explicit authority convention that is already relied on
+      by tooling, stop and reconcile that convention with the governing spec rather than creating duplicate state trees.
+    evidence: artifacts/plan/T00/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - The source is approved/frozen and this plan is rebound to its exact SHA before T01 becomes ready.
+  T01:
+    title: Establish lean Bun monorepo topology and source boundaries
+    initial_status: blocked
+    depends_on: *id001
+    proof_level: P1
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-CONFIG-007
+      - REQ-CONFIG-008
+      - REQ-CONFIG-009
+      - REQ-BIND-014
+      - REQ-REPO-001
+      - REQ-REPO-004
+      - REQ-REPO-005
+      - REQ-SOURCE-001
+      - REQ-SOURCE-002
+      - REQ-SOURCE-003
+      - REQ-SOURCE-004
+    changes: Creates the minimum workspace topology, Bun 1.4 package/script baseline, gitignore/source boundaries, and 
+      dependency policy without exploding every adapter into an independent package.
+    proves: The repository has a coherent first-party structure whose package boundaries correspond to real 
+      lifecycle/reuse boundaries and whose normal operations never depend on `.tmp/donor/`.
+    does_not_prove: That the runtime, router, adapters, or generated games behave correctly.
+    hot_context:
+      - .agents/specs/gauntlet-game-studio.spec.yaml#configuration_and_input_contract
+      - .gitignore
+      - .tmp/donor/
+    steps:
+      - Create root `package.json`, Bun lockfile/workspaces, TypeScript/lint/test configuration, and `justfile` under 
+        the Bun 1.4 baseline.
+      - 'Use the planned five primary code boundaries: `packages/contracts`, `packages/studio`, `packages/runtime`, `packages/adapters`,
+        and `apps/studio-cli`; keep adapters as modules inside `packages/adapters` until independent lifecycle/reuse is proven.'
+      - Create `capabilities/`, `skills/`, `vendor/`, `templates/game/`, `examples/blackwater-relay/`, `third_party/`, 
+        `scripts/`, and `artifacts/` only where required by this plan.
+      - Keep agent-facing source repositories under `vendor/` only when their skill/source content is intentionally 
+        inspected; keep normal runtime libraries as pinned package dependencies.
+      - Ensure `.tmp/` remains gitignored and no workspace/glob/package path includes `.tmp/donor/`.
+    gate:
+      - just check
+      - just test
+      - just lint
+    teeth:
+      - attack: Add `.tmp/donor/mavon` to a workspace glob or import path.
+        expected: Workspace/source-boundary validation fails.
+      - attack: Create one workspace package per adapter without an approved independent lifecycle reason.
+        expected: Topology lint/review rejects the unearned package boundary.
+    redesign_trigger: If Bun 1.4 cannot support a required first-party headless/runtime/tooling path without a 
+      substantive compatibility shim, isolate the incompatible boundary and revise the spec/plan rather than silently 
+      introducing a second package-manager authority.
+    evidence: artifacts/plan/T01/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+  T02:
+    title: Implement studio contracts and schemas
+    initial_status: blocked
+    depends_on: *id002
+    proof_level: P2
+    confirmation: peer
+    settles:
+      - REQ-OUT-005
+    changes: Implements provider-neutral schemas and TypeScript contracts for CapabilityDescriptor, CapabilityRequest, 
+      AgentHandoff, CapabilityResult, AssetRecord, RuntimeReadiness, TerrainHeightfield, ObservationRun, 
+      EvidenceManifest, SettlementRecord, network command/replication envelopes, and StudioResult.
+    proves: Provider/runtime-specific output cannot become downstream authority without first satisfying stable studio 
+      contracts.
+    does_not_prove: Routing correctness, provider execution, runtime authority, or end-to-end gameplay.
+    hot_context:
+      - .agents/specs/gauntlet-game-studio.spec.yaml#core_domain_model
+      - .agents/specs/gauntlet-game-studio.spec.yaml#execution_integration_contract
+    steps:
+      - Translate the normative domain entities into versioned schemas and TypeScript types in `packages/contracts`.
+      - Keep provider-specific fields out of provider-neutral request/result contracts; provider details belong in 
+        adapter diagnostics/extensions.
+      - Define stable ID, project-relative path, hash, provenance, result-status, readiness, and evidence correlation 
+        rules.
+      - Define network command/replication envelopes as state projections rather than donor/entity class serialization.
+      - Add schema fixtures for valid, malformed, unsafe, stale, and provider-leaking cases.
+    gate:
+      - bun test packages/contracts
+      - bun run check
+    teeth:
+      - attack: Insert `mavonGameObject`, `needleComponent`, or a provider command directly into CapabilityRequest core 
+          fields.
+        expected: Schema/type validation rejects the provider-specific authority leak.
+      - attack: Construct an EvidenceManifest without run/revision correlation.
+        expected: Validation fails.
+    redesign_trigger: If the contracts require embedding a provider/runtime object to express a required domain 
+      distinction, stop and determine whether the domain model is missing a stable concept.
+    evidence: artifacts/plan/T02/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T02.prereg.yaml
+      claims:
+        - Provider/runtime-specific output cannot become downstream authority without first satisfying stable studio 
+          contracts.
+      falsifiers:
+        - Insert `mavonGameObject`, `needleComponent`, or a provider command directly into CapabilityRequest core 
+          fields.
+        - Construct an EvidenceManifest without run/revision correlation.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T03:
+    title: Implement semantic studio CLI, just facade, configuration, and doctor
+    initial_status: blocked
+    depends_on: *id003
+    proof_level: P2
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-CONFIG-001
+      - REQ-CONFIG-002
+      - REQ-CONFIG-005
+      - REQ-CONFIG-010
+      - REQ-CONFIG-011
+      - REQ-CONFIG-012
+      - REQ-CONFIG-013
+      - REQ-CLI-001
+      - REQ-CLI-002
+      - REQ-CLI-003
+      - REQ-CLI-004
+      - REQ-CLI-005
+      - REQ-SAFE-004
+      - REQ-SEC-001
+    changes: Implements `studio` as the structured semantic automation surface, binds `just` to common operator 
+      workflows, and adds configuration/preflight/doctor behavior including Bun, secret, provider, donor-boundary, and 
+      runtime-mode checks.
+    proves: Agents and humans can interrogate and invoke studio semantics through stable machine-readable results 
+      without scraping shell prose or embedding machine/provider facts in source.
+    does_not_prove: Capability routing quality, game generation, runtime correctness, or provider-specific behavior.
+    hot_context:
+      - .agents/specs/gauntlet-game-studio.spec.yaml#configuration_and_input_contract
+      - .agents/specs/gauntlet-game-studio.spec.yaml#execution_integration_contract
+    steps:
+      - Implement the Bun/TypeScript `studio` executable under `apps/studio-cli` with structured JSON output and stable 
+        exit codes.
+      - Implement configuration precedence, secret indirection, error classes, and preflight behavior from the spec.
+      - Implement `studio doctor --json`, including Bun 1.4 compatibility, workspace/schema validation, `.tmp/donor/` 
+        non-dependency checks, and current-mode prerequisite reporting.
+      - Bind `just doctor`, `just check`, `just test`, `just lint`, and `just --list` to repository-native commands; 
+        `just` remains a facade over semantics, not a second protocol.
+      - Add explicit commands/placeholders for `capabilities`, `capability prepare|accept|verify-result`, `asset`, 
+        `observe`, `verify`, and `evidence`, returning unsupported/not-yet-implemented statuses until their owning tasks
+        settle.
+    gate:
+      - bun run studio -- doctor --json
+      - just doctor
+    teeth:
+      - attack: Remove a required config field or point a secret-bearing field at committed source.
+        expected: Doctor returns a typed scoped failure without echoing the secret.
+      - attack: Make `.tmp/donor/` a runtime import path.
+        expected: Doctor reports donor dependency and exits nonzero.
+    redesign_trigger: If the CLI must know provider internals to perform generic validation, move that knowledge behind 
+      an adapter/preflight contract instead of widening the CLI domain model.
+    evidence: artifacts/plan/T03/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T03.prereg.yaml
+      claims:
+        - Agents and humans can interrogate and invoke studio semantics through stable machine-readable results without 
+          scraping shell prose or embedding machine/provider facts in source.
+      falsifiers:
+        - Remove a required config field or point a secret-bearing field at committed source.
+        - Make `.tmp/donor/` a runtime import path.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T04:
+    title: Implement capability registry, routing, skill metadata, and AgentHandoff semantics
+    initial_status: blocked
+    depends_on: *id004
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-GOAL-001
+      - REQ-GOAL-005
+      - REQ-GOAL-010
+      - REQ-CONFIG-003
+      - REQ-CONFIG-006
+      - REQ-ROUTE-001
+      - REQ-ROUTE-002
+      - REQ-ROUTE-003
+      - REQ-ROUTE-004
+      - REQ-ROUTE-005
+      - REQ-ROUTE-006
+      - REQ-SKILL-001
+      - REQ-SKILL-002
+      - REQ-SKILL-003
+      - REQ-SKILL-004
+      - REQ-SKILL-005
+      - REQ-SKILL-006
+      - REQ-SAFE-002
+    changes: Creates the capability-first router, progressive skill disclosure, concise skill metadata linting, explicit
+      fallback policy, and the development-versus-CI separation for agent-skill capabilities.
+    proves: A request is resolved to a stable capability before provider detail is loaded; agent skills produce explicit
+      handoffs during development while deterministic CI verifies committed accepted outputs without silently invoking a
+      model.
+    does_not_prove: That any specific specialist skill produces high-quality game content.
+    hot_context:
+      - capabilities/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#core_behavior_requirements
+      - skills/
+    steps:
+      - Implement the YAML capability registry and registry loader/last-known-valid activation behavior.
+      - Implement routing using positive/negative affordances, semantic fit, project policy, provenance, 
+        cost/availability, and explicit fallback recording.
+      - Implement skill-description linting with <=1024 hard limit, 120-500 guidance, trigger requirement, and collision
+        detection.
+      - Implement `studio capability prepare` to emit an AgentHandoff for agent-skill capabilities; it must not invoke 
+        an LLM/model provider.
+      - Implement `studio capability accept` and `verify-result` so committed artifacts can be normalized and 
+        deterministically checked in CI with no model credentials.
+      - Implement separately labeled optional live-regression hooks that are never part of required deterministic 
+        conformance.
+    gate:
+      - bun run studio -- capabilities lint --json
+      - bun test packages/studio/test/routing
+    teeth:
+      - attack: Present an ambiguous prompt that equally matches two adjacent skills with no negative boundary.
+        expected: Router/lint surfaces a collision instead of choosing arbitrarily.
+      - attack: Remove all model/provider credentials and run deterministic capability verification against an accepted 
+          fixture.
+        expected: Verification executes without attempting generation or network model calls.
+      - attack: Make the preferred provider unavailable while an allowed equivalent exists.
+        expected: Fallback is explicit and preserves capability semantics; otherwise the request is blocked/degraded.
+    redesign_trigger: If stable capability semantics cannot distinguish two providers without encoding vendor identity, 
+      revise the capability model before adding routing heuristics.
+    evidence: artifacts/plan/T04/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Fresh independent/adversarial routing review confirms provider availability does not redefine capability 
+        semantics.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T04.prereg.yaml
+      claims:
+        - A request is resolved to a stable capability before provider detail is loaded; agent skills produce explicit 
+          handoffs during development while deterministic CI verifies committed accepted outputs without silently 
+          invoking a model.
+      falsifiers:
+        - Present an ambiguous prompt that equally matches two adjacent skills with no negative boundary.
+        - Remove all model/provider credentials and run deterministic capability verification against an accepted 
+          fixture.
+        - Make the preferred provider unavailable while an allowed equivalent exists.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T05:
+    title: Create independent game template and Blackwater Relay scaffold
+    initial_status: blocked
+    depends_on: *id005
+    proof_level: P1
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-GOAL-007
+      - REQ-OUT-001
+      - REQ-REPO-002
+      - REQ-REPO-003
+    changes: Creates the generated-game contract and the in-repository conformance game scaffold while keeping normal 
+      generated games independently buildable outside the studio repository.
+    proves: A generated game carries its own spec, studio lock, runtime source/config, tests, Asset Registry location, 
+      `.agents/` state, and evidence roots and can build independently.
+    does_not_prove: That the runtime or Blackwater Relay gameplay is implemented.
+    hot_context:
+      - templates/game/
+      - examples/blackwater-relay/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#repository_boundary
+    steps:
+      - Create `templates/game/` with project-local `studio.lock.yaml`, `.agents/specs/game.spec.yaml`, `.agents/`, 
+        runtime/application source roots, assets/references/tests/artifacts, Bun baseline, and minimal AGENTS guidance.
+      - Implement `studio create <path>` from the template without requiring the target to live in the studio workspace.
+      - Create `examples/blackwater-relay/` as the first conformance game using the same generated-game contract, not 
+        privileged hidden wiring.
+      - Record studio/runtime/capability/skill version pins in `studio.lock.yaml`.
+      - Add a smoke fixture that generates a game into a temporary sibling directory, installs from declared 
+        dependencies, and executes its own check/build.
+    gate:
+      - bun run studio -- create .tmp/generated-game-smoke --json
+      - bun run test:generated-game
+    teeth:
+      - attack: Move the generated smoke game outside the studio repository before install/build.
+        expected: It remains independently buildable from its own lock/config.
+      - attack: Delete studio source after generating the smoke project while using only published/workspace-test 
+          package fixtures declared by the lock.
+        expected: The generated project has no hidden relative-path dependency on the studio checkout.
+    redesign_trigger: If independent games require importing private source paths from the studio monorepo, revise 
+      packaging/handoff before implementing more game features.
+    evidence: artifacts/plan/T05/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+  T06:
+    title: Bind third-party skills/libraries, overlay policy, and attribution classes
+    initial_status: blocked
+    depends_on: *id006
+    proof_level: P2
+    confirmation: peer
+    settles:
+      - REQ-GOAL-006
+      - REQ-SOURCE-005
+      - REQ-SOURCE-006
+    changes: Pins the specialist skill sources and runtime libraries, defines overlay versus dependency versus donor 
+      attribution classes, and prevents a second orchestration authority from entering through threejs-game-skills.
+    proves: Third-party material has an explicit ownership/provenance class and the studio can reuse specialist 
+      knowledge without inheriting upstream routing authority.
+    does_not_prove: That provider outputs integrate successfully into the game or that donor code is acceptable to 
+      transplant.
+    hot_context:
+      - vendor/
+      - third_party/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#source_integration
+    steps:
+      - Pin/record img2threejs, 3dviz-pro-max, and threejs-game-skills as agent-facing sources only where their 
+        skill/source content is required.
+      - Pin runtime libraries such as Three.js, Koota, Rapier, Recast, three-mesh-bvh, three.terrain.js, three.quarks, 
+        Tone.js, glTF-Transform, and Playwright as normal dependencies in their owning packages.
+      - Create third-party notice/provenance structure distinguishing runtime dependency, agent-skill source, temporary 
+        donor, copied/transplanted code, and external asset/content.
+      - 'Define the threejs-game-skills overlay mapping: reuse gameplay, graphics, UI, debug, and QA specialists; do not expose
+        upstream `threejs-game-director`; quarantine generic generation skills behind optional fallback capabilities.'
+      - Create compatibility smoke tests that assert one standard Three.js resolution across package consumers.
+    gate:
+      - bun run source:verify
+      - bun run third-party:verify
+    teeth:
+      - attack: Expose `threejs-game-director` as a second top-level orchestration skill.
+        expected: Overlay/source-policy validation fails.
+      - attack: Introduce a runtime library through `vendor/` when no source/skill adaptation is required.
+        expected: Source-classification lint flags the unnecessary vendoring.
+    redesign_trigger: If an upstream specialist cannot be constrained through overlay/configuration without preserving 
+      competing authority, fork only that specialist skill or replace it; do not fork the whole source pack by default.
+    evidence: artifacts/plan/T06/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T06.prereg.yaml
+      claims:
+        - Third-party material has an explicit ownership/provenance class and the studio can reuse specialist knowledge 
+          without inheriting upstream routing authority.
+      falsifiers:
+        - Expose `threejs-game-director` as a second top-level orchestration skill.
+        - Introduce a runtime library through `vendor/` when no source/skill adaptation is required.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T07:
+    title: Implement first-party Gauntlet Runtime lifecycle, scheduler, readiness, and headless split
+    initial_status: blocked
+    depends_on: *id007
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-GOAL-002
+      - REQ-GOAL-008
+      - REQ-GOAL-009
+      - REQ-CONFIG-004
+      - REQ-CONFIG-014
+      - REQ-BIND-001
+      - REQ-BIND-015
+      - REQ-RUNTIME-004
+      - REQ-RUNTIME-005
+      - REQ-RUNTIME-006
+      - REQ-RUNTIME-007
+      - REQ-RUNTIME-008
+      - REQ-RUNTIME-009
+    changes: Creates the first-party runtime kernel with one standard Three.js graph, one simulation scheduler, explicit
+      created/booting/ready/failed lifecycle, deterministic authoritative tick semantics, and separate browser/headless 
+      execution modes.
+    proves: Gauntlet Runtime owns runtime coordination independently of donor code and prevents duplicate Three.js 
+      instances, asynchronous subsystem races, duplicate physics stepping, and browser globals on the headless server.
+    does_not_prove: Koota projection semantics, terrain/nav behavior, multiplayer replication, or content quality.
+    hot_context:
+      - packages/runtime/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#runtime_authority
+      - .agents/specs/gauntlet-game-studio.spec.yaml#configuration_and_input_contract
+    steps:
+      - Implement runtime lifecycle/readiness contracts in `packages/runtime` before consulting donor implementation 
+        details.
+      - Implement explicit subsystem registration/readiness barriers for asynchronous Rapier/Recast/network 
+        initialization; no settlement scenario may run before required mode readiness.
+      - Implement exactly one authoritative simulation scheduler with explicit fixed/tick cadence; keep client render 
+        cadence separate from authoritative simulation.
+      - Implement browser `ClientRuntime` and DOM-free `ServerRuntime`/headless mode around shared simulation contracts.
+      - Add dependency guards proving one standard Three.js instance/graph and no third-party engine runtime.
+      - Expose minimal runtime diagnostic state needed by later observability without yet defining privileged browser 
+        bridge APIs.
+    gate:
+      - bun test packages/runtime/test/readiness.test.ts
+      - bun test packages/runtime/test/scheduler.test.ts
+      - bun run runtime:headless-smoke
+    teeth:
+      - attack: Delay/fail Rapier or Recast initialization and request scenario start.
+        expected: Runtime remains booting/failed and the scenario awaits or fails explicitly; no race occurs.
+      - attack: Register a second authoritative simulation scheduler or step Rapier twice in one tick.
+        expected: Runtime invariant test fails.
+      - attack: Import DOM/canvas/WebAudio into the headless server entrypoint.
+        expected: Headless compatibility/build test fails.
+    redesign_trigger: If the desired shared client/server runtime requires render/browser objects in authoritative 
+      simulation, stop and split the representation rather than polyfilling browser APIs into the server.
+    evidence: artifacts/plan/T07/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Fresh target reproduction confirms readiness and one-step ownership in both browser and headless modes.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T07.prereg.yaml
+      claims:
+        - Gauntlet Runtime owns runtime coordination independently of donor code and prevents duplicate Three.js 
+          instances, asynchronous subsystem races, duplicate physics stepping, and browser globals on the headless 
+          server.
+      falsifiers:
+        - Delay/fail Rapier or Recast initialization and request scenario start.
+        - Register a second authoritative simulation scheduler or step Rapier twice in one tick.
+        - Import DOM/canvas/WebAudio into the headless server entrypoint.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T08:
+    title: Implement Koota semantic authority and runtime projection correlation
+    initial_status: blocked
+    depends_on: *id008
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-GOAL-003
+      - REQ-BIND-002
+      - REQ-RUNTIME-001
+      - REQ-RUNTIME-002
+      - REQ-RUNTIME-003
+    changes: Makes Koota the sole semantic game-state authority and introduces stable projection mappings from Koota 
+      entities to render, physics, navigation, audio/VFX, asset, and later network representations.
+    proves: Execution projections can be created, updated, destroyed, and inspected without becoming hidden semantic 
+      authorities.
+    does_not_prove: Terrain/nav correctness, networking, or final gameplay systems.
+    hot_context:
+      - packages/runtime/src/state/
+      - packages/runtime/src/render/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#runtime_authority
+    steps:
+      - Define foundational Koota traits/relations for identity and projection handles without encoding provider classes
+        into semantic state.
+      - Implement projection registries keyed by stable entity/project IDs.
+      - Implement render projection against standard Three.js while preserving semantic ownership in Koota.
+      - Define rules for accepting semantic nodes/sockets/colliders from assets without automatically promoting them to 
+        gameplay semantics.
+      - Add lifecycle tests for entity creation/destruction and projection cleanup.
+    gate:
+      - bun test packages/runtime/test/authority.test.ts
+      - bun test packages/runtime/test/projections.test.ts
+    teeth:
+      - attack: Mutate a Three.js Object3D directly to represent a semantic state transition without updating Koota.
+        expected: Semantic oracle remains unchanged and invariant test rejects settlement.
+      - attack: Delete a render projection while the Koota entity remains alive.
+        expected: Game semantics remain intact and the projection can be recreated/correlated.
+    redesign_trigger: If a required gameplay concept can only be represented by storing provider/runtime objects inside 
+      Koota semantics, revise the semantic representation before proceeding.
+    evidence: artifacts/plan/T08/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T08.prereg.yaml
+      claims:
+        - Execution projections can be created, updated, destroyed, and inspected without becoming hidden semantic 
+          authorities.
+      falsifiers:
+        - Mutate a Three.js Object3D directly to represent a semantic state transition without updating Koota.
+        - Delete a render projection while the Koota entity remains alive.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T09:
+    title: Strategically mine Mavon donor mechanisms into first-party runtime
+    initial_status: blocked
+    depends_on: *id009
+    proof_level: P3
+    confirmation: independent
+    settles:
+      - REQ-DONOR-001
+      - REQ-DONOR-002
+      - REQ-DONOR-003
+      - REQ-DONOR-005
+      - REQ-DONOR-006
+      - REQ-DONOR-007
+      - REQ-SEC-006
+    changes: Treats `.tmp/donor/` as disposable third-party source, inventories only mechanisms that satisfy explicit 
+      requirements, transplants/reimplements selected runtime/network/diagnostic ideas into already-defined Gauntlet 
+      modules, and records attribution without preserving donor architecture or identity.
+    proves: Gauntlet Runtime can exploit useful Mavon implementation work without becoming a Mavon fork, dependency, 
+      compatibility target, entity model, product identity, or build prerequisite.
+    does_not_prove: That all donor-derived mechanisms are behaviorally correct; networking itself is settled later.
+    hot_context:
+      - .tmp/donor/ (temporary, gitignored, non-authoritative)
+      - packages/runtime/
+      - third_party/mavon-engine/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#donor_extraction
+    steps:
+      - Record the actual donor repository identity, local path, and HEAD revision from `.tmp/donor/` in a donor 
+        inventory report; do not assume a particular checkout SHA.
+      - Classify donor subsystems/mechanisms as `transplant`, `rewrite_from_concept`, `discard`, or `not_needed` against
+        explicit spec requirement IDs.
+      - Reject donor GameObject/Actor/LivingActor/BaseWorld semantic authority, editor, prefab/world authoring, 
+        particles, UI, branding, bootstrap/package-manager structure, and any other mechanism already owned by the 
+        Gauntlet stack.
+      - Transplant only high-value mechanisms into existing Gauntlet module boundaries, such as client/server split 
+        details, command sequence/buffering ideas, relevance filtering, latency simulation, bandwidth/ping/health 
+        diagnostics, where they remain useful after adaptation.
+      - White-label public APIs/logs/docs to Gauntlet Runtime while retaining legally required MIT 
+        attribution/provenance in `third_party/mavon-engine/`.
+      - Add static import/dependency scans that forbid runtime imports from `.tmp/donor/` or donor package names.
+    gate:
+      - bun run donor:audit
+      - bun run donor:dependency-scan
+      - bun run third-party:verify
+    teeth:
+      - attack: Copy donor `GameObject`/`BaseWorld` authority because it makes networking easier.
+        expected: Architecture review/tests reject the transplant; networking must operate on Koota projections.
+      - attack: Introduce public `MavonEngine` runtime names/log banners or an import from `.tmp/donor/`.
+        expected: White-label/dependency scans fail.
+      - attack: Remove `.tmp/donor/` from module resolution during checks.
+        expected: Committed first-party source remains resolvable; full donor-absent clean-checkout proof is repeated in
+          T24.
+    redesign_trigger: If a donor mechanism only works by retaining donor semantic authority or package/runtime identity,
+      discard it and implement the requirement directly rather than widening Gauntlet Runtime around the donor.
+    evidence: artifacts/plan/T09/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Independent review confirms donor architecture did not determine first-party module boundaries.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T09.prereg.yaml
+      claims:
+        - Gauntlet Runtime can exploit useful Mavon implementation work without becoming a Mavon fork, dependency, 
+          compatibility target, entity model, product identity, or build prerequisite.
+      falsifiers:
+        - Copy donor `GameObject`/`BaseWorld` authority because it makes networking easier.
+        - Introduce public `MavonEngine` runtime names/log banners or an import from `.tmp/donor/`.
+        - Remove `.tmp/donor/` from module resolution during checks.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T10:
+    title: Integrate Rapier and canonical mathematical TerrainHeightfield projections
+    initial_status: blocked
+    depends_on: *id010
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-BIND-015
+      - REQ-TERRAIN-001
+      - REQ-TERRAIN-002
+      - REQ-TERRAIN-003
+      - REQ-TERRAIN-004
+    changes: Adds direct Rapier integration (@dimforge/rapier3d-compat) and a canonical TerrainHeightfield generated 
+      deterministically through headless-safe mathematical elevation functions directly producing a Float32Array, whose 
+      samples/extent/axes derive Three.js render geometry, Rapier heightfield collision, and navigation source geometry 
+      from one authority.
+    proves: Render, physics, and navigation terrain representations agree and detect transposition, inversion, extent, 
+      and height-scale errors.
+    does_not_prove: Full navigation behavior, world composition, or multiplayer physics.
+    hot_context:
+      - packages/runtime/src/physics/
+      - packages/runtime/src/terrain/
+      - .agents/specs/gauntlet-game-studio.spec.yaml#terrain_contract
+    steps:
+      - Implement Rapier initialization/step ownership through Gauntlet Runtime readiness/scheduler.
+      - Define TerrainHeightfield schema/storage with rows, columns, height samples, extents, coordinate convention, 
+        seed/source metadata, and stable sampling helpers.
+      - Implement procedural terrain generation as deterministic mathematical elevation generation directly producing 
+        canonical TerrainHeightfield height samples rather than treating generated mesh vertices as downstream authority.
+      - Project the same canonical height samples into Three.js geometry and Rapier heightfield collider.
+      - Expose navigation-source geometry from the same terrain authority for T11.
+      - Add asymmetric known fixtures and sampled world-point tests.
+    gate:
+      - bun test packages/runtime/test/terrain-parity.test.ts
+      - bun test packages/runtime/test/physics.test.ts
+    teeth:
+      - attack: Transpose the height array before Rapier projection.
+        expected: Known asymmetric sample tests fail.
+      - attack: Invert one axis or alter extents only in the render projection.
+        expected: Cross-projection parity test fails.
+      - attack: Attempt a second Rapier step outside the scheduler.
+        expected: Single-step invariant fails.
+    redesign_trigger: If mathematical elevation generation cannot produce deterministic canonical height samples or fails 
+      asymmetric transposition checks, correct the generator or projection mapping rather than falling back to 
+      non-authoritative mesh sampling.
+    evidence: artifacts/plan/T10/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T10.prereg.yaml
+      claims:
+        - Render, physics, and navigation terrain representations agree and detect transposition, inversion, extent, and
+          height-scale errors.
+      falsifiers:
+        - Transpose the height array before Rapier projection.
+        - Invert one axis or alter extents only in the render projection.
+        - Attempt a second Rapier step outside the scheduler.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T11:
+    title: Integrate Recast navigation and three-mesh-bvh spatial queries
+    initial_status: blocked
+    depends_on: *id011
+    proof_level: P2
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-BIND-003
+      - REQ-BIND-004
+    changes: Adds navigation and accelerated spatial-query projections over the authoritative world/terrain without 
+      letting navmesh or scene geometry become semantic state.
+    proves: Agents/NPC systems can ask where movement is possible and perform line-of-sight/raycast/spatial queries 
+      through stable runtime boundaries using the same world geometry conventions.
+    does_not_prove: NPC decision logic, multiplayer reconciliation, or environment composition.
+    hot_context:
+      - packages/runtime/src/navigation/
+      - packages/runtime/src/spatial/
+      - packages/runtime/src/terrain/
+    steps:
+      - Integrate Recast initialization through RuntimeReadiness and generate nav source from accepted world/terrain 
+        geometry.
+      - Implement navigation projection IDs and path/query interfaces tied back to Koota entities.
+      - Integrate three-mesh-bvh for accelerated render/spatial raycasts where correct fallback semantics exist.
+      - Add deterministic path, blocked-path, ground/query, and line-of-sight fixtures.
+      - Expose diagnostics needed later by the observability bridge.
+    gate:
+      - bun test packages/runtime/test/navigation.test.ts
+      - bun test packages/runtime/test/spatial.test.ts
+    teeth:
+      - attack: Block a known traversable corridor after navmesh generation without updating navigation source.
+        expected: Fresh nav verification detects stale/incorrect traversal state.
+      - attack: Disable BVH acceleration.
+        expected: Correctness fixtures still pass through allowed fallback or the capability reports unavailable; 
+          acceleration is not semantic authority.
+    redesign_trigger: If navigation requires copying gameplay semantics into Recast objects rather than stable 
+      projection IDs, revise the navigation boundary.
+    evidence: artifacts/plan/T11/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T11.prereg.yaml
+      claims:
+        - Agents/NPC systems can ask where movement is possible and perform line-of-sight/raycast/spatial queries 
+          through stable runtime boundaries using the same world geometry conventions.
+      falsifiers:
+        - Block a known traversable corridor after navmesh generation without updating navigation source.
+        - Disable BVH acceleration.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T12:
+    title: Implement optional authoritative multiplayer over Bun native WebSocket baseline and transport abstraction
+    initial_status: blocked
+    depends_on: *id012
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-BIND-013
+      - REQ-NET-001
+      - REQ-NET-002
+      - REQ-NET-003
+      - REQ-NET-004
+      - REQ-NET-005
+      - REQ-NET-006
+      - REQ-NET-007
+      - REQ-NET-009
+      - REQ-SAFE-006
+      - REQ-SEC-007
+    changes: Implements optional headless server-authoritative multiplayer using Koota state, validated sequenced 
+      commands, replication/reconciliation, relevance filtering, explicit connection states, and network diagnostics; 
+      Bun native WebSockets is the zero-friction baseline transport binding, with WebRTC/geckos available as an optional 
+      advanced transport exposing material characteristics (reliability, ordering, backpressure, connection state, RTT, 
+      message-size limits).
+    proves: Networked play preserves server/Koota semantic authority while single-player remains network-free and 
+      transport details remain replaceable.
+    does_not_prove: The two-client reference-game conformance scenario; that is settled in T23.
+    hot_context:
+      - packages/runtime/src/network/
+      - .tmp/donor/ (consult only for selected networking mechanisms)
+      - .agents/specs/gauntlet-game-studio.spec.yaml#networking
+    steps:
+      - Define studio-owned transport abstraction exposing material network characteristics (reliability, ordering, 
+        backpressure, connection state, latency/RTT, message size limits); implement Bun native WebSockets as zero-friction 
+        baseline transport; keep WebRTC/geckos as optional transport without making node-datachannel a baseline dependency; 
+        verify single-player games and headless tests run without network services.
+      - Represent client actions as validated sequenced command/intents; never accept client-authored authoritative 
+        state.
+      - Implement server command buffering/acknowledgement and authoritative Koota simulation, borrowing/reworking donor
+        algorithms only where they fit the established contracts.
+      - Implement declared network projections/replicable Koota state, client reconciliation, and interest/relevance 
+        filtering.
+      - Implement connection/disconnect/timeout states plus ping, bandwidth, command, replication, and latency/jitter 
+        simulation diagnostics.
+      - Ensure single-player mode does not start the server or transport.
+    gate:
+      - bun test packages/runtime/test/network
+      - bun run network:headless-smoke
+    teeth:
+      - attack: Send forged client state instead of a permitted command.
+        expected: Server validation rejects it and authoritative Koota state does not change.
+      - attack: Reorder/delay client commands through the latency simulator.
+        expected: Sequence/acknowledgement/reconciliation remains bounded and diagnostics expose impairment.
+      - attack: Start a single-player scenario with network dependencies unavailable.
+        expected: The scenario starts and behaves normally without network initialization.
+    redesign_trigger: If Bun native WebSockets or the transport abstraction cannot maintain server-authoritative Koota 
+      state and reconciliation under nominal latency, resolve the protocol or tick scheduler rather than introducing 
+      client authority.
+    evidence: artifacts/plan/T12/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T12.prereg.yaml
+      claims:
+        - Networked play preserves server/Koota semantic authority while single-player remains network-free and 
+          transport details remain replaceable.
+      falsifiers:
+        - Send forged client state instead of a permitted command.
+        - Reorder/delay client commands through the latency simulator.
+        - Start a single-player scenario with network dependencies unavailable.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T13:
+    title: Implement Asset Registry, provenance gates, source intake, and glTF compiler
+    initial_status: blocked
+    depends_on: *id013
+    proof_level: P2
+    confirmation: peer
+    settles:
+      - REQ-OUT-002
+      - REQ-ASSET-003
+      - REQ-ASSET-005
+      - REQ-ASSET-006
+      - REQ-ASSET-007
+      - REQ-BIND-008
+      - REQ-SAFE-003
+      - REQ-SEC-004
+    changes: Implements AssetRecord as production asset authority plus allowed external-source intake, 
+      provenance/license checks, glTF-Transform normalization/optimization, collider/LOD/budget metadata, and 
+      rejection/supersession history.
+    proves: No external/generated asset can become accepted production content without traceable provenance and 
+      project-required runtime acceptance gates.
+    does_not_prove: Reference-image reconstruction quality, Blender regeneration, or final performance.
+    hot_context:
+      - packages/studio/src/assets/
+      - packages/adapters/src/assets/
+      - third_party/
+    steps:
+      - Implement project-local Asset Registry storage/API from the AssetRecord contract.
+      - Implement provenance/license/source-hash intake for user, project, CC0/licensed, generated, procedural, and 
+        DCC-derived assets.
+      - Implement at least one approved CC0/licensed source adapter, with Poly Haven as preferred initial binding where 
+        applicable.
+      - Integrate glTF-Transform normalization/optimization, establishing WebP as portable baseline texture optimization path with KTX2 as optional path requiring successful toktx preflight; fail as blocked requirement if a quality profile explicitly requires KTX2 and toktx is unavailable; silent downgrade prohibited.
+      - Preserve rejected/superseded routes append-only enough to reconstruct why an asset was accepted or replaced.
+      - Implement release/asset checks for unknown provenance, missing collider/LOD policy where required, and budget 
+        failure.
+    gate:
+      - bun test packages/studio/test/assets
+      - bun run studio -- asset verify --all --json
+    teeth:
+      - attack: Import an asset with unknown/unacceptable license state.
+        expected: Production acceptance is blocked.
+      - attack: Mark an over-budget asset accepted solely because it looks correct.
+        expected: Acceptance/budget gate rejects or requires an explicit policy waiver.
+    redesign_trigger: If one AssetRecord cannot represent source versus reference versus derived relationships without 
+      ambiguity, extend the provenance model before adding source-specific exceptions.
+    evidence: artifacts/plan/T13/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T13.prereg.yaml
+      claims:
+        - No external/generated asset can become accepted production content without traceable provenance and 
+          project-required runtime acceptance gates.
+      falsifiers:
+        - Import an asset with unknown/unacceptable license state.
+        - Mark an over-budget asset accepted solely because it looks correct.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T14:
+    title: Integrate img2threejs reference-reconstruction handoff and deterministic fixture verification
+    initial_status: blocked
+    depends_on: *id014
+    proof_level: P3
+    confirmation: independent
+    settles:
+      - REQ-BIND-006
+      - REQ-ASSET-001
+      - REQ-ASSET-002
+      - REQ-ASSET-004
+    changes: Implements the reference-image reconstruction capability as an agent-skill handoff, accepts/normalizes 
+      produced procedural Three.js into the project runtime/Asset Registry, and verifies committed outputs 
+      deterministically without model credentials.
+    proves: Specific depicted subjects route to img2threejs only with suitable authorized reference imagery and accepted
+      results run directly in the single standard Three.js graph.
+    does_not_prove: Generic asset generation or world composition.
+    hot_context:
+      - vendor/img2threejs/
+      - examples/blackwater-relay/references/
+      - packages/adapters/src/agent-skills/img2threejs/
+    steps:
+      - Create capability/provider binding for `asset.reconstruct.reference-image` with precise use/do-not-use 
+        boundaries.
+      - Implement AgentHandoff generation pointing the current coding agent at pinned img2threejs skill content and 
+        validated project/reference inputs.
+      - Create/commit the Blackwater Relay field-transceiver reference fixture and accepted generated procedural asset 
+        after an interactive agent run.
+      - Normalize named nodes/sockets/colliders as AssetRecord affordances without automatically making them gameplay 
+        semantics.
+      - Implement deterministic `verify-result` for syntax/type/runtime import, provenance, reference comparison 
+        evidence, semantic-affordance metadata, and budget checks with no live model invocation.
+    gate:
+      - bun run studio -- capability prepare asset.reconstruct.reference-image 
+        examples/blackwater-relay/.studio/requests/transceiver.yaml --json
+      - bun run studio -- capability verify-result asset.reconstruct.reference-image 
+        examples/blackwater-relay/.studio/results/transceiver.yaml --json
+    teeth:
+      - attack: Remove the required reference image and run capability preparation.
+        expected: Request blocks/asks for allowed reference rather than silently becoming generic text-to-3D.
+      - attack: Remove all model credentials/network access and run deterministic result verification.
+        expected: Committed accepted output is verified without regeneration.
+      - attack: Resolve the accepted output against a second Three.js installation.
+        expected: Compatibility guard fails.
+    redesign_trigger: If img2threejs output cannot be made compatible with the standard Three.js graph without 
+      preserving a private runtime copy, replace/transform the provider output contract rather than weakening 
+      single-Three ownership.
+    evidence: artifacts/plan/T14/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Fresh independent verifier confirms the reconstruction route, reference requirement, and deterministic CI 
+        separation.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T14.prereg.yaml
+      claims:
+        - Specific depicted subjects route to img2threejs only with suitable authorized reference imagery and accepted 
+          results run directly in the single standard Three.js graph.
+      falsifiers:
+        - Remove the required reference image and run capability preparation.
+        - Remove all model credentials/network access and run deterministic result verification.
+        - Resolve the accepted output against a second Three.js installation.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T15:
+    title: Integrate 3dviz world-composition handoff with terrain/navigation composition
+    initial_status: blocked
+    depends_on: *id015
+    proof_level: P2
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-BIND-005
+    changes: Implements the world/environment composition capability as an agent-skill handoff whose outputs compose 
+      with canonical terrain, Asset Registry, Recast, and the standard Three.js runtime.
+    proves: Environment intent can be authored through 3dviz without making it responsible for terrain authority, 
+      navigation authority, or specific-object reconstruction.
+    does_not_prove: Final visual quality of Blackwater Relay or broad world-streaming scalability.
+    hot_context:
+      - vendor/3dviz-pro-max/
+      - packages/adapters/src/agent-skills/3dviz/
+      - examples/blackwater-relay/
+    steps:
+      - Define `world.environment.compose` routing boundaries and AgentHandoff to pinned 3dviz skill content.
+      - Create the Blackwater Relay environment request and accepted committed world-composition fixture through an 
+        interactive agent run.
+      - Normalize world kits/sockets/colliders/scatter metadata into project/runtime forms and route 
+        terrain/nav-specialized needs to their own capabilities.
+      - Implement deterministic result verification with no model credentials.
+      - Verify direct standard Three.js integration and accepted asset/provenance references.
+    gate:
+      - bun run studio -- capability prepare world.environment.compose 
+        examples/blackwater-relay/.studio/requests/world.yaml --json
+      - bun run studio -- capability verify-result world.environment.compose 
+        examples/blackwater-relay/.studio/results/world.yaml --json
+    teeth:
+      - attack: Ask to reconstruct one specific depicted transceiver through the world-composition route.
+        expected: Routing rejects/redirects to reference reconstruction.
+      - attack: Let 3dviz-created terrain mesh bypass TerrainHeightfield for physics/navigation.
+        expected: Integration gate rejects the competing terrain authority.
+    redesign_trigger: If 3dviz output requires taking over terrain, navigation, or runtime authority to integrate, 
+      constrain/transform the handoff rather than broadening its capability.
+    evidence: artifacts/plan/T15/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T15.prereg.yaml
+      claims:
+        - Environment intent can be authored through 3dviz without making it responsible for terrain authority, 
+          navigation authority, or specific-object reconstruction.
+      falsifiers:
+        - Ask to reconstruct one specific depicted transceiver through the world-composition route.
+        - Let 3dviz-created terrain mesh bypass TerrainHeightfield for physics/navigation.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T16:
+    title: Integrate threejs-game-skills specialists through studio-owned overlay
+    initial_status: blocked
+    depends_on: *id016
+    proof_level: P2
+    confirmation: peer
+    settles:
+      - REQ-BIND-007
+    changes: Maps selected threejs-game-skills specialists into Gauntlet capability routing while removing competing 
+      director authority and quarantining generic generation providers as optional fallbacks.
+    proves: Specialist gameplay, graphics, UI, debug, and QA knowledge can be progressively disclosed without changing 
+      studio orchestration/provider policy.
+    does_not_prove: That every upstream specialist workflow is suitable unchanged or that optional generators are 
+      enabled.
+    hot_context:
+      - vendor/threejs-game-skills/
+      - skills/
+      - skills/vendor-overrides/
+    steps:
+      - Create overlay mappings for gameplay-systems, AAA-graphics-builder, game-ui-designer, debug-profiler, and 
+        qa-release.
+      - Do not register threejs-game-director as a discoverable top-level studio skill.
+      - Keep 3D/image/audio generator skills disabled/quarantined unless an explicit optional fallback capability and 
+        project policy enables them.
+      - Add routing collision tests between studio capabilities and upstream specialist descriptions.
+      - Fork/copy only an individual specialist under `skills/vendor-overrides/` if a proven assumption cannot be 
+        constrained externally; record upstream revision/delta.
+    gate:
+      - bun run studio -- capabilities lint --json
+      - bun test packages/studio/test/skill-overlays
+    teeth:
+      - attack: Make upstream director discoverable alongside game-studio-director.
+        expected: Skill/routing lint fails.
+      - attack: Enable an upstream generic generator as preferred provider merely because credentials exist.
+        expected: Provider-policy test rejects the preference.
+    redesign_trigger: If useful specialist content cannot be separated from upstream orchestration/provider policy, 
+      extract only the specialist knowledge rather than preserving a competing director.
+    evidence: artifacts/plan/T16/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T16.prereg.yaml
+      claims:
+        - Specialist gameplay, graphics, UI, debug, and QA knowledge can be progressively disclosed without changing 
+          studio orchestration/provider policy.
+      falsifiers:
+        - Make upstream director discoverable alongside game-studio-director.
+        - Enable an upstream generic generator as preferred provider merely because credentials exist.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+  T17:
+    title: Integrate Quarks VFX, Tone audio boundary, and DOM UI
+    initial_status: blocked
+    depends_on: *id017
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-BIND-009
+      - REQ-BIND-012
+      - REQ-AUDIO-001
+      - REQ-AUDIO-002
+      - REQ-AUDIO-003
+      - REQ-SAFE-007
+    changes: Adds inspectable VFX, production-compatible browser audio lifecycle behind an AudioBackend boundary, and 
+      DOM/CSS game UI without making headless game logic depend on browser audio or presentation objects.
+    proves: VFX/audio/UI can participate in gameplay consequences while audio unlock follows real browser gesture policy
+      and headless simulation remains independent of AudioContext.
+    does_not_prove: Final game polish or all possible accessibility/localization behavior.
+    hot_context:
+      - packages/runtime/src/audio/
+      - packages/adapters/src/audio/
+      - packages/adapters/src/vfx/
+    steps:
+      - Integrate three.quarks as the preferred VFX implementation behind game/runtime effect projections.
+      - Define AudioBackend abstraction and Tone.js browser implementation with explicit locked/suspended -> user 
+        gesture -> ready lifecycle.
+      - Provide NullAudioBackend so core semantic systems, server code, and headless tests import and run without Tone.js or Web Audio dependencies.
+      - Implement DOM/CSS HUD conventions and specialist UI skill handoff where useful.
+      - Use only project-approved audio content; do not infer sample licensing from Tone.js library licensing.
+      - Add real Playwright user-gesture audio unlock test without autoplay-policy bypass flags.
+    gate:
+      - bun test packages/runtime/test/audio-headless.test.ts
+      - bun run test:audio-browser
+    teeth:
+      - attack: Start browser audio without a user gesture.
+        expected: Audio remains explicitly locked/suspended without crashing unrelated game logic.
+      - attack: Run headless server/tests with no DOM or AudioContext.
+        expected: Simulation passes using non-browser audio backend/no-op behavior.
+    redesign_trigger: If game semantics depend on Tone/AudioContext objects rather than abstract audio intents/state, 
+      revise the boundary before adding more audio features.
+    evidence: artifacts/plan/T17/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T17.prereg.yaml
+      claims:
+        - VFX/audio/UI can participate in gameplay consequences while audio unlock follows real browser gesture policy 
+          and headless simulation remains independent of AudioContext.
+      falsifiers:
+        - Start browser audio without a user gesture.
+        - Run headless server/tests with no DOM or AudioContext.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T18:
+    title: Implement Blender escalation and committed derived-asset workflow
+    initial_status: blocked
+    depends_on: *id018
+    proof_level: P3
+    confirmation: independent
+    settles:
+      - REQ-BIND-011
+      - REQ-BLENDER-001
+      - REQ-BLENDER-002
+      - REQ-BLENDER-003
+      - REQ-BLENDER-004
+      - REQ-BLENDER-005
+      - REQ-BLENDER-006
+      - REQ-BLENDER-007
+    changes: Implements Blender as an isolated DCC escalation/regeneration capability whose accepted GLB/glTF 
+      derivatives are committed and consumable by normal builds/CI without Blender installed.
+    proves: Heavy DCC work can be reproduced and provenance-tracked without making Blender a runtime/build dependency or
+      semantic authority.
+    does_not_prove: That Blender is needed for ordinary assets or available on every developer/CI host.
+    hot_context:
+      - packages/adapters/src/dcc/blender/
+      - examples/blackwater-relay/assets/
+      - third_party/
+    steps:
+      - Implement Blender preflight/CLI invocation only behind `dcc.blender.process` and record escalation rationale 
+        plus rejected lighter routes.
+      - Create an isolated Blackwater Relay service-drone animation-retarget/bake fixture requiring Blender and export 
+        standard GLB/glTF.
+      - Pass the derivative through Asset Registry/glTF-Transform/runtime acceptance and commit the accepted derivative 
+        and regeneration metadata.
+      - Ensure normal Blackwater build/test/runtime consumes only the accepted derivative, never `.blend` semantic 
+        state.
+      - Make missing Blender a scoped regeneration/proof blockage while normal deterministic CI remains green.
+    gate:
+      - bun run studio -- capability verify-result dcc.blender.process 
+        examples/blackwater-relay/.studio/results/service-drone-retarget.yaml --json
+      - bun run test:blender-absent-build
+    teeth:
+      - attack: Remove/rename the Blender executable and run normal game build/test.
+        expected: Normal deterministic build/test passes using committed accepted derivative.
+      - attack: Attempt to store quest/NPC semantic state in `.blend` metadata as authority.
+        expected: Asset/runtime authority checks reject it.
+    redesign_trigger: If the DCC output cannot be represented as accepted standard runtime assets plus explicit 
+      metadata, revise the handoff before making Blender a required runtime participant.
+    evidence: artifacts/plan/T18/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T18.prereg.yaml
+      claims:
+        - Heavy DCC work can be reproduced and provenance-tracked without making Blender a runtime/build dependency or 
+          semantic authority.
+      falsifiers:
+        - Remove/rename the Blender executable and run normal game build/test.
+        - Attempt to store quest/NPC semantic state in `.blend` metadata as authority.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T19:
+    title: Implement development/test observability bridge and network/runtime diagnostics
+    initial_status: blocked
+    depends_on: *id019
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-OUT-004
+      - REQ-OBS-001
+      - REQ-OBS-002
+      - REQ-OBS-003
+      - REQ-OBS-004
+      - REQ-OBS-005
+      - REQ-SEC-005
+    changes: Exposes a stable versioned development/test observability surface over readiness, deterministic simulation 
+      control, Koota state, projections, physics, navigation, renderer/performance, errors, scenarios/cameras, assets, 
+      and network diagnostics while stripping privileged mutation from production.
+    proves: Verification tooling can observe the system through semantic/runtime contracts rather than transient 
+      DOM/provider internals, and production does not accidentally expose privileged debug mutation.
+    does_not_prove: Playwright scenario orchestration or Gauntlet evidence/settlement policy.
+    hot_context:
+      - packages/runtime/src/observability/
+      - packages/runtime/src/network/
+      - packages/runtime/src/state/
+    steps:
+      - Implement `window.__GAME_STUDIO__` or explicitly versioned equivalent on development/test browser builds.
+      - Expose ready, pause/resume, bounded/fixed step, seed/scenario reset, named camera, semantic entity/state reads, 
+        errors, renderer capability/identity probe stats, capture-only preserveDrawingBuffer configuration, and relevant physics/nav/network reads.
+      - Expose only controlled test mutations needed for scenarios and clearly separate them from read-only 
+        production-relevant surfaces.
+      - Integrate runtime/network readiness and disconnect/latency diagnostics.
+      - Add production-build inspection that proves privileged mutation hooks are absent or explicitly 
+        authorization-gated.
+    gate:
+      - bun test packages/runtime/test/observability.test.ts
+      - bun run test:production-observability
+    teeth:
+      - attack: Use a transient DOM selector/provider object name as the only way to read semantic state.
+        expected: Contract test fails because stable observability method is missing.
+      - attack: Inspect a production bundle for privileged scenario/state mutation APIs.
+        expected: Build check fails if such APIs are exposed.
+    redesign_trigger: If deterministic verification requires reaching into private provider/runtime objects, extend the 
+      observability contract rather than allowing tests to couple to internals.
+    evidence: artifacts/plan/T19/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T19.prereg.yaml
+      claims:
+        - Verification tooling can observe the system through semantic/runtime contracts rather than transient 
+          DOM/provider internals, and production does not accidentally expose privileged debug mutation.
+      falsifiers:
+        - Use a transient DOM selector/provider object name as the only way to read semantic state.
+        - Inspect a production bundle for privileged scenario/state mutation APIs.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T20:
+    title: Implement browser proof harness, immutable evidence, and Gauntlet settlement bridge
+    initial_status: blocked
+    depends_on: *id020
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-GOAL-004
+      - REQ-OUT-003
+      - REQ-BIND-010
+      - REQ-VERIFY-001
+      - REQ-VERIFY-002
+      - REQ-VERIFY-005
+      - REQ-GAUNTLET-001
+      - REQ-GAUNTLET-002
+      - REQ-GAUNTLET-003
+      - REQ-GAUNTLET-004
+      - REQ-GAUNTLET-005
+      - REQ-GAUNTLET-006
+    changes: Separates exploratory browser use from deterministic Playwright proof, records immutable run-scoped 
+      state/pixel/telemetry artifacts, and implements consequence-based Gauntlet settlement/contradiction handling.
+    proves: A requirement cannot settle merely because a provider/build succeeded or a screenshot looks plausible; 
+      required evidence is fresh, correlated, and channel-appropriate.
+    does_not_prove: Performance budgets themselves or final reference-game conformance.
+    hot_context:
+      - packages/studio/src/evidence/
+      - packages/studio/src/gauntlet/
+      - packages/adapters/src/browser/
+    steps:
+      - Implement Playwright scenario harness against stable observability methods; keep agent-browser use explicitly 
+        exploratory/debugging only.
+      - Implement ObservationRun/EvidenceManifest storage under `artifacts/runs/<run-id>/` with project revision, 
+        scenario, environment, seed, requirement IDs, hashes, console/network diagnostics, state snapshots, captures, 
+        trace, and result.
+      - Implement Gauntlet preregistration/expectation comparison and settlement records with blocked/failed/incomplete 
+        classifications.
+      - Implement contradiction logic across state, pixels, telemetry, and network evidence where applicable.
+      - Reject stale evidence from another revision/run and preserve failed/correction evidence append-only.
+      - Expose `studio observe`, `studio verify`, and `studio evidence check` structured commands.
+    gate:
+      - bun run test:proof-harness
+      - bun run studio -- evidence check-fixtures --json
+    teeth:
+      - attack: Provide a correct screenshot with intentionally incorrect Koota semantic state.
+        expected: Overall verification fails; pixels cannot override semantic contradiction.
+      - attack: Reuse a passing EvidenceManifest from another project revision.
+        expected: Freshness/correlation validation rejects settlement.
+      - attack: Skip required browser proof because Playwright is unavailable.
+        expected: Result is blocked/skipped, never passed.
+    redesign_trigger: If the evidence model cannot distinguish observation from interpretation/settlement, split the 
+      representation before adding convenience summaries.
+    evidence: artifacts/plan/T20/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T20.prereg.yaml
+      claims:
+        - A requirement cannot settle merely because a provider/build succeeded or a screenshot looks plausible; 
+          required evidence is fresh, correlated, and channel-appropriate.
+      falsifiers:
+        - Provide a correct screenshot with intentionally incorrect Koota semantic state.
+        - Reuse a passing EvidenceManifest from another project revision.
+        - Skip required browser proof because Playwright is unavailable.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T21:
+    title: Implement quality profiles and performance settlement
+    initial_status: blocked
+    depends_on: *id021
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-VERIFY-003
+      - REQ-PERF-001
+      - REQ-PERF-002
+      - REQ-PERF-003
+      - REQ-PERF-004
+    changes: Makes performance part of correctness by separating deterministic structural CI budgets (draw calls, 
+      triangle counts, texture counts, console errors, asset sizes) from hardware-sensitive target budgets (frame time, 
+      FPS, GPU time, memory, load timing); binds hardware-sensitive acceptance to named environment/quality profiles or 
+      explicit relative baselines; rejects software-rendered CI runs masquerading as target-hardware evidence.
+    proves: Visual or semantic success cannot settle a requirement whose declared runtime profile is violated.
+    does_not_prove: A universal cross-game performance target; numeric budgets remain game-specific.
+    hot_context:
+      - examples/blackwater-relay/.agents/specs/game.spec.yaml
+      - packages/runtime/src/observability/
+      - packages/studio/src/evidence/
+    steps:
+      - Define project-local quality-profile schema and Blackwater initial target profiles before using them as gates.
+      - Capture frame-time distribution/FPS, draw calls, triangles, textures/resources, readiness/load time, console 
+        errors, and project-requested network/runtime metrics through observability.
+      - Bind performance evidence to browser, viewport, quality profile, named scenario, and project revision.
+      - Integrate asset/scene budget failure with Asset Registry/Gauntlet settlement rather than logging warnings only.
+      - Add regression fixture that intentionally violates a budget while preserving visual/semantic success.
+    gate:
+      - bun run test:performance-fixtures
+      - bun run studio -- verify --scenario performance-fixture --profile test-budget --json
+    teeth:
+      - attack: Inject a deliberate frame-time/draw-call regression without changing screenshots or semantic state.
+        expected: Performance verification fails and the requirement remains unsettled.
+      - attack: Report only average FPS while p95/p99 or configured metric exceeds budget.
+        expected: Profile gate fails according to declared metric rules.
+    redesign_trigger: If stable browser performance cannot be measured with enough repeatability for a declared metric, 
+      revise that metric/oracle explicitly rather than pretending noisy measurements are deterministic.
+    evidence: artifacts/plan/T21/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T21.prereg.yaml
+      claims:
+        - Visual or semantic success cannot settle a requirement whose declared runtime profile is violated.
+      falsifiers:
+        - Inject a deliberate frame-time/draw-call regression without changing screenshots or semantic state.
+        - Report only average FPS while p95/p99 or configured metric exceeds budget.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T22:
+    title: Assemble and settle Blackwater Relay single-player vertical slice
+    initial_status: blocked
+    depends_on: *id022
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles: []
+    confirms:
+      - REQ-GOAL-002
+      - REQ-GOAL-003
+      - REQ-GOAL-004
+      - REQ-GOAL-007
+      - REQ-GOAL-008
+      - REQ-GOAL-010
+      - REQ-RUNTIME-001
+      - REQ-RUNTIME-004
+      - REQ-RUNTIME-005
+      - REQ-RUNTIME-006
+      - REQ-RUNTIME-009
+      - REQ-SKILL-004
+      - REQ-SKILL-005
+      - REQ-TERRAIN-001
+      - REQ-TERRAIN-002
+      - REQ-TERRAIN-003
+      - REQ-AUDIO-001
+      - REQ-AUDIO-002
+      - REQ-BLENDER-006
+      - REQ-BLENDER-007
+      - REQ-PERF-001
+      - REQ-PERF-002
+      - REQ-PERF-003
+      - REQ-PERF-004
+    changes: 'Integrates the first production-shaped reference game: storm-dusk island relay outpost, rover traversal, power-cell/gate
+      progression, service-drone patrol, reference-reconstructed field transceiver, beacon activation, sourced materials,
+      VFX/audio/UI, and committed Blender derivative.'
+    proves: The independently generated-style project can compose all major non-network capabilities into one playable 
+      browser consequence while remaining donor-independent, network-optional, observable, performant, and 
+      evidence-settled.
+    does_not_prove: Authoritative multiplayer conformance; that is T23.
+    hot_context:
+      - examples/blackwater-relay/.agents/specs/game.spec.yaml
+      - examples/blackwater-relay/
+      - artifacts/runs/
+    steps:
+      - Finalize Blackwater Relay game spec with frozen named scenarios and quality profile before final 
+        implementation/evidence.
+      - Compose 3dviz environment, canonical terrain, Recast/BVH traversal, accepted sourced assets, img2threejs 
+        transceiver, committed service-drone derivative, Quarks VFX, Tone audio, DOM HUD, Koota gameplay state, and 
+        Rapier physics.
+      - 'Implement named scenarios: `boot`, `active-play`, `transceiver-interaction`, `patrol-obstacle`, `beacon-activation`,
+        and `performance-flythrough`.'
+      - Run with networking entirely disabled and prove no server/transport is needed.
+      - Capture fresh state + pixels + telemetry for the complete primary progression and required visual/runtime 
+        claims.
+    gate:
+      - bun --cwd examples/blackwater-relay run build
+      - bun --cwd examples/blackwater-relay run test:e2e
+      - bun run studio -- verify --project examples/blackwater-relay --suite single-player --json
+    teeth:
+      - attack: Disable/remove network transport configuration and run the full single-player suite.
+        expected: All non-network gameplay remains functional.
+      - attack: Run normal build/test with Blender absent and `.tmp/donor/` ignored.
+        expected: Committed runtime/derived assets are sufficient.
+      - attack: Corrupt one semantic objective transition while preserving the visible animation.
+        expected: Gauntlet rejects settlement through semantic evidence.
+    redesign_trigger: If integration requires one specialist subsystem to become authoritative outside its established 
+      boundary, stop and correct the boundary rather than special-casing the reference game.
+    evidence: artifacts/plan/T22/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Fresh independent/adversarial verifier confirms the complete single-player vertical slice from frozen scenarios,
+        not builder narrative.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T22.prereg.yaml
+      claims:
+        - The independently generated-style project can compose all major non-network capabilities into one playable 
+          browser consequence while remaining donor-independent, network-optional, observable, performant, and 
+          evidence-settled.
+      falsifiers:
+        - Disable/remove network transport configuration and run the full single-player suite.
+        - Run normal build/test with Blender absent and `.tmp/donor/` ignored.
+        - Corrupt one semantic objective transition while preserving the visible animation.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T23:
+    title: Settle Blackwater Relay authoritative multiplayer and impairment scenarios
+    initial_status: blocked
+    depends_on: *id023
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-NET-008
+    confirms:
+      - REQ-NET-001
+      - REQ-NET-003
+      - REQ-NET-004
+      - REQ-NET-005
+      - REQ-NET-007
+      - REQ-NET-008
+      - REQ-SAFE-006
+      - REQ-SEC-007
+    changes: Extends the reference game with two local clients and an authoritative headless server to prove command 
+      sequencing, server/Koota authority, reconciliation, relevance filtering, disconnect behavior, network telemetry, 
+      and latency/jitter simulation.
+    proves: Optional real-time multiplayer works through the same first-party semantic/runtime model without making 
+      client state authoritative or making networking necessary for single-player.
+    does_not_prove: Internet-scale hosting, matchmaking, anti-cheat completeness, or production service economics.
+    hot_context:
+      - examples/blackwater-relay/tests/multiplayer/
+      - packages/runtime/src/network/
+      - artifacts/runs/
+    steps:
+      - Add `multiplayer-sync`, `interest-filtering`, and `multiplayer-latency` scenarios to Blackwater Relay.
+      - Run two independent browser clients against the Bun headless authoritative server over Bun native WebSockets baseline (with optional WebRTC scenario).
+      - Have client A perform a state-changing action and verify client B receives/reconciles the authoritative 
+        consequence.
+      - Move entities in/out of declared relevance range and verify replication filtering.
+      - Repeat under configured latency/jitter and capture command/ack/reconciliation/ping/bandwidth diagnostics.
+      - Exercise disconnect/timeout and reconnect/recovery policy without client authority takeover.
+    gate:
+      - bun run test:blackwater-multiplayer
+      - bun run studio -- verify --project examples/blackwater-relay --suite multiplayer --json
+    teeth:
+      - attack: Forge client-side authoritative gate/objective state.
+        expected: Server rejects/overwrites it; Koota server state remains authority.
+      - attack: Inject latency/jitter and command reorder.
+        expected: Bounded reconciliation preserves declared invariants and telemetry exposes impairment.
+      - attack: Disconnect the authoritative transport mid-scenario.
+        expected: Explicit disconnect state appears; the client does not silently become semantic authority.
+    redesign_trigger: If multiplayer correctness requires duplicating game semantics into a network-specific entity 
+      model, redesign the network projection rather than forking gameplay logic.
+    evidence: artifacts/plan/T23/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Fresh target reproduction confirms both nominal and impaired two-client scenarios.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T23.prereg.yaml
+      claims:
+        - Optional real-time multiplayer works through the same first-party semantic/runtime model without making client
+          state authoritative or making networking necessary for single-player.
+      falsifiers:
+        - Forge client-side authoritative gate/objective state.
+        - Inject latency/jitter and command reorder.
+        - Disconnect the authoritative transport mid-scenario.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T24:
+    title: Execute adversarial recovery, security, donor-independence, and environment-removal matrix
+    initial_status: blocked
+    depends_on: *id024
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-DONOR-004
+      - REQ-SAFE-001
+      - REQ-SAFE-005
+      - REQ-SEC-002
+      - REQ-SEC-003
+    settles_variations:
+      - VAR-001
+      - VAR-002
+      - VAR-003
+      - VAR-004
+      - VAR-005
+      - VAR-006
+      - VAR-007
+      - VAR-008
+      - VAR-009
+      - VAR-010
+      - VAR-011
+      - VAR-012
+      - VAR-013
+      - VAR-014
+    settles_recovery_cases:
+      - RECOV-001
+      - RECOV-002
+      - RECOV-003
+      - RECOV-004
+      - RECOV-005
+      - RECOV-006
+      - RECOV-007
+      - RECOV-008
+    confirms:
+      - REQ-DONOR-001
+      - REQ-DONOR-004
+      - REQ-DONOR-005
+      - REQ-DONOR-006
+      - REQ-SAFE-005
+      - REQ-ROUTE-005
+      - REQ-ROUTE-006
+      - REQ-SAFE-002
+      - REQ-SKILL-004
+      - REQ-SKILL-005
+      - REQ-SKILL-006
+      - REQ-BLENDER-006
+      - REQ-BLENDER-007
+      - REQ-AUDIO-001
+      - REQ-AUDIO-002
+      - REQ-SAFE-007
+    changes: Runs the spec's required variation/recovery/security cases from a fresh checkout, including complete donor 
+      absence, no model credentials, no Blender for normal build, delayed WASM, network failure, unsafe assets, provider
+      fallback, stale evidence, and production debug stripping.
+    proves: The system fails visibly and safely at its declared boundaries, and normal committed build/test/proof paths 
+      do not rely on donor source or optional production tools.
+    does_not_prove: Future capabilities not required by the source specification.
+    hot_context:
+      - .agents/specs/gauntlet-game-studio.spec.yaml#repeatability_and_variation
+      - .agents/specs/gauntlet-game-studio.spec.yaml#failure_model_and_recovery
+      - .agents/specs/gauntlet-game-studio.spec.yaml#security_safety_trust_boundaries
+    steps:
+      - Create a fresh clean checkout/worktree in which `.tmp/donor/` does not exist and run 
+        install/check/test/build/reference-game deterministic verification.
+      - Run deterministic CI with model/provider credentials removed; verify accepted agent-skill outputs without 
+        regeneration.
+      - Run normal game build/test with Blender absent; separately confirm Blender regeneration task reports scoped 
+        blockage when invoked without Blender.
+      - Inject delayed/failed Rapier/Recast init, unavailable browser proof, provider unavailability/fallback, 
+        unknown/unsafe asset/archive, asset budget failure, network disconnect, and audio locked/unavailable states.
+      - Execute all VAR-001..VAR-014 and RECOV-001..RECOV-008 cases applicable to the target environment and preserve 
+        every failed/correction round.
+      - Run security checks for secret leakage, path traversal, untrusted client commands, donor imports/identity, and 
+        production observability mutation exposure.
+    gate:
+      - bun run conformance:recovery
+      - bun run conformance:security
+      - bun run conformance:clean-checkout
+    teeth:
+      - attack: Delete `.tmp/donor/` entirely in the clean checkout.
+        expected: All committed build/test/runtime/proof paths remain green.
+      - attack: Remove model credentials and network model access.
+        expected: Required deterministic conformance remains executable.
+      - attack: Supply path-traversal archive or forged network command.
+        expected: Input is rejected before privileged/authoritative side effects.
+    redesign_trigger: If any recovery case can only be made green by weakening its original acceptance condition, stop 
+      and correct the falsified implementation/representation instead.
+    evidence: artifacts/plan/T24/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Independent adversarial verifier confirms the clean-checkout/donor-absent and failure-isolation matrix.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T24.prereg.yaml
+      claims:
+        - The system fails visibly and safely at its declared boundaries, and normal committed build/test/proof paths do
+          not rely on donor source or optional production tools.
+      falsifiers:
+        - Delete `.tmp/donor/` entirely in the clean checkout.
+        - Remove model credentials and network model access.
+        - Supply path-traversal archive or forged network command.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T25:
+    title: Run final traceability, clean reproduction, and whole-studio independent confirmation
+    initial_status: blocked
+    depends_on: *id025
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-VERIFY-004
+    confirms:
+      - REQ-ASSET-001
+      - REQ-ASSET-002
+      - REQ-ASSET-003
+      - REQ-ASSET-004
+      - REQ-ASSET-006
+      - REQ-AUDIO-001
+      - REQ-AUDIO-002
+      - REQ-BIND-001
+      - REQ-BIND-002
+      - REQ-BIND-006
+      - REQ-BLENDER-001
+      - REQ-BLENDER-002
+      - REQ-BLENDER-004
+      - REQ-BLENDER-005
+      - REQ-BLENDER-006
+      - REQ-BLENDER-007
+      - REQ-CONFIG-004
+      - REQ-CONFIG-014
+      - REQ-DONOR-001
+      - REQ-DONOR-004
+      - REQ-DONOR-005
+      - REQ-DONOR-006
+      - REQ-GAUNTLET-002
+      - REQ-GAUNTLET-003
+      - REQ-GAUNTLET-006
+      - REQ-NET-001
+      - REQ-NET-003
+      - REQ-NET-004
+      - REQ-NET-005
+      - REQ-NET-007
+      - REQ-NET-008
+      - REQ-OBS-001
+      - REQ-OBS-002
+      - REQ-PERF-001
+      - REQ-PERF-002
+      - REQ-PERF-003
+      - REQ-PERF-004
+      - REQ-ROUTE-005
+      - REQ-ROUTE-006
+      - REQ-RUNTIME-001
+      - REQ-RUNTIME-004
+      - REQ-RUNTIME-005
+      - REQ-RUNTIME-006
+      - REQ-SAFE-002
+      - REQ-SAFE-005
+      - REQ-SAFE-006
+      - REQ-SAFE-007
+      - REQ-SEC-004
+      - REQ-SEC-007
+      - REQ-SKILL-004
+      - REQ-SKILL-005
+      - REQ-SKILL-006
+      - REQ-TERRAIN-001
+      - REQ-TERRAIN-002
+      - REQ-TERRAIN-003
+    changes: Performs final requirement-to-evidence validation and a fresh whole-studio reproduction from the frozen 
+      source, including single-player and multiplayer reference suites, then obtains independent confirmation of every 
+      high-risk requirement group.
+    proves: The implementation conforms to the frozen normative spec at the evidence level actually claimed, with zero 
+      unmapped REQUIRED requirements and no hidden dependency on donor source, model generation, Blender for normal 
+      builds, or builder assertion.
+    does_not_prove: Roadmap capabilities or guarantees beyond the frozen specification.
+    hot_context:
+      - .agents/specs/gauntlet-game-studio.spec.yaml
+      - .agents/plans/gauntlet-game-studio.plan.yaml
+      - .agents/CURRENT_STATUS.yml
+      - artifacts/runs/
+    steps:
+      - Mechanically parse the frozen spec requirement IDs and plan task mappings; require zero unmapped and zero 
+        unknown IDs.
+      - Run a fresh install/check/test/build/doctor from clean checkout with `.tmp/donor/` absent.
+      - Run Blackwater single-player and multiplayer conformance suites and validate all referenced EvidenceManifests.
+      - Run final `studio evidence check`/settlement index and ensure failed/correction evidence remains preserved.
+      - Give an independent verifier the frozen spec requirements, governing invariants, relevant implementation, fresh 
+        evidence, and exact confirmation questions for all high-risk groups; do not substitute builder summary.
+      - Update `.agents/CURRENT_STATUS.yml` and handoff only after the independent verdicts pass.
+    gate:
+      - python3 scripts/check-traceability.py .agents/plans/gauntlet-game-studio.plan.yaml 
+        .agents/specs/gauntlet-game-studio.spec.yaml
+      - just ci
+      - bun run studio -- verify --project examples/blackwater-relay --suite all --json
+    teeth:
+      - attack: Remove one requirement mapping from a temporary plan copy.
+        expected: Traceability gate reports the exact unmapped requirement and fails.
+      - attack: Replace fresh final evidence with historical passing run IDs from another revision.
+        expected: Evidence freshness gate rejects final conformance.
+    redesign_trigger: If independent confirmation discovers a representation-level flaw, reopen the earliest task that 
+      owns that representation and repeat downstream confirmation; do not patch the final report.
+    evidence: artifacts/plan/T25/
+    done_when:
+      - The narrow gate exits 0.
+      - The declared teeth/falsification checks behave as specified.
+      - All applicable global gates remain green.
+      - Every high-risk group has its spec-declared fresh confirmation mode and the handoff next action is `none — plan 
+        settled`.
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T25.prereg.yaml
+      claims:
+        - The implementation conforms to the frozen normative spec at the evidence level actually claimed, with zero 
+          unmapped REQUIRED requirements and no hidden dependency on donor source, model generation, Blender for normal 
+          builds, or builder assertion.
+      falsifiers:
+        - Remove one requirement mapping from a temporary plan copy.
+        - Replace fresh final evidence with historical passing run IDs from another revision.
+      known_confounds:
+        - Stale evidence or a different project revision.
+        - Unavailable optional provider/tool being mistaken for core capability failure.
+      confirmation_condition: The declared task gates and teeth pass using fresh evidence for the current revision, and 
+        the task's declared confirmation mode is satisfied.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+final_acceptance:
+  studio_and_repository:
+    - A clean checkout under Bun 1.4 passes global gates and `studio doctor` with `.tmp/donor/` absent.
+    - Generated games are independent projects with project-local spec, lock, Asset Registry, tests, `.agents/`, and 
+      evidence roots.
+    - Capability descriptions/routing and skill overlays have no unresolved collision or competing director authority.
+  runtime_authority:
+    - Gauntlet Runtime is first-party, standard-Three.js-native, Koota-authoritative, headless-capable, and exposes one 
+      deterministic simulation scheduler/one Rapier step.
+    - Rapier/Recast/network asynchronous readiness cannot race scenario execution.
+    - Terrain render, collision, and navigation derive from one canonical TerrainHeightfield and pass asymmetric parity 
+      tests.
+  donor_and_provenance:
+    - Mavon is absent as a dependency, public identity, semantic authority, compatibility target, or required checkout.
+    - Material donor transplants retain required MIT attribution/provenance while normal clean-checkout build/test/proof
+      succeeds without donor files.
+    - Production assets have accepted AssetRecords and allowed provenance/license state.
+  content_and_tools:
+    - img2threejs and 3dviz use explicit interactive AgentHandoffs while deterministic CI verifies committed accepted 
+      results with no model credentials.
+    - Blender is isolated to regeneration/proof and normal build/runtime consumes committed accepted derivatives without
+      Blender.
+    - Audio obeys real browser gesture policy and headless logic does not require AudioContext.
+  networking:
+    - Single-player requires no server/transport.
+    - Two local clients against the headless authoritative server pass nominal and impaired-latency scenarios, relevance
+      filtering, reconciliation, disconnect, and untrusted-client tests.
+  proof_and_quality:
+    - Required claims use fresh state, pixels, telemetry, and network evidence as applicable; contradictory channels 
+      prevent settlement.
+    - Performance profiles fail on deliberate regressions despite plausible visuals/semantics.
+    - All applicable VAR and RECOV cases pass without erasing failed/correction evidence.
+  evidence_and_confirmation:
+    - Every REQUIRED normative spec requirement maps to at least one settled task/evidence record.
+    - Every P3 task has the required fresh independent confirmation.
+    - Failed/correction evidence has not been erased.
+    - Documentation/status claims do not exceed observed proof.
+    - All global gates exit 0.
+    - Final independent verifier confirms every high-risk requirement group using fresh clean-checkout/reference-game 
+      evidence.
+guardrails:
+  - Do not reintroduce Needle or another third-party game engine as runtime authority without an explicit normative spec
+    revision.
+  - Do not let donor source, donor entity architecture, or donor branding enter authoritative/public runtime contracts.
+  - Koota owns game semantics; Three.js/Rapier/Recast/network/audio/VFX/DCC representations are projections or 
+    artifacts.
+  - Exactly one standard Three.js graph and exactly one authoritative simulation scheduler/Rapier step exist per world.
+  - Agent-skill development generation is distinct from deterministic CI verification.
+  - Blender and `.tmp/donor/` are optional production/development inputs, never normal build/runtime dependencies.
+  - Provider failure, unavailable tools, skipped browser proof, stale evidence, and network disconnect remain visible 
+    blocked/failed states.
+  - Failed evidence and correction history are append-preserved.
+  - Unity integration, proprietary engine dependency, generic paid generation by default, and unearned package 
+    proliferation remain out of scope.
+handoff_contract:
+  must_report:
+    - settled capabilities/requirements
+    - explicitly unsettled or deferred items
+    - current operational system state
+    - requirement-to-evidence index
+    - known limitations
+    - rollback/recovery instructions where relevant
+    - important decisions/discoveries that changed the execution model
+    - exact next executable action or 'none — plan settled'
+  settled_next_action_rule: The next executable action MUST be set to `none — plan settled` only after the final 
+    required conformance/confirmation task succeeds.
+traceability:
+  spec_requirement_count: 152
+  mapped_requirement_count: 152
+  unmapped_requirements: []
+  unknown_plan_requirement_ids: []
+  requirement_to_tasks:
+    REQ-BIND-015:
+      - T07
+      - T10
+    REQ-ASSET-001:
+      - T14
+    REQ-ASSET-002:
+      - T14
+    REQ-ASSET-003:
+      - T13
+    REQ-ASSET-004:
+      - T14
+    REQ-ASSET-005:
+      - T13
+    REQ-ASSET-006:
+      - T13
+    REQ-ASSET-007:
+      - T13
+    REQ-AUDIO-001:
+      - T17
+    REQ-AUDIO-002:
+      - T17
+    REQ-AUDIO-003:
+      - T17
+    REQ-BIND-001:
+      - T07
+    REQ-BIND-002:
+      - T08
+    REQ-BIND-003:
+      - T11
+    REQ-BIND-004:
+      - T11
+    REQ-BIND-005:
+      - T15
+    REQ-BIND-006:
+      - T14
+    REQ-BIND-007:
+      - T16
+    REQ-BIND-008:
+      - T13
+    REQ-BIND-009:
+      - T17
+    REQ-BIND-010:
+      - T20
+    REQ-BIND-011:
+      - T18
+    REQ-BIND-012:
+      - T17
+    REQ-BIND-013:
+      - T12
+    REQ-BIND-014:
+      - T01
+    REQ-BLENDER-001:
+      - T18
+    REQ-BLENDER-002:
+      - T18
+    REQ-BLENDER-003:
+      - T18
+    REQ-BLENDER-004:
+      - T18
+    REQ-BLENDER-005:
+      - T18
+    REQ-BLENDER-006:
+      - T18
+    REQ-BLENDER-007:
+      - T18
+    REQ-CLI-001:
+      - T03
+    REQ-CLI-002:
+      - T03
+    REQ-CLI-003:
+      - T03
+    REQ-CLI-004:
+      - T03
+    REQ-CLI-005:
+      - T03
+    REQ-CONFIG-001:
+      - T03
+    REQ-CONFIG-002:
+      - T03
+    REQ-CONFIG-003:
+      - T04
+    REQ-CONFIG-004:
+      - T07
+    REQ-CONFIG-005:
+      - T03
+    REQ-CONFIG-006:
+      - T04
+    REQ-CONFIG-007:
+      - T01
+    REQ-CONFIG-008:
+      - T01
+    REQ-CONFIG-009:
+      - T01
+    REQ-CONFIG-010:
+      - T03
+    REQ-CONFIG-011:
+      - T03
+    REQ-CONFIG-012:
+      - T03
+    REQ-CONFIG-013:
+      - T03
+    REQ-CONFIG-014:
+      - T07
+    REQ-DONOR-001:
+      - T09
+    REQ-DONOR-002:
+      - T09
+    REQ-DONOR-003:
+      - T09
+    REQ-DONOR-004:
+      - T24
+    REQ-DONOR-005:
+      - T09
+    REQ-DONOR-006:
+      - T09
+    REQ-DONOR-007:
+      - T09
+    REQ-GAUNTLET-001:
+      - T20
+    REQ-GAUNTLET-002:
+      - T20
+    REQ-GAUNTLET-003:
+      - T20
+    REQ-GAUNTLET-004:
+      - T20
+    REQ-GAUNTLET-005:
+      - T20
+    REQ-GAUNTLET-006:
+      - T20
+    REQ-GOAL-001:
+      - T04
+    REQ-GOAL-002:
+      - T07
+    REQ-GOAL-003:
+      - T08
+    REQ-GOAL-004:
+      - T20
+    REQ-GOAL-005:
+      - T04
+    REQ-GOAL-006:
+      - T06
+    REQ-GOAL-007:
+      - T05
+    REQ-GOAL-008:
+      - T07
+    REQ-GOAL-009:
+      - T07
+    REQ-GOAL-010:
+      - T04
+    REQ-NET-001:
+      - T12
+    REQ-NET-002:
+      - T12
+    REQ-NET-003:
+      - T12
+    REQ-NET-004:
+      - T12
+    REQ-NET-005:
+      - T12
+    REQ-NET-006:
+      - T12
+    REQ-NET-007:
+      - T12
+    REQ-NET-008:
+      - T23
+    REQ-NET-009:
+      - T12
+    REQ-OBS-001:
+      - T19
+    REQ-OBS-002:
+      - T19
+    REQ-OBS-003:
+      - T19
+    REQ-OBS-004:
+      - T19
+    REQ-OBS-005:
+      - T19
+    REQ-OUT-001:
+      - T05
+    REQ-OUT-002:
+      - T13
+    REQ-OUT-003:
+      - T20
+    REQ-OUT-004:
+      - T19
+    REQ-OUT-005:
+      - T02
+    REQ-PERF-001:
+      - T21
+    REQ-PERF-002:
+      - T21
+    REQ-PERF-003:
+      - T21
+    REQ-PERF-004:
+      - T21
+    REQ-REPO-001:
+      - T01
+    REQ-REPO-002:
+      - T05
+    REQ-REPO-003:
+      - T05
+    REQ-REPO-004:
+      - T01
+    REQ-REPO-005:
+      - T01
+    REQ-ROUTE-001:
+      - T04
+    REQ-ROUTE-002:
+      - T04
+    REQ-ROUTE-003:
+      - T04
+    REQ-ROUTE-004:
+      - T04
+    REQ-ROUTE-005:
+      - T04
+    REQ-ROUTE-006:
+      - T04
+    REQ-RUNTIME-001:
+      - T08
+    REQ-RUNTIME-002:
+      - T08
+    REQ-RUNTIME-003:
+      - T08
+    REQ-RUNTIME-004:
+      - T07
+    REQ-RUNTIME-005:
+      - T07
+    REQ-RUNTIME-006:
+      - T07
+    REQ-RUNTIME-007:
+      - T07
+    REQ-RUNTIME-008:
+      - T07
+    REQ-RUNTIME-009:
+      - T07
+    REQ-SAFE-001:
+      - T24
+    REQ-SAFE-002:
+      - T04
+    REQ-SAFE-003:
+      - T13
+    REQ-SAFE-004:
+      - T03
+    REQ-SAFE-005:
+      - T24
+    REQ-SAFE-006:
+      - T12
+    REQ-SAFE-007:
+      - T17
+    REQ-SEC-001:
+      - T03
+    REQ-SEC-002:
+      - T24
+    REQ-SEC-003:
+      - T24
+    REQ-SEC-004:
+      - T13
+    REQ-SEC-005:
+      - T19
+    REQ-SEC-006:
+      - T09
+    REQ-SEC-007:
+      - T12
+    REQ-SKILL-001:
+      - T04
+    REQ-SKILL-002:
+      - T04
+    REQ-SKILL-003:
+      - T04
+    REQ-SKILL-004:
+      - T04
+    REQ-SKILL-005:
+      - T04
+    REQ-SKILL-006:
+      - T04
+    REQ-SOURCE-001:
+      - T01
+    REQ-SOURCE-002:
+      - T01
+    REQ-SOURCE-003:
+      - T01
+    REQ-SOURCE-004:
+      - T01
+    REQ-SOURCE-005:
+      - T06
+    REQ-SOURCE-006:
+      - T06
+    REQ-TERRAIN-001:
+      - T10
+    REQ-TERRAIN-002:
+      - T10
+    REQ-TERRAIN-003:
+      - T10
+    REQ-TERRAIN-004:
+      - T10
+    REQ-VERIFY-001:
+      - T20
+    REQ-VERIFY-002:
+      - T20
+    REQ-VERIFY-003:
+      - T21
+    REQ-VERIFY-004:
+      - T25
+    REQ-VERIFY-005:
+      - T20
+
+  spec_variation_count: 14
+  mapped_variation_count: 14
+  unmapped_variations: []
+  variations_to_tasks:
+    VAR-001:
+      - T14
+      - T24
+    VAR-002:
+      - T15
+      - T24
+    VAR-003:
+      - T13
+      - T24
+    VAR-004:
+      - T18
+      - T24
+    VAR-005:
+      - T04
+      - T24
+    VAR-006:
+      - T20
+      - T24
+    VAR-007:
+      - T21
+      - T24
+    VAR-008:
+      - T04
+      - T14
+      - T15
+      - T24
+    VAR-009:
+      - T10
+      - T24
+    VAR-010:
+      - T07
+      - T22
+      - T24
+    VAR-011:
+      - T12
+      - T23
+      - T24
+    VAR-012:
+      - T12
+      - T23
+      - T24
+    VAR-013:
+      - T09
+      - T24
+      - T25
+    VAR-014:
+      - T17
+      - T24
+
+  spec_recovery_count: 8
+  mapped_recovery_count: 8
+  unmapped_recovery_cases: []
+  recovery_cases_to_tasks:
+    RECOV-001:
+      - T14
+      - T24
+    RECOV-002:
+      - T07
+      - T24
+    RECOV-003:
+      - T13
+      - T21
+      - T24
+    RECOV-004:
+      - T20
+      - T24
+    RECOV-005:
+      - T07
+      - T24
+    RECOV-006:
+      - T18
+      - T24
+    RECOV-007:
+      - T12
+      - T23
+      - T24
+    RECOV-008:
+      - T09
+      - T24
+
+  spec_claim_count: 10
+  mapped_claim_count: 10
+  unmapped_claims: []
+  claims_to_tasks:
+    CLAIM-001:
+      - T14
+    CLAIM-002:
+      - T15
+    CLAIM-003:
+      - T08
+      - T20
+      - T22
+    CLAIM-004:
+      - T07
+      - T20
+      - T22
+    CLAIM-005:
+      - T19
+      - T20
+      - T24
+    CLAIM-006:
+      - T21
+      - T22
+    CLAIM-007:
+      - T09
+      - T24
+    CLAIM-008:
+      - T12
+      - T23
+    CLAIM-009:
+      - T10
+    CLAIM-010:
+      - T04
+      - T14
+      - T15
+      - T20
+
+  nongoals:
+    - NONGOAL-001
+    - NONGOAL-002
+    - NONGOAL-003
+    - NONGOAL-004
+    - NONGOAL-005
+    - NONGOAL-006
+    - NONGOAL-007
+    - NONGOAL-008
+    - NONGOAL-009
+
+  coverage_rule: Every REQUIRED normative requirement in the source specification MUST map to at least one settlement 
+    task. High-risk requirements additionally require the confirmation mode defined by the specification and this plan. 
+    Every required variation case (VAR-*) and recovery case (RECOV-*) MUST map to its settling tasks and T24 adversarial 
+    matrix. Every claim (CLAIM-*) MUST map to the task and evidence that evaluates it.
