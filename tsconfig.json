@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ESNext", "DOM"],
+    "types": ["bun"],
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "paths": {
+      "@gauntlet/contracts": ["./packages/contracts/src/index.ts"],
+      "@gauntlet/studio": ["./packages/studio/src/index.ts"],
+      "@gauntlet/runtime": ["./packages/runtime/src/index.ts"],
+      "@gauntlet/adapters": ["./packages/adapters/src/index.ts"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "apps/*/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".tmp"
+  ]
+}

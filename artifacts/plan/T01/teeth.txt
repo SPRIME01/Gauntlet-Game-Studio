@@ -1,0 +1,10 @@
+=== TEETH ATTACK 1: Add .tmp/donor/mavon to a workspace glob ===
+Exit Code: 1
+FAIL: Disallowed donor workspace glob found: .tmp/donor/mavon
+FAIL: TOPOLOGY CHECKS FAILED.
+
+=== TEETH ATTACK 2: Create one workspace package per adapter without approved independent lifecycle ===
+Exit Code: 1
+FAIL: Unapproved workspace packages detected (violates REQ-REPO-004): ['packages/adapters-audio']
+FAIL: Unearned independent adapter package detected (must be module inside packages/adapters): packages/adapters-audio
+FAIL: TOPOLOGY CHECKS FAILED.

@@ -3,6 +3,9 @@
 
 .tmp/
 
+# Dependencies
+node_modules/
+
 # Python bytecode
 __pycache__/
 *.py[cod]

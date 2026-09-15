@@ -1,0 +1,11 @@
+{
+  "name": "@gauntlet/contracts",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "check": "bun run typecheck",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  }
+}

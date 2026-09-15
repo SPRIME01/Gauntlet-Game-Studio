@@ -1,0 +1,17 @@
+{
+  "name": "@gauntlet/studio-cli",
+  "version": "0.2.0",
+  "type": "module",
+  "bin": {
+    "studio": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "bun run typecheck",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@gauntlet/contracts": "workspace:*",
+    "@gauntlet/studio": "workspace:*"
+  }
+}
