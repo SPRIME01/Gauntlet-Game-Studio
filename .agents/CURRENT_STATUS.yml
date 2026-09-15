@@ -13,23 +13,22 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T07
+  last_settled_task: T08
   in_flight_task: null
-  workable_task: T08
+  workable_task: T10
   ready_tasks:
-    - T08
+    - T09
+    - T10
     - T13
     - T16
   blocked_tasks:
-    T09: [T08]
-    T10: [T08]
-    T11: [T08, T10]
-    T12: [T08, T09, T10]
-    T14: [T08, T13]
+    T11: [T10]
+    T12: [T09, T10]
+    T14: [T13]
     T15: [T10, T11, T13]
-    T17: [T08, T16]
+    T17: [T16]
     T18: [T13]
-    T19: [T08, T10, T11, T12]
+    T19: [T10, T11, T12]
     T20: [T19]
     T21: [T19, T20]
     T22: [T10, T11, T13, T14, T15, T16, T17, T18, T20, T21]
@@ -40,7 +39,7 @@ execution:
   plan_blocker: null
 
 active:
-  task: T08
+  task: T10
   phase: preregistration
   blocker: null
 
@@ -93,6 +92,12 @@ latest_evidence:
     commit: fe35a9c
     gate: PASS (bun test packages/runtime/test/readiness.test.ts 4/4, bun test packages/runtime/test/scheduler.test.ts 3/3, bun run runtime:headless-smoke)
     teeth: PASS (attack 1 rejected premature scenario start during booting/failed subsystems, attack 2 rejected multiple schedulers and duplicate step owners, attack 3 rejected DOM/canvas leaks in headless mode)
+  T08:
+    report: artifacts/plan/T08/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: 212ec65
+    gate: PASS (bun test packages/runtime/test/authority.test.ts 5/5, bun test packages/runtime/test/projections.test.ts 4/4)
+    teeth: PASS (attack 1 rejected direct Three.js Object3D mutation, attack 2 verified clean projection recreation after deletion, attack 3 verified asset affordance isolation)
 
 observations:
   - status: OBSERVED
@@ -153,17 +158,24 @@ observations:
       and headless/browser split implemented in packages/runtime; teeth checks verified subsystem barrier enforcement,
       single scheduler and single step owner invariants, and DOM-free headless execution.
     evidence: artifacts/plan/T07/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T08 settled: Koota established as sole semantic game-state authority in packages/runtime/src/state/;
+      execution projections correlated by stable IDs across domains in packages/runtime/src/projections/;
+      Three.js visual projections strictly one-way synchronized; asset affordance isolation enforced.
+      Teeth checks verified immunity to direct Object3D mutation, projection recreation, and affordance isolation.
+    evidence: artifacts/plan/T08/summary.md
 
 next_action:
-  task: T08
+  task: T10
   action: >-
-    Implement Koota state authority and Three/Rapier projection separation (T08):
-    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T08.prereg.yaml.
-    2. Implement authoritative entity-component state model with Koota in packages/runtime/src/state/.
-    3. Implement Three.js visual and Rapier physics execution projections reading from authoritative state.
-    4. Implement independent adversarial tests proving projections never own gameplay truth.
+    Implement deterministic Rapier physics adapter, step ownership, and debug wireframe projection (T10):
+    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T10.prereg.yaml.
+    2. Implement Rapier physics adapter with single step ownership per tick matching simulation scheduler.
+    3. Implement debug wireframe visual projection without polluting authoritative simulation.
+    4. Implement adversarial tests for duplicate step prevention and determinism.
   reason: >-
-    T07 settled cleanly; T08 is ready and on the critical path.
+    T08 settled cleanly; T10 is unblocked and on the critical path.
 
 handoff:
   settled_summary:
@@ -175,12 +187,8 @@ handoff:
     - "T04: Implemented capability registry, routing, skill metadata linter, and AgentHandoff semantics; verified teeth checks and 48 workspace tests (commit 8dacb42)."
     - "T05: Implemented independent game template, createGameProject, studio create CLI, and examples/blackwater-relay scaffold; verified teeth checks and 56 workspace tests (commit 5f76132)."
     - "T06: Bound third-party skills/libraries, overlay policy (forbidding threejs-game-director), attribution classes, and single Three.js dependency; verified teeth checks and 60 workspace tests (commit 2b39419)."
-    - "T07: Implemented first-party runtime lifecycle, readiness barrier, simulation scheduler, and headless split; verified teeth checks and 67 workspace tests."
-  unresolved_summary: []
-  warnings:
-    - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
-    - "Never mark a task settled on builder say-so; P3 tasks require frozen preregistration and independent confirmation."
-    - "Clean-checkout build/test/proof must pass with .tmp/donor/ absent."
+    - "T07: Implemented first-party runtime lifecycle, readiness barrier, simulation scheduler, and headless split; verified teeth checks and 67 workspace tests (commit fe35a9c)."
+    - "T08: Implemented Koota semantic authority, projection correlation, Three.js render projection manager, and asset affordance filter; verified teeth checks and 76 workspace tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
