@@ -13,25 +13,24 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T08
+  last_settled_task: T10
   in_flight_task: null
-  workable_task: T10
+  workable_task: T11
   ready_tasks:
     - T09
-    - T10
+    - T11
     - T13
     - T16
   blocked_tasks:
-    T11: [T10]
-    T12: [T09, T10]
+    T12: [T09]
     T14: [T13]
-    T15: [T10, T11, T13]
+    T15: [T11, T13]
     T17: [T16]
     T18: [T13]
-    T19: [T10, T11, T12]
+    T19: [T11, T12]
     T20: [T19]
     T21: [T19, T20]
-    T22: [T10, T11, T13, T14, T15, T16, T17, T18, T20, T21]
+    T22: [T11, T13, T14, T15, T16, T17, T18, T20, T21]
     T23: [T12, T22]
     T24: [T23]
     T25: [T24]
@@ -39,7 +38,7 @@ execution:
   plan_blocker: null
 
 active:
-  task: T10
+  task: T11
   phase: preregistration
   blocker: null
 
@@ -98,6 +97,12 @@ latest_evidence:
     commit: 212ec65
     gate: PASS (bun test packages/runtime/test/authority.test.ts 5/5, bun test packages/runtime/test/projections.test.ts 4/4)
     teeth: PASS (attack 1 rejected direct Three.js Object3D mutation, attack 2 verified clean projection recreation after deletion, attack 3 verified asset affordance isolation)
+  T10:
+    report: artifacts/plan/T10/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: be7f763
+    gate: PASS (bun test packages/runtime/test/terrain-parity.test.ts 5/5, bun test packages/runtime/test/physics.test.ts 6/6)
+    teeth: PASS (attack 1 caught height transposition, attack 2 caught axis inversion and extent drift, attack 3 caught duplicate physics stepping)
 
 observations:
   - status: OBSERVED
@@ -165,17 +170,23 @@ observations:
       Three.js visual projections strictly one-way synchronized; asset affordance isolation enforced.
       Teeth checks verified immunity to direct Object3D mutation, projection recreation, and affordance isolation.
     evidence: artifacts/plan/T08/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T10 settled: Canonical TerrainHeightfield derived through deterministic mathematical elevation in packages/runtime/src/terrain/;
+      cross-projection parity verified across Three.js render mesh, Rapier heightfield collider, and Recast navigation geometry;
+      RapierPhysicsAdapter enforces singular step ownership per tick. Teeth checks caught transposition, axis inversion, and duplicate stepping.
+    evidence: artifacts/plan/T10/summary.md
 
 next_action:
-  task: T10
+  task: T11
   action: >-
-    Implement deterministic Rapier physics adapter, step ownership, and debug wireframe projection (T10):
-    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T10.prereg.yaml.
-    2. Implement Rapier physics adapter with single step ownership per tick matching simulation scheduler.
-    3. Implement debug wireframe visual projection without polluting authoritative simulation.
-    4. Implement adversarial tests for duplicate step prevention and determinism.
+    Implement Recast navigation adapter, crowd simulation, and deterministic navmesh generation (T11):
+    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T11.prereg.yaml.
+    2. Integrate recast-navigation using navigation geometry derived from TerrainHeightfield.
+    3. Implement deterministic path queries and crowd agent steering.
+    4. Implement adversarial tests for impassable slopes, water boundaries, and path determinism.
   reason: >-
-    T08 settled cleanly; T10 is unblocked and on the critical path.
+    T10 settled cleanly; T11 is unblocked and on the critical path.
 
 handoff:
   settled_summary:
@@ -188,7 +199,8 @@ handoff:
     - "T05: Implemented independent game template, createGameProject, studio create CLI, and examples/blackwater-relay scaffold; verified teeth checks and 56 workspace tests (commit 5f76132)."
     - "T06: Bound third-party skills/libraries, overlay policy (forbidding threejs-game-director), attribution classes, and single Three.js dependency; verified teeth checks and 60 workspace tests (commit 2b39419)."
     - "T07: Implemented first-party runtime lifecycle, readiness barrier, simulation scheduler, and headless split; verified teeth checks and 67 workspace tests (commit fe35a9c)."
-    - "T08: Implemented Koota semantic authority, projection correlation, Three.js render projection manager, and asset affordance filter; verified teeth checks and 76 workspace tests."
+    - "T08: Implemented Koota semantic authority, projection correlation, Three.js render projection manager, and asset affordance filter; verified teeth checks and 76 workspace tests (commit 212ec65)."
+    - "T10: Integrated Rapier physics adapter and canonical mathematical TerrainHeightfield projections; verified teeth checks and 87 workspace tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
