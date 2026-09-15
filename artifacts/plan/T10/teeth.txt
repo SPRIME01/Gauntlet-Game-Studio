@@ -1,0 +1,22 @@
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/scheduler.test.ts:
+
+packages/runtime/test/terrain-parity.test.ts:
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > TEETH-T10-001: Transpose height array before Rapier projection fails asymmetric test (Teeth Check) [1.87ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > TEETH-T10-002: Invert axis or alter extents in render projection causes parity failure (Teeth Check) [4.58ms]
+
+packages/runtime/test/physics.test.ts:
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > TEETH-T10-003: Attempt duplicate Rapier step within same tick throws SinglePhysicsStepInvariantError (Teeth Check) [0.74ms]
+
+packages/runtime/test/projections.test.ts:
+
+packages/runtime/test/readiness.test.ts:
+
+packages/runtime/test/authority.test.ts:
+
+ 3 pass
+ 24 filtered out
+ 0 fail
+ 7 expect() calls
+Ran 3 tests across 6 files. [111.00ms]

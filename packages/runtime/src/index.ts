@@ -15,3 +15,5 @@ export * from "./server";
 export * from "./client";
 export * from "./state";
 export * from "./projections";
+export * from "./terrain";
+export * from "./physics";

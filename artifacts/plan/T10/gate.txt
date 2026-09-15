@@ -1,0 +1,21 @@
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/terrain-parity.test.ts:
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > generates deterministic canonical TerrainHeightfield without Three.js or DOM dependencies [3.24ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > verifies render, physics, and mathematical query projections agree at sampled world points [5.47ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > verifies asymmetric known fixture detects correct spatial peak placement [0.45ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > TEETH-T10-001: Transpose height array before Rapier projection fails asymmetric test (Teeth Check) [0.21ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > TEETH-T10-002: Invert axis or alter extents in render projection causes parity failure (Teeth Check) [0.57ms]
+
+packages/runtime/test/physics.test.ts:
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > initializes Rapier world with configured gravity [0.14ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > integrates cleanly with SubsystemBarrier [0.62ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > steps physics simulation forward with single step owner [1.94ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > TEETH-T10-003: Attempt duplicate Rapier step within same tick throws SinglePhysicsStepInvariantError (Teeth Check) [0.57ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > performs raycast against colliders accurately [1.51ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > extracts debug render buffers without mutating simulation truth [1.97ms]
+
+ 11 pass
+ 0 fail
+ 724 expect() calls
+Ran 11 tests across 2 files. [143.00ms]

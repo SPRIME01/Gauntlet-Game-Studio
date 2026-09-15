@@ -9,6 +9,7 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.20.0",
     "@gauntlet/contracts": "workspace:*",
     "koota": "^0.6.6",
     "three": "^0.170.0"

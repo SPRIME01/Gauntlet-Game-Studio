@@ -38,6 +38,7 @@
       "name": "@gauntlet/runtime",
       "version": "0.2.0",
       "dependencies": {
+        "@dimforge/rapier3d-compat": "^0.20.0",
         "@gauntlet/contracts": "workspace:*",
         "koota": "^0.6.6",
         "three": "^0.170.0",
@@ -56,6 +57,8 @@
     },
   },
   "packages": {
+    "@dimforge/rapier3d-compat": ["@dimforge/rapier3d-compat@0.20.0", "", {}, "sha512-X4W9pJBdGRX5CO3c/gUNjBFEFG2fn4nYxp9k8STdBDaLa0/w5XTW2ArpayS+9jGFojTi3uFSOWAElCd4rkpekA=="],
+
     "@gauntlet/adapters": ["@gauntlet/adapters@workspace:packages/adapters"],
 
     "@gauntlet/contracts": ["@gauntlet/contracts@workspace:packages/contracts"],

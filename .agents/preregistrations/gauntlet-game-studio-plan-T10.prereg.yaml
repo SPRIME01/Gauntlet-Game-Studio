@@ -1,0 +1,38 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T10
+title: Integrate Rapier and canonical mathematical TerrainHeightfield projections
+proof_level: P3
+timestamp: "2026-09-15T19:54:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T10-001
+    statement: >-
+      Terrain is authoritatively defined by a canonical TerrainHeightfield generated directly
+      through deterministic mathematical elevation functions without relying on Three.js mesh
+      vertices or GPU readback. Render geometry, Rapier heightfield collision, and navigation-source
+      geometry derive from this single authority and agree on coordinate axes, height scale, and
+      sample ordering. Rapier physics executes with singular step ownership per tick.
+    settles:
+      - REQ-BIND-015
+      - REQ-TERRAIN-001
+      - REQ-TERRAIN-002
+      - REQ-TERRAIN-003
+      - REQ-TERRAIN-004
+
+falsifiers:
+  - id: TEETH-T10-001
+    attack: Transpose the height array before Rapier heightfield projection.
+    expected: Asymmetric sampled world-point test detects transposition error and fails invariant check.
+  - id: TEETH-T10-002
+    attack: Invert one axis or alter extents only in the render projection.
+    expected: Cross-projection parity test compares render vertices and physics raycast heights and detects drift.
+  - id: TEETH-T10-003
+    attack: Attempt to step Rapier physics a second time outside the authoritative scheduler tick.
+    expected: Single-step owner invariant rejects duplicate stepping and throws SinglePhysicsStepInvariantError.
+
+independent_confirmation:
+  required: true
+  mode: adversarial
+  focus: Mathematical terrain heightfield derivation, Rapier coordinate parity, and singular physics step ownership.

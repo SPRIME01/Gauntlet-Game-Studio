@@ -37,3 +37,12 @@ export class HeadlessDomLeakError extends Error {
     this.name = "HeadlessDomLeakError";
   }
 }
+
+export class SinglePhysicsStepInvariantError extends Error {
+  public readonly code = "SINGLE_PHYSICS_STEP_INVARIANT_VIOLATION";
+  constructor(message?: string) {
+    super(message || "Invariant violation: exactly one physics step is permitted per authoritative tick.");
+    this.name = "SinglePhysicsStepInvariantError";
+  }
+}
+
