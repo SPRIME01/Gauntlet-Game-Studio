@@ -1,0 +1,20 @@
+import { z } from "zod";
+import * as S from "./schemas";
+
+export type ArtifactRef = z.infer<typeof S.ArtifactRefSchema>;
+export type CapabilityDescriptor = z.infer<typeof S.CapabilityDescriptorSchema>;
+export type CapabilityRequest = z.infer<typeof S.CapabilityRequestSchema>;
+export type CapabilityResult = z.infer<typeof S.CapabilityResultSchema>;
+export type AgentHandoff = z.infer<typeof S.AgentHandoffSchema>;
+export type AssetOrigin = z.infer<typeof S.AssetOriginSchema>;
+export type AssetAcceptanceState = z.infer<typeof S.AssetAcceptanceStateSchema>;
+export type AssetRecord = z.infer<typeof S.AssetRecordSchema>;
+export type TerrainHeightfield = z.infer<typeof S.TerrainHeightfieldSchema>;
+export type SubsystemState = z.infer<typeof S.SubsystemStateEnum>;
+export type RuntimeReadiness = z.infer<typeof S.RuntimeReadinessSchema>;
+export type AudioBackendState = z.infer<typeof S.AudioBackendStateSchema>;
+export type NetworkEnvelope = z.infer<typeof S.NetworkEnvelopeSchema>;
+export type ObservationRun = z.infer<typeof S.ObservationRunSchema>;
+export type EvidenceManifest = z.infer<typeof S.EvidenceManifestSchema>;
+export type SettlementRecord = z.infer<typeof S.SettlementRecordSchema>;
+export type StudioResult = z.infer<typeof S.StudioResultSchema>;

@@ -1,0 +1,14 @@
+=== TEETH CHECK: Provider Authority Leaks (Teeth Attack 1) ===
+bun test v1.4.0 (34cbb9a40)
+
+packages/contracts/src/schemas.test.ts:
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS provider authority leaks: mavonGameObject in root request (Teeth Check) [3.87ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS provider authority leaks: needleComponent in root request (Teeth Check) [0.09ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > REJECTS EvidenceManifest without project_revision or run_id (Teeth Check) [1.42ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > REJECTS EvidenceManifest with empty artifacts list (Teeth Check) [0.13ms]
+
+ 4 pass
+ 20 filtered out
+ 0 fail
+ 4 expect() calls
+Ran 4 tests across 1 file. [41.00ms]

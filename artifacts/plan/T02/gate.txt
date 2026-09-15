@@ -1,0 +1,70 @@
+=== GATE: bun test packages/contracts ===
+bun test v1.4.0 (34cbb9a40)
+
+packages/contracts/src/index.test.ts:
+(pass) @gauntlet/contracts baseline > exports a valid semver version [0.03ms]
+
+packages/contracts/src/schemas.test.ts:
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityDescriptor > validates a well-formed capability descriptor [2.36ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityDescriptor > rejects capability descriptor with invalid ID pattern or missing triggers [0.50ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > accepts valid provider-neutral capability request [0.96ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS provider authority leaks: mavonGameObject in root request (Teeth Check) [0.15ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS provider authority leaks: needleComponent in root request (Teeth Check) [0.10ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS capability request missing acceptance criteria [0.06ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityResult > validates well-formed capability result [0.97ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityResult > rejects capability result with extra unquarantined provider roots [0.09ms]
+(pass) Studio Contracts & Schemas Validation Suite > AgentHandoff > validates agent handoff contract [0.51ms]
+(pass) Studio Contracts & Schemas Validation Suite > AssetRecord & Provenance > validates asset record with full provenance [1.50ms]
+(pass) Studio Contracts & Schemas Validation Suite > AssetRecord & Provenance > rejects asset record with invalid ID naming convention [0.23ms]
+(pass) Studio Contracts & Schemas Validation Suite > TerrainHeightfield > validates heightfield with array heights [1.76ms]
+(pass) Studio Contracts & Schemas Validation Suite > TerrainHeightfield > validates heightfield with Float32Array heights [0.32ms]
+(pass) Studio Contracts & Schemas Validation Suite > TerrainHeightfield > rejects invalid dimensions or negative sizes [0.21ms]
+(pass) Studio Contracts & Schemas Validation Suite > RuntimeReadiness > accepts ready state when all required subsystems are ready [0.80ms]
+(pass) Studio Contracts & Schemas Validation Suite > RuntimeReadiness > REJECTS ready state when a required subsystem is still booting or failed [0.11ms]
+(pass) Studio Contracts & Schemas Validation Suite > NetworkEnvelope > validates client command envelope with non-negative sequence [0.99ms]
+(pass) Studio Contracts & Schemas Validation Suite > NetworkEnvelope > rejects negative sequence numbers [0.15ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > validates complete ObservationRun [0.55ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > validates complete EvidenceManifest bound to run and revision [0.64ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > REJECTS EvidenceManifest without project_revision or run_id (Teeth Check) [0.19ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > REJECTS EvidenceManifest with empty artifacts list (Teeth Check) [0.09ms]
+(pass) Studio Contracts & Schemas Validation Suite > SettlementRecord > validates settlement decision citing evidence manifests [0.52ms]
+(pass) Studio Contracts & Schemas Validation Suite > SettlementRecord > rejects settlement record without evidence manifest citations [0.06ms]
+
+ 25 pass
+ 0 fail
+ 25 expect() calls
+Ran 25 tests across 2 files. [47.00ms]
+
+=== GATE: just check ===
+just validate-agent-artifacts
+python3 scripts/check-traceability.py
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 193 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 152 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 193)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+OK:   Plan status is 'approved'.
+OK:   All 152 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun x tsc --noEmit

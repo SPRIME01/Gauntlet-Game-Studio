@@ -13,23 +13,22 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T01
+  last_settled_task: T02
   in_flight_task: null
-  workable_task: T02
+  workable_task: T03
   ready_tasks:
-    - T02
+    - T03
   blocked_tasks:
-    T03: [T02]
     T04: [T03]
     T05: [T03, T04]
     T06: [T04]
-    T07: [T02, T05, T06]
+    T07: [T05, T06]
     T08: [T07]
     T09: [T06, T07, T08]
     T10: [T07, T08]
     T11: [T08, T10]
     T12: [T08, T09, T10]
-    T13: [T02, T03, T05, T06]
+    T13: [T03, T05, T06]
     T14: [T04, T06, T08, T13]
     T15: [T04, T06, T10, T11, T13]
     T16: [T04, T05, T06]
@@ -60,8 +59,14 @@ latest_evidence:
   T01:
     report: artifacts/plan/T01/summary.md
     confirmation: builder_with_teeth CONFIRM
+    commit: 9dd5a03
     gate: PASS (just check, just test, just lint)
     teeth: PASS (attack 1 rejected donor workspace glob, attack 2 rejected adapter package proliferation)
+  T02:
+    report: artifacts/plan/T02/summary.md
+    confirmation: peer CONFIRM
+    gate: PASS (bun test packages/contracts 25/25, just check)
+    teeth: PASS (attack 1 rejected mavonGameObject/needleComponent leaks, attack 2 rejected unlinked EvidenceManifest)
 
 observations:
   - status: OBSERVED
@@ -90,25 +95,28 @@ observations:
       Task T01 settled: Bun 1.4 monorepo topology established with 5 packages (contracts, studio, runtime, adapters, studio-cli);
       scripts/check-topology.py validates boundaries; teeth checks rejected donor globs and adapter package sprawl.
     evidence: artifacts/plan/T01/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T02 settled: studio contracts and strict schemas implemented in packages/contracts; preregistration frozen;
+      teeth checks verified rejection of provider authority leaks and unlinked evidence manifests.
+    evidence: artifacts/plan/T02/summary.md
 
 next_action:
-  task: T02
+  task: T03
   action: >-
-    Implement studio contracts and schemas (T02):
-    1. Preregister claim in .agents/preregistrations/T02-contracts.md.
-    2. Implement TypeScript domain types and Zod/JSON schemas in packages/contracts for CapabilityDescriptor,
-       CapabilityRequest, CapabilityResult, AgentHandoff, AssetRecord, RuntimeReadiness, TerrainHeightfield,
-       ObservationRun, EvidenceManifest, SettlementRecord, and network replication/command envelopes.
-    3. Add schema fixtures for valid, malformed, and provider-leaking cases.
-    4. Run bun test packages/contracts and bun run check.
+    Implement studio CLI and configuration system (T03):
+    1. Implement semantic studio CLI commands in apps/studio-cli (doctor, create, config).
+    2. Implement configuration precedence hierarchy and secret hygiene.
+    3. Add tests for valid, malformed, and missing configuration files.
   reason: >-
-    T01 settled cleanly; T02 is the sole unblocked task on the critical path.
+    T02 settled cleanly; T03 is the sole ready task on the critical path.
 
 handoff:
   settled_summary:
     - "SPEC-FREEZE & PLAN-REBIND: Spec approved (SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e), plan approved, multi-class traceability and DAG critical path verified."
     - "T00: Frozen source bound and settlement infrastructure bootstrapped with justfile gates, decision log, and teeth falsification checks verified (commit 24f7e5b)."
-    - "T01: Established lean Bun 1.4 monorepo topology and source boundaries; check-topology verified package discipline and donor isolation."
+    - "T01: Established lean Bun 1.4 monorepo topology and source boundaries; check-topology verified package discipline and donor isolation (commit 9dd5a03)."
+    - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
