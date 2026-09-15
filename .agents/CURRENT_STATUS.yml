@@ -75,6 +75,7 @@ latest_evidence:
   T04:
     report: artifacts/plan/T04/summary.md
     confirmation: independent_adversarial CONFIRM
+    commit: 8dacb42
     gate: PASS (bun run studio -- capabilities lint --json, bun test packages/studio 9/9)
     teeth: PASS (attack 1 rejected ambiguous negative affordances, attack 2 rejected >1024 char descriptions and missing negative affordances, attack 3 rejected premature AgentHandoff settlement)
 
