@@ -13,14 +13,13 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T02
+  last_settled_task: T03
   in_flight_task: null
-  workable_task: T03
+  workable_task: T04
   ready_tasks:
-    - T03
+    - T04
   blocked_tasks:
-    T04: [T03]
-    T05: [T03, T04]
+    T05: [T04]
     T06: [T04]
     T07: [T05, T06]
     T08: [T07]
@@ -28,14 +27,14 @@ execution:
     T10: [T07, T08]
     T11: [T08, T10]
     T12: [T08, T09, T10]
-    T13: [T03, T05, T06]
+    T13: [T05, T06]
     T14: [T04, T06, T08, T13]
     T15: [T04, T06, T10, T11, T13]
     T16: [T04, T05, T06]
     T17: [T07, T08, T16]
-    T18: [T03, T06, T13]
+    T18: [T06, T13]
     T19: [T08, T10, T11, T12]
-    T20: [T03, T05, T19]
+    T20: [T05, T19]
     T21: [T19, T20]
     T22: [T10, T11, T13, T14, T15, T16, T17, T18, T20, T21]
     T23: [T12, T22]
@@ -65,8 +64,14 @@ latest_evidence:
   T02:
     report: artifacts/plan/T02/summary.md
     confirmation: peer CONFIRM
+    commit: 193f171
     gate: PASS (bun test packages/contracts 25/25, just check)
     teeth: PASS (attack 1 rejected mavonGameObject/needleComponent leaks, attack 2 rejected unlinked EvidenceManifest)
+  T03:
+    report: artifacts/plan/T03/summary.md
+    confirmation: builder_with_teeth CONFIRM
+    gate: PASS (bun run studio -- doctor --json, just doctor, 39 workspace tests)
+    teeth: PASS (attack 1 rejected secret leak without echo, attack 2 rejected donor dependency)
 
 observations:
   - status: OBSERVED
@@ -100,23 +105,30 @@ observations:
       Task T02 settled: studio contracts and strict schemas implemented in packages/contracts; preregistration frozen;
       teeth checks verified rejection of provider authority leaks and unlinked evidence manifests.
     evidence: artifacts/plan/T02/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T03 settled: studio semantic CLI and doctor preflight diagnostic implemented; just doctor bound;
+      teeth checks verified secret hygiene enforcement (no secret echo) and donor dependency rejection.
+    evidence: artifacts/plan/T03/summary.md
 
 next_action:
-  task: T03
+  task: T04
   action: >-
-    Implement studio CLI and configuration system (T03):
-    1. Implement semantic studio CLI commands in apps/studio-cli (doctor, create, config).
-    2. Implement configuration precedence hierarchy and secret hygiene.
-    3. Add tests for valid, malformed, and missing configuration files.
+    Implement capability registry, routing, skill metadata, and AgentHandoff semantics (T04):
+    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T04.prereg.yaml.
+    2. Implement capability registry and capability-first router in packages/studio.
+    3. Implement concise skill metadata linter and AgentHandoff preparation.
+    4. Implement independent adversarial confirmation tests.
   reason: >-
-    T02 settled cleanly; T03 is the sole ready task on the critical path.
+    T03 settled cleanly; T04 is the sole ready task on the critical path.
 
 handoff:
   settled_summary:
     - "SPEC-FREEZE & PLAN-REBIND: Spec approved (SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e), plan approved, multi-class traceability and DAG critical path verified."
     - "T00: Frozen source bound and settlement infrastructure bootstrapped with justfile gates, decision log, and teeth falsification checks verified (commit 24f7e5b)."
     - "T01: Established lean Bun 1.4 monorepo topology and source boundaries; check-topology verified package discipline and donor isolation (commit 9dd5a03)."
-    - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests."
+    - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests (commit 193f171)."
+    - "T03: Implemented semantic studio CLI and doctor diagnostics; verified secret hygiene and donor isolation with 39 workspace tests."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."

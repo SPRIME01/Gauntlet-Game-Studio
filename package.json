@@ -11,7 +11,8 @@
     "test": "bun test",
     "lint": "bun run check-topology",
     "check-topology": "python3 scripts/check-topology.py",
-    "validate-agent-artifacts": "python3 scripts/check-traceability.py && python3 scripts/check-topology.py"
+    "validate-agent-artifacts": "python3 scripts/check-traceability.py && python3 scripts/check-topology.py",
+    "studio": "bun run ./apps/studio-cli/src/index.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {

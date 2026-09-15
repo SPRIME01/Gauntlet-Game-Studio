@@ -1,0 +1,67 @@
+=== GATE: bun run studio -- doctor --json ===
+$ bun run ./apps/studio-cli/src/index.ts doctor --json
+{
+  "status": "success",
+  "operation": "studio.doctor",
+  "result": {
+    "status": "success",
+    "checks": [
+      {
+        "name": "bun_version",
+        "status": "pass",
+        "details": "Bun v1.4.0 satisfies baseline (>= 1.4.0)"
+      },
+      {
+        "name": "donor_isolation_gitignore",
+        "status": "pass",
+        "details": ".tmp/ is properly gitignored in .gitignore"
+      },
+      {
+        "name": "donor_dependency_check",
+        "status": "pass",
+        "details": "Zero donor dependencies detected in root package manifest"
+      },
+      {
+        "name": "configuration_integrity",
+        "status": "pass",
+        "details": "Configuration parsed cleanly and adheres to secret hygiene rules"
+      },
+      {
+        "name": "workspace_packages",
+        "status": "pass",
+        "details": "All 5 required workspace packages present (packages/contracts, packages/studio, packages/runtime, packages/adapters, apps/studio-cli)"
+      }
+    ],
+    "environment": {
+      "bun_version": "1.4.0",
+      "platform": "linux",
+      "arch": "x64",
+      "cwd": "/home/sprime01/projects/gauntlet-game-studio"
+    }
+  },
+  "diagnostics": {
+    "total_checks": 5,
+    "passed_checks": 5,
+    "failed_checks": 0,
+    "environment": {
+      "bun_version": "1.4.0",
+      "platform": "linux",
+      "arch": "x64",
+      "cwd": "/home/sprime01/projects/gauntlet-game-studio"
+    }
+  }
+}
+
+=== GATE: just doctor ===
+bun run studio -- doctor
+$ bun run ./apps/studio-cli/src/index.ts doctor
+
+=== Gauntlet Studio Doctor (v0.2.0) ===
+ ✓ [bun_version] Bun v1.4.0 satisfies baseline (>= 1.4.0)
+ ✓ [donor_isolation_gitignore] .tmp/ is properly gitignored in .gitignore
+ ✓ [donor_dependency_check] Zero donor dependencies detected in root package manifest
+ ✓ [configuration_integrity] Configuration parsed cleanly and adheres to secret hygiene rules
+ ✓ [workspace_packages] All 5 required workspace packages present (packages/contracts, packages/studio, packages/runtime, packages/adapters, apps/studio-cli)
+
+Overall Status: SUCCESS
+

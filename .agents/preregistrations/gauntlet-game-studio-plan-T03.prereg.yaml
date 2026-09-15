@@ -1,0 +1,45 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T03
+title: Implement semantic studio CLI, just facade, configuration, and doctor
+proof_level: P2
+timestamp: "2026-09-15T18:58:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T03-001
+    statement: >-
+      Agents and humans can interrogate and invoke studio semantics through stable machine-readable results
+      without scraping shell prose or embedding machine/provider facts in source.
+    settles:
+      - REQ-CLI-001
+      - REQ-CLI-002
+      - REQ-CLI-003
+      - REQ-CLI-004
+      - REQ-CLI-005
+      - REQ-CONFIG-001
+      - REQ-CONFIG-002
+      - REQ-CONFIG-005
+      - REQ-CONFIG-010
+      - REQ-CONFIG-011
+      - REQ-CONFIG-012
+      - REQ-CONFIG-013
+      - REQ-SAFE-004
+      - REQ-SEC-001
+
+falsifiers:
+  - id: TEETH-T03-001
+    condition: >-
+      Doctor check or CLI configuration loader fails to reject a missing required config field,
+      or echoes secret-bearing values in doctor JSON output / logs.
+    expected: >-
+      Doctor returns a typed scoped failure without leaking or echoing the secret value.
+  - id: TEETH-T03-002
+    condition: >-
+      Making .tmp/donor/ a runtime import or dependency passes doctor check.
+    expected: >-
+      Doctor detects donor dependency and exits non-zero with structured error.
+
+confirmation_condition: >-
+  All declared gates (bun run studio -- doctor --json, just doctor, bun test apps/studio-cli) and
+  teeth falsifiers pass cleanly against fresh repository state.

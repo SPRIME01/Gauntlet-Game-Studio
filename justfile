@@ -9,6 +9,10 @@ validate-agent-artifacts:
     python3 scripts/check-traceability.py
     python3 scripts/check-topology.py
 
+# Run studio doctor diagnostics
+doctor:
+    bun run studio -- doctor
+
 # G-CHECK: Typecheck and structural verification
 check:
     just validate-agent-artifacts

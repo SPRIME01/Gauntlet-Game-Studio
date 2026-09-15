@@ -1,0 +1,11 @@
+=== TEETH ATTACK 1: Secret leak in configuration (literal secret) ===
+Caught expected error class: ConfigSecretLeakError
+Code: SECRET_LEAK_DETECTED
+Message (redacted): Secret leak detected in configuration key 'API_KEY'. Values must reference environment variables (e.g. '$VAR_NAME'), not raw literals.
+PASS: Secret value was NOT echoed in error message
+
+=== TEETH ATTACK 2: Disallowed donor dependency in configuration ===
+Caught expected error class: DonorDependencyError
+Code: DONOR_DEPENDENCY_DETECTED
+Message: Disallowed donor dependency detected at 'config.providers.mavon'. Normal studio operations must not rely on .tmp/donor.
+PASS: Donor dependency rejected

@@ -46,6 +46,7 @@
       "version": "0.2.0",
       "dependencies": {
         "@gauntlet/contracts": "workspace:*",
+        "zod": "^4.6.5",
       },
     },
   },
