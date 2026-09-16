@@ -13,37 +13,22 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T21
+  last_settled_task: T18
   in_flight_task: null
-  workable_task: null
+  workable_task: T22
   ready_tasks:
-    - T18
+    - T22
   blocked_tasks:
-    T22: [T18]
     T23: [T22]
     T24: [T23]
     T25: [T24]
-  plan_blocked: true
-  plan_blocker: >-
-    Every remaining task (T18, T22, T23, T24, T25) is gated behind T18, which is environment-blocked:
-    the Blender executable is not installed on this host, so the service-drone retarget/bake derivative
-    cannot be produced through the dcc.blender.process route. All other 21 tasks are settled.
-
-environment_blockers:
-  T18:
-    blocker: blender_unavailable
-    detail: >-
-      T18 requires the Blender executable to produce the service-drone retarget/bake derivative
-      (REQ-BLENDER-*). Blender is not installed on this host (which blender exits 1). The task's own design
-      makes missing Blender a scoped regeneration/proof blockage while deterministic CI stays green;
-      execution resumes when Blender is installed (or the derivative is produced on a donor host through the
-      dcc.blender.process route and committed with regeneration metadata). T22/T23/T24/T25 remain gated
-      behind it.
+  plan_blocked: false
+  plan_blocker: null
 
 active:
-  task: T18
-  phase: blocked
-  blocker: blender_unavailable
+  task: T22
+  phase: ready
+  blocker: null
 
 latest_evidence:
   T00:
@@ -172,6 +157,12 @@ latest_evidence:
     commit: 7916bfe
     gate: PASS (bun run test:performance-fixtures 31/31 + Chrome legs, bun run studio -- verify --scenario performance-fixture --profile test-budget --json)
     teeth: PASS (attack 1 byte-identical-pixels draw-call/frame-time regression settles failed with budget_error, attack 2 average-only reporting with missing percentiles fails the profile gate)
+  T18:
+    report: artifacts/plan/T18/summary.md
+    confirmation: independent CONFIRM
+    commit: 03c0a61
+    gate: PASS (studio capability verify-result dcc.blender.process 11/11 offline, bun run test:blender-absent-build legs A-D)
+    teeth: PASS (attack 1 blender stripped from PATH keeps build/test green with committed derivative and typed scoped regeneration blockage, attack 2 quest/NPC semantic metadata rejected at intake/verify-result/Koota guard; GLB regeneration reproduces byte-identically under Blender 5.2.2 LTS)
 
 observations:
   - status: OBSERVED
