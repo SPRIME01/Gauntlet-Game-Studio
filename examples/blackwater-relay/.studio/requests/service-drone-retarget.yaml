@@ -1,0 +1,58 @@
+# CapabilityRequest: Blackwater Relay service-drone animation retarget/bake (T18).
+# Route: dcc.blender.process / dcc.blender (REQ-BIND-011, REQ-BLENDER-001..003).
+# Blender is an offline DCC escalation: this request records WHY lighter routes
+# are insufficient (REQ-BLENDER-002) before any Blender execution. The accepted
+# output is a standard GLB derivative committed through the Asset Registry
+# (REQ-BLENDER-004); normal builds/CI consume it without Blender (REQ-BLENDER-006).
+id: req-service-drone-retarget-001
+project_id: blackwater-relay
+capability_id: dcc.blender.process
+intent: >-
+  Retarget the source hover-cycle animation onto the service-drone delivery rig
+  and bake it to keyframes, exporting a standard GLB derivative. Cross-rig
+  skeletal animation retargeting with visual-keying bake requires DCC-class
+  representational power (armatures, constraints, bake) that procedural and
+  sourced routes do not have.
+acceptance:
+  - Escalation rationale recorded with rejected lighter routes before execution (REQ-BLENDER-002)
+  - Derivative is a standard glTF 2.0 GLB produced through glTF-Transform normalization and accepted by the Asset Registry as a blender-origin derived asset (REQ-BLENDER-004)
+  - DCC-side metadata carries structural provenance only; quest/NPC gameplay semantics in .blend/DCC metadata are rejected (REQ-BLENDER-005)
+  - Committed derivative builds/tests/runs with zero Blender presence; verify-result re-derives evidence offline (REQ-BLENDER-006, REQ-BLENDER-007)
+  - Recomputed triangles and file bytes within declared budget_limits
+inputs:
+  source_definition: assets/dcc/service-drone/service-drone.source.json
+  output_glb_path: assets/service-drone.glb
+  bake_report_path: assets/dcc/service-drone/service-drone.bake-report.json
+  budget_limits:
+    max_triangles: 2000
+    max_file_bytes: 262144
+  escalation_rationale:
+    requested_operation: service-drone cross-rig animation retarget and keyframe bake
+    reason: >-
+      The service drone must arrive with a baked hover cycle authored on a source
+      rig and delivered onto a differently-named target skeleton. Rig-level
+      constraint retargeting plus visual-keying bake is exactly the DCC
+      representational class Blender exists for (REQ-BLENDER-003); no
+      agent-editable route reproduces a visually-keyed cross-rig bake.
+    rejected_routes:
+      - route: procedural-three-animation
+        reason: >-
+          Hand-authored Three.js AnimationClips would bypass the retarget: they
+          cannot take an armature action from a source rig and visually bake it
+          onto a different skeleton, and hand-posing keyframes duplicates the
+          work DCC constraints do exactly.
+      - route: asset.source
+        reason: >-
+          No suitable licensed/CC0 service-drone rig exists with the delivery
+          skeleton's bone naming and rest pose; an external rig would still
+          require this same DCC retarget/bake step.
+      - route: asset.reconstruct.reference-image
+        reason: >-
+          Reference reconstruction produces static geometry from imagery; it
+          cannot author or retarget skeletal animation, and no suitable
+          reference imagery exists for this project-owned drone.
+      - route: asset.optimize
+        reason: >-
+          glTF-Transform normalization can only prune/dedup/compress an existing
+          asset; it cannot perform rigging, retargeting, or animation baking.
+preferred_provider: dcc.blender

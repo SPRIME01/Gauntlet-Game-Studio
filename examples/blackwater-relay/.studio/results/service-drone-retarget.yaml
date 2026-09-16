@@ -1,0 +1,122 @@
+# CapabilityResult: Blackwater Relay service-drone animation retarget/bake (T18).
+# Produced by the REAL dcc.blender.process chain on this host (see
+# artifacts/plan/T18/gate.txt for the captured invocation logs):
+#   blender --background --factory-startup --python
+#     generate_service_drone_source.py   -> source rig .blend
+#   blender --background --factory-startup --python
+#     retarget_bake_service_drone.py     -> constraint retarget + nla.bake
+#                                           + raw GLB + bake report
+#   glTF-Transform normalization (dedup, prune) -> committed derivative
+#   Asset Registry intake -> accepted (blender origin)
+# All recorded values below are RE-DERIVED from disk by
+#   studio capability verify-result dcc.blender.process <this file>
+# with ZERO Blender invocation, zero model invocation, zero network access —
+# CI never replays the DCC run and never requires Blender (REQ-BLENDER-006/007).
+id: res-req-service-drone-retarget-001
+request_id: req-service-drone-retarget-001
+provider: dcc.blender
+status: success
+artifacts:
+  - id: service-drone-glb
+    path: assets/service-drone.glb
+    role: committed_glb_derivative
+    mime_type: model/gltf-binary
+    sha256: e0ff0f70171497aaa95ee6a205bac2a9935aa3e55da1a25e893b70f5f00fb98b
+  - id: service-drone-bake-report
+    path: assets/dcc/service-drone/service-drone.bake-report.json
+    role: regeneration_metadata
+    mime_type: application/json
+    sha256: fbb072e57b04473c4cb923a29782794d9fdefa79150f096df6018c3e53dc2a9c
+asset_ids:
+  - service-drone
+affordances:
+  - node:DroneRigTarget
+  - node:tgt_body
+  - node:tgt_hull
+  - node:tgt_rotor_a
+  - node:tgt_rotor_b
+  - node:tgt_rotor_c
+  - node:tgt_rotor_d
+  - node:drone-body
+  - node:drone-hull
+  - node:drone-sensor-mast
+  - node:drone-rotor-a
+  - node:drone-rotor-b
+  - node:drone-rotor-c
+  - node:drone-rotor-d
+  - animation:hover_cycle
+diagnostics:
+  capability_id: dcc.blender.process
+  acceptance_evaluated:
+    - Escalation rationale validated with four rejected lighter routes before any Blender execution (REQ-BLENDER-002)
+    - Derivative is a standard glTF 2.0 GLB, normalized through glTF-Transform (dedup, prune) and accepted by the Asset Registry as a blender-origin derived asset (REQ-BLENDER-004)
+    - DCC-side metadata carries structural provenance only; quest/NPC gameplay semantics rejected by the dcc adapter authority boundary (REQ-BLENDER-005)
+    - Committed derivative consumes with zero Blender presence; this verification re-derives evidence offline (REQ-BLENDER-006, REQ-BLENDER-007)
+    - Recomputed 84 triangles and 12656 bytes within declared budget_limits (2000 / 262144)
+  verification:
+    method: deterministic-offline
+    model_invocation: none
+    network_access: none
+    blender_required_at_verify: false
+    budget_measurements:
+      measured_triangles: 84
+      measured_file_bytes: 12656
+  regeneration:
+    blender_version: 5.2.2 LTS
+    scripts:
+      - packages/adapters/src/dcc/blender/scripts/generate_service_drone_source.py
+      - packages/adapters/src/dcc/blender/scripts/retarget_bake_service_drone.py
+    source_definition:
+      path: assets/dcc/service-drone/service-drone.source.json
+      sha256: b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853
+    invocations:
+      - argv:
+          - /snap/bin/blender
+          - --background
+          - --factory-startup
+          - --python
+          - /home/sprime01/projects/gauntlet-game-studio/packages/adapters/src/dcc/blender/scripts/generate_service_drone_source.py
+          - --
+          - /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json
+          - /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend
+      - argv:
+          - /snap/bin/blender
+          - --background
+          - --factory-startup
+          - --python
+          - /home/sprime01/projects/gauntlet-game-studio/packages/adapters/src/dcc/blender/scripts/retarget_bake_service_drone.py
+          - --
+          - /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend
+          - /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json
+          - /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb
+          - /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.bake-report.json
+    intermediates:
+      raw_glb_sha256: 3e95857242d23e1d3c6d41e74c793f7e2e1b27b0eecc0eeb0bbbd3be5bcacdf8
+      raw_glb_bytes: 18792
+      note: >-
+        The .blend and raw (pre-normalization) GLB are deterministic intermediates
+        under .tmp/dcc-blender/service-drone/ (gitignored). The .blend's bytes are
+        NOT pinned — .blend files embed a per-save session UID — but the chain
+        OUTPUT is byte-deterministic: repeated full regenerations with Blender
+        5.2.2 LTS reproduce the committed raw GLB, bake report, and normalized
+        derivative (assets/service-drone.glb) hash-identically. The derivative is
+        pinned by the artifact hashes above and the AssetRecord source hash.
+    normalization:
+      profile_id: dcc-blender-baseline
+      transformations:
+        - dedup
+        - prune
+  escalation_rationale:
+    requested_operation: service-drone cross-rig animation retarget and keyframe bake
+    rejected_routes:
+      - procedural-three-animation
+      - asset.source
+      - asset.reconstruct.reference-image
+      - asset.optimize
+    full_text_ref: .studio/requests/service-drone-retarget.yaml
+  dcc_metadata:
+    gw_asset_id: service-drone
+    gw_route: dcc.blender.process
+    authority_note: >-
+      Structural provenance affordances only (mirrors the bake report and GLB
+      node extras); gameplay semantics never enter DCC metadata (REQ-BLENDER-005).

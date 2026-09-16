@@ -1,0 +1,113 @@
+===================================================================
+T18 TEETH / FALSIFICATION EVIDENCE — captured fresh 2026-09-16T19:11:02Z
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T18.prereg.yaml (frozen BEFORE implementation/evidence)
+===================================================================
+
+### TEETH-T18-001 ###
+Attack: Remove/rename the Blender executable and run the normal game build/test.
+Method: PATH sanitized in a subprocess environment (every PATH directory
+containing a blender executable removed — /snap/bin). No uninstall; env
+manipulation only. .tmp/donor stays ignored (leg D).
+
+--- direct probe: blender must be absent from the sanitized PATH ---
+stripped-PATH 'which blender':
+stripped-PATH 'which blender' exit: 1 (1 = absent, expected)
+
+--- full test:blender-absent-build run ---
+Command: bun run test:blender-absent-build
+(runner sanitizes PATH itself; legs: A game tests, B game module build,
+ C typed BLENDER_UNAVAILABLE blockage + offline verify-result of the
+ committed derivative, D donor isolation via donor:dependency-scan)
+$ bun run ./packages/adapters/test/blender/blender-absent-build.ts
+=== TEETH-T18-001: blender-absent build/test proof ===
+sanitized PATH: removed [/snap/bin]
+ PASS A: game tests green without Blender
+ PASS B: game module build green without Blender
+ PASS C: typed BLENDER_UNAVAILABLE blockage + offline verify-result of committed derivative
+ PASS D: .tmp/donor ignored and unimported
+BLENDER_ABSENT_BUILD_OK
+TEETH1_EXIT=0 (expected 0: normal build/test green + typed scoped blockage)
+
+--- CLI-level scoped blockage: prepare under stripped PATH ---
+$ bun run ./apps/studio-cli/src/index.ts capability prepare dcc.blender.process examples/blackwater-relay/.studio/requests/service-drone-retarget.yaml --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "blocked",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "dcc.blender.process",
+    "provider": "dcc.blender",
+    "code": "BLENDER_UNAVAILABLE",
+    "message": "blender executable not found on PATH. Only the dcc.blender.process regeneration/proof job is blocked (REQ-BLENDER-007); normal builds, tests, runtime, and CI consume committed accepted derivatives without Blender.",
+    "details": [],
+    "allowed_next_steps": [
+      "install Blender 5.2.2 LTS (or compatible) on this host to regenerate",
+      "produce the derivative on a donor host through dcc.blender.process and commit it with regeneration metadata",
+      "continue without regeneration: committed accepted derivatives build/test/run with zero Blender presence (REQ-BLENDER-006)"
+    ],
+    "route_preserved": "dcc.blender.process",
+    "scoped_to_regeneration": true,
+    "committed_derivatives_still_consumable": true
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "BLENDER_UNAVAILABLE",
+    "note": "Blender is an offline DCC escalation capability; absence blocks only this regeneration/proof route (REQ-BLENDER-007)."
+  }
+}
+error: script "studio" exited with code 1
+prepare exit: 1 (1 = blocked; code BLENDER_UNAVAILABLE, scoped_to_regeneration=true)
+
+Expected (prereg): Normal deterministic build/test passes using the committed accepted
+derivative; no build/test/CI step requires Blender; the dcc adapter reports a typed
+scoped blockage (regeneration blocked) while everything else stays green.
+Observed: PASS — game tests (leg A), game module build (leg B), and donor isolation
+(leg D) are green with Blender absent from PATH; leg C asserts the typed
+BLENDER_UNAVAILABLE regeneration blockage AND that the committed derivative verifies
+offline in the same stripped environment; CLI prepare reports the scoped blockage.
+
+### TEETH-T18-002 ###
+/bin/bash: line 48: .blend: command not found
+Attack: Attempt to store quest/NPC semantic state in  metadata as authority.
+Expected: Asset/runtime authority checks reject it; semantic state stays Koota-only.
+
+--- fresh run of the authority teeth tests (3 rejection layers) ---
+Command: bun test packages/adapters/test/blender/blender-authority.test.ts packages/adapters/test/blender/blender-adapter.test.ts
+bun test v1.4.0 (34cbb9a40)
+
+packages/adapters/test/blender/blender-adapter.test.ts:
+(pass) blender preflight > discovers blender and records the version verbatim [0.22ms]
+(pass) blender preflight > reports typed scoped unavailability when blender is absent [0.05ms]
+(pass) blender preflight > refuses an unparseable DCC build [0.05ms]
+(pass) blender preflight > parses both --version and banner probe line shapes [0.02ms]
+(pass) escalation rationale (REQ-BLENDER-002) > accepts a rationale that records rejected lighter routes [0.09ms]
+(pass) escalation rationale (REQ-BLENDER-002) > blocks a request without a rationale or without rejected routes [0.03ms]
+(pass) DCC metadata authority boundary (REQ-BLENDER-005) > accepts structural provenance metadata [0.31ms]
+(pass) DCC metadata authority boundary (REQ-BLENDER-005) > rejects quest/NPC gameplay semantics with findings [0.19ms]
+(pass) deterministic invocation contract > builds the exact background argv [0.03ms]
+(pass) deterministic invocation contract > captures exit codes from a trivial deterministic subprocess [1.09ms]
+(pass) source definition intake > rejects an invalid definition structurally [0.20ms]
+(pass) source definition intake > rejects gameplay semantics before any Blender run [0.31ms]
+
+packages/adapters/test/blender/blender-authority.test.ts:
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > layer 1: poisoned dcc_metadata in the source definition blocks before Blender [1.33ms]
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > layer 2: a committed result with poisoned bake-report metadata fails AUTHORITY_BOUNDARY offline [15.16ms]
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > layer 3: runtime Koota authority stays intact alongside the derivative [30.32ms]
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > rejection (not silent filtering) is the contract [0.14ms]
+
+ 16 pass
+ 0 fail
+ 39 expect() calls
+Ran 16 tests across 2 files. [226.00ms]
+TEETH2_EXIT=0
+
+Rejection layers exercised:
+ 1. pipeline/definition intake: poisoned dcc_metadata (quest_state, quest_giver, npc,
+    faction_reputation) -> blocked DCC_METADATA_REJECTED BEFORE any Blender execution
+ 2. verify-result: committed result with poisoned bake-report metadata -> AUTHORITY_BOUNDARY
+    fail, offline, no Blender required for the rejection
+ 3. runtime: Koota GameWorld keeps semantic authority (provider objects in semantic state
+    rejected, e.g. Object3D); DCC affordance metadata stays inert data only
+
+Observed: PASS — all three layers reject; benign structural provenance metadata
+(gw_asset_id/gw_route) still flows through both the pipeline and the verifier.

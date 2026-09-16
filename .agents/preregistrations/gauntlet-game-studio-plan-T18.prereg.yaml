@@ -1,0 +1,65 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T18
+title: Implement Blender escalation and committed derived-asset workflow
+proof_level: P3
+timestamp: "2026-09-15T14:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T18-001
+    statement: >-
+      Heavy DCC work can be reproduced and provenance-tracked without making Blender a
+      runtime/build dependency or semantic authority. Concretely: the Blackwater Relay
+      service-drone animation retarget/bake is produced through one isolated escalation
+      capability (`dcc.blender.process`) that runs deterministic `blender --background
+      --factory-startup --python <script>` invocations (Blender 5.2.2 LTS) with a recorded
+      escalation rationale (why lighter routes — procedural, sourced, reference-reconstruction —
+      are insufficient, REQ-BLENDER-002); the resulting GLB/glTF derivative returns through the
+      standard glTF-Transform normalization and Asset Registry acceptance gates as a
+      `blender`-origin derived asset (REQ-BLENDER-004) with a committed accepted AssetRecord
+      carrying source hashes and regeneration metadata (Blender version, invocation record,
+      committed script paths); the accepted derivative and its capability result file
+      (`.studio/results/service-drone-retarget.yaml`) are consumable by normal build/test/CI with
+      zero Blender presence (REQ-BLENDER-006); `studio capability verify-result dcc.blender.process
+      <result>` settles deterministically offline by re-deriving GLB validity, hashes, provenance,
+      and regeneration metadata from disk WITHOUT requiring Blender at verify time
+      (REQ-BLENDER-007); and missing Blender surfaces ONLY as a scoped regeneration blockage of
+      `dcc.blender.process` while every unrelated game/runtime verification path stays green.
+      Blender scene state and .blend-side metadata never own gameplay semantics: quest/NPC
+      semantic state found in DCC metadata is rejected by asset/runtime authority checks, and
+      Koota remains the sole semantic authority (REQ-BLENDER-005, REQ-RUNTIME-001).
+    settles:
+      - REQ-BIND-011
+      - REQ-BLENDER-001
+      - REQ-BLENDER-002
+      - REQ-BLENDER-003
+      - REQ-BLENDER-004
+      - REQ-BLENDER-005
+      - REQ-BLENDER-006
+      - REQ-BLENDER-007
+
+falsifiers:
+  - id: TEETH-T18-001
+    attack: Remove/rename the Blender executable (drop it from PATH) and run the normal game build/test.
+    expected: Normal deterministic build/test passes using the committed accepted derivative; no
+      build/test/CI step requires Blender; the dcc adapter reports a typed scoped blockage
+      (regeneration blocked) while everything else stays green.
+  - id: TEETH-T18-002
+    attack: Attempt to store quest/NPC semantic state in `.blend` metadata as authority (DCC-side
+      metadata claiming gameplay semantics, e.g. quest state on the drone rig).
+    expected: Asset/runtime authority checks reject it; semantic state stays Koota-only and the
+      accepted GLB derivative plus AssetRecord affordance metadata never auto-promotes DCC
+      metadata into gameplay semantics.
+
+independent_confirmation:
+  required: true
+  mode: independent
+  focus: >-
+    Committed accepted GLB derivative reproducible through the real Blender 5.2.2 LTS background
+    chain (source rig -> retarget/bake -> GLB -> glTF-Transform normalization -> Asset Registry
+    acceptance) with provenance and regeneration metadata; verify-result gate settling offline
+    without Blender (TEETH-T18-001: blender removed from PATH keeps normal build/test green with
+    typed scoped regeneration blockage); TEETH-T18-002: DCC-side quest/NPC semantic metadata
+    rejected by authority checks; zero runtime imports of Blender outside the dcc adapter; no new
+    npm dependencies; no git commits by the builder.

@@ -1,0 +1,629 @@
+===================================================================
+T18 GATE EVIDENCE — captured fresh 2026-09-16T19:06:48Z
+Host: Linux 6.18.35.2-microsoft-standard-WSL2 | repo: /home/sprime01/projects/gauntlet-game-studio
+Blender executable: /snap/bin/blender | version line: Blender 5.2.2 LTS
+===================================================================
+
+### SECTION 1: Real dcc.blender.process regeneration (full chain) ###
+Command: bun run ./scripts/regenerate-service-drone.ts
+Chain: blender --background --factory-startup --python generate_service_drone_source.py -- <definition> <out.blend>
+    -> blender --background --factory-startup --python retarget_bake_service_drone.py -- <blend> <definition> <raw.glb> <report.json>
+    -> glTF-Transform normalization (dedup, prune) -> examples/blackwater-relay/assets/service-drone.glb
+    -> Asset Registry intake -> accept (blender origin)
+=== dcc.blender.process regeneration: req-service-drone-retarget-001 ===
+  preflight: blender 5.2.2 LTS at /snap/bin/blender
+  source rig generated: /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend
+  retarget/bake complete; raw GLB at /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb
+  normalized derivative written: /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/service-drone.glb (dedup, prune)
+registry: service-drone already registered and accepted with identical inputs; skipping intake
+REGENERATION_SUMMARY {
+  "status": "success",
+  "asset_id": "service-drone",
+  "blender": {
+    "executable": "/snap/bin/blender",
+    "version": "5.2.2 LTS"
+  },
+  "escalation_rationale": {
+    "requested_operation": "service-drone cross-rig animation retarget and keyframe bake",
+    "reason": "The service drone must arrive with a baked hover cycle authored on a source rig and delivered onto a differently-named target skeleton. Rig-level constraint retargeting plus visual-keying bake is exactly the DCC representational class Blender exists for (REQ-BLENDER-003); no agent-editable route reproduces a visually-keyed cross-rig bake.",
+    "rejected_routes": [
+      {
+        "route": "procedural-three-animation",
+        "reason": "Hand-authored Three.js AnimationClips would bypass the retarget: they cannot take an armature action from a source rig and visually bake it onto a different skeleton, and hand-posing keyframes duplicates the work DCC constraints do exactly."
+      },
+      {
+        "route": "asset.source",
+        "reason": "No suitable licensed/CC0 service-drone rig exists with the delivery skeleton's bone naming and rest pose; an external rig would still require this same DCC retarget/bake step."
+      },
+      {
+        "route": "asset.reconstruct.reference-image",
+        "reason": "Reference reconstruction produces static geometry from imagery; it cannot author or retarget skeletal animation, and no suitable reference imagery exists for this project-owned drone."
+      },
+      {
+        "route": "asset.optimize",
+        "reason": "glTF-Transform normalization can only prune/dedup/compress an existing asset; it cannot perform rigging, retargeting, or animation baking."
+      }
+    ]
+  },
+  "source_definition": {
+    "path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json",
+    "sha256": "b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853"
+  },
+  "source_blend": {
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend",
+    "sha256": "d88503d471b81bd90c676a13636ef92d8d4199f7aa93ff42a8c6f45b48929cce"
+  },
+  "raw_glb": {
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb",
+    "sha256": "3e95857242d23e1d3c6d41e74c793f7e2e1b27b0eecc0eeb0bbbd3be5bcacdf8",
+    "bytes": 18792
+  },
+  "normalized_glb": {
+    "path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/service-drone.glb",
+    "sha256": "e0ff0f70171497aaa95ee6a205bac2a9935aa3e55da1a25e893b70f5f00fb98b",
+    "bytes": 12656,
+    "triangles": 84,
+    "animations": [
+      "hover_cycle"
+    ],
+    "nodes": [
+      "tgt_body",
+      "tgt_hull",
+      "tgt_rotor_a",
+      "tgt_rotor_b",
+      "tgt_rotor_c",
+      "tgt_rotor_d",
+      "drone-body",
+      "drone-hull",
+      "drone-rotor-a",
+      "drone-rotor-b",
+      "drone-rotor-c",
+      "drone-rotor-d",
+      "drone-sensor-mast",
+      "DroneRigTarget"
+    ]
+  },
+  "bake_report": {
+    "path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.bake-report.json",
+    "sha256": "fbb072e57b04473c4cb923a29782794d9fdefa79150f096df6018c3e53dc2a9c"
+  },
+  "invocations": [
+    {
+      "argv": [
+        "/snap/bin/blender",
+        "--background",
+        "--factory-startup",
+        "--python",
+        "/home/sprime01/projects/gauntlet-game-studio/packages/adapters/src/dcc/blender/scripts/generate_service_drone_source.py",
+        "--",
+        "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json",
+        "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend"
+      ],
+      "exit_code": 0,
+      "duration_ms": 3033,
+      "stdout_tail": "[generate_service_drone_source] built action 'src_hover_cycle' (1..24)\nInfo: Saved as \"service-drone.source.blend\"\nGENERATE_SOURCE_RESULT {\"actions\": [\"src_hover_cycle\"], \"armature\": \"DroneRigSource\", \"bones\": [\"src_root\", \"src_hull\", \"src_rotor_fl\", \"src_rotor_fr\", \"src_rotor_rl\", \"src_rotor_rr\"], \"definition_sha256\": \"b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853\", \"output_blend_sha256\": \"d88503d471b81bd90c676a13636ef92d8d4199f7aa93ff42a8c6f45b48929cce\"}\n[generate_service_drone_source] saved /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:34:58)\n\nBlender quit\n",
+      "stderr_tail": "",
+      "ok": true,
+      "stdout": "[generate_service_drone_source] built action 'src_hover_cycle' (1..24)\nInfo: Saved as \"service-drone.source.blend\"\nGENERATE_SOURCE_RESULT {\"actions\": [\"src_hover_cycle\"], \"armature\": \"DroneRigSource\", \"bones\": [\"src_root\", \"src_hull\", \"src_rotor_fl\", \"src_rotor_fr\", \"src_rotor_rl\", \"src_rotor_rr\"], \"definition_sha256\": \"b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853\", \"output_blend_sha256\": \"d88503d471b81bd90c676a13636ef92d8d4199f7aa93ff42a8c6f45b48929cce\"}\n[generate_service_drone_source] saved /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:34:58)\n\nBlender quit\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/snap/bin/blender",
+        "--background",
+        "--factory-startup",
+        "--python",
+        "/home/sprime01/projects/gauntlet-game-studio/packages/adapters/src/dcc/blender/scripts/retarget_bake_service_drone.py",
+        "--",
+        "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend",
+        "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json",
+        "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb",
+        "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.bake-report.json"
+      ],
+      "exit_code": 0,
+      "duration_ms": 3320,
+      "stdout_tail": "00:02.062  blend            | Read blend: \"/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend\"\n[retarget_bake_service_drone] built target rig 'DroneRigTarget' (6 bones)\n[retarget_bake_service_drone] built 7 skinned mesh parts\n[retarget_bake_service_drone] retargeted 6 bone channel(s) via ['COPY_TRANSFORMS', 'COPY_ROTATION']\n[retarget_bake_service_drone] baked action 'hover_cycle' with 60 fcurve(s)\nINFO Draco is available, use library at /snap/blender/7803/lib/libbf_intern_draco_bridge.so\nINFO MeshOptimizer is available, use library at /snap/blender/7803/lib/libbf_intern_meshopt_bridge.so\n15:06:55 | INFO: Starting glTF 2.0 export\n15:06:55 | INFO: Extracting primitive: drone-body\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-hull\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-a\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-b\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-c\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-d\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-sensor-mast\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Finished glTF 2.0 export in 0.08380413055419922 s\n\n[retarget_bake_service_drone] exported /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb\nRETARGET_BAKE_RESULT {\"baked_action\": \"hover_cycle\", \"blender_version\": \"5.2.2 LTS\", \"fcurves\": 60, \"raw_glb_sha256\": \"3e95857242d23e1d3c6d41e74c793f7e2e1b27b0eecc0eeb0bbbd3be5bcacdf8\", \"triangles\": 84}\n[retarget_bake_service_drone] wrote /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.bake-report.json\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:34:58)\n\nBlender quit\n",
+      "stderr_tail": "",
+      "ok": true,
+      "stdout": "00:02.062  blend            | Read blend: \"/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend\"\n[retarget_bake_service_drone] built target rig 'DroneRigTarget' (6 bones)\n[retarget_bake_service_drone] built 7 skinned mesh parts\n[retarget_bake_service_drone] retargeted 6 bone channel(s) via ['COPY_TRANSFORMS', 'COPY_ROTATION']\n[retarget_bake_service_drone] baked action 'hover_cycle' with 60 fcurve(s)\nINFO Draco is available, use library at /snap/blender/7803/lib/libbf_intern_draco_bridge.so\nINFO MeshOptimizer is available, use library at /snap/blender/7803/lib/libbf_intern_meshopt_bridge.so\n15:06:55 | INFO: Starting glTF 2.0 export\n15:06:55 | INFO: Extracting primitive: drone-body\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-hull\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-a\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-b\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-c\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-rotor-d\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Extracting primitive: drone-sensor-mast\n15:06:55 | INFO: Primitives created: 1\n15:06:55 | INFO: Finished glTF 2.0 export in 0.08380413055419922 s\n\n[retarget_bake_service_drone] exported /home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb\nRETARGET_BAKE_RESULT {\"baked_action\": \"hover_cycle\", \"blender_version\": \"5.2.2 LTS\", \"fcurves\": 60, \"raw_glb_sha256\": \"3e95857242d23e1d3c6d41e74c793f7e2e1b27b0eecc0eeb0bbbd3be5bcacdf8\", \"triangles\": 84}\n[retarget_bake_service_drone] wrote /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.bake-report.json\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:34:58)\n\nBlender quit\n",
+      "stderr": ""
+    }
+  ],
+  "normalization": {
+    "transformations": [
+      "dedup",
+      "prune"
+    ],
+    "profile_id": "dcc-blender-baseline"
+  }
+}
+SECTION1_EXIT=0
+
+### SECTION 2: Declared narrow gate — deterministic offline verify-result ###
+Command: bun run studio -- capability verify-result dcc.blender.process examples/blackwater-relay/.studio/results/service-drone-retarget.yaml --json
+(no Blender invocation, no network, no model credentials at verify time)
+$ bun run ./apps/studio-cli/src/index.ts capability verify-result dcc.blender.process examples/blackwater-relay/.studio/results/service-drone-retarget.yaml --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.capability.verify-result",
+  "result": {
+    "ok": true,
+    "checks": [
+      {
+        "id": "RESULT_SCHEMA",
+        "status": "pass",
+        "detail": "CapabilityResult 'res-req-service-drone-retarget-001' satisfies studio contracts"
+      },
+      {
+        "id": "REQUEST_CORRELATION",
+        "status": "pass",
+        "detail": "result 'res-req-service-drone-retarget-001' correlates with request 'req-service-drone-retarget-001' (capability dcc.blender.process)"
+      },
+      {
+        "id": "PROVIDER_BINDING",
+        "status": "pass",
+        "detail": "accepted output bound to dcc.blender"
+      },
+      {
+        "id": "ARTIFACT_INTEGRITY",
+        "status": "pass",
+        "detail": "committed committed_glb_derivative artifact present and hash-verified: assets/service-drone.glb"
+      },
+      {
+        "id": "ARTIFACT_INTEGRITY",
+        "status": "pass",
+        "detail": "committed regeneration_metadata artifact present and hash-verified: assets/dcc/service-drone/service-drone.bake-report.json"
+      },
+      {
+        "id": "GLB_VALIDITY",
+        "status": "pass",
+        "detail": "standard glTF 2.0 GLB parses: 84 triangle(s), 14 node(s), animation clip(s) [hover_cycle]"
+      },
+      {
+        "id": "BUDGET",
+        "status": "pass",
+        "detail": "recomputed measurements (84 triangles, 12656 bytes) within declared limits"
+      },
+      {
+        "id": "REGENERATION_METADATA",
+        "status": "pass",
+        "detail": "regeneration provenance complete: Blender 5.2.2 LTS, 2 recorded invocation(s) with deterministic background argv, committed scripts present, source definition hash verified"
+      },
+      {
+        "id": "PROVENANCE_ACCEPTANCE",
+        "status": "pass",
+        "detail": "accepted blender-origin AssetRecord(s) [service-drone] wired to the committed derivative with verified source hash (REQ-BLENDER-004)"
+      },
+      {
+        "id": "AUTHORITY_BOUNDARY",
+        "status": "pass",
+        "detail": "DCC-side metadata (bake report + GLB node extras) carries structural provenance only; no quest/NPC gameplay semantics (Koota stays the sole semantic authority)"
+      },
+      {
+        "id": "OFFLINE_VERIFICATION",
+        "status": "pass",
+        "detail": "recorded run declares zero model invocation, zero network access, and no Blender requirement at verify time; this verifier invokes no Blender by construction"
+      }
+    ],
+    "recomputed": {
+      "file_bytes": 12656,
+      "glb_sha256": "e0ff0f70171497aaa95ee6a205bac2a9935aa3e55da1a25e893b70f5f00fb98b",
+      "triangles": 84,
+      "animations": [
+        "hover_cycle"
+      ],
+      "blender_version_recorded": "5.2.2 LTS"
+    }
+  },
+  "diagnostics": {
+    "verified": true,
+    "capability": "dcc.blender.process",
+    "result_file": "examples/blackwater-relay/.studio/results/service-drone-retarget.yaml",
+    "deterministic": true,
+    "blender_invocation": "none",
+    "network_access": "none",
+    "failed_checks": []
+  }
+}
+SECTION2_EXIT=0
+
+### SECTION 3: Declared narrow gate — test:blender-absent-build ###
+Command: bun run test:blender-absent-build
+(Blender removed from PATH by env manipulation; .tmp/donor ignored)
+$ bun run ./packages/adapters/test/blender/blender-absent-build.ts
+=== TEETH-T18-001: blender-absent build/test proof ===
+sanitized PATH: removed [/snap/bin]
+ PASS A: game tests green without Blender
+ PASS B: game module build green without Blender
+ PASS C: typed BLENDER_UNAVAILABLE blockage + offline verify-result of committed derivative
+ PASS D: .tmp/donor ignored and unimported
+BLENDER_ABSENT_BUILD_OK
+SECTION3_EXIT=0
+
+### SECTION 4: capability prepare — ready with Blender present ###
+Command: bun run studio -- capability prepare dcc.blender.process examples/blackwater-relay/.studio/requests/service-drone-retarget.yaml --json
+$ bun run ./apps/studio-cli/src/index.ts capability prepare dcc.blender.process examples/blackwater-relay/.studio/requests/service-drone-retarget.yaml --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "dcc.blender.process",
+    "provider": "dcc.blender",
+    "blender": {
+      "executable": "/snap/bin/blender",
+      "version": "5.2.2 LTS",
+      "detail": "blender 5.2.2 LTS at /snap/bin/blender"
+    },
+    "plan": {
+      "steps": [
+        "generate source rig .blend from assets/dcc/service-drone/service-drone.source.json (generate_service_drone_source.py)",
+        "retarget onto the delivery rig, bake keyframes, export raw GLB (retarget_bake_service_drone.py)",
+        "normalize through glTF-Transform onto the committed derivative path",
+        "intake + accept through the project Asset Registry as a blender-origin derived asset"
+      ],
+      "invocation_form": "blender --background --factory-startup --python <script> -- <args>",
+      "source_definition": "assets/dcc/service-drone/service-drone.source.json",
+      "output_glb": "assets/service-drone.glb",
+      "bake_report": "assets/dcc/service-drone/service-drone.bake-report.json"
+    },
+    "rationale": "validated before execution (REQ-BLENDER-002)"
+  },
+  "diagnostics": {
+    "deterministic": true,
+    "invocation_form": "blender --background --factory-startup --python <script> -- <args>"
+  }
+}
+SECTION4_EXIT=0
+
+### SECTION 5: capability prepare — typed scoped blockage with Blender removed from PATH ###
+Command: PATH=<stripped of blender dirs> bun run studio -- capability prepare dcc.blender.process examples/blackwater-relay/.studio/requests/service-drone-retarget.yaml --json
+$ bun run ./apps/studio-cli/src/index.ts capability prepare dcc.blender.process examples/blackwater-relay/.studio/requests/service-drone-retarget.yaml --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "blocked",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "dcc.blender.process",
+    "provider": "dcc.blender",
+    "code": "BLENDER_UNAVAILABLE",
+    "message": "blender executable not found on PATH. Only the dcc.blender.process regeneration/proof job is blocked (REQ-BLENDER-007); normal builds, tests, runtime, and CI consume committed accepted derivatives without Blender.",
+    "details": [],
+    "allowed_next_steps": [
+      "install Blender 5.2.2 LTS (or compatible) on this host to regenerate",
+      "produce the derivative on a donor host through dcc.blender.process and commit it with regeneration metadata",
+      "continue without regeneration: committed accepted derivatives build/test/run with zero Blender presence (REQ-BLENDER-006)"
+    ],
+    "route_preserved": "dcc.blender.process",
+    "scoped_to_regeneration": true,
+    "committed_derivatives_still_consumable": true
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "BLENDER_UNAVAILABLE",
+    "note": "Blender is an offline DCC escalation capability; absence blocks only this regeneration/proof route (REQ-BLENDER-007)."
+  }
+}
+error: script "studio" exited with code 1
+SECTION5_EXIT=1 (1 = blocked, expected: absent Blender blocks ONLY this regeneration route)
+
+### SECTION 6: Asset Registry verification incl. blender-origin record ###
+Command: bun run studio -- asset verify --project examples/blackwater-relay --all --json
+$ bun run ./apps/studio-cli/src/index.ts asset verify --project examples/blackwater-relay --all --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.asset.verify",
+  "result": {
+    "operation": "asset.verify_all",
+    "manifest_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/manifest.json",
+    "status": "success",
+    "totals": {
+      "total": 7,
+      "accepted": 7,
+      "degraded": 0,
+      "pending": 0,
+      "rejected": 0,
+      "blocked": 0,
+      "not_acceptable": 0
+    },
+    "assets": [
+      {
+        "asset_id": "kit-relay-tower",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "project",
+        "role": "relay_tower",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "kit-dock-planks",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "project",
+        "role": "dock",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "kit-maintainer-hut",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "project",
+        "role": "maintainer_hut",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "veg-shoreline-scrub",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "project",
+        "role": "vegetation_scatter",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "skybox-storm-dusk",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "project",
+        "role": "environment_sky",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "field-transceiver",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "All 1 declared budget limit(s) satisfied by measurements"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "procedural",
+        "role": "prop",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "service-drone",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "All 2 declared budget limit(s) satisfied by measurements"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "blender",
+        "role": "prop",
+        "clean_pending": false
+      }
+    ]
+  },
+  "diagnostics": {
+    "project_root": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay",
+    "manifest_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/manifest.json",
+    "total": 7,
+    "not_acceptable": 0
+  }
+}
+SECTION6_EXIT=0
+
+### SECTION 7: capability/skill surface lint (includes new dcc.blender.process descriptor) ###
+Command: bun run studio -- capabilities lint --json
+$ bun run ./apps/studio-cli/src/index.ts capabilities lint --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.capabilities.lint",
+  "result": {
+    "valid": true,
+    "issues": []
+  },
+  "diagnostics": {
+    "valid": true,
+    "total_issues": 0
+  }
+}
+SECTION7_EXIT=0
+### Committed artifact hashes ###
+e0ff0f70171497aaa95ee6a205bac2a9935aa3e55da1a25e893b70f5f00fb98b  examples/blackwater-relay/assets/service-drone.glb
+fbb072e57b04473c4cb923a29782794d9fdefa79150f096df6018c3e53dc2a9c  examples/blackwater-relay/assets/dcc/service-drone/service-drone.bake-report.json
+b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853  examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json
+
+### FINAL CLEAN GATE PASS (2026-09-16T19:12:42Z) ###
+1. bun run studio -- capability verify-result dcc.blender.process examples/blackwater-relay/.studio/results/service-drone-retarget.yaml --json
+   exit=0
+2. bun run test:blender-absent-build
+   exit=0
+3. just check
+   exit=0
+4. just test
+   exit=0
+5. just lint
+   exit=0
+6. just validate-agent-artifacts
+   exit=0

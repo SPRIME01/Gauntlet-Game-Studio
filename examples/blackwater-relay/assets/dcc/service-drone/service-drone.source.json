@@ -1,0 +1,150 @@
+{
+  "schema": "gauntlet.dcc.blender.retarget_source",
+  "schema_version": "1.0",
+  "asset_id": "service-drone",
+  "project_id": "blackwater-relay",
+  "description": "Deterministic source rig/animation definition for the Blackwater Relay service-drone animation retarget/bake (T18, REQ-BLENDER-003). Consumed by the committed bpy scripts under packages/adapters/src/dcc/blender/scripts/. The whole chain is reproducible on any host with Blender 5.2.2 LTS through the dcc.blender.process route: generate source rig -> retarget onto the delivery-rig skeleton -> bake keyframes -> export GLB -> glTF-Transform normalization -> Asset Registry acceptance. No values here are random and no wall-clock time enters the artifacts.",
+  "capability": "dcc.blender.process",
+  "budget": {
+    "max_triangles": 2000,
+    "max_file_bytes": 262144
+  },
+  "source_rig": {
+    "armature": "DroneRigSource",
+    "bones": [
+      { "name": "src_root", "head": [0.0, 0.0, 0.0], "tail": [0.0, 0.12, 0.0] },
+      { "name": "src_hull", "head": [0.0, 0.12, 0.0], "tail": [0.0, 0.3, 0.0] },
+      { "name": "src_rotor_fl", "head": [-0.2, 0.28, 0.0], "tail": [-0.2, 0.34, 0.0] },
+      { "name": "src_rotor_fr", "head": [0.2, 0.28, 0.0], "tail": [0.2, 0.34, 0.0] },
+      { "name": "src_rotor_rl", "head": [-0.2, -0.12, 0.0], "tail": [-0.2, -0.06, 0.0] },
+      { "name": "src_rotor_rr", "head": [0.2, -0.12, 0.0], "tail": [0.2, -0.06, 0.0] }
+    ],
+    "actions": [
+      {
+        "name": "src_hover_cycle",
+        "frame_start": 1,
+        "frame_end": 24,
+        "channels": {
+          "src_root": {
+            "location": [
+              [1, [0.0, 0.0, 0.0]],
+              [12, [0.0, 0.0, 0.15]],
+              [24, [0.0, 0.0, 0.0]]
+            ]
+          },
+          "src_hull": {
+            "rotation_euler": [
+              [1, [0.0, 0.0, 0.0]],
+              [12, [0.06, 0.0, 0.0]],
+              [24, [0.0, 0.0, 0.0]]
+            ]
+          },
+          "src_rotor_fl": {
+            "rotation_euler": [
+              [1, [0.0, 0.0, 0.0]],
+              [24, [0.0, 0.0, 6.283185307179586]]
+            ]
+          },
+          "src_rotor_fr": {
+            "rotation_euler": [
+              [1, [0.0, 0.0, 0.0]],
+              [24, [0.0, 0.0, -6.283185307179586]]
+            ]
+          },
+          "src_rotor_rl": {
+            "rotation_euler": [
+              [1, [0.0, 0.0, 0.0]],
+              [24, [0.0, 0.0, 6.283185307179586]]
+            ]
+          },
+          "src_rotor_rr": {
+            "rotation_euler": [
+              [1, [0.0, 0.0, 0.0]],
+              [24, [0.0, 0.0, -6.283185307179586]]
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "target_rig": {
+    "armature": "DroneRigTarget",
+    "bones": [
+      { "name": "tgt_body", "head": [0.0, 0.0, 0.0], "tail": [0.0, 0.12, 0.0] },
+      { "name": "tgt_hull", "head": [0.0, 0.12, 0.0], "tail": [0.0, 0.3, 0.0] },
+      { "name": "tgt_rotor_a", "head": [-0.2, 0.28, 0.0], "tail": [-0.2, 0.34, 0.0] },
+      { "name": "tgt_rotor_b", "head": [0.2, 0.28, 0.0], "tail": [0.2, 0.34, 0.0] },
+      { "name": "tgt_rotor_c", "head": [-0.2, -0.12, 0.0], "tail": [-0.2, -0.06, 0.0] },
+      { "name": "tgt_rotor_d", "head": [0.2, -0.12, 0.0], "tail": [0.2, -0.06, 0.0] }
+    ],
+    "retarget_map": [
+      { "source": "src_root", "target": "tgt_body", "mode": "transform" },
+      { "source": "src_hull", "target": "tgt_hull", "mode": "rotation" },
+      { "source": "src_rotor_fl", "target": "tgt_rotor_a", "mode": "rotation" },
+      { "source": "src_rotor_fr", "target": "tgt_rotor_b", "mode": "rotation" },
+      { "source": "src_rotor_rl", "target": "tgt_rotor_c", "mode": "rotation" },
+      { "source": "src_rotor_rr", "target": "tgt_rotor_d", "mode": "rotation" }
+    ]
+  },
+  "mesh": {
+    "parts": [
+      {
+        "name": "drone-body",
+        "bone": "tgt_body",
+        "center": [0.0, 0.06, 0.0],
+        "size": [0.1, 0.12, 0.08]
+      },
+      {
+        "name": "drone-hull",
+        "bone": "tgt_hull",
+        "center": [0.0, 0.2, 0.0],
+        "size": [0.16, 0.2, 0.1]
+      },
+      {
+        "name": "drone-sensor-mast",
+        "bone": "tgt_hull",
+        "center": [0.0, 0.34, 0.0],
+        "size": [0.02, 0.08, 0.02]
+      },
+      {
+        "name": "drone-rotor-a",
+        "bone": "tgt_rotor_a",
+        "center": [-0.2, 0.31, 0.0],
+        "size": [0.22, 0.22, 0.015]
+      },
+      {
+        "name": "drone-rotor-b",
+        "bone": "tgt_rotor_b",
+        "center": [0.2, 0.31, 0.0],
+        "size": [0.22, 0.22, 0.015]
+      },
+      {
+        "name": "drone-rotor-c",
+        "bone": "tgt_rotor_c",
+        "center": [-0.2, -0.09, 0.0],
+        "size": [0.22, 0.22, 0.015]
+      },
+      {
+        "name": "drone-rotor-d",
+        "bone": "tgt_rotor_d",
+        "center": [0.2, -0.09, 0.0],
+        "size": [0.22, 0.22, 0.015]
+      }
+    ]
+  },
+  "bake": {
+    "frame_start": 1,
+    "frame_end": 24,
+    "visual_keying": true,
+    "clear_constraints": true
+  },
+  "export": {
+    "format": "GLB",
+    "animation_name": "hover_cycle"
+  },
+  "dcc_metadata": {
+    "gw_asset_id": "service-drone",
+    "gw_route": "dcc.blender.process",
+    "gw_note": "DCC-side metadata records only structural provenance affordances. Gameplay semantics (quests, NPCs, dialogue, objectives) NEVER live here; they stay in the game's Koota-authored model (REQ-BLENDER-005)."
+  }
+}

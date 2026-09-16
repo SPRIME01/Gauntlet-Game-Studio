@@ -48,6 +48,11 @@ import {
   verifyImg2ThreeJsResult,
 } from "@gauntlet/adapters";
 import {
+  DCC_BLENDER_PROCESS_CAPABILITY,
+  prepareBlenderProcess,
+  verifyBlenderProcessResult,
+} from "@gauntlet/adapters";
+import {
   buildFixtureScenario,
   runScenario,
   type ChannelEvidence,
@@ -486,6 +491,66 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
               }));
               normalizedHandoff = prep.handoff;
             }
+            // T18 (REQ-BIND-011, REQ-BLENDER-001/002/005/007): the Blender DCC
+            // escalation route validates its rationale, committed source
+            // definition, DCC metadata authority boundary, and Blender
+            // preflight BEFORE any execution. Missing Blender is a typed,
+            // SCOPED blockage of regeneration only (REQ-BLENDER-007).
+            if (firstArg === DCC_BLENDER_PROCESS_CAPABILITY) {
+              const capability = defaultCapabilityRegistry.get(firstArg);
+              if (!capability) throw new Error(`Capability '${firstArg}' is not registered`);
+              const prep = await prepareBlenderProcess(request, capability, {
+                projectRoot: projectRootForFile(requestFile),
+                repoRoot: repoRootForFile(requestFile),
+              });
+              if (prep.status === "blocked") {
+                const res: StudioResult = {
+                  status: "blocked",
+                  operation: "studio.capability.prepare",
+                  result: {
+                    capability_id: prep.capability_id,
+                    provider: prep.provider,
+                    code: prep.code,
+                    message: prep.message,
+                    details: prep.details ?? [],
+                    allowed_next_steps: prep.allowed_next_steps,
+                    route_preserved: firstArg,
+                    scoped_to_regeneration: true,
+                    committed_derivatives_still_consumable: true,
+                  },
+                  diagnostics: {
+                    blocked: true,
+                    code: prep.code,
+                    note: "Blender is an offline DCC escalation capability; absence blocks only this regeneration/proof route (REQ-BLENDER-007).",
+                  },
+                };
+                if (isJson) console.log(JSON.stringify(res, null, 2));
+                else {
+                  console.error(`Blocked (${prep.code}): ${prep.message}`);
+                  for (const d of prep.details ?? []) console.error(`  - ${d}`);
+                  for (const s of prep.allowed_next_steps) console.error(`  next: ${s}`);
+                }
+                return 1;
+              }
+              const res: StudioResult = {
+                status: "success",
+                operation: "studio.capability.prepare",
+                result: {
+                  capability_id: prep.capability_id,
+                  provider: prep.provider,
+                  blender: prep.blender,
+                  plan: prep.plan,
+                  rationale: "validated before execution (REQ-BLENDER-002)",
+                },
+                diagnostics: {
+                  deterministic: true,
+                  invocation_form: prep.plan.invocation_form,
+                },
+              };
+              if (isJson) console.log(JSON.stringify(res, null, 2));
+              else console.log(`Prepared ${prep.capability_id} via ${prep.provider}: blender ${prep.blender.version}`);
+              return 0;
+            }
             rawRequest = request;
             referenceEvidenceFor = referenceEvidence;
             handoffOverride = normalizedHandoff;
@@ -626,6 +691,43 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
                 console.log(JSON.stringify(res, null, 2));
               } else {
                 console.log(`\n=== Reference Reconstruction Result Verification (${firstArg}) ===`);
+                for (const c of outcome.checks) {
+                  console.log(` ${c.status === "pass" ? "✓" : "✗"} [${c.id}] ${c.detail}`);
+                }
+                console.log(`Status: ${outcome.ok ? "VALID" : "INVALID"}\n`);
+              }
+              return outcome.ok ? 0 : 1;
+            }
+            if (firstArg === DCC_BLENDER_PROCESS_CAPABILITY) {
+              // T18 (REQ-BIND-011, REQ-BLENDER-004/006/007): deterministic offline
+              // verification of the committed accepted derivative — GLB validity,
+              // hashes, provenance, regeneration metadata, DCC authority boundary.
+              // Zero Blender invocation, zero network, zero model credentials.
+              const resultPath = path.resolve(process.cwd(), resultFile);
+              const outcome = await verifyBlenderProcessResult(loadCapabilityFile(resultFile), {
+                resultPath,
+                projectRoot: projectRootForFile(resultFile),
+                repoRoot: repoRootForFile(resultFile),
+                capabilityId: firstArg,
+              });
+              const res: StudioResult = {
+                status: outcome.ok ? "success" : "failed",
+                operation: "studio.capability.verify-result",
+                result: outcome,
+                diagnostics: {
+                  verified: outcome.ok,
+                  capability: firstArg,
+                  result_file: resultFile,
+                  deterministic: true,
+                  blender_invocation: "none",
+                  network_access: "none",
+                  failed_checks: outcome.checks.filter((c) => c.status === "fail").map((c) => c.id),
+                },
+              };
+              if (isJson) {
+                console.log(JSON.stringify(res, null, 2));
+              } else {
+                console.log(`\n=== Blender DCC Derivative Result Verification (${firstArg}) ===`);
                 for (const c of outcome.checks) {
                   console.log(` ${c.status === "pass" ? "✓" : "✗"} [${c.id}] ${c.detail}`);
                 }

@@ -174,6 +174,39 @@ export const CAPABILITY_CATALOG: CapabilityDescriptor[] = [
     providers: ["dcc.blender"],
   },
   {
+    id: "dcc.blender.process",
+    summary:
+      "Isolated Blender DCC escalation and regeneration (deterministic blender --background --factory-startup scripts) for work lighter routes cannot satisfy, e.g. cross-rig animation retargeting and bake. Accepted GLB/glTF derivatives commit through the Asset Registry; normal builds, tests, runtime, and CI consume them WITHOUT Blender. Absent Blender is a scoped regeneration blockage only.",
+    use_when: [
+      "cross-rig animation retargeting and keyframe bake",
+      "regenerating a committed blender-derived asset from its source definition",
+      "difficult rigging or skinning work beyond procedural routes",
+    ],
+    do_not_use_when: [
+      "default scene/world authoring (Blender is never the default authoring environment)",
+      "authoritative gameplay state or quest/NPC semantics",
+      "reconstructing a specific depicted object from reference imagery",
+      "ordinary asset normalization (use asset.optimize)",
+    ],
+    inputs: [
+      "source_definition",
+      "escalation_rationale",
+      "output_glb_path",
+      "bake_report_path",
+      "budget_limits",
+    ],
+    outputs: ["committed_glb_derivative", "asset_record", "bake_report"],
+    verification: [
+      "deterministic_result_verification",
+      "glb_validity_check",
+      "provenance_check",
+      "regeneration_metadata_check",
+      "dcc_metadata_authority_check",
+    ],
+    providers: ["dcc.blender"],
+    cost_class: "expensive",
+  },
+  {
     id: "vfx.particles",
     summary: "Inspectable particle systems and visual effects using three.quarks. Creates localized particle emitters, smoke, sparks, and glow effects as execution projections over the scene graph.",
     use_when: [

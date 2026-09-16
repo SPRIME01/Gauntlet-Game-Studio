@@ -42,6 +42,9 @@ capabilities:
   asset.dcc_escalate:
     provider: "dcc.blender"
     version: "1.0.0"
+  dcc.blender.process:
+    provider: "dcc.blender"
+    version: "1.0.0"
   vfx.particles:
     provider: "vfx.quarks"
     version: "1.0.0"

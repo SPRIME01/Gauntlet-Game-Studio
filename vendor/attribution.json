@@ -107,6 +107,18 @@
         "repository": "https://polyhaven.com",
         "purpose": "PBR textures, HDRI skyboxes, and environmental asset sourcing"
       }
+    ],
+    "dcc_tooling": [
+      {
+        "tool": "blender",
+        "version": "5.2.2 LTS",
+        "license": "GPL-2.0-or-later",
+        "repository": "https://www.blender.org",
+        "capability": "dcc.blender.process",
+        "purpose": "Offline DCC escalation (animation retarget/bake) producing the committed service-drone GLB derivative. Blender is never shipped, never imported, and never required at game build/test/runtime/CI time; only its standard glTF output is committed (blender-derived provenance class in the Asset Registry, REQ-BLENDER-004/006).",
+        "output_class": "blender-derived",
+        "invocation_form": "blender --background --factory-startup --python <committed bpy script> -- <args>"
+      }
     ]
   }
 }

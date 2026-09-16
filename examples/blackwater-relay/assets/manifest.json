@@ -148,6 +148,56 @@
         ".studio/results/transceiver.yaml",
         "references/field-transceiver/reference.png"
       ]
+    },
+    {
+      "id": "service-drone",
+      "role": "prop",
+      "origin": "blender",
+      "construction_route": "dcc.blender.process",
+      "source_provenance": {
+        "uri": "assets/dcc/service-drone/service-drone.source.json",
+        "license": "project-owned",
+        "author": "gauntlet coding agent via dcc.blender.process (T18)",
+        "sha256": "b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853"
+      },
+      "runtime_representation": "glb:assets/service-drone.glb",
+      "budget": {
+        "max_triangles": 2000,
+        "measured_triangles": 84,
+        "max_file_bytes": 262144,
+        "measured_file_bytes": 12656
+      },
+      "acceptance_state": "accepted",
+      "semantic_nodes": [
+        "tgt_body",
+        "tgt_hull",
+        "tgt_rotor_a",
+        "tgt_rotor_b",
+        "tgt_rotor_c",
+        "tgt_rotor_d",
+        "drone-body",
+        "drone-hull",
+        "drone-rotor-a",
+        "drone-rotor-b",
+        "drone-rotor-c",
+        "drone-rotor-d",
+        "drone-sensor-mast",
+        "DroneRigTarget"
+      ],
+      "collider_policy": "no collider nodes in derivative; ambient animated prop, collision semantics owned by the game model",
+      "lod_policy": "single-lod; LOD generation deferred to the asset.optimize route",
+      "animation_contract": {
+        "clips": [
+          "hover_cycle"
+        ],
+        "frames": "1..24",
+        "source": "retargeted from DroneRigSource hover cycle and baked via dcc.blender.process",
+        "note": "Animation contract is recorded AssetRecord affordance metadata only; the game model owns any semantics (REQ-BLENDER-005)."
+      },
+      "verification_refs": [
+        ".studio/results/service-drone-retarget.yaml",
+        "assets/dcc/service-drone/service-drone.bake-report.json"
+      ]
     }
   ],
   "history": [
@@ -179,6 +229,26 @@
       "at": "2026-09-16T03:49:07.473Z",
       "data": {
         "route": "asset.reconstruct.reference-image/agent-skill.img2threejs"
+      }
+    },
+    {
+      "seq": 3,
+      "kind": "intake",
+      "asset_id": "service-drone",
+      "at": "2026-09-16T18:40:33.222Z",
+      "data": {
+        "origin": "blender",
+        "construction_route": "dcc.blender.process",
+        "state": "pending"
+      }
+    },
+    {
+      "seq": 4,
+      "kind": "accept",
+      "asset_id": "service-drone",
+      "at": "2026-09-16T18:40:33.223Z",
+      "data": {
+        "route": "dcc.blender.process"
       }
     }
   ],

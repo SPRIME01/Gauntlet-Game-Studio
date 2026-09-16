@@ -1,6 +1,6 @@
 # Third-Party Notices and Provenance
 
-Gauntlet Game Studio strictly classifies all external code, assets, skills, and dependencies into five mutually exclusive provenance and attribution classes (`REQ-SOURCE-006`).
+Gauntlet Game Studio strictly classifies all external code, assets, skills, dependencies, and DCC tooling into mutually exclusive provenance and attribution classes (`REQ-SOURCE-006`): the five intake classes below, plus `dcc_tooling` (section 6) for offline DCC escalation tools whose committed outputs are standard runtime assets.
 
 ## 1. Runtime Package Dependencies (`runtime_dependency`)
 Standard pinned packages managed by package managers, resolved through one authoritative dependency graph.
@@ -30,3 +30,7 @@ Any adapted code transplanted into studio packages.
 ## 5. External Content Assets (`external_asset`)
 Media assets, textures, skyboxes, and models with explicit licensing and checksums.
 - **Poly Haven**: CC0 HDRIs and PBR textures.
+
+## 6. DCC Tooling (`dcc_tooling`)
+Offline digital-content-creation tools used only for escalation/regeneration of committed derived assets. The tool is never shipped, never imported, and never a runtime/build/CI dependency; only its standard glTF/GLB output is committed, tracked as the `blender` provenance class in the Asset Registry (`REQ-BLENDER-004/006`).
+- **Blender** (`5.2.2 LTS`, GPL-2.0-or-later, https://www.blender.org): deterministic `--background --factory-startup` bpy retarget/bake for the Blackwater Relay service-drone derivative through the `dcc.blender.process` route.

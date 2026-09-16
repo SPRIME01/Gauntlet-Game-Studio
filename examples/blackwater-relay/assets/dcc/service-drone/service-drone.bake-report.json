@@ -1,0 +1,89 @@
+{
+  "asset_id": "service-drone",
+  "bake": {
+    "baked_action": "hover_cycle",
+    "clear_constraints": true,
+    "fcurves": 60,
+    "frame_end": 24,
+    "frame_start": 1,
+    "visual_keying": true
+  },
+  "blender": {
+    "version": [
+      5,
+      2,
+      2
+    ],
+    "version_string": "5.2.2 LTS"
+  },
+  "capability": "dcc.blender.process",
+  "dcc_metadata": {
+    "gw_asset_id": "service-drone",
+    "gw_note": "DCC-side metadata records only structural provenance affordances. Gameplay semantics (quests, NPCs, dialogue, objectives) NEVER live here; they stay in the game's Koota-authored model (REQ-BLENDER-005).",
+    "gw_route": "dcc.blender.process"
+  },
+  "export": {
+    "animations": [
+      "hover_cycle"
+    ],
+    "format": "GLB",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.raw.glb",
+    "sha256": "3e95857242d23e1d3c6d41e74c793f7e2e1b27b0eecc0eeb0bbbd3be5bcacdf8",
+    "triangles": 84
+  },
+  "invocation": {
+    "mode": "blender --background --factory-startup --python <script> -- <args>",
+    "scripts": [
+      "retarget_bake_service_drone.py"
+    ]
+  },
+  "retarget": {
+    "constraint_types": [
+      "COPY_TRANSFORMS",
+      "COPY_ROTATION"
+    ],
+    "mapped_bones": [
+      {
+        "mode": "transform",
+        "source": "src_root",
+        "target": "tgt_body"
+      },
+      {
+        "mode": "rotation",
+        "source": "src_hull",
+        "target": "tgt_hull"
+      },
+      {
+        "mode": "rotation",
+        "source": "src_rotor_fl",
+        "target": "tgt_rotor_a"
+      },
+      {
+        "mode": "rotation",
+        "source": "src_rotor_fr",
+        "target": "tgt_rotor_b"
+      },
+      {
+        "mode": "rotation",
+        "source": "src_rotor_rl",
+        "target": "tgt_rotor_c"
+      },
+      {
+        "mode": "rotation",
+        "source": "src_rotor_rr",
+        "target": "tgt_rotor_d"
+      }
+    ],
+    "source_armature": "DroneRigSource",
+    "target_armature": "DroneRigTarget"
+  },
+  "schema": "gauntlet.dcc.blender.bake_report",
+  "schema_version": "1.0",
+  "source": {
+    "blend_generated_by": "generate_service_drone_source.py",
+    "blend_path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/dcc-blender/service-drone/service-drone.source.blend",
+    "blend_sha256_note": "regenerable intermediate; not pinned (per-save session UID)",
+    "definition_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/assets/dcc/service-drone/service-drone.source.json",
+    "definition_sha256": "b64d022f717792a50dca9c47f4488901d1fdf6e25092002c2e77f609b9e6f853"
+  }
+}
