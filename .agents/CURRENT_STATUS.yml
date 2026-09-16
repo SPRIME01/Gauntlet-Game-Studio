@@ -13,24 +13,23 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T10
+  last_settled_task: T11
   in_flight_task: null
-  workable_task: T11
+  workable_task: T09
   ready_tasks:
     - T09
-    - T11
     - T13
     - T16
   blocked_tasks:
     T12: [T09]
     T14: [T13]
-    T15: [T11, T13]
+    T15: [T13]
     T17: [T16]
     T18: [T13]
-    T19: [T11, T12]
+    T19: [T12]
     T20: [T19]
     T21: [T19, T20]
-    T22: [T11, T13, T14, T15, T16, T17, T18, T20, T21]
+    T22: [T13, T14, T15, T16, T17, T18, T20, T21]
     T23: [T12, T22]
     T24: [T23]
     T25: [T24]
@@ -38,7 +37,7 @@ execution:
   plan_blocker: null
 
 active:
-  task: T11
+  task: T09
   phase: preregistration
   blocker: null
 
@@ -103,6 +102,12 @@ latest_evidence:
     commit: be7f763
     gate: PASS (bun test packages/runtime/test/terrain-parity.test.ts 5/5, bun test packages/runtime/test/physics.test.ts 6/6)
     teeth: PASS (attack 1 caught height transposition, attack 2 caught axis inversion and extent drift, attack 3 caught duplicate physics stepping)
+  T11:
+    report: artifacts/plan/T11/summary.md
+    confirmation: builder_with_teeth CONFIRM
+    commit: 10cdf6e
+    gate: PASS (bun test packages/runtime/test/navigation.test.ts 6/6, bun test packages/runtime/test/spatial.test.ts 5/5)
+    teeth: PASS (attack 1 detected stale corridor traversal on blocked world geometry, attack 2 verified strict fallback parity when BVH acceleration is disabled)
 
 observations:
   - status: OBSERVED
