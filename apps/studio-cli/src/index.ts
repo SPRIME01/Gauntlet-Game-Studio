@@ -168,6 +168,206 @@ function settleObserved(
 }
 
 /**
+ * Serves a built game project over loopback for browser verification (T22 suite mode):
+ * `/` + `/game.js` from `<project>/dist`, `/assets/*` from the committed asset store,
+ * and a favicon so page-driven network evidence is all-OK by construction.
+ */
+function serveProjectGame(projectRoot: string): { url: string; stop: () => void } {
+  const distDir = path.join(projectRoot, "dist");
+  const assetsDir = path.join(projectRoot, "assets");
+  const MIME: Record<string, string> = {
+    ".html": "text/html; charset=utf-8",
+    ".js": "text/javascript; charset=utf-8",
+    ".glb": "model/gltf-binary",
+    ".ico": "image/x-icon",
+  };
+  const favicon = Uint8Array.from([
+    0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x18, 0x00, 0x30, 0x00,
+    0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00,
+    0x00, 0x00, 0x01, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  ]);
+  const server = Bun.serve({
+    port: 0,
+    fetch(request) {
+      const { pathname } = new URL(request.url);
+      if (pathname === "/" || pathname === "/index.html") {
+        return new Response(fs.readFileSync(path.join(distDir, "index.html")), {
+          headers: { "content-type": MIME[".html"] },
+        });
+      }
+      if (pathname === "/game.js") {
+        return new Response(fs.readFileSync(path.join(distDir, "game.js")), {
+          headers: { "content-type": MIME[".js"] },
+        });
+      }
+      if (pathname === "/favicon.ico") {
+        return new Response(favicon, { headers: { "content-type": MIME[".ico"] } });
+      }
+      if (pathname.startsWith("/assets/")) {
+        const file = path.resolve(assetsDir, pathname.slice("/assets/".length));
+        if (!file.startsWith(assetsDir) || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
+          return new Response("not found", { status: 404 });
+        }
+        const ext = path.extname(file).toLowerCase();
+        return new Response(fs.readFileSync(file), {
+          headers: { "content-type": MIME[ext] ?? "application/octet-stream" },
+        });
+      }
+      return new Response("not found", { status: 404 });
+    },
+  });
+  return { url: `http://127.0.0.1:${server.port}`, stop: () => server.stop(true) };
+}
+
+/** Structured payload of one game-project suite verification (T22). */
+interface SuiteVerifyPayload {
+  suite: string;
+  project: string;
+  project_revision: string;
+  game_spec: string;
+  evidence_store: string;
+  scenarios: SuiteScenarioResult[];
+  totals: { settled: number; failed: number; blocked: number; incomplete: number };
+  all_settled: boolean;
+}
+
+interface SuiteScenarioResult {  scenario: string;
+  decision: string;
+  blockage_class?: string;
+  reason: string;
+  requirement_ids: string[];
+  run_id?: string;
+  run_dir?: string;
+  settlement_path?: string;
+  channel_verdicts: Array<{ channel: string; evaluated: boolean; pass: boolean; failed_checks: unknown[] }>;
+}
+
+/**
+ * T22 suite verification: runs a game project's committed named-scenario suite
+ * (`<project>/.agents/suites/<suite>.yaml`) through the T20/T21 evidence + Gauntlet
+ * machinery with a fresh ObservationRun, EvidenceManifest, and SettlementRecord per
+ * scenario. Frozen expectations are committed under the game project BEFORE evidence.
+ */
+async function runGameSuiteVerify(projectRoot: string, suiteName: string): Promise<StudioResult> {
+  const manifestPath = path.join(projectRoot, ".agents", "suites", `${suiteName}.yaml`);
+  const manifest = Bun.YAML.parse(fs.readFileSync(manifestPath, "utf-8")) as {
+    suite?: string;
+    expectations?: Array<{ scenario: string; file: string }>;
+  };
+  if (manifest?.suite !== suiteName || !Array.isArray(manifest.expectations) || manifest.expectations.length === 0) {
+    throw new Error(`suite manifest '${manifestPath}' declares no expectations to verify`);
+  }
+  const revision = resolveProjectRevision(projectRoot);
+  const gameSpec = path.join(projectRoot, ".agents", "specs", "game.spec.yaml");
+  const profiles = loadQualityProfiles(gameSpec);
+  const store = new EvidenceStore({ projectRoot });
+
+  let assetSummary: AssetBudgetSummary | null = null;
+  const registry = new AssetRegistry(projectRoot);
+  if (registry.exists()) {
+    registry.load();
+    assetSummary = { not_acceptable: registry.verifyAll().totals.not_acceptable };
+  }
+
+  const results: SuiteScenarioResult[] = [];
+  const served = serveProjectGame(projectRoot);
+  try {
+    for (const entry of manifest.expectations) {
+      const expectationFile = path.resolve(projectRoot, entry.file);
+      const expectation = parseFrozenExpectation(
+        JSON.parse(fs.readFileSync(expectationFile, "utf-8"))
+      );
+      if (expectation.scenario_id !== entry.scenario) {
+        throw new Error(
+          `suite entry '${entry.scenario}' binds expectation '${expectation.id}' for scenario '${expectation.scenario_id}'`
+        );
+      }
+      const profile = expectation.performance
+        ? bindQualityProfile(profiles, expectation.performance.profile)
+        : null;
+      const observed = await runScenario({
+        scenario: {
+          id: entry.scenario,
+          url: `${served.url}/`,
+          seed: expectation.seed,
+          steps: expectation.steps,
+          view: expectation.view,
+        },
+        projectRevision: revision,
+        requirementIds: [...expectation.requirement_ids],
+        sink: store.createRunWriter(),
+        headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
+        timeoutMs: 90000,
+        ...(expectation.performance ? { qualityProfile: expectation.performance.profile } : {}),
+      });
+      const outcome = settleObserved(
+        expectation,
+        observed,
+        revision,
+        undefined,
+        profile ? { profile, asset_summary: assetSummary } : null
+      );
+      let settlementPath: string | undefined;
+      if (observed.run && outcome.record) {
+        store.appendSettlement(observed.run.id, outcome.record);
+        settlementPath = path.join(store.runDir(observed.run.id), "settlement-01.json");
+      }
+      results.push({
+        scenario: entry.scenario,
+        decision: outcome.decision,
+        ...(outcome.blockage_class ? { blockage_class: outcome.blockage_class } : {}),
+        reason: outcome.reason,
+        requirement_ids: [...expectation.requirement_ids],
+        ...(observed.run ? { run_id: observed.run.id } : {}),
+        ...(observed.run_dir ?? (observed.run ? store.runDir(observed.run.id) : undefined)
+          ? { run_dir: observed.run_dir ?? store.runDir(observed.run!.id) }
+          : {}),
+        ...(settlementPath ? { settlement_path: settlementPath } : {}),
+        channel_verdicts: outcome.channel_verdicts.map((v) => ({
+          channel: v.channel,
+          evaluated: v.evaluated,
+          pass: v.pass,
+          failed_checks: v.checks.filter((c) => !c.pass),
+        })),
+      });
+    }
+  } finally {
+    served.stop();
+  }
+
+  const totals = {
+    settled: results.filter((r) => r.decision === "settled").length,
+    failed: results.filter((r) => r.decision === "failed").length,
+    blocked: results.filter((r) => r.decision === "blocked").length,
+    incomplete: results.filter((r) => r.decision === "incomplete").length,
+  };
+  const status: StudioResult["status"] =
+    totals.settled === results.length ? "success" : totals.failed > 0 ? "failed" : "blocked";
+  const payload: SuiteVerifyPayload = {
+    suite: suiteName,
+    project: projectRoot,
+    project_revision: revision,
+    game_spec: gameSpec,
+    evidence_store: store.runsRoot,
+    scenarios: results,
+    totals,
+    all_settled: totals.settled === results.length,
+  };
+  return {
+    status,
+    operation: "studio.verify-suite",
+    result: payload,
+    diagnostics: {
+      fresh_observation: true,
+      settlement_append_only: true,
+      exit_code_semantics: "0=settled 1=failed 2=blocked/incomplete",
+    },
+  };
+}
+
+/**
  * The project root for a file under `.studio/requests|results` is the directory
  * directly containing `.studio`; otherwise fall back to the process cwd (T14).
  */
@@ -981,8 +1181,42 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       // T20 (REQ-GAUNTLET-001..006, REQ-VERIFY-001/002/005): fresh observation vs the
       // FROZEN expectation -> append-only SettlementRecord. T21 (REQ-VERIFY-003,
       // REQ-PERF-001..004) adds the scenario/profile form: performance claims settle
-      // ONLY against the game-project-declared quality profile. Exit codes: 0 settled,
-      // 1 failed, 2 blocked/incomplete — a blockage can never read as a pass.
+      // ONLY against the game-project-declared quality profile. T22 adds the SUITE form:
+      // verify --project <dir> --suite <name> runs a game project's committed named-
+      // scenario suite (fresh ObservationRun + EvidenceManifest + SettlementRecord per
+      // scenario). Exit codes: 0 settled, 1 failed, 2 blocked/incomplete — a blockage
+      // can never read as a pass.
+      const suiteFlag = flagValue(filteredArgs, "--suite");
+      const projectFlag = flagValue(filteredArgs, "--project");
+      if (suiteFlag) {
+        try {
+          if (!projectFlag) {
+            throw new Error("usage: studio verify --suite <name> requires --project <game-project-dir>");
+          }
+          const projectRoot = path.resolve(process.cwd(), projectFlag);
+          const result = await runGameSuiteVerify(projectRoot, suiteFlag);
+          const payload = result.result as SuiteVerifyPayload;
+          if (isJson) console.log(JSON.stringify(result, null, 2));
+          else {
+            const total = payload.totals.settled + payload.totals.failed + payload.totals.blocked + payload.totals.incomplete;
+            console.log(`Suite '${suiteFlag}' @ ${projectRoot}: ${payload.totals.settled}/${total} settled`);
+            for (const s of payload.scenarios) {
+              console.log(`  ${s.scenario}: ${s.decision.toUpperCase()}${s.reason ? ` — ${s.reason}` : ""}`);
+            }
+          }
+          return result.status === "success" ? 0 : result.status === "failed" ? 1 : 2;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.verify-suite",
+            diagnostics: { error: msg },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      }
       const scenarioFlag = flagValue(filteredArgs, "--scenario");
       const profileFlag = flagValue(filteredArgs, "--profile");
       const gameSpecFlag = flagValue(filteredArgs, "--game-spec");

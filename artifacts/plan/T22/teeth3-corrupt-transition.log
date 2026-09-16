@@ -1,0 +1,10 @@
+$ bun run ./tests/e2e/teeth-corrupt-transition.ts
+ Particle system powered by three.quarks. https://quarks.art/
+[teeth] transceiver-interaction decision: FAILED
+[teeth]   state: FAIL
+[teeth]   pixels: pass
+[teeth]   telemetry: pass
+[teeth]   state failed check: SEMANTIC_POSITION_MISMATCH: entity 'bw-relay-gate' authoritative position [14, -7.356908798217773, 4] violates expected [14, -3.357, 4] (deltas 0, 3.9999087982177732, 0 > tolerance 0.75)
+[teeth]   state failed check: SEMANTIC_POSITION_MISMATCH: entity 'bw-rover' authoritative position [12.223564147949219, -8.456583976745605, 3.65954327583313] violates expected [16.5, -9.325, 4] (deltas 4.276435852050781, 0.8684160232543938, 0.3404567241668701 > tolerance 2.5)
+TEETH-T22-003 BIT: settlement REJECTED through semantic evidence while the visible animation stayed correct (pixels/telemetry healthy, state channel failed).
+TEETH3_EXIT=0

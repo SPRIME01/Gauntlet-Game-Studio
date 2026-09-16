@@ -1,0 +1,95 @@
+===================================================================
+T22 GATE EVIDENCE — captured fresh 2026-09-16T21:05:11Z
+Host: Linux 6.18.35.2-microsoft-standard-WSL2 | repo: /home/sprime01/projects/gauntlet-game-studio
+Chrome: /usr/bin/google-chrome (headless, no autoplay bypass flags) | bun 1.4.0
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T22.prereg.yaml (frozen BEFORE implementation/evidence)
+===================================================================
+
+### GLOBAL GATES ###
+--- just check
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun x tsc --noEmit
+(exit 0)
+--- just lint
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+(exit 0)
+--- just validate-agent-artifacts
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+(exit 0)
+--- just test
+
+ 339 pass
+ 0 fail
+ 2315 expect() calls
+Ran 339 tests across 46 files. [8.55s]
+(exit 0)
+
+### NARROW GATE 1: bun run --cwd examples/blackwater-relay build ###
+### GATE 1: bun run --cwd examples/blackwater-relay build
+$ bun run check && bun run bundle
+$ bun run typecheck
+$ tsc --noEmit
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js and index.html
+GATE1_EXIT=0
+
+### NARROW GATE 2: bun run --cwd examples/blackwater-relay test:e2e ###
+[suite] boot: SETTLED
+[suite] active-play: SETTLED
+[suite] transceiver-interaction: SETTLED
+[suite] patrol-obstacle: SETTLED
+[suite] beacon-activation: SETTLED
+[suite] performance-flythrough: SETTLED
+(pass) Blackwater Relay single-player vertical slice (T22) > settles the full six-scenario suite against frozen expectations [13435.34ms]
+(pass) Blackwater Relay single-player vertical slice (T22) > exposes healthy navigation/spatial projections and zero network surface (single-player proof) [1446.52ms]
+(pass) Blackwater Relay single-player vertical slice (T22) > keeps the committed service-drone derivative consumable with no Blender present [0.63ms]
+ 3 pass
+ 0 fail
+Ran 3 tests across 1 file. [15.61s]
+
+### NARROW GATE 3: bun run studio -- verify --project examples/blackwater-relay --suite single-player --json ###
+  "status": "success",
+        "decision": "settled",
+        "decision": "settled",
+        "decision": "settled",
+        "decision": "settled",
+        "decision": "settled",
+        "decision": "settled",
+    "totals": {
+    "all_settled": true
+
+### EVIDENCE STORE (fresh ObservationRun + EvidenceManifest + SettlementRecord per scenario) ###
+example run dir: examples/blackwater-relay/artifacts/runs/run-boot-cc8e21660c23-20260916T210423Z
+examples/blackwater-relay/artifacts/runs/run-boot-cc8e21660c23-20260916T210423Z:
+artifacts
+manifest-01.json
+run.json
+settlement-01.json
+
+examples/blackwater-relay/artifacts/runs/run-boot-cc8e21660c23-20260916T210423Z/artifacts:
+network.json
+performance-metrics.json
+renderer-probe.json
+screenshot-main.png
+state-snapshot.json
+boot: decision=settled run=run-boot-cc8e21660c23-20260916T210423Z
+active-play: decision=settled run=run-active-play-cc8e21660c23-20260916T210425Z
+transceiver-interaction: decision=settled run=run-transceiver-interaction-cc8e21660c23-20260916T210427Z
+patrol-obstacle: decision=settled run=run-patrol-obstacle-cc8e21660c23-20260916T210429Z
+beacon-activation: decision=settled run=run-beacon-activation-cc8e21660c23-20260916T210430Z
+performance-flythrough: decision=settled run=run-performance-flythrough-cc8e21660c23-20260916T210432Z
+
+### PERFORMANCE-FLYTHROUGH CAPTURED METRICS (structural profile, software renderer honestly classed) ###
+fps_avg: 34.06 | frame_time_ms p50/p95/p99: 20.8 60.5 133.1
+draw_calls: 4 <= 128 | triangles: 40688 <= 65536 | textures: 0 <= 16 | console_errors: 4 <= 8
+memory_used_mb: 23.9 | readiness_ms: 753 | renderer_class: software | unreported: []
+
+NOTE: the plan's gate commands are written as 'bun --cwd <dir> run <script>'; on bun 1.4.0 the
+working flag order is 'bun run --cwd <dir> <script>' (same semantics: run the project script in
+the game project directory). All three gates above ran with exit code 0.
+
+### FINAL RE-VERIFICATION (post-artifact-writing, 2026-09-16T21:08:33Z) ###
+just check EXIT=0; bun run --cwd examples/blackwater-relay test:e2e EXIT=0 (6/6 SETTLED); studio verify --suite single-player EXIT=0 all_settled=true; git check-ignore artifacts/runs dist -> IGNORED_OK

@@ -1,0 +1,20 @@
+{
+  "id": "bw-performance-flythrough",
+  "scenario_id": "performance-flythrough",
+  "requirement_ids": [
+    "REQ-PERF-001",
+    "REQ-PERF-002",
+    "REQ-PERF-003",
+    "REQ-PERF-004",
+    "REQ-GOAL-004"
+  ],
+  "revision": "current",
+  "seed": 20260915,
+  "steps": 240,
+  "view": "main",
+  "claims": { "state": false, "pixels": true, "telemetry": true, "network": false, "performance": true },
+  "requires_confirmation": false,
+  "pixels": { "views": ["main"], "min_width": 320, "min_height": 180 },
+  "telemetry": { "max_console_errors": 8, "max_page_errors": 0, "tick_advanced_min": 240 },
+  "performance": { "profile": "structural" }
+}

@@ -55,7 +55,13 @@ function perfEvidence(overrides: Partial<PerformanceChannelEvidence> = {}): Perf
 describe("Quality profiles are declared before use as gates (REQ-PERF-002, REQ-CONFIG-005)", () => {
   it("loads the Blackwater reference-game profiles with game-owned numbers", () => {
     const profiles = loadQualityProfiles(GAME_SPEC);
-    expect(Object.keys(profiles).sort()).toEqual(["target", "test-budget"]);
+    // T22 declares the additional game-owned `structural` profile for the composed
+    // game scene BEFORE using it as the performance-flythrough gate (REQ-PERF-002);
+    // the target/test-budget numbers below are unchanged from the T21 freeze.
+    expect(Object.keys(profiles).sort()).toEqual(["structural", "target", "test-budget"]);
+    expect(profiles["structural"].evidence_class).toBe("structural-only");
+    expect(profiles["structural"].structural_budgets.max_draw_calls).toBe(128);
+    expect(profiles["structural"].structural_budgets.max_triangles).toBe(65536);
     // target: the absolute desktop-target hardware budget (declared, T22-settled).
     expect(profiles.target.evidence_class).toBe("hardware-target");
     expect(profiles.target.environment_binding).toBe("desktop-chrome-hardware");

@@ -1,0 +1,24 @@
+{
+  "id": "bw-patrol-obstacle",
+  "scenario_id": "patrol-obstacle",
+  "requirement_ids": [
+    "REQ-GOAL-004",
+    "REQ-BLENDER-006",
+    "REQ-RUNTIME-002",
+    "REQ-GOAL-003"
+  ],
+  "revision": "current",
+  "seed": 20260915,
+  "steps": 240,
+  "view": "main",
+  "claims": { "state": true, "pixels": true, "telemetry": true, "network": false, "performance": false },
+  "requires_confirmation": false,
+  "semantic": {
+    "entities": [
+      { "id": "bw-service-drone", "tags_include": ["enemy"], "position_approx": { "x": 7, "y": -5.108, "z": -3 }, "tolerance": 2.5 },
+      { "id": "bw-patrol-obstacle", "tags_include": ["obstacle"], "position_approx": { "x": 0, "y": -4.585, "z": -3 }, "tolerance": 0.5 }
+    ]
+  },
+  "pixels": { "views": ["main"], "min_width": 320, "min_height": 180 },
+  "telemetry": { "max_console_errors": 8, "max_page_errors": 0, "tick_advanced_min": 240 }
+}

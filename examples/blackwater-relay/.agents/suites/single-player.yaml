@@ -1,0 +1,24 @@
+schema: gauntlet.game.suite
+schema_version: "1.0"
+game_id: "blackwater-relay"
+suite: "single-player"
+title: "Blackwater Relay single-player vertical slice suite"
+description: >-
+  The six frozen named scenarios (game.spec.yaml `scenarios`), settled in declaration
+  order through the stable __GAUNTLET_STUDIO_OBS__ v1 surface with a fresh
+  ObservationRun + EvidenceManifest + SettlementRecord per scenario. Networking is
+  never constructed (single_player declaration). Expectations were frozen BEFORE
+  implementation/evidence.
+expectations:
+  - scenario: boot
+    file: tests/expectations/boot.json
+  - scenario: active-play
+    file: tests/expectations/active-play.json
+  - scenario: transceiver-interaction
+    file: tests/expectations/transceiver-interaction.json
+  - scenario: patrol-obstacle
+    file: tests/expectations/patrol-obstacle.json
+  - scenario: beacon-activation
+    file: tests/expectations/beacon-activation.json
+  - scenario: performance-flythrough
+    file: tests/expectations/performance-flythrough.json

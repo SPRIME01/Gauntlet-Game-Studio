@@ -1,0 +1,13 @@
+schema: gauntlet.game.suite
+schema_version: "1.0"
+game_id: "blackwater-relay"
+suite: "teeth-corrupt-gate"
+title: "TEETH-T22-003 fixture suite (corrupt-gate variant)"
+description: >-
+  Falsification harness suite: runs ONLY transceiver-interaction against the frozen
+  expectation under the corrupt-gate fixture variant. The gate render animates open
+  while the authoritative Koota transform stays closed; settlement MUST be rejected
+  through the state channel. Not part of the single-player suite.
+expectations:
+  - scenario: transceiver-interaction
+    file: tests/expectations/transceiver-interaction.json

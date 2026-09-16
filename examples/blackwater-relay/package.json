@@ -1,20 +1,36 @@
 {
   "name": "blackwater-relay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "check": "bun run typecheck",
     "typecheck": "tsc --noEmit",
-    "test": "bun test",
-    "build": "bun run check"
+    "test": "bun test tests",
+    "test:e2e": "bun run bundle && bun test ./tests/e2e/single-player.e2e.ts",
+    "bundle": "bun run ./scripts/bundle.ts",
+    "build": "bun run check && bun run bundle",
+    "teeth:corrupt-transition": "bun run ./tests/e2e/teeth-corrupt-transition.ts",
+    "teeth:network-disabled": "bun run ./scripts/teeth-network-disabled.ts",
+    "teeth:blender-absent": "bun run ./scripts/teeth-blender-absent.ts"
   },
   "dependencies": {
-    "three": "^0.170.0"
+    "@dimforge/rapier3d-compat": "^0.20.0",
+    "@gauntlet/adapters": "workspace:*",
+    "@gauntlet/runtime": "workspace:*",
+    "koota": "^0.6.6",
+    "recast-navigation": "^0.43.1",
+    "three": "^0.170.0",
+    "three-mesh-bvh": "^0.9.15",
+    "three.quarks": "0.16.0",
+    "tone": "15.1.22"
   },
   "devDependencies": {
+    "@gauntlet/contracts": "workspace:*",
+    "@gauntlet/studio": "workspace:*",
     "@types/bun": "^1.2.0",
     "@types/three": "^0.170.0",
+    "playwright": "1.63.0",
     "typescript": "^5.7.3"
   }
 }

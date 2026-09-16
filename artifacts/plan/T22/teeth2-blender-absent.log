@@ -1,0 +1,70 @@
+$ bun run ./scripts/teeth-blender-absent.ts
+sanitized PATH: removed [/snap/bin]
+PASS A: blender absent from sanitized PATH
+--- B: bun run test (cwd /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay)
+$ bun test tests
+bun test v1.4.0 (34cbb9a40)
+
+tests/scenarios-headless.test.ts:
+(pass) Blackwater Relay headless scenario progression (T22, child-process isolated) > completes all headless scenario checks [1008.25ms]
+
+tests/world.test.ts:
+(pass) Blackwater Relay canonical terrain parity (T22, REQ-TERRAIN-001/002/003) > generates the canonical heightfield declared by the 3dviz composition reference [0.04ms]
+(pass) Blackwater Relay canonical terrain parity (T22, REQ-TERRAIN-001/002/003) > samples known canonical points (transposition/inversion detection per REQ-TERRAIN-003) [0.09ms]
+(pass) Blackwater Relay canonical terrain parity (T22, REQ-TERRAIN-001/002/003) > sockets every composed kit strictly through the canonical sampler (composition never owns elevation) [0.15ms]
+
+tests/service-drone.test.ts:
+(pass) Service-drone committed Blender derivative > consumes the committed GLB derivative without any Blender presence [0.42ms]
+(pass) Service-drone committed Blender derivative > carries the accepted hover_cycle clip and rig affordances [0.07ms]
+(pass) Service-drone committed Blender derivative > matches the accepted AssetRecord in the manifest [0.11ms]
+(pass) Service-drone committed Blender derivative > carries no gameplay semantics in DCC-side metadata affordances [0.14ms]
+
+tests/game.test.ts:
+(pass) Generated Game Conformance > initializes game instance independently [0.08ms]
+
+ 9 pass
+ 0 fail
+ 39 expect() calls
+Ran 9 tests across 4 files. [1142.00ms]
+PASS B
+--- C: bun run build (cwd /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay)
+$ bun run check && bun run bundle
+$ bun run typecheck
+$ tsc --noEmit
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js and index.html
+PASS C
+--- D: bun run test:e2e (cwd /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay)
+$ bun run bundle && bun test ./tests/e2e/single-player.e2e.ts
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js and index.html
+bun test v1.4.0 (34cbb9a40)
+
+tests/e2e/single-player.e2e.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+[suite] boot: SETTLED
+[suite] active-play: SETTLED
+[suite] transceiver-interaction: SETTLED
+[suite] patrol-obstacle: SETTLED
+[suite] beacon-activation: SETTLED
+[suite] performance-flythrough: SETTLED
+(pass) Blackwater Relay single-player vertical slice (T22) > settles the full six-scenario suite against frozen expectations [11684.56ms]
+(pass) Blackwater Relay single-player vertical slice (T22) > exposes healthy navigation/spatial projections and zero network surface (single-player proof) [1505.80ms]
+(pass) Blackwater Relay single-player vertical slice (T22) > keeps the committed service-drone derivative consumable with no Blender present [0.74ms]
+
+ 3 pass
+ 0 fail
+ 22 expect() calls
+Ran 3 tests across 1 file. [13.64s]
+PASS D
+--- E: bun run donor:dependency-scan (cwd /home/sprime01/projects/gauntlet-game-studio)
+$ bun run ./scripts/donor-dependency-scan.ts
+=== Gauntlet Studio Donor Dependency & White-Label Scanner (REQ-DONOR-004, REQ-DONOR-005, REQ-DONOR-007, REQ-SEC-006) ===
+1. Scanning first-party source files for forbidden donor imports...
+2. Scanning package manifests for donor package dependencies...
+3. Scanning TypeScript configs for donor path mappings...
+SUCCESS: Zero forbidden donor imports, dependencies, or path mappings detected.
+PASS E
+TEETH-T22-002 BIT: build/test/e2e green with Blender absent and .tmp/donor ignored;
+the committed accepted service-drone derivative is sufficient for all gameplay.
+TEETH2_EXIT=0

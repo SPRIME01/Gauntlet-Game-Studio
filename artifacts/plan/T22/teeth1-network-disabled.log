@@ -1,0 +1,13 @@
+$ bun run ./scripts/teeth-network-disabled.ts
+ Particle system powered by three.quarks. https://quarks.art/
+PASS A: network transport configuration disabled and absent from the runtime path
+[teeth] boot: SETTLED
+[teeth] active-play: SETTLED
+[teeth] transceiver-interaction: SETTLED
+[teeth] patrol-obstacle: SETTLED
+[teeth] beacon-activation: SETTLED
+[teeth] performance-flythrough: SETTLED
+PASS B: all six scenarios settled with networking disabled
+PASS C: observability network read reports no transport wired (not_registered)
+TEETH-T22-001 BIT: full single-player suite functional with network transport disabled/removed.
+TEETH1_EXIT=0

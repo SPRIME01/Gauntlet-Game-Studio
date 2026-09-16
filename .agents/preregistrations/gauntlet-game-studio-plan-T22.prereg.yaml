@@ -1,0 +1,65 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T22
+title: Assemble and settle Blackwater Relay single-player vertical slice
+proof_level: P3
+timestamp: "2026-09-15T20:30:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T22-001
+    statement: >-
+      The independently generated-style project can compose all major non-network capabilities
+      into one playable browser consequence while remaining donor-independent, network-optional,
+      observable, performant, and evidence-settled. Concretely: examples/blackwater-relay builds
+      and runs as a single-player browser game whose authoritative state lives only in Koota
+      (REQ-RUNTIME-001); its terrain derives from one canonical seeded TerrainHeightfield shared
+      by render, Rapier collider, and Recast navmesh projections (REQ-TERRAIN-001/002/003); its
+      environment is the committed 3dviz composition, its field transceiver the accepted
+      img2threejs reconstruction, and its patrol drone the committed Blender-derived GLB with the
+      baked hover_cycle clip consumed with zero Blender and zero donor presence
+      (REQ-BLENDER-006/007, REQ-SKILL-004/005); gameplay composes Rapier rover traversal and gate
+      collision, Recast/BVH drone patrol pathing with obstacle reroute, Quarks VFX, Tone audio
+      behind the AudioBackend lifecycle with a headless-safe null path (REQ-AUDIO-001/002), and a
+      DOM/CSS HUD; the whole game is observable only through the stable __GAUNTLET_STUDIO_OBS__ v1
+      surface and settles through fresh state + pixels + telemetry evidence per named scenario
+      (boot, active-play, transceiver-interaction, patrol-obstacle, beacon-activation,
+      performance-flythrough) with the Gauntlet settlement bridge (REQ-GOAL-002/003/004/007/008/010,
+      REQ-RUNTIME-004/005/006/009, REQ-PERF-001..004). Networking is entirely disabled: no
+      multiplayer server, transport, or client is started for single-player execution
+      (REQ-RUNTIME-009).
+
+falsifiers:
+  - id: TEETH-T22-001
+    attack: Disable/remove network transport configuration and run the full single-player suite.
+    expected: All non-network gameplay remains functional — the six-scenario suite settles with
+      networking disabled because no scenario depends on any server/transport; the observability
+      network read reports no transport wired.
+  - id: TEETH-T22-002
+    attack: Run normal build/test with Blender absent and `.tmp/donor/` ignored.
+    expected: Committed runtime/derived assets are sufficient — build, unit tests, and the e2e
+      suite stay green with Blender removed from PATH and the donor tree absent/ignored; no build
+      or test step references Blender or donor source.
+  - id: TEETH-T22-003
+    attack: Corrupt one semantic objective transition while preserving the visible animation.
+    expected: Gauntlet rejects settlement through semantic evidence — a fixture variant in which
+      the relay-gate render projection animates open while the authoritative Koota gate transform
+      remains closed must fail the frozen transceiver-interaction expectation via the state
+      channel (SEMANTIC_POSITION_MISMATCH), producing a failed/blocked settlement, never a pass.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Verify from frozen scenarios and fresh evidence, not builder narrative: the six named
+    scenarios settle through the T20/T21 evidence + Gauntlet machinery with fresh
+    ObservationRun/EvidenceManifest/SettlementRecord per scenario; state evidence is Koota-backed
+    through stable observability methods only; pixels and telemetry are fresh rendered/runtime
+    captures; performance-flythrough settles structural budgets under the game-declared profile
+    with software-rendered evidence honestly class-labeled (never target-hardware claims);
+    networking is provably absent in single-player; committed accepted assets are consumed with
+    no Blender/donor presence; Koota remains the sole semantic authority and no specialist
+    subsystem (terrain, physics, navigation, VFX, audio, DCC, render) becomes authoritative
+    outside its boundary; the project remains independently buildable per the generated-game
+    contract with no new npm dependency classes beyond the declared pin/link mechanism; no git
+    commits and no model/network/LLM calls are used to produce game content.

@@ -1,0 +1,35 @@
+{
+  "id": "bw-boot",
+  "scenario_id": "boot",
+  "requirement_ids": [
+    "REQ-GOAL-004",
+    "REQ-RUNTIME-005",
+    "REQ-RUNTIME-009",
+    "REQ-GOAL-002"
+  ],
+  "revision": "current",
+  "seed": 20260915,
+  "steps": 3,
+  "view": "main",
+  "claims": {
+    "state": true,
+    "pixels": true,
+    "telemetry": true,
+    "network": true,
+    "performance": false
+  },
+  "requires_confirmation": false,
+  "semantic": {
+    "entities": [
+      { "id": "bw-rover", "tags_include": ["player", "vehicle"], "position_approx": { "x": 0, "y": -5.695, "z": 0 }, "tolerance": 0.75 },
+      { "id": "bw-relay-gate", "tags_include": ["obstacle"], "position_approx": { "x": 14, "y": -7.357, "z": 4 }, "tolerance": 0.5 },
+      { "id": "bw-power-cell", "tags_include": ["item"], "position_approx": { "x": 4, "y": -6.393, "z": 2 }, "tolerance": 0.5 },
+      { "id": "bw-field-transceiver", "tags_include": ["item"], "position_approx": { "x": 10, "y": -8.576, "z": 4 }, "tolerance": 0.5 },
+      { "id": "bw-service-drone", "tags_include": ["enemy"], "position_approx": { "x": -7, "y": -3.332, "z": -3 }, "tolerance": 2.5 },
+      { "id": "bw-beacon", "tags_include": ["item"], "position_approx": { "x": 8, "y": -5.674, "z": -9.5 }, "tolerance": 0.5 }
+    ]
+  },
+  "pixels": { "views": ["main"], "min_width": 320, "min_height": 180 },
+  "telemetry": { "max_console_errors": 8, "max_page_errors": 0, "tick_advanced_min": 3 },
+  "network": { "require_all_ok": true, "min_responses": 3 }
+}
