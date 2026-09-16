@@ -1,0 +1,71 @@
+# T16 Teeth / Falsification Evidence (fresh run)
+# Timestamp: 2026-09-16T02:39:30Z
+# Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T16.prereg.yaml (frozen before evaluation)
+
+=======================================================================
+TEETH-T16-001: Make upstream director discoverable alongside game-studio-director.
+Expected: Skill/routing lint fails.
+=======================================================================
+
+Attack script: .tmp/teeth/t16-director-discoverable.ts registers TWO attack variants into the live
+defaultCapabilityRegistry, then invokes the real declared gate (apps/studio-cli main):
+  variant A: id 'game.director' with provider 'agent-skill.threejs-game-director'
+  variant B: id 'skill.threejs-game-director' (id-only discovery, no provider reference)
+
+$ bun run ./.tmp/teeth/t16-director-discoverable.ts
+attack-script EXIT_CODE=0 (0 = the gate correctly failed the attack)
+gate output (capabilities lint --json under attack):
+    "status": "failed",
+      "valid": false,
+          "code": "SKILL_DESCRIPTION_BRIEF",
+          "code": "SKILL_MISSING_NEGATIVE_AFFORDANCES",
+          "code": "SKILL_DESCRIPTION_BRIEF",
+          "code": "SKILL_MISSING_NEGATIVE_AFFORDANCES",
+          "code": "FORBIDDEN_UPSTREAM_AUTHORITY",
+          "code": "FORBIDDEN_UPSTREAM_AUTHORITY",
+          "code": "FORBIDDEN_UPSTREAM_AUTHORITY",
+      "valid": false,
+      "total_issues": 7
+  ATTACK_RESULT_EXIT_CODE=1
+
+Observed: capabilities lint reports status=failed, valid=false, exit code 1, with
+FORBIDDEN_UPSTREAM_AUTHORITY errors for all three director references
+('game.director', 'agent-skill.threejs-game-director', 'skill.threejs-game-director').
+Attack rejected. TEETH-T16-001: PASS.
+
+Test-level equivalent (packages/studio/test/skill-overlays/overlay-routing.test.ts):
+  - lintStudioSkillSurface(catalog + director descriptor) -> invalid, FORBIDDEN_UPSTREAM_AUTHORITY
+  - assertDiscoverableSkillSurface throws ForbiddenUpstreamAuthorityError (id-only and provider variants)
+  - OverlaySkillRegistry.register(director entry) throws ForbiddenUpstreamAuthorityError; registry stays empty
+
+=======================================================================
+TEETH-T16-002: Enable an upstream generic generator as preferred provider merely because credentials exist.
+Expected: Provider-policy test rejects the preference.
+=======================================================================
+
+$ bun run ./.tmp/teeth/t16-generator-credentials.ts
+attack-script EXIT_CODE=0 (0 = both preferences rejected)
+  {
+    "allowed": false,
+    "code": "QUARANTINED_SKILL",
+    "reason": "'agent-skill.threejs-3d-generator' is a quarantined optional fallback (REQ-BIND-007); credential presence (true) is never an enablement or preference basis"
+  }
+  {
+    "allowed": false,
+    "code": "CREDENTIAL_PREFERENCE_REJECTED",
+    "reason": "Credential presence alone must never prefer a provider for 'world.composition' (REQ-BIND-007); preference must come from declared studio capability policy (providers: agent-skill.3dviz)"
+  }
+  ATTACK_REJECTED=true
+
+Observed:
+  - agent-skill.threejs-3d-generator with credentials_present=true -> allowed=false, code=QUARANTINED_SKILL,
+    reason states credential presence is never an enablement or preference basis (REQ-BIND-007).
+  - credential-only preference for an undeclared provider -> allowed=false, code=CREDENTIAL_PREFERENCE_REJECTED.
+Attack rejected. TEETH-T16-002: PASS.
+
+Test-level equivalent (overlay-routing.test.ts, TEETH-T16-002 case):
+  - quarantined generator + credentials -> QUARANTINED_SKILL; credential-only -> CREDENTIAL_PREFERENCE_REJECTED;
+    director provider -> FORBIDDEN_UPSTREAM_AUTHORITY; positive control (declared provider img2threejs) -> ALLOWED;
+    assertSkillNotQuarantined throws for all three generators;
+    quarantine_policy.enabled=true without enablement_declared_by -> validateOverlayPolicy invalid;
+    with explicit enablement_declared_by -> enablement error cleared (explicit project policy is the only path).

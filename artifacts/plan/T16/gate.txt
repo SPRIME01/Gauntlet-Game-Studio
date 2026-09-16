@@ -1,0 +1,129 @@
+# T16 Gate Evidence (fresh run)
+# Timestamp: 2026-09-16T02:38:56Z
+#
+# Shared-tree observation: the working tree carries uncommitted concurrent T12/T13 WIP
+# (untracked packages/runtime/src/network/, packages/runtime/test/network/, packages/adapters/src/assets/;
+# modified packages/runtime/src/index.ts, package.json, packages/studio/package.json, bun.lock, apps/studio-cli/src/cli.test.ts).
+# T16 changed none of those files. Attribution for every non-zero exit below is proven in place.
+
+=======================================================================
+NARROW GATE 1: bun run studio -- capabilities lint --json
+=======================================================================
+$ bun run ./apps/studio-cli/src/index.ts capabilities lint --json
+{
+  "status": "success",
+  "operation": "studio.capabilities.lint",
+  "result": {
+    "valid": true,
+    "issues": []
+  },
+  "diagnostics": {
+    "valid": true,
+    "total_issues": 0
+  }
+}
+EXIT_CODE=0
+
+=======================================================================
+NARROW GATE 2: bun test packages/studio/test/skill-overlays
+=======================================================================
+bun test v1.4.0 (34cbb9a40)
+
+packages/studio/test/skill-overlays/overlay-routing.test.ts:
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > loads and validates the committed overlay policy with the canonical specialist set [0.32ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > binds exactly the five specialists to real studio capability contracts with confined disclosure pointers [0.75ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > progressively discloses: routing surface is separated from on-demand disclosure content [0.28ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > passes routing collision lint for the committed catalog and keeps the director undiscoverable [2.61ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > detects uncoordinated routing collisions between specialist descriptions and studio capabilities [1.36ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > TEETH-T16-001: upstream director discoverable alongside game-studio-director fails skill/routing lint [0.84ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > TEETH-T16-002: generic generator as preferred provider merely because credentials exist is rejected [0.99ms]
+
+ 7 pass
+ 0 fail
+ 191 expect() calls
+Ran 7 tests across 1 file. [84.00ms]
+EXIT_CODE=0
+
+=======================================================================
+POLICY RE-RUN: bun run source:verify
+=======================================================================
+$ bun run ./scripts/verify-source.ts
+=== Gauntlet Studio Source Integration Verifier (REQ-SOURCE-001, REQ-SOURCE-005) ===
+OK: Source attribution lint passed (no unnecessary vendoring).
+OK: Authoritative single Three.js dependency verified (^0.170.0).
+SUCCESS: All source integration constraints verified.
+EXIT_CODE=0
+
+=======================================================================
+POLICY RE-RUN: bun run third-party:verify
+=======================================================================
+$ bun run ./scripts/verify-third-party.ts
+=== Gauntlet Studio Third-Party Attribution & Overlay Verifier (REQ-SOURCE-005, REQ-SOURCE-006) ===
+OK: Overlay policy verified (threejs-game-director strictly forbidden).
+OK: All 5 attribution classes present in vendor/attribution.json.
+OK: THIRD_PARTY_NOTICES.md verified.
+SUCCESS: All third-party attribution and overlay policies verified.
+EXIT_CODE=0
+
+=======================================================================
+GLOBAL GATE: just lint
+=======================================================================
+EXIT_CODE=0
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+
+=======================================================================
+GLOBAL GATE: just validate-agent-artifacts
+=======================================================================
+EXIT_CODE=0
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+
+=======================================================================
+GLOBAL GATE: just check
+=======================================================================
+EXIT_CODE=2  (non-zero; attribution below)
+All 8 TypeScript errors, by originating file:
+      2 packages/runtime/src/network/bun-websocket.ts
+      3 packages/runtime/src/network/headless-smoke.ts
+      1 packages/runtime/src/network/protocol.ts
+
+Attribution proof for just check:
+  1. Every error file above is UNTRACKED T12/T13 WIP (git status '??'): packages/runtime/src/network/*.ts, packages/adapters/src/assets/gltf.ts.
+  2. git ls-tree -r HEAD --name-only | grep -E 'src/network/|src/assets/' -> no matches: committed HEAD contains none of these files.
+  3. Scoped typecheck covering every T16-touched compile surface (packages/contracts/src, packages/studio/src incl. new test dir, apps/studio-cli/src), config .tmp/t16-tsconfig.json:
+     EXIT_CODE=0  (0 = zero type errors in all T16 surfaces)
+
+=======================================================================
+GLOBAL GATE: just test
+=======================================================================
+EXIT_CODE=1  (non-zero; attribution below)
+ 182 pass
+ 2 fail
+
+Attribution proof for just test:
+  - Zero '(fail)' lines reference any studio/contracts/adapters/apps test; every '(fail)' occurs under
+    packages/runtime/test/network/*.test.ts — untracked T12 WIP ('Koota: Too many worlds created' during setup).
+  - bun test packages/runtime/test/network in isolation: T12 WIP result below (varies between runs; world-limit churn is T12 scope).
+  network EXIT_CODE=1
+   28 pass
+   1 fail
+   171 expect() calls
+  Ran 29 tests across 5 files. [388.00ms]
+  - Full suite EXCLUDING the untracked T12 WIP network tests:
+  EXIT_CODE=0
+   153 pass
+   0 fail
+   1425 expect() calls
+  Ran 153 tests across 20 files. [499.00ms]
+
+=======================================================================
+SUMMARY
+=======================================================================
+Narrow gates T16:                PASS (lint --json valid/0 issues exit 0; skill-overlays 7/7 exit 0)
+bun run source:verify:           PASS (exit 0)
+bun run third-party:verify:      PASS (exit 0)
+just lint:                       PASS (exit 0)
+just validate-agent-artifacts:   PASS (exit 0)
+just check:                      FAILS only on 8 errors in untracked T12/T13 WIP files; T16 surfaces typecheck clean (scoped tsc exit 0); HEAD contains none of the failing files.
+just test:                       FAILS only inside untracked T12 WIP network tests; all 153 non-network tests pass (exit 0), zero failures in T16 or previously-settled suites.

@@ -1,0 +1,45 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T16
+title: Integrate threejs-game-skills specialists through studio-owned overlay
+proof_level: P2
+timestamp: "2026-09-16T02:20:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T16-001
+    statement: >-
+      Specialist gameplay, graphics, UI, debug, and QA knowledge from the threejs-game-skills pack
+      (threejs-gameplay-systems, threejs-aaa-graphics-builder, threejs-game-ui-designer,
+      threejs-debug-profiler, threejs-qa-release) can be progressively disclosed through a
+      studio-owned overlay (routing summaries and disclosure pointers declared by Gauntlet, full
+      specialist content loaded only on explicit disclosure) without changing studio orchestration
+      or provider policy: the studio director remains the sole orchestration authority,
+      threejs-game-director is not registered or discoverable as a top-level studio skill (enforced
+      by skill/routing lint, not documented only), and the generic 3D/image/audio generator skills
+      remain quarantined as disabled optional fallbacks that are never preferred merely because
+      provider credentials exist. Provider identity stays below stable studio capability contracts.
+    settles:
+      - REQ-BIND-007
+
+falsifiers:
+  - id: TEETH-T16-001
+    attack: Make upstream director discoverable alongside game-studio-director.
+    expected: Skill/routing lint fails (ForbiddenUpstreamAuthorityError / overlay routing lint reports a hard error; `bun run studio -- capabilities lint --json` exits 1).
+  - id: TEETH-T16-002
+    attack: Enable an upstream generic generator as preferred provider merely because credentials exist.
+    expected: Provider-policy test rejects the preference (QuarantinedSkillError/CredentialPreferenceError; credential presence alone is never a routing basis).
+
+known_confounds:
+  - Stale evidence or a different project revision.
+  - Unavailable optional provider/tool being mistaken for core capability failure.
+
+peer_confirmation:
+  required: true
+  mode: peer
+  focus: >-
+    Overlay mappings cover exactly the five declared specialists; director exclusion and generator
+    quarantine are enforced by the declared gates and behave as specified under the two
+    falsification attacks; routing collisions between studio capabilities and upstream specialist
+    descriptions are detected and disambiguated; progressive disclosure does not change
+    orchestration or provider policy.

@@ -1,6 +1,6 @@
 {
   "schema": "gauntlet.skill_overlay",
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "upstream": "threejs-game-skills",
   "orchestration_authority": "gauntlet-game-studio",
   "forbidden_skills": [
@@ -9,15 +9,112 @@
     "game-director"
   ],
   "allowed_specialists": [
-    "gameplay-camera",
-    "character-controller",
-    "lighting-atmosphere",
-    "audio-effects",
-    "ui-hud",
-    "debug-telemetry",
-    "qa-smoke"
+    "threejs-gameplay-systems",
+    "threejs-aaa-graphics-builder",
+    "threejs-game-ui-designer",
+    "threejs-debug-profiler",
+    "threejs-qa-release"
   ],
   "quarantined_skills": [
+    "threejs-3d-generator",
+    "threejs-image-generator",
+    "threejs-audio-generator",
     "generic-text-to-3d"
+  ],
+  "quarantine_policy": {
+    "enabled": false,
+    "enablement_basis": "explicit_project_policy",
+    "policy": "Generic 3D/image/audio generation skills are disabled optional fallbacks only. Provider credential presence MUST NEVER enable or prefer them (REQ-BIND-007); enablement requires an explicit optional fallback capability declared by studio project policy, never credential auto-detection."
+  },
+  "specialist_bindings": [
+    {
+      "skill_id": "threejs-gameplay-systems",
+      "capability_ids": ["world.physics", "world.navigation"],
+      "disclosure_ref": "skills/threejs-game-skills/threejs-gameplay-systems/SKILL.md",
+      "summary": "Screens and adapts threejs-game-skills gameplay-systems knowledge (player movement feel, camera behavior, interaction logic, enemy behavior patterns) for Gauntlet capability work. Disclosed only under the studio physics and navigation contracts it is bound to; never owns authoritative gameplay state, navmesh generation, terrain heightfields, or physics stepping.",
+      "use_when": [
+        "gameplay mechanic implementation",
+        "player movement feel tuning",
+        "third person camera behavior",
+        "interaction and pickup logic",
+        "enemy behavior patterns"
+      ],
+      "do_not_use_when": [
+        "authoritative gameplay state ownership",
+        "navmesh generation",
+        "procedural terrain generation",
+        "physics engine stepping"
+      ]
+    },
+    {
+      "skill_id": "threejs-aaa-graphics-builder",
+      "capability_ids": ["world.composition", "asset.optimize"],
+      "disclosure_ref": "skills/threejs-game-skills/threejs-aaa-graphics-builder/SKILL.md",
+      "summary": "Screens and adapts threejs-game-skills AAA-graphics knowledge (post-processing stacks, material and shader polish, render pipeline tuning, color grading) for Gauntlet visual quality work. Disclosed under the studio composition and optimization contracts; never performs reference-image reconstruction, terrain elevation math, or asset licensing intake.",
+      "use_when": [
+        "post-processing stack design",
+        "material and shader polish",
+        "render pipeline performance tuning",
+        "color grading",
+        "visual fidelity upgrade"
+      ],
+      "do_not_use_when": [
+        "reconstructing a depicted object from reference image",
+        "procedural terrain generation",
+        "intake of CC0 textures"
+      ]
+    },
+    {
+      "skill_id": "threejs-game-ui-designer",
+      "capability_ids": ["verify.browser"],
+      "disclosure_ref": "skills/threejs-game-skills/threejs-game-ui-designer/SKILL.md",
+      "summary": "Screens and adapts threejs-game-skills game-UI knowledge (HUD layout, menu and interface flow, diegetic interfaces, DOM/CSS game presentation) for Gauntlet interface work. Disclosed through studio handoffs only; visible HUD acceptance settles through deterministic browser verification, never through the specialist itself.",
+      "use_when": [
+        "HUD layout design",
+        "menu and interface flow",
+        "diegetic interface design",
+        "DOM and CSS game interface"
+      ],
+      "do_not_use_when": [
+        "authoritative gameplay state ownership",
+        "deterministic browser end-to-end proof",
+        "audio synthesis"
+      ]
+    },
+    {
+      "skill_id": "threejs-debug-profiler",
+      "capability_ids": ["verify.browser", "network.multiplayer"],
+      "disclosure_ref": "skills/threejs-game-skills/threejs-debug-profiler/SKILL.md",
+      "summary": "Screens and adapts threejs-game-skills debug/profiler knowledge (frame-time profiling, draw-call and memory diagnostics, runtime performance telemetry, bandwidth/latency inspection, bottleneck diagnosis) for Gauntlet performance work. Exploratory diagnosis only; never mutates authoritative state, steps physics, or substitutes for settlement-grade browser proof.",
+      "use_when": [
+        "frame time profiling",
+        "draw call diagnostics",
+        "memory diagnostics",
+        "runtime performance telemetry",
+        "bottleneck diagnosis"
+      ],
+      "do_not_use_when": [
+        "authoritative gameplay state mutation",
+        "physics engine stepping",
+        "deterministic browser end-to-end proof"
+      ]
+    },
+    {
+      "skill_id": "threejs-qa-release",
+      "capability_ids": ["verify.browser"],
+      "disclosure_ref": "skills/threejs-game-skills/threejs-qa-release/SKILL.md",
+      "summary": "Screens and adapts threejs-game-skills QA/release knowledge (release readiness checklists, smoke test planning, regression triage, quality gate review) for Gauntlet release work. Planning and triage only; deterministic proof execution, pixel capture, and scenario settlement remain owned by the studio browser-proof capability.",
+      "use_when": [
+        "release readiness checklist",
+        "smoke test planning",
+        "regression triage",
+        "quality gate review"
+      ],
+      "do_not_use_when": [
+        "deterministic browser end-to-end proof",
+        "pixel capture verification",
+        "authoritative gameplay state ownership"
+      ]
+    }
   ]
 }

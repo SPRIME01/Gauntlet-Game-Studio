@@ -4,13 +4,15 @@
  * Command-line interface for Gauntlet Game Studio.
  */
 
+import * as path from "node:path";
 import {
   getDoctorStudioResult,
   loadStudioConfig,
   defaultCapabilityRegistry,
   routeCapability,
   settleAgentHandoff,
-  lintSkillRegistry,
+  lintStudioSkillSurface,
+  loadSkillOverlayPolicy,
   createGameProject,
 } from "@gauntlet/studio";
 import {
@@ -141,7 +143,27 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
     case "capabilities": {
       const sub = filteredArgs[1];
       if (sub === "lint") {
-        const report = lintSkillRegistry(defaultCapabilityRegistry.list());
+        // T16 (REQ-BIND-007): lint the full discoverable skill surface — registered studio
+        // capabilities plus studio-owned overlay policy enforcement (forbidden upstream director,
+        // quarantined generators, specialist binding/routing-collision checks).
+        let report;
+        try {
+          const overlayPolicy = loadSkillOverlayPolicy(path.resolve(import.meta.dir, "../../.."));
+          report = lintStudioSkillSurface(defaultCapabilityRegistry.list(), overlayPolicy);
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          report = {
+            valid: false,
+            issues: [
+              {
+                severity: "error" as const,
+                code: "OVERLAY_POLICY_UNAVAILABLE",
+                message: `Studio-owned overlay policy could not be loaded/enforced: ${msg}`,
+                skill_id: "threejs-game-skills",
+              },
+            ],
+          };
+        }
         const res: StudioResult = {
           status: report.valid ? "success" : "failed",
           operation: "studio.capabilities.lint",
