@@ -1,0 +1,25 @@
+{
+  "channel": "performance",
+  "quality_profile": "proof",
+  "present": false,
+  "reason": "not read (no performance capture requested)",
+  "metrics": {
+    "console_errors": 0
+  },
+  "unreported": [
+    "fps_avg",
+    "frame_time_ms.p50",
+    "frame_time_ms.p95",
+    "frame_time_ms.p99",
+    "draw_calls",
+    "triangles",
+    "textures",
+    "resources",
+    "readiness_ms"
+  ],
+  "renderer_class": "unknown",
+  "read_via": [
+    "renderer.stats()",
+    "renderer.probe()"
+  ]
+}

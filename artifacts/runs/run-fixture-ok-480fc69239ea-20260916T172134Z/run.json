@@ -1,0 +1,26 @@
+{
+  "id": "run-fixture-ok-480fc69239ea-20260916T172134Z",
+  "project_revision": "480fc69239eac26f91a329472f5b41c770a501ae",
+  "scenario_id": "fixture-ok",
+  "environment": {
+    "browser": "chrome",
+    "browser_version": "unavailable",
+    "headless": false,
+    "viewport": {
+      "width": 640,
+      "height": 360
+    },
+    "platform": "linux",
+    "quality_profile": "proof",
+    "executable_path": "/usr/bin/google-chrome",
+    "autoplay_bypass_flags": false
+  },
+  "channels": [
+    {
+      "channel": "none",
+      "reason": "PLAYWRIGHT_UNAVAILABLE"
+    }
+  ],
+  "seed": 1337,
+  "timestamp": "2026-09-16T17:21:34Z"
+}

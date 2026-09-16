@@ -21,8 +21,13 @@ import {
   resolveProjectRevision,
   parseFrozenExpectation,
   settleExpectation,
+  loadQualityProfiles,
+  bindQualityProfile,
+  QualityProfileError,
+  type AssetBudgetSummary,
   type FrozenExpectation,
   type SettlementOutcome,
+  type ResolvedQualityProfile,
 } from "@gauntlet/studio";
 import {
   validateCapabilityResult,
@@ -49,12 +54,19 @@ import {
   type ScenarioRunResult,
 } from "@gauntlet/adapters";
 
-export const CLI_VERSION = "0.2.0";
+export const CLI_VERSION = "0.3.0";
 
 /** Monorepo root (this CLI lives at apps/studio-cli/src). */
 const REPO_ROOT = path.resolve(import.meta.dir, "..", "..", "..");
 const PROOF_EXPECTATIONS_DIR = path.join(REPO_ROOT, "packages", "studio", "test", "proof", "expectations");
 const PROOF_FIXTURES_DIR = path.join(REPO_ROOT, "packages", "studio", "test", "proof", "fixtures");
+const PERFORMANCE_EXPECTATIONS_DIR = path.join(REPO_ROOT, "packages", "studio", "test", "performance", "expectations");
+/**
+ * Reference-game project spec that OWNS the numeric quality profiles (REQ-CONFIG-005):
+ * the Blackwater Relay reference game declares its profiles before they are used as
+ * gates; fixture scenarios gate against those same game-owned numbers.
+ */
+const REFERENCE_GAME_SPEC = path.join(REPO_ROOT, "examples", "blackwater-relay", ".agents", "specs", "game.spec.yaml");
 
 /** Reads a `--flag <value>` option pair; returns undefined when absent. */
 function flagValue(args: string[], flag: string): string | undefined {
@@ -86,13 +98,42 @@ function revisionOrBlocked(operation: string, explicit?: string): { revision?: s
 /** Resolves a frozen expectation by id (committed fixture) or explicit JSON path. */
 function loadFrozenExpectation(idOrPath: string): FrozenExpectation {
   const candidate = path.resolve(process.cwd(), idOrPath);
-  const file = fs.existsSync(candidate) ? candidate : path.join(PROOF_EXPECTATIONS_DIR, `${idOrPath}.json`);
-  if (!fs.existsSync(file)) {
+  const searchDirs = [PROOF_EXPECTATIONS_DIR, PERFORMANCE_EXPECTATIONS_DIR];
+  const found = searchDirs.map((dir) => path.join(dir, `${idOrPath}.json`)).find((file) => fs.existsSync(file));
+  const file = fs.existsSync(candidate) ? candidate : found;
+  if (!file) {
     throw new Error(
-      `frozen expectation '${idOrPath}' not found (committed expectations: ${PROOF_EXPECTATIONS_DIR})`
+      `frozen expectation '${idOrPath}' not found (committed expectations: ${searchDirs.join(", ")})`
     );
   }
   return parseFrozenExpectation(JSON.parse(fs.readFileSync(file, "utf-8")));
+}
+
+/**
+ * Resolves the DECLARED quality profile for a performance claim (T21). Numeric
+ * budgets come from the game project spec — never from adapters or CLI defaults.
+ */
+function resolvePerformanceProfile(
+  expectation: FrozenExpectation,
+  gameSpecPath: string
+): { profile: ResolvedQualityProfile; game_spec: string } {
+  if (!expectation.performance) {
+    throw new Error(`frozen expectation '${expectation.id}' claims no performance channel`);
+  }
+  const profiles = loadQualityProfiles(gameSpecPath);
+  const declared = Object.prototype.hasOwnProperty.call(profiles, expectation.performance.profile);
+  if (!declared) {
+    throw new QualityProfileError(
+      "PROFILE_NOT_DECLARED",
+      `quality profile '${expectation.performance.profile}' is not declared by game spec '${gameSpecPath}'; profiles MUST be declared before use as gates (REQ-PERF-002)`
+    );
+  }
+  return { profile: bindQualityProfile(profiles, expectation.performance.profile), game_spec: gameSpecPath };
+}
+
+/** Game spec that owns the numeric profiles (override with --game-spec). */
+function gameSpecOrDefault(explicit?: string): string {
+  return explicit ? path.resolve(process.cwd(), explicit) : REFERENCE_GAME_SPEC;
 }
 
 /** Maps a harness observation onto the settlement input channels. */
@@ -100,7 +141,8 @@ function settleObserved(
   expectation: FrozenExpectation,
   observed: ScenarioRunResult,
   currentRevision: string,
-  now?: string
+  now?: string,
+  performance?: { profile: ResolvedQualityProfile; asset_summary?: AssetBudgetSummary | null } | null
 ): SettlementOutcome {
   const run = observed.run ? (JSON.parse(JSON.stringify(observed.run)) as never) : null;
   const manifests = observed.manifest ? [JSON.parse(JSON.stringify(observed.manifest)) as never] : [];
@@ -115,6 +157,7 @@ function settleObserved(
       unavailable_reason: observed.blockage?.message,
     },
     currentRevision,
+    performance: performance ?? null,
     now,
   });
 }
@@ -194,8 +237,13 @@ Commands:
   observe [scenario]           Observe a deterministic proof scenario via the Playwright harness
                                (system Chrome, stable observability methods only); writes immutable
                                run evidence under artifacts/runs/<run-id>/  [T20]
+                               --profile <id> captures performance metrics under a game-declared
+                               quality profile  [T21]
   verify <expectation>         Verify a frozen expectation against a fresh observation and append a
                                SettlementRecord (settled|blocked|failed|incomplete)  [T20]
+  verify --scenario <id>       Performance verification under a game-project-declared quality
+    --profile <id>             profile (declared BEFORE use as a gate; numeric budgets live in the
+                               game project)  [T21]
   evidence check-fixtures      Validate committed evidence fixtures: schemas, run/manifest correlation,
                                artifact hashes, and negative controls (must-reject)  [T20]
   evidence <other-action>      Other evidence actions (typed placeholders until settled)
@@ -741,6 +789,12 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       const scenarioId = filteredArgs[1] || "fixture-ok";
       const outDir = flagValue(filteredArgs, "--out");
       const revisionFlag = flagValue(filteredArgs, "--revision");
+      const profileFlag = flagValue(filteredArgs, "--profile");
+      if (profileFlag) {
+        // Declared-before-use validation: an undeclared profile can never be observed
+        // under (REQ-PERF-002); numbers come from the game project (REQ-CONFIG-005).
+        bindQualityProfile(loadQualityProfiles(gameSpecOrDefault(flagValue(filteredArgs, "--game-spec"))), profileFlag);
+      }
       try {
         const rev = revisionOrBlocked("studio.observe", revisionFlag);
         if (rev.blocked) {
@@ -768,6 +822,7 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
           sink: store.createRunWriter(),
           headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
           timeoutMs: 45000,
+          ...(profileFlag ? { qualityProfile: profileFlag } : {}),
         });
         const runDir = observed.run_dir ?? (observed.run ? store.runDir(observed.run.id) : undefined);
         const payload = {
@@ -822,18 +877,59 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
 
     case "verify": {
       // T20 (REQ-GAUNTLET-001..006, REQ-VERIFY-001/002/005): fresh observation vs the
-      // FROZEN expectation -> append-only SettlementRecord. Exit codes: 0 settled,
+      // FROZEN expectation -> append-only SettlementRecord. T21 (REQ-VERIFY-003,
+      // REQ-PERF-001..004) adds the scenario/profile form: performance claims settle
+      // ONLY against the game-project-declared quality profile. Exit codes: 0 settled,
       // 1 failed, 2 blocked/incomplete — a blockage can never read as a pass.
+      const scenarioFlag = flagValue(filteredArgs, "--scenario");
+      const profileFlag = flagValue(filteredArgs, "--profile");
+      const gameSpecFlag = flagValue(filteredArgs, "--game-spec");
       const idOrPath = filteredArgs[1];
       const revisionFlag = flagValue(filteredArgs, "--revision");
       try {
-        if (!idOrPath) throw new Error("usage: studio verify <expectation-id-or-json-path>");
-        const expectation = loadFrozenExpectation(idOrPath);
+        let expectation: FrozenExpectation;
+        if (scenarioFlag) {
+          // T21 form: verify --scenario <id> --profile <declared-profile-id>.
+          // The frozen expectation is committed under the scenario id BEFORE evidence.
+          expectation = loadFrozenExpectation(scenarioFlag);
+          if (expectation.scenario_id !== scenarioFlag) {
+            throw new Error(
+              `frozen expectation '${expectation.id}' binds scenario '${expectation.scenario_id}', not '${scenarioFlag}'`
+            );
+          }
+          if (profileFlag && expectation.performance && expectation.performance.profile !== profileFlag) {
+            throw new Error(
+              `quality profile '${profileFlag}' does not match the profile declared by frozen expectation ` +
+                `'${expectation.id}' ('${expectation.performance.profile}'); profiles bind before evidence evaluation`
+            );
+          }
+        } else {
+          if (!idOrPath) {
+            throw new Error(
+              "usage: studio verify <expectation-id-or-json-path> | studio verify --scenario <id> --profile <profile-id>"
+            );
+          }
+          expectation = loadFrozenExpectation(idOrPath);
+        }
         const rev = revisionOrBlocked("studio.verify", revisionFlag);
         if (rev.blocked) {
           if (isJson) console.log(JSON.stringify(rev.blocked, null, 2));
           else console.error(`Blocked (${rev.blocked.diagnostics.code}): ${rev.blocked.diagnostics.error}`);
           return 2;
+        }
+        // Resolve the DECLARED quality profile from the game project BEFORE evidence
+        // evaluation (REQ-PERF-002: declared before use as gates; REQ-CONFIG-005:
+        // numbers live in the game project).
+        const perfResolution = expectation.performance
+          ? resolvePerformanceProfile(expectation, gameSpecFlag ?? REFERENCE_GAME_SPEC)
+          : null;
+        let assetSummary: AssetBudgetSummary | null = null;
+        if (perfResolution) {
+          const registry = new AssetRegistry(process.cwd());
+          if (registry.exists()) {
+            registry.load();
+            assetSummary = { not_acceptable: registry.verifyAll().totals.not_acceptable };
+          }
         }
         const scenario = buildFixtureScenario(expectation.scenario_id, {
           seed: expectation.seed,
@@ -848,8 +944,9 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
           sink: store.createRunWriter(),
           headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
           timeoutMs: 45000,
+          ...(expectation.performance ? { qualityProfile: expectation.performance.profile } : {}),
         });
-        const outcome = settleObserved(expectation, observed, rev.revision!);
+        const outcome = settleObserved(expectation, observed, rev.revision!, undefined, perfResolution ? { profile: perfResolution.profile, asset_summary: assetSummary } : null);
         let settlementPath: string | undefined;
         if (outcome.record && observed.run) {
           store.appendSettlement(observed.run.id, outcome.record);
@@ -862,10 +959,13 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
           result: {
             expectation_id: expectation.id,
             scenario_id: expectation.scenario_id,
+            ...(expectation.performance ? { quality_profile: expectation.performance.profile } : {}),
+            ...(perfResolution ? { game_spec: perfResolution.game_spec } : {}),
             decision: outcome.decision,
             blockage_class: outcome.blockage_class,
             reason: outcome.reason,
             contradictions: outcome.contradictions,
+            ...(outcome.budget_error ? { budget_error: outcome.budget_error } : {}),
             requirement_ids: expectation.requirement_ids,
             run_id: observed.run?.id,
             run_dir: observed.run_dir ?? (observed.run ? store.runDir(observed.run.id) : undefined),
@@ -887,6 +987,7 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
           console.log(JSON.stringify(res, null, 2));
         } else {
           console.log(`Expectation ${expectation.id}: ${outcome.decision.toUpperCase()}`);
+          if (expectation.performance) console.log(`Quality profile: ${expectation.performance.profile}`);
           if (outcome.blockage_class) console.log(`Blockage: ${outcome.blockage_class}`);
           console.log(`Reason: ${outcome.reason}`);
           for (const c of outcome.contradictions) console.log(`Contradiction: ${c}`);

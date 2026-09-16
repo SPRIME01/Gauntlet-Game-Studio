@@ -1,0 +1,63 @@
+{
+  "id": "performance-fixture-swiftshader",
+  "scenario_id": "performance-fixture-swiftshader",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-003"
+  ],
+  "revision": "current",
+  "seed": 1337,
+  "steps": 3,
+  "view": "main",
+  "claims": {
+    "state": true,
+    "pixels": true,
+    "telemetry": true,
+    "network": false,
+    "performance": true
+  },
+  "requires_confirmation": false,
+  "semantic": {
+    "entities": [
+      {
+        "id": "player",
+        "tags_include": [
+          "player"
+        ],
+        "position_approx": {
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        "tolerance": 1e-06
+      },
+      {
+        "id": "checkpoint-beacon",
+        "tags_include": [
+          "beacon"
+        ],
+        "position_approx": {
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        "tolerance": 1e-06
+      }
+    ]
+  },
+  "pixels": {
+    "views": [
+      "main"
+    ],
+    "min_width": 320,
+    "min_height": 180
+  },
+  "telemetry": {
+    "max_console_errors": 0,
+    "max_page_errors": 0,
+    "tick_advanced_min": 3
+  },
+  "performance": {
+    "profile": "target"
+  }
+}

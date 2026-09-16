@@ -1,0 +1,17 @@
+{
+  "id": "settlement-performance-fixture-run-performance-fixture-480fc69239ea-20260916T171136Z",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-001",
+    "REQ-PERF-002",
+    "REQ-PERF-003",
+    "REQ-PERF-004",
+    "REQ-GAUNTLET-003"
+  ],
+  "decision": "settled",
+  "evidence_manifest_ids": [
+    "run-performance-fixture-480fc69239ea-20260916T171136Z-manifest-01"
+  ],
+  "reason": "settled on fresh correlated evidence for revision 480fc69239eac26f91a329472f5b41c770a501ae (run run-performance-fixture-480fc69239ea-20260916T171136Z; state: 4/4 checks pass, pixels: 2/2 checks pass, telemetry: 3/3 checks pass, performance: 8/8 checks pass)",
+  "settled_at": "2026-09-16T17:11:37.431Z"
+}

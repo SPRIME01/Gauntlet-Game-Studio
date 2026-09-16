@@ -1,0 +1,159 @@
+{
+  "id": "run-performance-fixture-regress-480fc69239ea-20260916T172313Z",
+  "project_revision": "480fc69239eac26f91a329472f5b41c770a501ae",
+  "scenario_id": "performance-fixture-regress",
+  "environment": {
+    "browser": "chrome",
+    "browser_version": "151.0.7922.75",
+    "headless": false,
+    "viewport": {
+      "width": 640,
+      "height": 360
+    },
+    "platform": "linux",
+    "quality_profile": "test-budget",
+    "executable_path": "/usr/bin/google-chrome",
+    "autoplay_bypass_flags": false,
+    "renderer_identity": {
+      "unmasked_renderer": "ANGLE (Deterministic Fixture GL, HardwareClass)",
+      "vendor": "gauntlet-fixture"
+    }
+  },
+  "channels": [
+    {
+      "channel": "state",
+      "source": "koota",
+      "snapshot": {
+        "version": 1,
+        "timestamp": 0,
+        "entities": [
+          {
+            "id": "player",
+            "transform": {
+              "position": [
+                3,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            "tags": [
+              "player"
+            ]
+          },
+          {
+            "id": "checkpoint-beacon",
+            "transform": {
+              "position": [
+                3,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            "tags": [
+              "beacon"
+            ]
+          }
+        ]
+      },
+      "tick": {
+        "tick": 3,
+        "time": 0.05,
+        "running": false,
+        "paused": true,
+        "fixed_delta_time": 0.016666666666666666,
+        "alpha": 0
+      },
+      "read_via": [
+        "entities.snapshot()",
+        "tick()"
+      ]
+    },
+    {
+      "channel": "pixels",
+      "captures": [
+        {
+          "view": "main",
+          "artifact": "artifacts/screenshot-main.png",
+          "sha256": "b0728f1c91d3bab45670515879a17d07e17a34f93b5d4fb6e585fc012ffb0249",
+          "width": 640,
+          "height": 360,
+          "bytes": 6296
+        }
+      ]
+    },
+    {
+      "channel": "telemetry",
+      "console": [],
+      "page_errors": [],
+      "tick_after_steps": 3
+    },
+    {
+      "channel": "network",
+      "responses": [
+        {
+          "url": "http://127.0.0.1:41983/?scenario=performance-fixture-regress",
+          "status": 200,
+          "ok": true
+        }
+      ],
+      "surface_read": {
+        "present": false,
+        "reason": "fixture: network not wired"
+      }
+    },
+    {
+      "channel": "performance",
+      "quality_profile": "test-budget",
+      "present": true,
+      "metrics": {
+        "fps_avg": 24,
+        "frame_time_ms": {
+          "avg": 39,
+          "p50": 38.513,
+          "p95": 56.051,
+          "p99": 58,
+          "samples": 40
+        },
+        "draw_calls": 36,
+        "triangles": 420,
+        "textures": 3,
+        "resources": 7,
+        "readiness_ms": 120,
+        "console_errors": 0
+      },
+      "unreported": [],
+      "renderer_class": "hardware",
+      "read_via": [
+        "renderer.stats()",
+        "renderer.probe()"
+      ]
+    }
+  ],
+  "seed": 1337,
+  "camera_views": [
+    "main"
+  ],
+  "timestamp": "2026-09-16T17:23:13Z"
+}

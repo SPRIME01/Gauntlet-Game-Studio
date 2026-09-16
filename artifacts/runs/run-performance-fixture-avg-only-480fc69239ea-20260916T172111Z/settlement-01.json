@@ -1,0 +1,16 @@
+{
+  "id": "settlement-performance-fixture-avg-only-run-performance-fixture-avg-only-480fc69239ea-20260916T172111Z",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-003",
+    "REQ-GAUNTLET-003"
+  ],
+  "decision": "failed",
+  "evidence_manifest_ids": [
+    "run-performance-fixture-avg-only-480fc69239ea-20260916T172111Z-manifest-01"
+  ],
+  "reason": "verification failed — performance/PERF_METRIC_RULE_MISSING_PERCENTILE: profile 'test-budget' declares frame-time p50 as a gating metric, but the evidence does not report it (average-only reporting is rejected per declared metric rules); performance/PERF_METRIC_RULE_MISSING_PERCENTILE: profile 'test-budget' declares frame-time p95 as a gating metric, but the evidence does not report it (average-only reporting is rejected per declared metric rules); performance/PERF_METRIC_RULE_MISSING_PERCENTILE: profile 'test-budget' declares frame-time p99 as a gating metric, but the evidence does not report it (average-only reporting is rejected per declared metric rules); performance/PERF_AVERAGE_ONLY_REPORTING: evidence reports only summary averages (fps_avg 60); profile 'test-budget' declares average-only reporting rejected — the frame-time distribution must be measured [contradiction: performance_contradiction: rendered captures and authoritative semantic state satisfy their constraints while a declared runtime-profile budget is violated; visual or semantic success cannot settle a performance requirement (REQ-PERF-004)] (classified: runtime_consequence_deficit); failed evidence is preserved append-only",
+  "settled_at": "2026-09-16T17:21:11Z",
+  "blockage_class": "runtime_consequence_deficit",
+  "next_affordance": "apply a bounded, evidence-producing correction; preserve the failed evidence"
+}

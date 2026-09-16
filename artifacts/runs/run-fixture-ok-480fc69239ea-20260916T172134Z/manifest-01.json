@@ -1,0 +1,20 @@
+{
+  "id": "run-fixture-ok-480fc69239ea-20260916T172134Z-manifest-01",
+  "run_id": "run-fixture-ok-480fc69239ea-20260916T172134Z",
+  "project_revision": "480fc69239eac26f91a329472f5b41c770a501ae",
+  "requirement_ids": [
+    "REQ-VERIFY-005"
+  ],
+  "artifacts": [
+    {
+      "id": "artifact-artifacts/blockage.json",
+      "path": "artifacts/blockage.json",
+      "sha256": "fe991bfc9e85614c94c237428950ee97b8a810b6909c3a1dc8374d1661e36873",
+      "role": "blockage-report",
+      "mime_type": "application/json",
+      "size_bytes": 302
+    }
+  ],
+  "result": "blocked",
+  "created_at": "2026-09-16T17:21:34Z"
+}

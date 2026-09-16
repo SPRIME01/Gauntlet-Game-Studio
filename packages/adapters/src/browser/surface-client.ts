@@ -154,6 +154,11 @@ export class StableSurfaceClient {
     return this.page.evaluate(withSurface(`(s) => s.renderer.probe()`)) as Promise<Record<string, unknown>>;
   }
 
+  /** Renderer stats via the stable T19 seam (fps, draw calls, frame-time samples, ...). */
+  rendererStats(): Promise<Record<string, unknown>> {
+    return this.page.evaluate(withSurface(`(s) => s.renderer.stats()`)) as Promise<Record<string, unknown>>;
+  }
+
   networkRead(): Promise<Record<string, unknown>> {
     return this.page.evaluate(withSurface(`(s) => s.network.read()`)) as Promise<Record<string, unknown>>;
   }

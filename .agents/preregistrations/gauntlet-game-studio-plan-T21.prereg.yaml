@@ -1,0 +1,74 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T21
+title: Implement quality profiles and performance settlement
+proof_level: P3
+timestamp: "2026-09-15T12:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T21-001
+    statement: >-
+      Visual or semantic success cannot settle a requirement whose declared runtime profile is
+      violated. Concretely: each game declares project-local, named quality/performance profiles
+      BEFORE they are used as gates (REQ-PERF-002, REQ-CONFIG-005 — numeric budgets live in the
+      game project, never in provider adapters, and no universal cross-game target is claimed).
+      Performance claims are measured through the stable T19 observability contract
+      (`__GAUNTLET_STUDIO_OBS__` v1 renderer probe/stats seams — never DOM or provider-internal
+      names) and bound to browser, viewport, quality profile, named scenario, and project revision
+      as first-class evidence correlated through the T20 ObservationRun/EvidenceManifest machinery
+      (REQ-VERIFY-003; observation is not settlement — no fork of T20). Verification structurally
+      separates deterministic/structural CI budgets (draw calls, triangles, texture/resource counts,
+      console/runtime errors, asset byte sizes via the T13 Asset Registry) from hardware-sensitive
+      target budgets (frame-time distribution p50/p95/p99 — not average-only, FPS, load/readiness
+      timing, memory). Hardware-sensitive acceptance binds to the named profile's declared metric
+      rules and environment binding or explicit relative baselines; a software-rendered run
+      (SwiftShader/llvmpipe-class identity detected via the renderer identity probe) is classified
+      non-target evidence and can NEVER settle a hardware-target profile — it is blocked/non-target,
+      never passed (REQ-PERF-003). An asset or scene that violates its declared structural or
+      hardware budget remains rejected/failed — budget_error yields failed/blocked settlement, not a
+      warning, and visual quality alone cannot settle it (REQ-PERF-004). Performance is evaluated
+      from the first representative playable fixture, not deferred (REQ-PERF-001).
+
+falsifiers:
+  - id: TEETH-T21-001
+    attack: Inject a deliberate frame-time/draw-call regression without changing screenshots or semantic state.
+    expected: Performance verification fails and the requirement remains unsettled.
+  - id: TEETH-T21-002
+    attack: Report only average FPS while p95/p99 or configured metric exceeds budget.
+    expected: Profile gate fails according to declared metric rules.
+
+known_confounds:
+  - Stale evidence or a different project revision.
+  - Unavailable optional provider/tool being mistaken for core capability failure.
+  - Hardware-sensitive frame-time/FPS/load measurements on real, varied GPUs are noisy; in THIS
+    environment the deterministic fixture reports fixture-controlled frame-time distributions and
+    renderer identity through the same stable contract seams a real title uses. The `test-budget`
+    profile therefore binds hardware-sensitive legs to explicit fixture-RELATIVE baselines (plan
+    allows explicit relative baselines) — they prove the metric rules, budget evaluation, and
+    teeth, NOT absolute desktop/mobile hardware performance. Absolute hardware-target numbers in
+    the Blackwater `target` profile are declared now but can only settle on the named target
+    environment (T22 scope); a real SwiftShader/software renderer is expected on this WSL host and
+    must classify as non-target evidence, not as a pass.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    TEETH-T21-001 bites end-to-end: the fixture scenario `performance-fixture-regress` reports a
+    deliberate frame-time (p95/p99) and draw-call regression through the stable
+    `renderer.stats()`/`renderer.probe()` seams while its rendered pixels remain byte-identical to
+    the healthy `performance-fixture` run (sha256 equality proven from real system-Chrome captures)
+    and the Koota-shaped semantic snapshot is unchanged; performance verification MUST fail
+    (budget_error; decision "failed", never "settled") and the requirement stays unsettled.
+    TEETH-T21-002 bites: a reporter that surfaces only a healthy average FPS while omitting the
+    profile-declared p95/p99 percentiles fails the profile gate per the declared metric rules
+    (PERF_METRIC_RULE_* check; decision "failed"). The software-renderer guard bites: a
+    SwiftShader-class renderer identity read via the stable probe marks hardware-sensitive results
+    non-target and a hardware-target profile claim is blocked, never settled on it, while
+    structural budgets remain fully enforceable. Numeric budgets are read from the game project
+    (examples/blackwater-relay/.agents/specs/game.spec.yaml quality_profiles), not adapters.
+    `bun run test:performance-fixtures` and
+    `bun run studio -- verify --scenario performance-fixture --profile test-budget --json`
+    exit 0 with all global gates green; browser legs use system Chrome with no autoplay-policy
+    bypass flags.

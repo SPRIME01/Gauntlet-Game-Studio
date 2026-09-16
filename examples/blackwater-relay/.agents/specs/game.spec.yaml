@@ -4,11 +4,75 @@ title: "blackwater-relay Specification"
 status: "draft"
 game_id: "blackwater-relay"
 runtime_target: "browser"
-budgets:
-  target_fps: 60
-  max_draw_calls: 200
-  max_triangles: 250000
-  max_memory_mb: 256
+# REQ-CONFIG-005: game-specific quality profiles and technical-art budgets live in the
+# game project, never in provider adapters. Named profiles are declared HERE before they
+# are used as gates (REQ-PERF-002). The flat `budgets` block was migrated into the
+# `target` profile below (same numbers, now named and metric-ruled).
+#
+# Separation discipline (REQ-PERF-003):
+#   structural_budgets      — deterministic/structural CI budgets (draw calls, triangles,
+#                             texture/resource counts, console errors, asset byte sizes);
+#                             enforceable in ANY environment including software-rendered CI.
+#   hardware_budgets        — hardware-sensitive target budgets (FPS, frame-time
+#                             percentiles, load timing, memory); acceptance binds to the
+#                             profile's named environment_binding, or (test-budget) to an
+#                             explicit fixture-relative baseline. A SwiftShader/software
+#                             run is non-target evidence and can never settle a
+#                             hardware-target profile.
+quality_profiles:
+  target:
+    description: >-
+      Blackwater Relay desktop target profile for release qualification. Hardware-sensitive
+      acceptance binds to the named desktop-chrome-hardware environment; software-rendered
+      runs are non-target evidence for this profile.
+    evidence_class: "hardware-target"
+    environment_binding: "desktop-chrome-hardware"
+    metric_rules:
+      frame_time_percentiles: ["p50", "p95", "p99"]
+      average_only_rejected: true
+    structural_budgets:
+      max_draw_calls: 200
+      max_triangles: 250000
+      max_textures: 64
+      max_console_errors: 0
+    hardware_budgets:
+      target_fps: 60
+      min_fps_avg: 55
+      max_frame_time_p50_ms: 20
+      max_frame_time_p95_ms: 22
+      max_frame_time_p99_ms: 33
+      max_load_ms: 8000
+      max_memory_mb: 256
+  test-budget:
+    description: >-
+      Deterministic CI/verification budget profile. Structural budgets are enforced in every
+      environment; hardware-sensitive legs are bound to an explicit fixture-relative baseline
+      (declared deterministic distributions), never to absolute host-hardware claims, so a
+      software-rendered CI run stays class-labeled and never masquerades as target-hardware
+      evidence.
+    evidence_class: "structural+relative-baseline"
+    environment_binding: "ci-deterministic-fixture"
+    metric_rules:
+      frame_time_percentiles: ["p50", "p95", "p99"]
+      average_only_rejected: true
+    structural_budgets:
+      max_draw_calls: 24
+      max_triangles: 600
+      max_textures: 4
+      max_console_errors: 0
+    hardware_budgets:
+      min_fps_avg: 55
+      max_frame_time_p50_ms: 20
+      max_frame_time_p95_ms: 22
+      max_frame_time_p99_ms: 33
+      relative_baseline:
+        description: >-
+          FPS/frame-time values are evaluated against the declared deterministic
+          performance-fixture distributions (baseline_ref below), not against host GPU
+          hardware. These legs prove the metric rules, budget evaluation, and falsifiers;
+          absolute desktop-target performance settles only under the `target` profile on its
+          bound environment.
+        baseline_ref: "performance-fixture-v1"
 assets:
   manifest: "assets/manifest.json"
 evidence:

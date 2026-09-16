@@ -1,5 +1,5 @@
 /**
- * Deterministic committed fixture scenario for the browser proof harness (T20).
+ * Deterministic committed fixture scenario for the browser proof harness (T20/T21).
  *
  * This is a SELF-CONTAINED fixture page standing in for a real game title. It mounts
  * a `__GAUNTLET_STUDIO_OBS__` v1-shaped surface (header + every stable method) with
@@ -7,22 +7,45 @@
  * a real game: it validates the mounted surface against contract v1 and then reads
  * ONLY through stable methods. A real game mounts the real T19 bridge instead.
  *
- * Variants (via ?variant= query parameter):
- *   ok          — semantic state and pixels agree: after N bounded fixed-steps the
- *                 authoritative player position is x = N.
- *   wrong-state — TEETH-T20-001 fixture: the rendered pixels remain visually correct
- *                 (player drawn at the expected final position, identical banner),
- *                 but the authoritative semantic snapshot (the simulated Koota state)
- *                 reports the player stuck at x = 0. Pixels CANNOT be trusted over
- *                 this semantic contradiction; verification must fail overall.
+ * Variants (via ?variant= query parameter or the served ?scenario= id):
+ *   ok                          — semantic state and pixels agree: after N bounded
+ *                                 fixed-steps the authoritative player position is x = N.
+ *   wrong-state                 — TEETH-T20-001 fixture: rendered pixels remain visually
+ *                                 correct (identical bytes) while the authoritative
+ *                                 semantic snapshot reports the player stuck at x = 0.
+ *   performance-fixture         — T21 healthy performance fixture: deterministic
+ *                                 renderer identity (hardware-class) + renderer stats
+ *                                 (draw calls, triangles, textures, fps, readiness, and
+ *                                 a 40-sample frame-time distribution with p95 ≈ 19.6ms,
+ *                                 p99 = 19.8ms) within the test-budget profile budgets.
+ *   performance-fixture-regress — TEETH-T21-001 fixture: deliberate frame-time (p95 ≈
+ *                                 56ms, p99 = 58ms) + draw-call (36 > 24) regression
+ *                                 reported through the SAME stable stats seam while the
+ *                                 canvas paint and semantic snapshot stay BYTE-IDENTICAL
+ *                                 to performance-fixture. Pixels/semantics cannot mask
+ *                                 the budget violation.
+ *   performance-fixture-avg-only — TEETH-T21-002 fixture: reports only a HEALTHY average
+ *                                 FPS (60) and no frame-time samples/percentiles;
+ *                                 average-only reporting must fail the profile gate per
+ *                                 the declared metric rules.
+ *   performance-fixture-swiftshader — software-rendering guard fixture: healthy metrics
+ *                                 but a SwiftShader-class renderer identity; hardware-
+ *                                 sensitive evidence is non-target and can never settle
+ *                                 a hardware-target profile.
  *
  * Determinism: no Date.now(), no Math.random(), no animations; the canvas is painted
- * once from fixed values, so repeated headless captures of a variant are stable.
+ * once from fixed values and every reported metric is a fixed function of the variant,
+ * so repeated captures of a variant are stable.
  */
 
 export interface FixtureScenarioOptions {
-  /** "ok" (agreeing channels) or "wrong-state" (pixels plausible, semantics wrong). */
-  variant: "ok" | "wrong-state";
+  variant:
+    | "ok"
+    | "wrong-state"
+    | "perf-ok"
+    | "perf-regress"
+    | "perf-avg-only"
+    | "perf-swiftshader";
 }
 
 export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
@@ -52,14 +75,33 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
   var params = new URLSearchParams(location.search);
   function variantFromName(name) {
     if (!name) return null;
-    return /(^|[.\-_])wrong([.\-_]?state)|wrong-state/.test(name) ? "wrong-state" : "ok";
+    if (/(^|[.\\-_])wrong([.\\-_]?state)|wrong-state/.test(name)) return "wrong-state";
+    // Order matters: qualified performance ids before the bare performance fixture.
+    if (/performance-fixture-regress|perf-regress/.test(name)) return "perf-regress";
+    if (/performance-fixture-avg-only|avg-only/.test(name)) return "perf-avg-only";
+    if (/performance-fixture-swiftshader|swiftshader/.test(name)) return "perf-swiftshader";
+    if (/^performance-fixture$|perf-ok/.test(name)) return "perf-ok";
+    return null;
   }
   // Variant comes from an explicit ?variant= param, from the scenario identity the
   // harness serves (?scenario=<scenario-id>), or defaults to "ok".
-  var variant =
-    params.get("variant") === "wrong-state" ? "wrong-state"
-    : variantFromName(params.get("variant") === "ok" ? "ok" : params.get("scenario")) ?? "ok";
+  var variant = variantFromName(params.get("variant") ?? params.get("scenario")) ?? (params.get("variant") === "ok" ? "ok" : null) ?? "ok";
   var STEPS_PER_CHECKPOINT = 3; // expectation: player.x === steps after step(steps)
+
+  // Deterministic performance fixture table: every reported metric is a fixed
+  // function of the variant (no clocks, no randomness).
+  var PERF = {
+    "perf-ok":          { draw_calls: 18, triangles: 420, textures: 3, resources: 7, fps_avg: 60, readiness_ms: 120, ft: [15.2, 19.8] },
+    "perf-regress":     { draw_calls: 36, triangles: 420, textures: 3, resources: 7, fps_avg: 24, readiness_ms: 120, ft: [20.0, 58.0] },
+    "perf-avg-only":    { draw_calls: 18, triangles: 420, textures: 3, resources: 7, fps_avg: 60, readiness_ms: 120, ft: null },
+    "perf-swiftshader": { draw_calls: 18, triangles: 420, textures: 3, resources: 7, fps_avg: 60, readiness_ms: 120, ft: [15.2, 19.8] },
+  };
+  var IDENTITY = {
+    "perf-ok":          "ANGLE (Deterministic Fixture GL, HardwareClass)",
+    "perf-regress":     "ANGLE (Deterministic Fixture GL, HardwareClass)",
+    "perf-avg-only":    "ANGLE (Deterministic Fixture GL, HardwareClass)",
+    "perf-swiftshader": "SwiftShader (Deterministic Fixture SoftwareGL)",
+  };
 
   var state = { steps: 0, seed: 0, paused: false, view: "main" };
 
@@ -98,8 +140,9 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
   }
 
   // Static deterministic painting: the player is drawn at the EXPECTED final
-  // position in both variants, so pixels stay plausible while (wrong-state)
-  // semantics contradict the frozen expectation.
+  // position in both the ok and wrong-state variants AND in every perf variant,
+  // so pixels stay byte-identical while (wrong-state) semantics contradict the
+  // frozen expectation or (perf-regress) the reported telemetry regresses.
   function paint() {
     var canvas = document.getElementById("scene");
     var ctx = canvas.getContext("2d");
@@ -135,7 +178,16 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
       if (name === "main") { state.view = "main"; return true; }
       return false;
     },
-    listScenarios: function () { return ["fixture-ok", "fixture-wrong-state"]; },
+    listScenarios: function () {
+      return [
+        "fixture-ok",
+        "fixture-wrong-state",
+        "performance-fixture",
+        "performance-fixture-regress",
+        "performance-fixture-avg-only",
+        "performance-fixture-swiftshader",
+      ];
+    },
     resetScenario: function (name) {
       var v = variantFromName(typeof name === "string" ? name : null);
       if (v) variant = v; // scenario identity flows through the control namespace
@@ -148,6 +200,15 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
   var notWired = function (what) {
     return function () { return { present: false, reason: "fixture: " + what + " not wired" }; };
   };
+
+  function deterministicFrameTimeSamples(range) {
+    // Uniform spread across [lo, hi]; every sample is a fixed function of the index.
+    var samples = [];
+    for (var i = 0; i < 40; i++) {
+      samples.push(Math.round((range[0] + (range[1] - range[0]) * (i / 39)) * 1000) / 1000);
+    }
+    return samples;
+  }
 
   var surface = {
     contract: {
@@ -185,8 +246,35 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
     },
     errors: { recent: function () { return []; } },
     renderer: {
-      probe: function () { return { present: false, reason: "fixture: no WebGL renderer mounted" }; },
-      stats: function () { return { present: false, reason: "fixture: no renderer stats" }; },
+      probe: function () {
+        var identity = IDENTITY[variant];
+        if (!identity) return { present: false, reason: "fixture: no WebGL renderer mounted" };
+        return {
+          present: true,
+          identity: { unmasked_renderer: identity, vendor: "gauntlet-fixture" },
+          capabilities: { max_texture_size: 2048 },
+        };
+      },
+      stats: function () {
+        var perf = PERF[variant];
+        if (!perf) return { present: false, reason: "fixture: no renderer stats for this variant" };
+        var stats = {
+          draw_calls: perf.draw_calls,
+          triangles: perf.triangles,
+          textures: perf.textures,
+          resources: perf.resources,
+          fps_avg: perf.fps_avg,
+          readiness_ms: perf.readiness_ms,
+        };
+        if (perf.ft) {
+          var samples = deterministicFrameTimeSamples(perf.ft);
+          stats.frame_time_samples_ms = samples;
+          stats.frame_time_sample_count = samples.length;
+        }
+        // avg-only variant deliberately reports NO samples/percentiles: the healthy
+        // average alone must never satisfy a profile that declares percentile rules.
+        return { present: true, stats: stats };
+      },
       capture: function () { return { preserveDrawingBuffer: false, purpose: "capture-only" }; },
     },
     physics: { read: notWired("physics") },
@@ -224,14 +312,29 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
 /** Scenario definitions exported for the CLI, tests, and the browser gate script. */
 export const FIXTURE_OK_SCENARIO_ID = "fixture-ok";
 export const FIXTURE_WRONG_STATE_SCENARIO_ID = "fixture-wrong-state";
+export const PERFORMANCE_OK_SCENARIO_ID = "performance-fixture";
+export const PERFORMANCE_REGRESS_SCENARIO_ID = "performance-fixture-regress";
+export const PERFORMANCE_AVG_ONLY_SCENARIO_ID = "performance-fixture-avg-only";
+export const PERFORMANCE_SWIFTSHADER_SCENARIO_ID = "performance-fixture-swiftshader";
+
+const SCENARIO_VARIANTS: Record<string, FixtureScenarioOptions["variant"]> = {
+  [FIXTURE_OK_SCENARIO_ID]: "ok",
+  [FIXTURE_WRONG_STATE_SCENARIO_ID]: "wrong-state",
+  [PERFORMANCE_OK_SCENARIO_ID]: "perf-ok",
+  [PERFORMANCE_REGRESS_SCENARIO_ID]: "perf-regress",
+  [PERFORMANCE_AVG_ONLY_SCENARIO_ID]: "perf-avg-only",
+  [PERFORMANCE_SWIFTSHADER_SCENARIO_ID]: "perf-swiftshader",
+};
 
 export function buildFixtureScenario(
   scenarioId: string,
   opts: { seed?: number; steps?: number; view?: string; viewport?: { width: number; height: number } } = {}
 ): import("./types").ScenarioDefinition {
-  const variant = scenarioId === FIXTURE_WRONG_STATE_SCENARIO_ID ? "wrong-state" : "ok";
-  if (scenarioId !== FIXTURE_OK_SCENARIO_ID && scenarioId !== FIXTURE_WRONG_STATE_SCENARIO_ID) {
-    throw new Error(`unknown fixture scenario '${scenarioId}'; available: ${FIXTURE_OK_SCENARIO_ID}, ${FIXTURE_WRONG_STATE_SCENARIO_ID}`);
+  const variant = SCENARIO_VARIANTS[scenarioId];
+  if (!variant) {
+    throw new Error(
+      `unknown fixture scenario '${scenarioId}'; available: ${Object.keys(SCENARIO_VARIANTS).join(", ")}`
+    );
   }
   return {
     id: scenarioId,

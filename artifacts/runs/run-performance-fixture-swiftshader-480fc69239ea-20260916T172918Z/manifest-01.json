@@ -1,0 +1,61 @@
+{
+  "id": "run-performance-fixture-swiftshader-480fc69239ea-20260916T172918Z-manifest-01",
+  "run_id": "run-performance-fixture-swiftshader-480fc69239ea-20260916T172918Z",
+  "project_revision": "480fc69239eac26f91a329472f5b41c770a501ae",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-003"
+  ],
+  "artifacts": [
+    {
+      "id": "artifact-artifacts/state-snapshot.json",
+      "path": "artifacts/state-snapshot.json",
+      "sha256": "c613d74d27164f66fc9d4da03628dc000936a1cf0f63cfa4cafea2d430b2f561",
+      "role": "state-snapshot",
+      "mime_type": "application/json",
+      "size_bytes": 1105
+    },
+    {
+      "id": "artifact-artifacts/screenshot-main.png",
+      "path": "artifacts/screenshot-main.png",
+      "sha256": "b0728f1c91d3bab45670515879a17d07e17a34f93b5d4fb6e585fc012ffb0249",
+      "role": "rendered-capture",
+      "mime_type": "image/png",
+      "size_bytes": 6296
+    },
+    {
+      "id": "artifact-artifacts/telemetry.json",
+      "path": "artifacts/telemetry.json",
+      "sha256": "a604ede384fe393ccbabaffaf96de0155b318d4949a6bfe678afca727039dc49",
+      "role": "telemetry",
+      "mime_type": "application/json",
+      "size_bytes": 92
+    },
+    {
+      "id": "artifact-artifacts/network.json",
+      "path": "artifacts/network.json",
+      "sha256": "5e5d4cf89b38af05fc50c07546fa58e05a8cad13b5328b96f52d7aae557b6ffb",
+      "role": "network",
+      "mime_type": "application/json",
+      "size_bytes": 270
+    },
+    {
+      "id": "artifact-artifacts/performance-metrics.json",
+      "path": "artifacts/performance-metrics.json",
+      "sha256": "72992df70df668f4f96ae5460d0bb6ae9e0e657f8bc5af84c099d056909eacea",
+      "role": "performance-metrics",
+      "mime_type": "application/json",
+      "size_bytes": 502
+    },
+    {
+      "id": "artifact-artifacts/renderer-probe.json",
+      "path": "artifacts/renderer-probe.json",
+      "sha256": "015b753955b0baf699c9c6ed8e8af32d962d8c0b39b0c9782ff14765adb77ad1",
+      "role": "renderer-identity",
+      "mime_type": "application/json",
+      "size_bytes": 205
+    }
+  ],
+  "result": "pass",
+  "created_at": "2026-09-16T17:29:18Z"
+}

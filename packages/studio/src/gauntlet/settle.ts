@@ -24,9 +24,12 @@ import {
   type ObservationRun,
   type SettlementRecord,
 } from "@gauntlet/contracts";
-import type { ChannelEvidence } from "@gauntlet/adapters";
+import type { BudgetErrorSummary } from "@gauntlet/contracts";
+import type { ChannelEvidence, PerformanceChannelEvidence } from "@gauntlet/adapters";
 import { CURRENT_REVISION_SENTINEL, type FrozenExpectation } from "./expectation";
 import { evaluateClaimedChannels, type ChannelVerdict } from "./checks";
+import { evaluatePerformanceEvidence, type AssetBudgetSummary } from "../quality/evaluate";
+import type { ResolvedQualityProfile } from "../quality/profiles";
 
 export type SettlementDecision = "settled" | "blocked" | "failed" | "incomplete";
 
@@ -42,12 +45,21 @@ export type BlockageClass =
   | "represented_but_deficient"
   | "visual_consequence_deficit"
   | "runtime_consequence_deficit"
-  | "network_consequence_deficit";
+  | "network_consequence_deficit"
+  | "hardware_target_unavailable";
 
 export interface SettlementAvailability {
   /** Whether required browser proof COULD run in this environment. */
   browser_proof_available: boolean;
   unavailable_reason?: string;
+}
+
+/** Declared performance gate resolution for performance claims (T21). */
+export interface SettlementPerformanceInput {
+  /** The quality profile RESOLVED from the game project (declared before use). */
+  profile: ResolvedQualityProfile;
+  /** Optional T13 Asset Registry summary feeding structural asset budgets. */
+  asset_summary?: AssetBudgetSummary | null;
 }
 
 export interface SettlementInput {
@@ -59,6 +71,8 @@ export interface SettlementInput {
   /** The authoritative current project revision (freshness identity). */
   currentRevision: string;
   confirmation?: { mode: string; ref: string };
+  /** Declared performance gate (T21) when the expectation claims the channel. */
+  performance?: SettlementPerformanceInput | null;
   /** Deterministic clock override for fixture generation. */
   now?: string;
 }
@@ -69,6 +83,8 @@ export interface SettlementOutcome {
   reason: string;
   contradictions: string[];
   channel_verdicts: ChannelVerdict[];
+  /** JSON-safe budget_error projection when a declared budget was violated (T21). */
+  budget_error?: BudgetErrorSummary;
   /** Null only when no manifest exists to cite (SettlementRecord requires evidence). */
   record: SettlementRecord | null;
 }
@@ -126,6 +142,22 @@ function buildContradictions(verdicts: ChannelVerdict[]): string[] {
       "network_contradiction: network evidence contradicts passing state and pixel channels"
     );
   }
+  const performance = verdicts.find((v) => v.channel === "performance");
+  if (
+    performance &&
+    performance.evaluated &&
+    !performance.pass &&
+    state?.evaluated &&
+    pixels?.evaluated &&
+    state.pass &&
+    pixels.pass
+  ) {
+    contradictions.push(
+      "performance_contradiction: rendered captures and authoritative semantic state satisfy their " +
+        "constraints while a declared runtime-profile budget is violated; visual or semantic success " +
+        "cannot settle a performance requirement (REQ-PERF-004)"
+    );
+  }
   return contradictions;
 }
 
@@ -146,6 +178,8 @@ function nextAffordanceFor(decision: SettlementDecision, blockage?: BlockageClas
     case "runtime_consequence_deficit":
     case "network_consequence_deficit":
       return "apply a bounded, evidence-producing correction; preserve the failed evidence";
+    case "hardware_target_unavailable":
+      return "re-run on the declared target environment for the profile, or bind an explicitly declared relative-baseline profile; software-rendered evidence is non-target and can never settle a hardware-target profile";
     default:
       return undefined;
   }
@@ -240,8 +274,11 @@ export function settleExpectation(input: SettlementInput): SettlementOutcome {
     }
   }
 
-  // 3. Channel selection + evaluation (REQ-GAUNTLET-003).
-  const verdicts = evaluateClaimedChannels(expectation, channels);
+  // 3. Channel selection + evaluation (REQ-GAUNTLET-003). Performance claims (T21)
+  // evaluate against the game-project-declared quality profile.
+  const verdicts = evaluateClaimedChannels(expectation, channels, {
+    performance: input.performance ?? null,
+  });
 
   // 4. Missing required channel evidence -> incomplete.
   for (const v of verdicts) {
@@ -267,12 +304,101 @@ export function settleExpectation(input: SettlementInput): SettlementOutcome {
 
   // 5. Any required check fails -> failed, with REQ-GAUNTLET-004 classification.
   if (failed.length > 0) {
+    const perfV = verdicts.find((v) => v.channel === "performance" && v.evaluated && !v.pass);
+    if (perfV && input.performance) {
+      // T21: performance failures map through the declared quality profile.
+      const perfEvidence =
+        (channels.find((c) => c.channel === "performance") as PerformanceChannelEvidence | undefined) ?? null;
+      const evaluation = evaluatePerformanceEvidence(
+        input.performance.profile,
+        perfEvidence ??
+          ({
+            channel: "performance",
+            quality_profile: input.performance.profile.id,
+            present: false,
+            reason: "performance channel evidence missing",
+            metrics: {},
+            unreported: [],
+            renderer_class: "unknown",
+            read_via: [],
+          } satisfies PerformanceChannelEvidence),
+        input.performance.asset_summary ?? null
+      );
+      const nonTargetOnly =
+        evaluation.non_target && !evaluation.structural_failed && !evaluation.hardware_failed;
+
+      // Hardware-target profiles can never settle on software-rendered (non-target)
+      // evidence — blocked, never passed — while structural budgets remain valid
+      // everywhere (REQ-PERF-003).
+      if (nonTargetOnly) {
+        const reason =
+          `verification blocked — non-target renderer evidence (${perfEvidence?.renderer_class ?? "unknown"}) ` +
+          `cannot satisfy hardware-target profile '${input.performance.profile.id}' ` +
+          `(environment binding '${input.performance.profile.environment_binding}'); ` +
+          "structural budgets remain enforceable and all declared structural checks passed; " +
+          "a software-rendered run must not masquerade as target-hardware evidence";
+        return {
+          decision: "blocked",
+          blockage_class: "hardware_target_unavailable",
+          reason,
+          contradictions,
+          channel_verdicts: verdicts,
+          record: buildRecord(expectation, run, manifestIds, {
+            decision: "blocked",
+            blockage_class: "hardware_target_unavailable",
+            reason,
+            now,
+          }),
+        };
+      }
+
+      // A violated declared budget is budget_error -> FAILED settlement (REQ-PERF-004),
+      // never a warning, and visual/semantic success cannot mask it.
+      const failing = failed
+        .flatMap((v) => v.checks.filter((c) => !c.pass).map((c) => `${v.channel}/${c.code}: ${c.detail}`))
+        .join("; ");
+      const budgetCitation = evaluation.violations
+        .map((v) => `${v.budget} limit ${v.limit}, measured ${v.measured}`)
+        .join("; ");
+      const reason =
+        `verification failed — ${failing}` +
+        (budgetCitation
+          ? ` [budget_error: quality profile '${input.performance.profile.id}' violated: ${budgetCitation}]`
+          : "") +
+        (contradictions.length > 0 ? ` [contradiction: ${contradictions.join(" | ")}]` : "") +
+        ` (classified: runtime_consequence_deficit); failed evidence is preserved append-only`;
+      return {
+        decision: "failed",
+        blockage_class: "runtime_consequence_deficit",
+        reason,
+        contradictions,
+        channel_verdicts: verdicts,
+        ...(evaluation.budget_error
+          ? {
+              budget_error: {
+                code: evaluation.budget_error.code,
+                quality_profile: evaluation.budget_error.details.quality_profile,
+                violations: evaluation.budget_error.details.violations,
+                recoverability: evaluation.budget_error.details.recoverability,
+              },
+            }
+          : {}),
+        record: buildRecord(expectation, run, manifestIds, {
+          decision: "failed",
+          blockage_class: "runtime_consequence_deficit",
+          reason,
+          now,
+        }),
+      };
+    }
+
     let blockage: BlockageClass = "represented_but_deficient";
     const stateV = verdicts.find((v) => v.channel === "state");
     if (stateV && !stateV.pass && stateV.evaluated) blockage = classifySemanticFailure(stateV);
     else if (verdicts.some((v) => v.channel === "pixels" && !v.pass)) blockage = "visual_consequence_deficit";
     else if (verdicts.some((v) => v.channel === "telemetry" && !v.pass)) blockage = "runtime_consequence_deficit";
     else if (verdicts.some((v) => v.channel === "network" && !v.pass)) blockage = "network_consequence_deficit";
+    else if (verdicts.some((v) => v.channel === "performance" && !v.pass)) blockage = "runtime_consequence_deficit";
 
     const failing = failed
       .flatMap((v) => v.checks.filter((c) => !c.pass).map((c) => `${v.channel}/${c.code}: ${c.detail}`))

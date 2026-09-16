@@ -11,3 +11,4 @@ export * from "./types";
 export * from "./surface-client";
 export * from "./fixture";
 export * from "./harness";
+export * from "./perf";

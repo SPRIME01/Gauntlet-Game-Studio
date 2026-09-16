@@ -1,0 +1,5 @@
+schema: gauntlet.game.spec
+schema_version: "1.0"
+title: "profile-less negative control"
+game_id: "profile-less"
+runtime_target: "browser"

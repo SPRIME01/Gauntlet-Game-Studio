@@ -7,6 +7,7 @@ export const CONTRACTS_VERSION = "0.2.0";
 
 export * from "./types";
 export * from "./schemas";
+export * from "./errors";
 
 import * as S from "./schemas";
 

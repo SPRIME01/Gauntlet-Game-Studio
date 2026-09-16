@@ -1,0 +1,15 @@
+{
+  "id": "settlement-performance-fixture-swiftshader-run-performance-fixture-swiftshader-480fc69239ea-20260916T171312Z",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-003"
+  ],
+  "decision": "blocked",
+  "evidence_manifest_ids": [
+    "run-performance-fixture-swiftshader-480fc69239ea-20260916T171312Z-manifest-01"
+  ],
+  "reason": "verification blocked — non-target renderer evidence (software) cannot satisfy hardware-target profile 'target' (environment binding 'desktop-chrome-hardware'); structural budgets remain enforceable and all declared structural checks passed; a software-rendered run must not masquerade as target-hardware evidence",
+  "settled_at": "2026-09-16T17:13:13.346Z",
+  "blockage_class": "hardware_target_unavailable",
+  "next_affordance": "re-run on the declared target environment for the profile, or bind an explicitly declared relative-baseline profile; software-rendered evidence is non-target and can never settle a hardware-target profile"
+}

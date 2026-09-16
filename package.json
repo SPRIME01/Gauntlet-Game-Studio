@@ -21,7 +21,8 @@
     "network:headless-smoke": "bun run ./packages/runtime/src/network/headless-smoke.ts",
     "test:production-observability": "bun run ./packages/runtime/src/observability/production-check.ts",
     "test:audio-browser": "bun run ./packages/adapters/test/audio-browser/run.ts",
-    "test:proof-harness": "bun test packages/studio/test/proof && bun run ./packages/studio/test/proof/run-browser-proof.ts"
+    "test:proof-harness": "bun test packages/studio/test/proof && bun run ./packages/studio/test/proof/run-browser-proof.ts",
+    "test:performance-fixtures": "bun test packages/studio/test/performance && bun run ./packages/studio/test/performance/run-performance-proof.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {

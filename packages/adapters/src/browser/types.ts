@@ -94,11 +94,56 @@ export interface NetworkChannelEvidence {
   surface_read: Record<string, unknown>;
 }
 
+/** Renderer evidence class derived from the stable probe identity (REQ-PERF-003). */
+export type RendererEvidenceClass = "hardware" | "software" | "unknown";
+
+/** Frame-time distribution with declared percentiles (ms). */
+export interface FrameTimeDistribution {
+  avg: number;
+  p50: number;
+  p95: number;
+  p99: number;
+  /** Number of finite samples the distribution was computed from. */
+  samples: number;
+}
+
+/** Captured performance metrics (observation only; evaluation is studio-owned). */
+export interface PerformanceMetrics {
+  fps_avg?: number;
+  frame_time_ms?: FrameTimeDistribution;
+  draw_calls?: number;
+  triangles?: number;
+  textures?: number;
+  resources?: number;
+  readiness_ms?: number;
+  console_errors?: number;
+}
+
+/**
+ * Performance channel evidence (T21, REQ-VERIFY-003): metrics captured through the
+ * stable T19 `renderer.stats()`/`renderer.probe()` seams, bound to the named quality
+ * profile the capture was taken under. `present:false` records an unmeasurable
+ * surface honestly — it can never evaluate as a pass.
+ */
+export interface PerformanceChannelEvidence {
+  channel: "performance";
+  quality_profile: string;
+  present: boolean;
+  reason?: string;
+  metrics: PerformanceMetrics;
+  /** Metrics the reporter failed to declare (average-only reporters, etc.). */
+  unreported: string[];
+  renderer_class: RendererEvidenceClass;
+  /** Stable observability method paths used for this read (audit trail). */
+  read_via: string[];
+}
+
 export type ChannelEvidence =
   | StateChannelEvidence
   | PixelsChannelEvidence
   | TelemetryChannelEvidence
   | NetworkChannelEvidence
+  | PerformanceChannelEvidence
   | { channel: "none"; reason: string };
 
 /** Draft ObservationRun (consumed/validated by the studio evidence store). */

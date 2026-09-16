@@ -11,10 +11,13 @@ import type { FrozenExpectation, SemanticEntityExpectation } from "./expectation
 import type {
   ChannelEvidence,
   NetworkChannelEvidence,
+  PerformanceChannelEvidence,
   PixelsChannelEvidence,
   StateChannelEvidence,
   TelemetryChannelEvidence,
 } from "@gauntlet/adapters";
+import { evaluatePerformanceEvidence, type AssetBudgetSummary } from "../quality/evaluate";
+import type { ResolvedQualityProfile } from "../quality/profiles";
 
 export interface CheckResult {
   code: string;
@@ -23,10 +26,19 @@ export interface CheckResult {
 }
 
 export interface ChannelVerdict {
-  channel: "state" | "pixels" | "telemetry" | "network";
+  channel: "state" | "pixels" | "telemetry" | "network" | "performance";
   evaluated: boolean;
   pass: boolean;
   checks: CheckResult[];
+}
+
+/** Optional resolution inputs for channels that require studio-side oracles. */
+export interface ChannelCheckOptions {
+  /** Resolved game-project quality profile for performance claims (T21). */
+  performance?: {
+    profile: ResolvedQualityProfile;
+    asset_summary?: AssetBudgetSummary | null;
+  } | null;
 }
 
 type EntitySnapshot = {
@@ -245,13 +257,51 @@ export function checkNetworkChannel(
 }
 
 /**
+ * Performance checks (T21, REQ-PERF-003/004, REQ-VERIFY-003): captured metrics are
+ * evaluated against the DECLARED quality profile from the game project. Structural
+ * budget violations and metric-rule violations fail here; hardware-target binding is
+ * additionally guarded downstream (non-target renderer evidence is blocked, never
+ * passed). An unresolved/undeclared profile is a failing check, never an implicit pass.
+ */
+export function checkPerformanceChannel(
+  expectation: FrozenExpectation,
+  evidence: PerformanceChannelEvidence,
+  opts: ChannelCheckOptions
+): ChannelVerdict {
+  const profile = opts.performance?.profile;
+  if (!profile) {
+    return {
+      channel: "performance",
+      evaluated: true,
+      pass: false,
+      checks: [
+        {
+          code: "PERF_PROFILE_UNRESOLVED",
+          pass: false,
+          detail: "no declared quality profile was resolved from the game project for this claim; " +
+            "undeclared profiles can never be used as gates (REQ-PERF-002, REQ-CONFIG-005)",
+        },
+      ],
+    };
+  }
+  const evaluation = evaluatePerformanceEvidence(profile, evidence, opts.performance?.asset_summary ?? null);
+  return {
+    channel: "performance",
+    evaluated: true,
+    pass: evaluation.pass,
+    checks: evaluation.checks.map((c) => ({ code: c.code, pass: c.pass, detail: c.detail })),
+  };
+}
+
+/**
  * Evaluates every channel the expectation CLAIMS, using present evidence.
  * Absent required channels yield evaluated:false verdicts (settlement turns
  * those into incomplete/blocked, never into a pass).
  */
 export function evaluateClaimedChannels(
   expectation: FrozenExpectation,
-  channels: ChannelEvidence[]
+  channels: ChannelEvidence[],
+  opts: ChannelCheckOptions = {}
 ): ChannelVerdict[] {
   const byChannel = new Map(channels.map((c) => [c.channel, c]));
   const verdicts: ChannelVerdict[] = [];
@@ -285,6 +335,14 @@ export function evaluateClaimedChannels(
       e && e.channel === "network"
         ? checkNetworkChannel(expectation, e)
         : { channel: "network", evaluated: false, pass: false, checks: [] }
+    );
+  }
+  if (expectation.claims.performance) {
+    const e = byChannel.get("performance");
+    verdicts.push(
+      e && e.channel === "performance"
+        ? checkPerformanceChannel(expectation, e, opts)
+        : { channel: "performance", evaluated: false, pass: false, checks: [] }
     );
   }
   return verdicts;

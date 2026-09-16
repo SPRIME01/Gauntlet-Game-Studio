@@ -1,0 +1,18 @@
+{
+  "id": "settlement-performance-fixture-regress-run-performance-fixture-regress-480fc69239ea-20260916T172313Z",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-003",
+    "REQ-PERF-004",
+    "REQ-GAUNTLET-003",
+    "REQ-GAUNTLET-006"
+  ],
+  "decision": "failed",
+  "evidence_manifest_ids": [
+    "run-performance-fixture-regress-480fc69239ea-20260916T172313Z-manifest-01"
+  ],
+  "reason": "verification failed — performance/PERF_DRAW_CALLS: draw calls 36 vs budget 24 (test-budget); performance/PERF_FPS_AVG: average FPS 24 vs min 55 under declared relative baseline 'performance-fixture-v1'; performance/PERF_FRAME_TIME_P50: frame time p50 38.513 vs max 20 under declared relative baseline 'performance-fixture-v1'; performance/PERF_FRAME_TIME_P95: frame time p95 56.051 vs max 22 under declared relative baseline 'performance-fixture-v1'; performance/PERF_FRAME_TIME_P99: frame time p99 58 vs max 33 under declared relative baseline 'performance-fixture-v1' [budget_error: quality profile 'test-budget' violated: structural_budgets.max_draw_calls limit 24, measured 36; hardware_budgets.min_fps_avg limit 55, measured 24; hardware_budgets.max_frame_time_p50_ms limit 20, measured 38.513; hardware_budgets.max_frame_time_p95_ms limit 22, measured 56.051; hardware_budgets.max_frame_time_p99_ms limit 33, measured 58] [contradiction: performance_contradiction: rendered captures and authoritative semantic state satisfy their constraints while a declared runtime-profile budget is violated; visual or semantic success cannot settle a performance requirement (REQ-PERF-004)] (classified: runtime_consequence_deficit); failed evidence is preserved append-only",
+  "settled_at": "2026-09-16T17:23:14.310Z",
+  "blockage_class": "runtime_consequence_deficit",
+  "next_affordance": "apply a bounded, evidence-producing correction; preserve the failed evidence"
+}

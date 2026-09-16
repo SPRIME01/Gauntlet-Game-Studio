@@ -49,6 +49,7 @@ import {
   validateMountedSurface,
   waitForSurface,
 } from "./surface-client";
+import { capturePerformanceEvidence } from "./perf";
 
 export const DEFAULT_STEPS = 3;
 
@@ -155,6 +156,12 @@ export interface RunScenarioOptions {
   timeoutMs?: number;
   /** Playwright trace capture into the run directory. Default false. */
   captureTrace?: boolean;
+  /**
+   * Named quality profile the observation is taken under (T21). MUST be declared by
+   * the game project before use as a gate; recorded in run.environment.quality_profile
+   * and on the performance channel evidence. Default "proof" (no profile claimed).
+   */
+  qualityProfile?: string;
   /** Fixed ISO timestamp for deterministic fixture generation. */
   fixedTimestampIso?: string;
 }
@@ -179,7 +186,7 @@ function blockageResult(
       headless: opts.headless ?? true,
       viewport: opts.scenario.viewport ?? { width: 640, height: 360 },
       platform: process.platform,
-      quality_profile: "proof",
+      quality_profile: opts.qualityProfile ?? "proof",
       executable_path: opts.chromeExecutablePath ?? DEFAULT_CHROME_PATH,
       autoplay_bypass_flags: false,
     },
@@ -409,8 +416,28 @@ export async function runScenario(opts: RunScenarioOptions): Promise<ScenarioRun
       surface_read: networkSurface,
     };
 
-    // renderer identity (REQ-BIND-010).
+    // renderer identity (REQ-BIND-010) and performance metrics (T21) through the
+    // stable renderer probe/stats seams only.
     const rendererProbe = await client.rendererProbe();
+    const qualityProfile = opts.qualityProfile ?? "proof";
+    let statsRead: { present: boolean; reason?: string; stats?: Record<string, unknown> } = {
+      present: false,
+      reason: "not read (no performance capture requested)",
+    };
+    if (opts.qualityProfile) {
+      statsRead = (await client.rendererStats()) as {
+        present: boolean;
+        reason?: string;
+        stats?: Record<string, unknown>;
+      };
+    }
+    const performanceEvidence = capturePerformanceEvidence({
+      quality_profile: qualityProfile,
+      rendererStats: statsRead.present ? statsRead.stats ?? null : null,
+      rendererStatsReason: statsRead.reason,
+      rendererIdentity: (rendererProbe.identity ?? undefined) as Record<string, unknown> | undefined,
+      console_errors: consoleEntries.filter((e) => e.type === "error" || e.type === "warning").length,
+    });
 
     if (opts.captureTrace) {
       const tmpTrace = join(tmpdir(), `gauntlet-trace-${runId}.zip`);
@@ -423,7 +450,7 @@ export async function runScenario(opts: RunScenarioOptions): Promise<ScenarioRun
     }
     await context.close();
 
-    const channels: ChannelEvidence[] = [stateEvidence, pixelsEvidence, telemetryEvidence, networkEvidence];
+    const channels: ChannelEvidence[] = [stateEvidence, pixelsEvidence, telemetryEvidence, networkEvidence, performanceEvidence];
 
     const run: ObservationRunDraft = {
       id: runId,
@@ -435,7 +462,7 @@ export async function runScenario(opts: RunScenarioOptions): Promise<ScenarioRun
         headless,
         viewport: opts.scenario.viewport ?? { width: 640, height: 360 },
         platform: process.platform,
-        quality_profile: "proof",
+        quality_profile: qualityProfile,
         executable_path: chromePath,
         autoplay_bypass_flags: false,
         renderer_identity: (rendererProbe.identity ?? undefined) as Record<string, unknown> | undefined,
@@ -460,6 +487,13 @@ export async function runScenario(opts: RunScenarioOptions): Promise<ScenarioRun
     );
     artifacts.push(
       sink.writeArtifact("network.json", JSON.stringify(networkEvidence, null, 2) + "\n", "network")
+    );
+    artifacts.push(
+      sink.writeArtifact(
+        "performance-metrics.json",
+        JSON.stringify(performanceEvidence, null, 2) + "\n",
+        "performance-metrics"
+      )
     );
     artifacts.push(
       sink.writeArtifact(

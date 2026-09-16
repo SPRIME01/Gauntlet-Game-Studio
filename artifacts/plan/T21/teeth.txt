@@ -1,0 +1,104 @@
+=== T21 teeth / falsification evidence (preregistered in .agents/preregistrations/gauntlet-game-studio-plan-T21.prereg.yaml) ===
+Fresh runs at project revision 480fc69239eac26f91a329472f5b41c770a501ae (2026-09-16). The
+deterministic layers run in `bun test packages/studio/test/performance` (31 tests, browser-free);
+both teeth are additionally proven END-TO-END with real system Chrome (headless-capable, no
+autoplay-policy bypass flags) through `bun run ./packages/studio/test/performance/run-performance-proof.ts`
+and cross-checked through `studio verify --scenario <id> --profile <id> --json` exit codes.
+
+------------------------------------------------------------------------------------------
+TEETH-T21-001  attack: Inject a deliberate frame-time/draw-call regression without changing
+                        screenshots or semantic state.
+               expected: Performance verification fails and the requirement remains unsettled.
+------------------------------------------------------------------------------------------
+Deterministic settlement layer (bun test packages/studio/test/performance, performance-settlement.test.ts):
+  (pass) TEETH-T21-001: ... > fails performance verification and the requirement stays unsettled
+  (pass) TEETH-T21-001: ... > records budget_error against the declared profile (never warnings-only)
+  (pass) TEETH-T21-001: ... > records the performance contradiction: pixels/state pass, budget violated
+  (pass) TEETH-T21-001: ... > the failed settlement record persists append-only through the T20 store
+  (pass) ... budget_error carries code "budget_error", quality_profile "test-budget", and violations for
+         structural_budgets.max_draw_calls, hardware_budgets.max_frame_time_p95_ms, hardware_budgets.max_frame_time_p99_ms.
+
+End-to-end browser layer (run-performance-proof.ts, LEG B):
+  - Scenario `performance-fixture-regress` reports a deliberate regression through the SAME stable
+    `renderer.stats()` seam the healthy scenario uses: draw_calls 18 -> 36 (test-budget max 24),
+    frame-time distribution p50 17.4ms -> 38.5ms, p95 19.6ms -> 56.1ms (max 22), p99 19.8ms -> 58ms
+    (max 33), fps_avg 60 -> 24 (min 55).
+  - The rendered pixels are BYTE-IDENTICAL between the healthy and regressed runs: both captures
+    sha256 b0728f1c91d3… ("byte-identical to healthy run: yes" — the regression changed ONLY the
+    reported telemetry, never the canvas, HUD, or semantic snapshot; player stays at x=3 and the
+    state channel PASSes).
+  - Observed: state PASS, pixels PASS, telemetry PASS, performance FAIL (5 checks) -> overall
+    SettlementRecord decision "failed", blockage_class "runtime_consequence_deficit", contradiction
+    "performance_contradiction: rendered captures and authoritative semantic state satisfy their
+    constraints while a declared runtime-profile budget is violated; visual or semantic success
+    cannot settle a performance requirement (REQ-PERF-004)".
+  - Verdict: PASS — performance verification failed and the requirement remains unsettled.
+  - CLI cross-check: `studio verify --scenario performance-fixture-regress --profile test-budget --json`
+    -> structured JSON, decision "failed", structured budget_error payload, EXIT 1 (failed).
+
+------------------------------------------------------------------------------------------
+TEETH-T21-002  attack: Report only average FPS while p95/p99 or configured metric exceeds budget.
+               expected: Profile gate fails according to declared metric rules.
+------------------------------------------------------------------------------------------
+Deterministic settlement layer (performance-settlement.test.ts + quality.test.ts):
+  (pass) TEETH-T21-002: ... > fails the profile gate according to the declared metric rules
+  (pass) Declared metric rules reject average-only reporting > fails when declared percentiles are
+         not reported even with a healthy average
+  (pass) Declared metric rules reject average-only reporting > passes when the full declared
+         distribution is reported within budgets
+  - The evidence reports fps_avg = 60 (HEALTHY) and NO frame-time samples/percentiles; the
+    test-budget profile declares frame_time_percentiles [p50, p95, p99] and average_only_rejected.
+    Checks PERF_METRIC_RULE_MISSING_PERCENTILE (per declared percentile) and
+    PERF_AVERAGE_ONLY_REPORTING fail; the performance channel never passes on the average alone.
+
+End-to-end browser layer (run-performance-proof.ts, LEG C):
+  - Scenario `performance-fixture-avg-only` serves a stats surface reporting fps_avg=60 with
+    frame_time percentiles unreported: ["frame_time_ms.p50","frame_time_ms.p95","frame_time_ms.p99"].
+  - Observed: overall decision "failed"; failing performance checks include
+    PERF_METRIC_RULE_MISSING_PERCENTILE and PERF_AVERAGE_ONLY_REPORTING.
+  - Verdict: PASS — the profile gate failed according to the declared metric rules.
+  - CLI cross-check: `studio verify --scenario performance-fixture-avg-only --profile test-budget --json`
+    -> decision "failed", EXIT 1 (captured in artifacts/plan/T21/gate.txt).
+
+------------------------------------------------------------------------------------------
+Software-rendering guard (REQ-PERF-003; supporting evidence for the preregistered claim)
+------------------------------------------------------------------------------------------
+Deterministic layers (performance-settlement.test.ts "Software-renderer guard" describe):
+  (pass) blocks a hardware-target profile on SwiftShader-class evidence (never settled, never
+         failed-as-budget) — decision "blocked", blockage_class "hardware_target_unavailable",
+         while declared structural budgets remain evaluated and PASSing
+  (pass) unknown renderer class cannot satisfy a hardware-target binding either
+  (pass) structural violations under software rendering still FAIL (valid evidence everywhere) —
+         structural budget violations (draw_calls 300 > target max 200) fail under a software
+         renderer, because structural budgets are valid evidence in ANY environment
+  (pass) relative-baseline CI profiles stay valid under software rendering — the test-budget
+         profile (structural+relative-baseline, baseline_ref "performance-fixture-v1") settles the
+         same software-rendered evidence, explicitly labeled fixture-relative and NOT a hardware claim
+
+End-to-end browser layer (run-performance-proof.ts, LEG D + CLI cross-check):
+  - Scenario `performance-fixture-swiftshader` reports healthy metrics through the stable seams
+    with identity "SwiftShader (Deterministic Fixture SoftwareGL)"; the probe seam classifies it
+    software at capture time.
+  - Under the hardware-target `target` profile (environment_binding desktop-chrome-hardware):
+    decision "blocked", hardware_target_unavailable — a software-rendered run can never
+    masquerade as desktop/mobile target-hardware evidence.
+  - CLI cross-check: `studio verify --scenario performance-fixture-swiftshader --json` -> EXIT 2
+    (blocked/incomplete), decision "blocked" (artifacts/plan/T21/gate.txt).
+
+------------------------------------------------------------------------------------------
+Additional falsification-adjacent behavior (declared-before-use discipline, REQ-PERF-002)
+------------------------------------------------------------------------------------------
+  (pass) Undeclared profile ids are typed rejections: bindQualityProfile(profiles, "ultra-quality-9000")
+         throws QualityProfileError PROFILE_NOT_DECLARED; a spec without quality_profiles section
+         is rejected; settle with an unresolved profile fails with PERF_PROFILE_UNRESOLVED and
+         never settles.
+  (pass) Numeric budgets are read ONLY from the game project
+         (examples/blackwater-relay/.agents/specs/game.spec.yaml); adapters and the CLI carry no
+         budget numbers.
+  (pass) An observation whose surface cannot report stats records present:false and evaluates
+         PERF_SURFACE_ABSENT — never a fabricated pass; a missing performance channel is
+         incomplete (evidence_channel_missing), never passed.
+
+Environment note: browser legs ran headed (WSLg DISPLAY present); headless is used when no display
+exists (same flags, zero autoplay-policy bypass flags in both modes). Blocked results are scoped
+environmental blockages with typed codes — never silent passes.

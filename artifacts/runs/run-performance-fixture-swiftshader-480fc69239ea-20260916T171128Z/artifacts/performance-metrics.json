@@ -1,0 +1,27 @@
+{
+  "channel": "performance",
+  "quality_profile": "target",
+  "present": true,
+  "metrics": {
+    "fps_avg": 60,
+    "frame_time_ms": {
+      "avg": 17.5,
+      "p50": 17.441,
+      "p95": 19.564,
+      "p99": 19.8,
+      "samples": 40
+    },
+    "draw_calls": 18,
+    "triangles": 420,
+    "textures": 3,
+    "resources": 7,
+    "readiness_ms": 120,
+    "console_errors": 0
+  },
+  "unreported": [],
+  "renderer_class": "software",
+  "read_via": [
+    "renderer.stats()",
+    "renderer.probe()"
+  ]
+}
