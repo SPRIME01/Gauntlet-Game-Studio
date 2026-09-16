@@ -82,14 +82,37 @@ export const OBSTACLE_GEOMETRY = {
 } as const;
 
 /**
- * Single-player declaration (game.spec.yaml `single_player`). There is no code path in
- * this build that constructs a multiplayer server, transport, or client; the flag is
- * declaration surface for teeth TEETH-T22-001, which proves the suite is functional
- * with networking disabled (it always is, in this game).
+ * Single-player declaration (game.spec.yaml `single_player`). The single-player build
+ * contains no code path that constructs a multiplayer server, transport, or client; the
+ * flag is declaration surface for teeth TEETH-T22-001, which proves the suite is
+ * functional with networking disabled (it always is, in this game).
  */
 export const NETWORK = {
   enabled: false,
   declaration: "single-player-only",
+} as const;
+
+/**
+ * T23 OPTIONAL multiplayer mode constants (game.spec.yaml `multiplayer`, frozen BEFORE
+ * implementation/evidence). Consumed ONLY by the dedicated network entries
+ * (src/server.ts, src/net/*) — never by the single-player build path.
+ */
+export const MULTIPLAYER = {
+  relevance_radius: 40,
+  player_spawn: [0, 0, 0] as [number, number, number],
+  /** Acting-client command speed (== the protocol clamp). */
+  acting_move_speed: 50,
+  /** Observer-client command speed. */
+  observer_move_speed: 6,
+  /** Latency impairment applied by the net client to the acting transport
+   *  (multiplayer-latency only; see src/net/net-page.ts). */
+  latency_fixed_ms: 40,
+  latency_jitter_ms: 40,
+  latency_loss: 0,
+  /** Server->client liveness ping cadence (RTT measurement; REQ-NET-006). */
+  ping_interval_ms: 500,
+  /** Explicit client timeout (REQ-NET-009). */
+  client_timeout_ms: 8000,
 } as const;
 
 /** Observability surface mode for this build (dev/test carry the privileged control). */

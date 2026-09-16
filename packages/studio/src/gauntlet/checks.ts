@@ -248,6 +248,124 @@ export function checkNetworkChannel(
           }
     );
   }
+
+  // T23 (additive): declared client-diagnostics constraints evaluated against the
+  // captured surface network read. A missing surface read fails these checks — a
+  // networked scenario whose diagnostics were never captured cannot settle.
+  const surface = (evidence.surface_read ?? {}) as {
+    client?: Record<string, unknown>;
+    client_acting?: Record<string, unknown>;
+  };
+  const num = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) ? v : null);
+
+  const clientConstraint = expectation.network?.client;
+  if (clientConstraint) {
+    const diag = surface.client;
+    if (!diag || typeof diag !== "object") {
+      checks.push({
+        code: "NETWORK_CLIENT_DIAGNOSTICS_MISSING",
+        pass: false,
+        detail: "declared client constraints present but the surface network read carries no client diagnostics",
+      });
+    } else {
+      const state = String(diag.connection_state ?? "");
+      checks.push(
+        state === clientConstraint.connection_state
+          ? { code: "NETWORK_CLIENT_STATE", pass: true, detail: `client connection_state=${state}` }
+          : {
+              code: "NETWORK_CLIENT_STATE",
+              pass: false,
+              detail: `client connection_state=${state} violates declared '${clientConstraint.connection_state}'`,
+            }
+      );
+      const minAck = clientConstraint.min_last_acked_sequence;
+      if (minAck !== undefined) {
+        const acked = num(diag.last_acked_sequence) ?? -1;
+        checks.push(
+          acked >= minAck
+            ? { code: "NETWORK_CLIENT_ACKS", pass: true, detail: `last_acked_sequence=${acked} (min ${minAck})` }
+            : {
+                code: "NETWORK_CLIENT_ACKS",
+                pass: false,
+                detail: `last_acked_sequence=${String(diag.last_acked_sequence)} below declared min ${minAck}`,
+              }
+        );
+      }
+      const minSnapshots = clientConstraint.min_snapshots_received;
+      if (minSnapshots !== undefined) {
+        const snapshots = num((diag.counters as Record<string, unknown> | undefined)?.snapshots_received) ?? -1;
+        checks.push(
+          snapshots >= minSnapshots
+            ? { code: "NETWORK_CLIENT_SNAPSHOTS", pass: true, detail: `snapshots_received=${snapshots} (min ${minSnapshots})` }
+            : {
+                code: "NETWORK_CLIENT_SNAPSHOTS",
+                pass: false,
+                detail: `snapshots_received below declared min ${minSnapshots}`,
+              }
+        );
+      }
+      const minReconciliations = clientConstraint.min_reconciliations;
+      if (minReconciliations !== undefined) {
+        const reconciliations = num((diag.counters as Record<string, unknown> | undefined)?.reconciliations) ?? -1;
+        checks.push(
+          reconciliations >= minReconciliations
+            ? { code: "NETWORK_CLIENT_RECONCILIATIONS", pass: true, detail: `reconciliations=${reconciliations} (min ${minReconciliations})` }
+            : {
+                code: "NETWORK_CLIENT_RECONCILIATIONS",
+                pass: false,
+                detail: `reconciliations below declared min ${minReconciliations}`,
+              }
+        );
+      }
+      if (clientConstraint.require_rtt_ms) {
+        const rtt = num(diag.rtt_ms);
+        checks.push(
+          rtt !== null
+            ? { code: "NETWORK_CLIENT_RTT", pass: true, detail: `rtt_ms=${rtt} measured` }
+            : { code: "NETWORK_CLIENT_RTT", pass: false, detail: "no RTT was measured (declared require_rtt_ms)" }
+        );
+      }
+    }
+  }
+
+  const actingConstraint = expectation.network?.acting_client;
+  if (actingConstraint) {
+    const diag = surface.client_acting;
+    if (!diag || typeof diag !== "object") {
+      checks.push({
+        code: "NETWORK_ACTING_DIAGNOSTICS_MISSING",
+        pass: false,
+        detail: "declared acting-client constraints present but the surface network read carries no acting-client diagnostics",
+      });
+    } else {
+      if (actingConstraint.require_latency_simulation) {
+        const sim = diag.latency_simulation as Record<string, unknown> | null | undefined;
+        checks.push(
+          sim && typeof sim === "object"
+            ? { code: "NETWORK_ACTING_IMPAIRMENT", pass: true, detail: `latency_simulation=${JSON.stringify(sim)}` }
+            : {
+                code: "NETWORK_ACTING_IMPAIRMENT",
+                pass: false,
+                detail: "declared latency-simulation exposure absent from the acting client diagnostics",
+              }
+        );
+      }
+      const minRtt = actingConstraint.min_rtt_ms;
+      if (minRtt !== undefined) {
+        const rtt = num(diag.rtt_ms);
+        checks.push(
+          rtt !== null && rtt >= minRtt
+            ? { code: "NETWORK_ACTING_RTT", pass: true, detail: `acting rtt_ms=${rtt} >= ${minRtt}` }
+            : {
+                code: "NETWORK_ACTING_RTT",
+                pass: false,
+                detail: `acting rtt_ms=${String(diag.rtt_ms)} below declared floor ${minRtt} (impairment not exposed)`,
+              }
+        );
+      }
+    }
+  }
+
   return {
     channel: "network",
     evaluated: true,

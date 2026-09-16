@@ -43,6 +43,17 @@ export function serveGame(projectRoot: string): ServedGame {
           headers: { "content-type": MIME[".js"] },
         });
       }
+      // T23 networked client page (never imported by the single-player build).
+      if (pathname === "/net.html") {
+        return new Response(fs.readFileSync(path.join(distDir, "net.html")), {
+          headers: { "content-type": MIME[".html"] },
+        });
+      }
+      if (pathname === "/net-client.js") {
+        return new Response(fs.readFileSync(path.join(distDir, "net-client.js")), {
+          headers: { "content-type": MIME[".js"] },
+        });
+      }
       if (pathname === "/favicon.ico") {
         // 1x1 transparent ICO stand-in: keeps observed page responses all-OK.
         const bytes = Uint8Array.from([

@@ -1,0 +1,241 @@
+===================================================================
+T23 GATE EVIDENCE — captured fresh 2026-09-16T22:45:03Z
+Host: Linux 6.18.35.2-microsoft-standard-WSL2 | repo: /home/sprime01/projects/gauntlet-game-studio
+Chrome: /usr/bin/google-chrome (headless, no autoplay bypass flags) | bun 1.4.0
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T23.prereg.yaml (frozen BEFORE implementation/evidence)
+Note: plan's literal 'bun run test:blackwater-multiplayer' works at repo root via the root-workspace script resolution; the equivalent game-local form is 'bun run --cwd examples/blackwater-relay test:blackwater-multiplayer' (bun 1.4 'bun --cwd ... run ...' order no-ops — documented in artifacts/plan/T22/summary.md).
+===================================================================
+### GLOBAL GATES ###
+--- just check
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun x tsc --noEmit
+(exit 0)
+
+### GLOBAL GATES ###
+--- just lint
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+(exit 0)
+
+### GLOBAL GATES ###
+--- just validate-agent-artifacts
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+(exit 0)
+
+--- just test
+
+ 339 pass
+ 0 fail
+ 2315 expect() calls
+Ran 339 tests across 46 files. [8.63s]
+(exit 0)
+GATE1_EXIT=0
+$ bun run bundle && bun test ./tests/multiplayer/multiplayer.e2e.ts
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js, /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/net-client.js, index.html, net.html
+bun test v1.4.0 (34cbb9a40)
+
+tests/multiplayer/multiplayer.e2e.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+[multiplayer] multiplayer-sync: SETTLED
+[multiplayer] interest-filtering: SETTLED
+[multiplayer] multiplayer-latency: SETTLED
+(pass) Blackwater Relay authoritative multiplayer (T23) > settles the full three-scenario multiplayer suite against frozen expectations [5456.66ms]
+(pass) Blackwater Relay authoritative multiplayer (T23) > keeps the single-player build graph free of any transport construction path [12.77ms]
+
+ 2 pass
+ 0 fail
+ 10 expect() calls
+Ran 2 tests across 1 file. [5.69s]
+GATE2_EXIT=0
+$ bun run ./apps/studio-cli/src/index.ts verify --project examples/blackwater-relay --suite multiplayer --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.verify-suite",
+  "result": {
+    "suite": "multiplayer",
+    "project": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay",
+    "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+    "game_spec": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/.agents/specs/game.spec.yaml",
+    "evidence_store": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs",
+    "scenarios": [
+      {
+        "scenario": "multiplayer-sync",
+        "decision": "settled",
+        "reason": "settled on fresh correlated evidence for revision 33188d92efb8aaddcbef675f6c954598bdc03535 (run run-multiplayer-sync-33188d92efb8-20260916T224542Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 7/7 checks pass)",
+        "requirement_ids": [
+          "REQ-NET-001",
+          "REQ-NET-003",
+          "REQ-NET-004",
+          "REQ-NET-008",
+          "REQ-NET-009",
+          "REQ-SAFE-006",
+          "REQ-SEC-007"
+        ],
+        "run_id": "run-multiplayer-sync-33188d92efb8-20260916T224542Z",
+        "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-sync-33188d92efb8-20260916T224542Z",
+        "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-sync-33188d92efb8-20260916T224542Z/settlement-01.json",
+        "channel_verdicts": [
+          {
+            "channel": "state",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "telemetry",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "network",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          }
+        ]
+      },
+      {
+        "scenario": "interest-filtering",
+        "decision": "settled",
+        "reason": "settled on fresh correlated evidence for revision 33188d92efb8aaddcbef675f6c954598bdc03535 (run run-interest-filtering-33188d92efb8-20260916T224544Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 7/7 checks pass)",
+        "requirement_ids": [
+          "REQ-NET-005",
+          "REQ-NET-008"
+        ],
+        "run_id": "run-interest-filtering-33188d92efb8-20260916T224544Z",
+        "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-interest-filtering-33188d92efb8-20260916T224544Z",
+        "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-interest-filtering-33188d92efb8-20260916T224544Z/settlement-01.json",
+        "channel_verdicts": [
+          {
+            "channel": "state",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "telemetry",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "network",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          }
+        ]
+      },
+      {
+        "scenario": "multiplayer-latency",
+        "decision": "settled",
+        "reason": "settled on fresh correlated evidence for revision 33188d92efb8aaddcbef675f6c954598bdc03535 (run run-multiplayer-latency-33188d92efb8-20260916T224547Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 9/9 checks pass)",
+        "requirement_ids": [
+          "REQ-NET-002",
+          "REQ-NET-004",
+          "REQ-NET-006",
+          "REQ-NET-008"
+        ],
+        "run_id": "run-multiplayer-latency-33188d92efb8-20260916T224547Z",
+        "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-latency-33188d92efb8-20260916T224547Z",
+        "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-latency-33188d92efb8-20260916T224547Z/settlement-01.json",
+        "channel_verdicts": [
+          {
+            "channel": "state",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "telemetry",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "network",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          }
+        ]
+      }
+    ],
+    "totals": {
+      "settled": 3,
+      "failed": 0,
+      "blocked": 0,
+      "incomplete": 0
+    },
+    "all_settled": true
+  },
+  "diagnostics": {
+    "fresh_observation": true,
+    "settlement_append_only": true,
+    "exit_code_semantics": "0=settled 1=failed 2=blocked/incomplete"
+  }
+}
+
+### SINGLE-PLAYER REGRESSION: bun run --cwd examples/blackwater-relay test:e2e ###
+SP_E2E_EXIT=0
+$ bun run bundle && bun test ./tests/e2e/single-player.e2e.ts
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js, /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/net-client.js, index.html, net.html
+bun test v1.4.0 (34cbb9a40)
+
+tests/e2e/single-player.e2e.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+[suite] boot: SETTLED
+[suite] active-play: SETTLED
+[suite] transceiver-interaction: SETTLED
+[suite] patrol-obstacle: SETTLED
+[suite] beacon-activation: SETTLED
+[suite] performance-flythrough: SETTLED
+(pass) Blackwater Relay single-player vertical slice (T22) > settles the full six-scenario suite against frozen expectations [11247.44ms]
+(pass) Blackwater Relay single-player vertical slice (T22) > exposes healthy navigation/spatial projections and zero network surface (single-player proof) [1472.12ms]
+(pass) Blackwater Relay single-player vertical slice (T22) > keeps the committed service-drone derivative consumable with no Blender present [0.75ms]
+
+ 3 pass
+ 0 fail
+ 22 expect() calls
+Ran 3 tests across 1 file. [13.13s]
+
+### SINGLE-PLAYER REGRESSION: teeth:network-disabled (TEETH-T22-001) ###
+SP_NETFREE_EXIT=0
+[teeth] beacon-activation: SETTLED
+[teeth] performance-flythrough: SETTLED
+PASS B: all six scenarios settled with networking disabled
+PASS C: observability network read reports no transport wired (not_registered)
+TEETH-T22-001 BIT: full single-player suite functional with network transport disabled/removed.
+
+### SINGLE-PLAYER REGRESSION: bun run studio -- verify --project examples/blackwater-relay --suite single-player --json ###
+SP_VERIFY_EXIT=0
+single-player suite verify: success | totals: {'settled': 6, 'failed': 0, 'blocked': 0, 'incomplete': 0}
+
+### PLAN-LITERAL GATE: bun run test:blackwater-multiplayer (root binding) ###
+$ bun run --cwd examples/blackwater-relay test:blackwater-multiplayer
+$ bun run bundle && bun test ./tests/multiplayer/multiplayer.e2e.ts
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js, /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/net-client.js, index.html, net.html
+bun test v1.4.0 (34cbb9a40)
+
+tests/multiplayer/multiplayer.e2e.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+[multiplayer] multiplayer-sync: SETTLED
+[multiplayer] interest-filtering: SETTLED
+[multiplayer] multiplayer-latency: SETTLED
+(pass) Blackwater Relay authoritative multiplayer (T23) > settles the full three-scenario multiplayer suite against frozen expectations [5276.32ms]
+(pass) Blackwater Relay authoritative multiplayer (T23) > keeps the single-player build graph free of any transport construction path [13.64ms]
+
+ 2 pass
+ 0 fail
+ 10 expect() calls
+Ran 2 tests across 1 file. [5.53s]
+(exit 0)

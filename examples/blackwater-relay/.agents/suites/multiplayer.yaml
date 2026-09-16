@@ -1,0 +1,30 @@
+schema: gauntlet.game.suite
+schema_version: "1.0"
+game_id: "blackwater-relay"
+suite: "multiplayer"
+title: "Blackwater Relay authoritative multiplayer suite (T23)"
+description: >-
+  The three frozen networked scenarios (game.spec.yaml `scenarios`), each settled with a
+  fresh ObservationRun + EvidenceManifest + SettlementRecord through the stable
+  __GAUNTLET_STUDIO_OBS__ v1 surface of TWO independent browser clients (separate
+  Playwright contexts, real system Chrome) against ONE authoritative headless server per
+  scenario (src/server.ts over the Bun native WebSocket baseline; the same game core as
+  single-player). Expectations were frozen BEFORE implementation/evidence. The
+  single-player suite remains network-free and is unaffected.
+observation:
+  # Declared project-owned observation runner: spawns the authoritative server child
+  # process, connects the two clients, and captures the declared channels. Studio
+  # settlement machinery (fresh ObservationRun/EvidenceManifest/SettlementRecord) is
+  # unchanged; the runner only replaces the single-page observation step.
+  mode: "project-runner"
+  module: "tests/multiplayer/observer.ts"
+  export: "observeScenario"
+  server:
+    script: "src/server.ts"
+expectations:
+  - scenario: multiplayer-sync
+    file: tests/expectations/multiplayer-sync.json
+  - scenario: interest-filtering
+    file: tests/expectations/interest-filtering.json
+  - scenario: multiplayer-latency
+    file: tests/expectations/multiplayer-latency.json

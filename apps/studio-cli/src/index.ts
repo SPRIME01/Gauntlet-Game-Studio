@@ -202,6 +202,17 @@ function serveProjectGame(projectRoot: string): { url: string; stop: () => void 
           headers: { "content-type": MIME[".js"] },
         });
       }
+      // T23 project-runner observation mode: game-declared networked client page.
+      if (pathname === "/net.html") {
+        return new Response(fs.readFileSync(path.join(distDir, "net.html")), {
+          headers: { "content-type": MIME[".html"] },
+        });
+      }
+      if (pathname === "/net-client.js") {
+        return new Response(fs.readFileSync(path.join(distDir, "net-client.js")), {
+          headers: { "content-type": MIME[".js"] },
+        });
+      }
       if (pathname === "/favicon.ico") {
         return new Response(favicon, { headers: { "content-type": MIME[".ico"] } });
       }
@@ -255,6 +266,8 @@ async function runGameSuiteVerify(projectRoot: string, suiteName: string): Promi
   const manifest = Bun.YAML.parse(fs.readFileSync(manifestPath, "utf-8")) as {
     suite?: string;
     expectations?: Array<{ scenario: string; file: string }>;
+    // T23 project-runner observation mode (declared by the game's suite manifest).
+    observation?: { mode?: string; module?: string; export?: string; server?: { script?: string } };
   };
   if (manifest?.suite !== suiteName || !Array.isArray(manifest.expectations) || manifest.expectations.length === 0) {
     throw new Error(`suite manifest '${manifestPath}' declares no expectations to verify`);
@@ -263,6 +276,24 @@ async function runGameSuiteVerify(projectRoot: string, suiteName: string): Promi
   const gameSpec = path.join(projectRoot, ".agents", "specs", "game.spec.yaml");
   const profiles = loadQualityProfiles(gameSpec);
   const store = new EvidenceStore({ projectRoot });
+
+  // T23: when the manifest declares a project-runner observation, the game project owns
+  // the observation step (e.g. two independent browser clients + authoritative headless
+  // server for the multiplayer suite). Evidence still flows through the same canonical
+  // sink and settlement machinery; only the single-page observation call is replaced.
+  const observation = manifest.observation;
+  let observeScenario: ((ctx: Record<string, unknown>) => Promise<ScenarioRunResult>) | null = null;
+  let serverScript: string | null = null;
+  if (observation?.mode === "project-runner" && observation.module) {
+    const observationModule = path.resolve(projectRoot, observation.module);
+    const mod = (await import(observationModule)) as Record<string, unknown>;
+    const observe = mod[observation.export ?? "observeScenario"];
+    if (typeof observe !== "function") {
+      throw new Error(`observation module '${observationModule}' does not export '${observation.export ?? "observeScenario"}'`);
+    }
+    observeScenario = observe as (ctx: Record<string, unknown>) => Promise<ScenarioRunResult>;
+    serverScript = path.resolve(projectRoot, observation.server?.script ?? "src/server.ts");
+  }
 
   let assetSummary: AssetBudgetSummary | null = null;
   const registry = new AssetRegistry(projectRoot);
@@ -287,21 +318,37 @@ async function runGameSuiteVerify(projectRoot: string, suiteName: string): Promi
       const profile = expectation.performance
         ? bindQualityProfile(profiles, expectation.performance.profile)
         : null;
-      const observed = await runScenario({
-        scenario: {
-          id: entry.scenario,
-          url: `${served.url}/`,
-          seed: expectation.seed,
-          steps: expectation.steps,
-          view: expectation.view,
-        },
-        projectRevision: revision,
-        requirementIds: [...expectation.requirement_ids],
-        sink: store.createRunWriter(),
-        headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
-        timeoutMs: 90000,
-        ...(expectation.performance ? { qualityProfile: expectation.performance.profile } : {}),
-      });
+      const observed =
+        observeScenario && serverScript
+          ? await observeScenario({
+              projectRoot,
+              pageUrl: served.url,
+              serverScript,
+              scenarioId: entry.scenario,
+              seed: expectation.seed,
+              steps: expectation.steps,
+              view: expectation.view,
+              projectRevision: revision,
+              requirementIds: [...expectation.requirement_ids],
+              headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
+              timeoutMs: 90000,
+              sink: store.createRunWriter(),
+            })
+          : await runScenario({
+              scenario: {
+                id: entry.scenario,
+                url: `${served.url}/`,
+                seed: expectation.seed,
+                steps: expectation.steps,
+                view: expectation.view,
+              },
+              projectRevision: revision,
+              requirementIds: [...expectation.requirement_ids],
+              sink: store.createRunWriter(),
+              headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
+              timeoutMs: 90000,
+              ...(expectation.performance ? { qualityProfile: expectation.performance.profile } : {}),
+            });
       const outcome = settleObserved(
         expectation,
         observed,

@@ -1,0 +1,77 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T23
+title: Settle Blackwater Relay authoritative multiplayer and impairment scenarios
+proof_level: P3
+timestamp: "2026-09-15T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T23-001
+    statement: >-
+      Optional real-time multiplayer works through the same first-party semantic/runtime
+      model without making client state authoritative or making networking necessary for
+      single-player. Concretely: examples/blackwater-relay gains an authoritative headless
+      server (src/server.ts) that boots the SAME game core (Koota world, canonical terrain,
+      stepGame step owner) and serves T12 AuthoritativeServer sessions over the Bun native
+      WebSocket baseline; two independent browser clients (separate Playwright contexts,
+      real system Chrome) connect as validated sequenced command senders only — client A
+      acts, client B receives and reconciles the authoritative consequence into its Koota
+      projection world through the T12 NetworkClient (REQ-NET-001/003/004). Relevance
+      filtering (RadiusInterestFilter bound to the game's declared 40-unit relevance
+      radius) stops replicating entities that leave range and resumes when they return
+      (REQ-NET-005). The multiplayer-latency scenario repeats sync under configured
+      latency/jitter via LatencyImpairedTransport with command/ack/reconciliation/ping/
+      bandwidth diagnostics captured to evidence (REQ-NET-006, REQ-NET-008). Disconnect/
+      timeout and reconnect are explicit observable states; the disconnected client never
+      becomes semantic authority (REQ-NET-009, REQ-SAFE-006). All client commands pass
+      server-side validation BEFORE any authoritative mutation over Koota (REQ-SEC-007),
+      and the single-player build and suite remain provably network-free.
+
+falsifiers:
+  - id: TEETH-T23-001
+    attack: Forge client-side authoritative gate/objective state.
+    expected: Server rejects/overwrites it; Koota server state remains authority. A raw
+      adversarial WebSocket client sends envelopes that attempt client-authored
+      authoritative state (a non-"cmd." state-authoring kind, a move command targeting an
+      entity it does not own, and a forged client identity); the server rejects each with
+      counted rejections (forged_rejected / kind_not_permitted / entity_not_owned), the
+      authoritative Koota snapshot is byte-identical before and after the attack window,
+      and no client-authored state is ever applied.
+  - id: TEETH-T23-002
+    attack: Inject latency/jitter and command reorder.
+    expected: Bounded reconciliation preserves declared invariants and telemetry exposes
+      impairment. The acting client's transport passes through LatencyImpairedTransport
+      (fixed 40 ms + 40 ms jitter, seeded RNG, zero loss); commands arrive reordered, the
+      server buffers and applies them in strict sequence order (out_of_order counters
+      advance), client B's reconciled projection still converges to the exact declared
+      authoritative position, and the client diagnostics expose the impairment
+      (latency_simulation stats, inflated RTT, transport characteristics honestly
+      downgraded to unreliable/unordered).
+  - id: TEETH-T23-003
+    attack: Disconnect the authoritative transport mid-scenario.
+    expected: Explicit disconnect state appears; the client does not silently become
+      semantic authority. When the acting client's WebSocket drops mid-scenario, the
+      server records an explicit closed session (disconnected, with the player entity
+      despawned), the observing client's projection removes the entity through the
+      authoritative removed_entity_ids delta, the disconnected client's surface reports an
+      explicit non-connected connection_state, and its projection freezes at the last
+      authoritative snapshot (no local simulation starts); bounded reconnect restores a
+      new authoritative session without any client-authored state ever being trusted.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Verify from frozen scenarios and fresh evidence, not builder narrative: two
+    independent browser clients against the Bun headless authoritative server settle the
+    multiplayer-sync, interest-filtering, and multiplayer-latency scenarios through the
+    T20/T21 evidence + Gauntlet machinery with fresh ObservationRun/EvidenceManifest/
+    SettlementRecord per scenario; the server's authoritative truth lives only in Koota
+    (same game core as single-player, no duplicated network entity semantics); clients
+    send validated sequenced commands and reconcile T12 snapshots; the three declared
+    teeth actually bite (forged authority rejected with server state unchanged, reordered
+    commands recover boundedly with impairment exposed in telemetry, disconnect is an
+    explicit state with no silent client authority takeover); single-player remains
+    network-free with its suite green; no packages/runtime/** files are modified, no new
+    npm dependencies, no git commits, no LLM calls, and .tmp/donor is never imported.

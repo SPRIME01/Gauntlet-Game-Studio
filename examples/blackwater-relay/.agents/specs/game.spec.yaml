@@ -104,17 +104,58 @@ quality_profiles:
       max_console_errors: 8
     hardware_budgets: {}
 
-# REQ-GOAL-009 / REQ-RUNTIME-009: this game declares SINGLE-PLAYER. No multiplayer
-# server, network transport, or network client may be constructed for its execution;
-# the `network` subsystem is intentionally absent from the readiness barrier and the
-# observability surface reports no transport wired. Multiplayer scenarios are governed
-# by a later plan task and are not part of this game's declared execution.
+# REQ-GOAL-009 / REQ-RUNTIME-009: this game declares SINGLE-PLAYER for its single-player
+# build and suite. No multiplayer server, network transport, or network client may be
+# constructed for single-player execution; the `network` subsystem is intentionally absent
+# from that readiness barrier and the observability surface reports no transport wired.
+# The OPTIONAL multiplayer mode (T23) lives in dedicated entries (src/server.ts headless
+# authoritative server, src/net/* browser client) and is never started by the
+# single-player path; its scenarios are declared in the `multiplayer` block below.
 single_player:
   declaration: "single-player-only"
   networking: "disabled"
   notes: >-
     The game config pins network.enabled=false; the single-player build never imports or
     starts any transport. This declaration is frozen before implementation/evidence.
+
+# T23 (REQ-NET-001..009, REQ-SAFE-006, REQ-SEC-007): OPTIONAL authoritative multiplayer
+# mode. One authoritative headless server (src/server.ts) boots the SAME game core as
+# single-player (one Koota world, canonical terrain, one stepGame step owner per
+# authoritative tick) and runs the runtime AuthoritativeServer over the Bun native
+# WebSocket baseline. Browser clients are Koota PROJECTION worlds reconciled from
+# authoritative snapshots; they act only through validated sequenced commands.
+#
+# Frozen multiplayer runtime constants (declared BEFORE implementation/evidence):
+#   relevance_radius        40 world units (RadiusInterestFilter bound to the game's
+#                           declared relevance range; measured from each viewer's own
+#                           authoritative entity position)
+#   player_spawn            [0, 0, 0] (server spawnPoint for connecting players)
+#   command_move_speeds     acting client 50 (the protocol clamp), observer client 6
+#   fixed_delta_time        1/60 (one authoritative tick; one stepGame step per tick)
+#   displacement_per_cmd    speed x dt = 50/60 (acting) or 6/60 (observer) world units
+#   latency impairment      fixed 40 ms + jitter 40 ms, packet loss 0, seeded RNG
+#                           (LatencyImpairedTransport on the ACTING client only)
+multiplayer:
+  declaration: "server-authoritative-optional"
+  transport: "bun-native-websocket"
+  server_entry: "src/server.ts"
+  client_entry: "src/net/main.ts"
+  relevance_radius: 40
+  player_spawn: [0, 0, 0]
+  acting_move_speed: 50
+  observer_move_speed: 6
+  latency_impairment: { fixed_ms: 40, jitter_ms: 40, loss: 0 }
+  notes: >-
+    The multiplayer suite (.agents/suites/multiplayer.yaml) runs ONE authoritative server
+    per scenario with TWO independent browser clients (separate Playwright contexts, real
+    system Chrome). Client A (acting, first to connect => player-client-1) performs
+    state-changing validated sequenced commands; client B (observer, second =>
+    player-client-2) reconciles the authoritative consequence into its projection world.
+    The state channel of each frozen expectation is captured at that scenario's DECLARED
+    observation checkpoint; phase evidence after the checkpoint (disconnect/reconnect,
+    mid-scenario absence windows, server-side authoritative snapshots and counters) is
+    captured as run artifacts and deep-check evidence. The single-player build/suite
+    never constructs any of this.
 
 # Frozen named scenarios (T22 plan step 1): each names its observable acceptance criteria.
 # Evidence for every scenario flows through the stable __GAUNTLET_STUDIO_OBS__ v1 surface
@@ -202,6 +243,62 @@ scenarios:
       performance: "structural budgets hold: draw calls <= 128, triangles <= 65536, textures <= 16, console errors = 0; frame-time percentiles reported (average-only reporting rejected)"
       pixels: "flythrough view captured"
       telemetry: "0 console/page errors; tick advanced"
+
+  # ---- T23 multiplayer scenarios (frozen before implementation/evidence) ----
+  # Each runs ONE authoritative headless server (the same game core as single-player)
+  # and TWO independent browser clients over the Bun native WebSocket baseline.
+  # Client A connects first (player-client-1), client B second (player-client-2).
+  # Movement is exact: each applied cmd.move displaces by speed x (1/60) along the
+  # declared unit direction, so declared positions below are exact rational values.
+  multiplayer-sync:
+    description: >-
+      Authoritative sync plus disconnect/recovery. Client A sends a burst of 30
+      validated sequenced cmd.move commands (+x, speed 50 => +25.0 world units) and a
+      cmd.ping; client B sends 5 cmd.move (+x, speed 6 => +0.5) and a cmd.ping. The
+      observation checkpoint is the RECONCILIATION CHECKPOINT: A's whole command window
+      is acknowledged and B's projection reconciled. After the checkpoint, A disconnects
+      (explicit transport close mid-scenario), the server records the explicit closed
+      session and despawns player-client-1, B's projection removes it via the
+      authoritative removed_entity_ids delta, and A performs one bounded reconnect that
+      spawns a fresh authoritative player-client-3 at the server spawn point — no
+      client-authored state is accepted at any point.
+    acceptance:
+      state:
+        - "at the reconciliation checkpoint, client B's reconciled projection holds player-client-1 at exactly (25, 0, 0) (A's authoritative consequence observed by B) and player-client-2 at exactly (0.5, 0, 0) (B's own authoritative position)"
+      telemetry: "0 console/page errors across the full scenario including the disconnect/reconnect phase; client page tick advanced by the declared 40 control steps"
+      network: "B stays connected throughout: connection_state connected, last_acked_sequence >= 5, snapshots received, reconciliations counted, RTT measured; A's disconnect shows an explicit non-connected state and its reconnect a new client identity (phase artifacts + deep checks)"
+      authority: "server-side authoritative Koota snapshot (loopback /state observation endpoint) matches B's reconciled projection at the checkpoint; closed_clients records the explicit disconnected session"
+  interest-filtering:
+    description: >-
+      Relevance/interest filtering. Client A bursts 90 cmd.move (+x, speed 50 =>
+      +75.0, far outside the declared 40-unit relevance radius around stationary B);
+      the server stops replicating player-client-1 to B (removed_entity_ids), B's
+      projection despawns it (mid-scenario ABSENCE WINDOW captured as an artifact), and
+      the server-side authoritative position is 75 units out. A then bursts 90 cmd.move
+      (-x, speed 50 => back to x = 0.0) at control step 100; replication RESUMES and
+      B's projection re-acquires player-client-1 at the declared checkpoint.
+    acceptance:
+      state:
+        - "at the checkpoint (after return), client B's projection holds player-client-1 at exactly (0, 0, 0) (re-acquired after the absence window) and player-client-2 at exactly (0, 0, 0)"
+      telemetry: "0 console/page errors; client page tick advanced by the declared 100 control steps"
+      network: "B connected throughout: last_acked_sequence >= 1, snapshots received, reconciliations counted, RTT measured"
+      filtering: "mid-scenario artifact proves the absence window: B's projection lacked player-client-1 while the server-side authoritative position was (75, 0, 0); deep checks record the removal and the resume"
+  multiplayer-latency:
+    description: >-
+      Same authoritative sync as multiplayer-sync under configured impairment: client
+      A's transport passes through LatencyImpairedTransport (fixed 40 ms + 40 ms jitter,
+      zero loss, seeded RNG) so the 30-command window arrives reordered and delayed.
+      The server buffers and applies commands in strict sequence order (bounded
+      recovery); B's reconciled projection still converges to the exact declared
+      authoritative position; command/ack/reconciliation/ping/bandwidth diagnostics are
+      captured through the observability network reads of both clients plus the
+      server-side counters.
+    acceptance:
+      state:
+        - "at the reconciliation checkpoint, client B's projection holds player-client-1 at exactly (25, 0, 0) and player-client-2 at exactly (0.5, 0, 0) — impairment does not move authoritative truth"
+      telemetry: "0 console/page errors; client page tick advanced by the declared 10 control steps"
+      network: "B connected: last_acked_sequence >= 5, snapshots received, reconciliations counted, RTT measured; A's acting-client diagnostics expose the impairment (latency_simulation stats present, RTT inflated >= 15 ms, transport characteristics honestly downgraded)"
+      impairment: "server counters show out-of-order buffering/processing > 0 (reorder consumed by bounded sequence recovery); bandwidth counters observed on both directions"
 
 assets:
   manifest: "assets/manifest.json"

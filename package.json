@@ -14,6 +14,7 @@
     "validate-agent-artifacts": "python3 scripts/check-traceability.py && python3 scripts/check-topology.py",
     "studio": "bun run ./apps/studio-cli/src/index.ts",
     "test:generated-game": "bun test packages/studio/src/generator.test.ts",
+    "test:blackwater-multiplayer": "bun run --cwd examples/blackwater-relay test:blackwater-multiplayer",
     "source:verify": "bun run ./scripts/verify-source.ts",
     "third-party:verify": "bun run ./scripts/verify-third-party.ts",
     "donor:audit": "bun run ./scripts/donor-audit.ts",

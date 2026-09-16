@@ -1,0 +1,38 @@
+{
+  "id": "bw-multiplayer-latency",
+  "scenario_id": "multiplayer-latency",
+  "requirement_ids": [
+    "REQ-NET-002",
+    "REQ-NET-004",
+    "REQ-NET-006",
+    "REQ-NET-008"
+  ],
+  "revision": "current",
+  "seed": 20260915,
+  "steps": 10,
+  "view": "main",
+  "claims": { "state": true, "pixels": false, "telemetry": true, "network": true, "performance": false },
+  "requires_confirmation": false,
+  "semantic": {
+    "entities": [
+      { "id": "player-client-1", "position_approx": { "x": 25, "y": 0, "z": 0 }, "tolerance": 1.0 },
+      { "id": "player-client-2", "position_approx": { "x": 0.5, "y": 0, "z": 0 }, "tolerance": 0.3 }
+    ]
+  },
+  "telemetry": { "max_console_errors": 0, "max_page_errors": 0, "tick_advanced_min": 10 },
+  "network": {
+    "require_all_ok": true,
+    "min_responses": 2,
+    "client": {
+      "connection_state": "connected",
+      "min_last_acked_sequence": 5,
+      "min_snapshots_received": 1,
+      "min_reconciliations": 1,
+      "require_rtt_ms": true
+    },
+    "acting_client": {
+      "require_latency_simulation": true,
+      "min_rtt_ms": 15
+    }
+  }
+}

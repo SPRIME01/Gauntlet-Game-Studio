@@ -47,10 +47,41 @@ export const TelemetryConstraintsSchema = z
   })
   .strict();
 
+/**
+ * Client-diagnostics constraints for the network channel (T23, additive). When declared,
+ * the observed surface network read MUST report these client diagnostics — a networked
+ * scenario that never reached the declared connection/ack/reconciliation/ping state
+ * cannot settle. Constraints apply to the surface read's `client` field (the observing
+ * client recorded by the observer).
+ */
+export const NetworkClientConstraintsSchema = z
+  .object({
+    connection_state: z.string().default("connected"),
+    min_last_acked_sequence: z.number().int().nonnegative().optional(),
+    min_snapshots_received: z.number().int().nonnegative().optional(),
+    min_reconciliations: z.number().int().nonnegative().optional(),
+    require_rtt_ms: z.boolean().optional(),
+  })
+  .strict();
+
+/**
+ * Acting-client constraints (T23, additive): applied to the surface read's
+ * `client_acting` field — the client whose command window/impairment the scenario
+ * exercises (e.g. latency-simulation exposure under REQ-NET-006).
+ */
+export const NetworkActingClientConstraintsSchema = z
+  .object({
+    require_latency_simulation: z.boolean().optional(),
+    min_rtt_ms: z.number().optional(),
+  })
+  .strict();
+
 export const NetworkConstraintsSchema = z
   .object({
     require_all_ok: z.boolean().default(true),
     min_responses: z.number().int().nonnegative().default(1),
+    client: NetworkClientConstraintsSchema.optional(),
+    acting_client: NetworkActingClientConstraintsSchema.optional(),
   })
   .strict();
 

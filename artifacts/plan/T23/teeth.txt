@@ -1,0 +1,38 @@
+===================================================================
+T23 TEETH EVIDENCE — captured fresh 2026-09-16T22:46:57Z
+Falsifiers per .agents/preregistrations/gauntlet-game-studio-plan-T23.prereg.yaml (frozen before evidence)
+===================================================================
+
+### TEETH-T23-001/002/003: bun run --cwd examples/blackwater-relay teeth:multiplayer ###
+TEETH_EXIT=0
+$ bun run bundle && bun run ./tests/multiplayer/teeth-multiplayer.ts
+$ bun run ./scripts/bundle.ts
+bundled /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/game.js, /home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/dist/net-client.js, index.html, net.html
+ Particle system powered by three.quarks. https://quarks.art/
+=== Blackwater Relay T23 multiplayer teeth ===
+
+=== TEETH-T23-001: forge client-side authoritative gate/objective state ===
+OK:   T1 forged state-authoring kind rejected (rejects=["state.set:kind_not_permitted","cmd.move:client_id_forgery","replication.snapshot:kind_not_permitted","cmd.move:entity_not_owned"])
+OK:   T1 entity ownership violation rejected (cmd.move targeting bw-relay-gate refused (entity_not_owned))
+OK:   T1 client identity forgery rejected (forged client_id refused before any validation of the claimed state)
+OK:   T1 client replication spoof rejected (client-side replication.snapshot refused (closed server->client namespace))
+OK:   T1 server Koota state byte-identical across the attack window (forge-target and non-simulated authoritative entities (gate/cell/transceiver/beacon/players) unchanged; simulated bodies (rover/drone) excluded as legitimate server authority)
+OK:   T1 counters expose the rejected authority attempts (forged_rejected=4 commands_rejected=4)
+
+=== TEETH-T23-002: inject latency/jitter and command reorder ===
+OK:   T2 commands arrived reordered and were buffered (out_of_order_buffered=28 (fixed 5ms + jitter 30ms, seeded))
+OK:   T2 strict-sequence drain processed the reordered window (out_of_order_processed=28)
+OK:   T2 authoritative position exactly preserved (authoritative x=24.999999999999993 (declared 25.0))
+OK:   T2 client projection reconciled to authoritative truth (projection x=24.999999999999993)
+OK:   T2 impairment exposed in client diagnostics (latency_simulation={"scheduledCount":31,"droppedCount":0,"completedCount":31,"dropRateObserved":0})
+OK:   T2 transport characteristics honestly downgraded (characteristics=in-memory-loopback+latency-sim reliable=false ordered=false)
+OK:   T2 acks advanced through the impaired window (last_acked_sequence=31)
+
+=== TEETH-T23-003: disconnect the authoritative transport mid-scenario ===
+OK:   T3 explicit client disconnect state (connection_state=disconnected (explicit, observable))
+OK:   T3 authoritative player entity despawned (player-client-1 removed from the authoritative Koota world by the explicit close path)
+OK:   T3 server recorded the closed session (closed_clients records the explicit disconnected session)
+OK:   T3 client never becomes silent semantic authority (projection frozen at [0.16666666666666666, 0, 0]; no local simulation started after the drop)
+OK:   T3 bounded reconnect opens a fresh authoritative session (new session client-2 (player-client-2; old player-client-1 stays despawned))
+
+SUCCESS: all three T23 teeth bite as specified.

@@ -1,0 +1,130 @@
+$ bun run ./apps/studio-cli/src/index.ts verify --project examples/blackwater-relay --suite multiplayer --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.verify-suite",
+  "result": {
+    "suite": "multiplayer",
+    "project": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay",
+    "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+    "game_spec": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/.agents/specs/game.spec.yaml",
+    "evidence_store": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs",
+    "scenarios": [
+      {
+        "scenario": "multiplayer-sync",
+        "decision": "settled",
+        "reason": "settled on fresh correlated evidence for revision 33188d92efb8aaddcbef675f6c954598bdc03535 (run run-multiplayer-sync-33188d92efb8-20260916T224542Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 7/7 checks pass)",
+        "requirement_ids": [
+          "REQ-NET-001",
+          "REQ-NET-003",
+          "REQ-NET-004",
+          "REQ-NET-008",
+          "REQ-NET-009",
+          "REQ-SAFE-006",
+          "REQ-SEC-007"
+        ],
+        "run_id": "run-multiplayer-sync-33188d92efb8-20260916T224542Z",
+        "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-sync-33188d92efb8-20260916T224542Z",
+        "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-sync-33188d92efb8-20260916T224542Z/settlement-01.json",
+        "channel_verdicts": [
+          {
+            "channel": "state",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "telemetry",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "network",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          }
+        ]
+      },
+      {
+        "scenario": "interest-filtering",
+        "decision": "settled",
+        "reason": "settled on fresh correlated evidence for revision 33188d92efb8aaddcbef675f6c954598bdc03535 (run run-interest-filtering-33188d92efb8-20260916T224544Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 7/7 checks pass)",
+        "requirement_ids": [
+          "REQ-NET-005",
+          "REQ-NET-008"
+        ],
+        "run_id": "run-interest-filtering-33188d92efb8-20260916T224544Z",
+        "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-interest-filtering-33188d92efb8-20260916T224544Z",
+        "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-interest-filtering-33188d92efb8-20260916T224544Z/settlement-01.json",
+        "channel_verdicts": [
+          {
+            "channel": "state",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "telemetry",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "network",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          }
+        ]
+      },
+      {
+        "scenario": "multiplayer-latency",
+        "decision": "settled",
+        "reason": "settled on fresh correlated evidence for revision 33188d92efb8aaddcbef675f6c954598bdc03535 (run run-multiplayer-latency-33188d92efb8-20260916T224547Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 9/9 checks pass)",
+        "requirement_ids": [
+          "REQ-NET-002",
+          "REQ-NET-004",
+          "REQ-NET-006",
+          "REQ-NET-008"
+        ],
+        "run_id": "run-multiplayer-latency-33188d92efb8-20260916T224547Z",
+        "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-latency-33188d92efb8-20260916T224547Z",
+        "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-latency-33188d92efb8-20260916T224547Z/settlement-01.json",
+        "channel_verdicts": [
+          {
+            "channel": "state",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "telemetry",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          },
+          {
+            "channel": "network",
+            "evaluated": true,
+            "pass": true,
+            "failed_checks": []
+          }
+        ]
+      }
+    ],
+    "totals": {
+      "settled": 3,
+      "failed": 0,
+      "blocked": 0,
+      "incomplete": 0
+    },
+    "all_settled": true
+  },
+  "diagnostics": {
+    "fresh_observation": true,
+    "settlement_append_only": true,
+    "exit_code_semantics": "0=settled 1=failed 2=blocked/incomplete"
+  }
+}

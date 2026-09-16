@@ -8,11 +8,13 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test tests",
     "test:e2e": "bun run bundle && bun test ./tests/e2e/single-player.e2e.ts",
+    "test:blackwater-multiplayer": "bun run bundle && bun test ./tests/multiplayer/multiplayer.e2e.ts",
     "bundle": "bun run ./scripts/bundle.ts",
     "build": "bun run check && bun run bundle",
     "teeth:corrupt-transition": "bun run ./tests/e2e/teeth-corrupt-transition.ts",
     "teeth:network-disabled": "bun run ./scripts/teeth-network-disabled.ts",
-    "teeth:blender-absent": "bun run ./scripts/teeth-blender-absent.ts"
+    "teeth:blender-absent": "bun run ./scripts/teeth-blender-absent.ts",
+    "teeth:multiplayer": "bun run bundle && bun run ./tests/multiplayer/teeth-multiplayer.ts"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.20.0",
