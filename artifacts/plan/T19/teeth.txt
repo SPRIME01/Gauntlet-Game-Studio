@@ -1,0 +1,74 @@
+=== T19 TEETH / FALSIFICATION EVIDENCE — 2026-09-16T03:32:07Z ===
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T19.prereg.yaml (frozen before implementation/evidence)
+
+-----------------------------------------------------------------------------
+TEETH-T19-001 — Attack: Use a transient DOM selector/provider object name as
+  the only way to read semantic state.
+Expected: Contract test fails because stable observability method is missing.
+-----------------------------------------------------------------------------
+Action: validateObservabilityContract (the contract-test detector) is run
+  against (A) a surface offering ONLY a DOM selector path (document.querySelector),
+  (B) the real surface with the stable 'entities.get' method deleted, and
+  (C) the real surface with 'entities.get' secretly coupled to provider
+  internals (throws reaching for object3D). The real surface must PASS.
+
+Fresh test run (focused):
+packages/runtime/test/observability.test.ts:
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > TEETH-T19-001: transient DOM/provider-only access fails the contract — the stable observability method is missing (REQ-OBS-004) [0.88ms]
+
+ 1 pass
+ 11 filtered out
+ 0 fail
+ 7 expect() calls
+Ran 1 test across 1 file. [133.00ms]
+EXIT=0
+
+Fresh gate-2 corroboration (production surface stable reads):
+Contract: __GAUNTLET_STUDIO_OBS__ v1
+OK: production surface is clean (17 methods inspected, zero privileged mutation APIs).
+OK: production surface satisfies the __GAUNTLET_STUDIO_OBS__ v1 contract (read-only mode).
+OK: production surface exposes read-only diagnostics with no 'control' namespace.
+Verdict: PASS — the DOM-only and method-deleted surfaces FAIL contract
+  validation ('missing stable method entities.get()' etc.), a provider-coupled
+  method FAILS behaviorally, while the real surface passes structural+behavioral
+  validation and returns Koota-correlated data via stable methods only.
+
+-----------------------------------------------------------------------------
+TEETH-T19-002 — Attack: Inspect a production bundle for privileged
+  scenario/state mutation APIs.
+Expected: Build check fails if such APIs are exposed.
+-----------------------------------------------------------------------------
+Action: the test:production-observability build check inspects the mounted
+  production surface recursively (17 methods) and then runs two simulated
+  regressions: (A) a development/test surface (privileged control namespace
+  with pause/resume/step/setSeed/resetScenario/setView) inspected as
+  production, and (B) a production surface into which a single pause()
+  mutation API was injected. The check must FAIL both.
+
+Fresh test run (focused):
+packages/runtime/test/observability.test.ts:
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > TEETH-T19-002: production mode installs NO privileged mutation hooks and the inspection fails simulated regressions (REQ-OUT-004, REQ-OBS-005, REQ-SEC-005) [1.18ms]
+
+ 1 pass
+ 11 filtered out
+ 0 fail
+ 21 expect() calls
+Ran 1 test across 1 file. [113.00ms]
+EXIT=0
+
+Fresh gate-2 run (full build check with embedded negative controls):
+$ bun run ./packages/runtime/src/observability/production-check.ts
+=== Gauntlet Studio Production Observability Surface Check (T19) ===
+Contract: __GAUNTLET_STUDIO_OBS__ v1
+OK: production surface is clean (17 methods inspected, zero privileged mutation APIs).
+OK: production surface satisfies the __GAUNTLET_STUDIO_OBS__ v1 contract (read-only mode).
+OK: production surface exposes read-only diagnostics with no 'control' namespace.
+OK (TEETH-T19-002 simulated): exposing the privileged control namespace on a production surface FAILS the inspection (11 violations, e.g. 'privileged 'control' namespace exposed at 'control'').
+OK (TEETH-T19-002 simulated): an injected privileged mutation API FAILS the inspection ('privileged mutation API 'pause' matches forbidden token 'pause'').
+SUCCESS: production observability surface carries no privileged debug mutation.
+EXIT=0
+Verdict: PASS — the production surface is clean (zero violations; no
+  'control' namespace; non-writable/non-configurable mount), and the detector
+  demonstrably FAILS both regressions (11 violations incl. 'control' namespace
+  + 'control.pause'/'control.resetScenario'; injected pause() flagged), i.e.
+  the build check exits non-zero whenever privileged mutation is exposed.

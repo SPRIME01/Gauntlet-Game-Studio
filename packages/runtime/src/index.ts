@@ -21,3 +21,4 @@ export * from "./navigation";
 export * from "./spatial";
 export * from "./diagnostics";
 export * from "./network";
+export * from "./observability";

@@ -1,0 +1,69 @@
+=== T19 GATE EVIDENCE — 2026-09-16T03:31:36Z ===
+Preregistration (frozen before implementation/evidence): .agents/preregistrations/gauntlet-game-studio-plan-T19.prereg.yaml
+
+--- GATE 1: bun test packages/runtime/test/observability.test.ts ---
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > integrates network readiness/disconnect/latency diagnostics as read-only surface data (REQ-OBS-002, T12 reuse) [3.82ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > TEETH-T19-002: production mode installs NO privileged mutation hooks and the inspection fails simulated regressions (REQ-OUT-004, REQ-OBS-005, REQ-SEC-005) [0.68ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > the observability bridge never becomes a second semantic authority [0.22ms]
+
+ 12 pass
+ 0 fail
+ 114 expect() calls
+Ran 12 tests across 1 file. [133.00ms]
+EXIT=0
+
+--- GATE 2: bun run test:production-observability ---
+$ bun run ./packages/runtime/src/observability/production-check.ts
+=== Gauntlet Studio Production Observability Surface Check (T19) ===
+Contract: __GAUNTLET_STUDIO_OBS__ v1
+OK: production surface is clean (17 methods inspected, zero privileged mutation APIs).
+OK: production surface satisfies the __GAUNTLET_STUDIO_OBS__ v1 contract (read-only mode).
+OK: production surface exposes read-only diagnostics with no 'control' namespace.
+OK (TEETH-T19-002 simulated): exposing the privileged control namespace on a production surface FAILS the inspection (11 violations, e.g. 'privileged 'control' namespace exposed at 'control'').
+OK (TEETH-T19-002 simulated): an injected privileged mutation API FAILS the inspection ('privileged mutation API 'pause' matches forbidden token 'pause'').
+SUCCESS: production observability surface carries no privileged debug mutation.
+EXIT=0
+
+--- GLOBAL: just validate-agent-artifacts ---
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+EXIT=0
+
+--- GLOBAL: just test ---
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > the server is never a scheduler: exactly one active server registry for single-player proofs [0.03ms]
+
+ 196 pass
+ 0 fail
+ 1738 expect() calls
+Ran 196 tests across 28 files. [817.00ms]
+EXIT=0
+
+--- GLOBAL: just lint ---
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+EXIT=0
+
+--- GLOBAL: just check ---
+packages/adapters/src/audio/tone/tone-backend.ts(130,31): error TS2339: Property 'suspend' does not exist on type 'BaseContext'.
+packages/adapters/src/audio/tone/tone-backend.ts(182,19): error TS2339: Property 'releaseAll' does not exist on type 'Synth<SynthOptions>'.
+packages/adapters/src/vfx/quarks/effect-intents.ts(11,50): error TS7016: Could not find a declaration file for module 'three'. '/home/sprime01/projects/gauntlet-game-studio/node_modules/.bun/three@0.170.0/node_modules/three/build/three.module.js' implicitly has an 'any' type.
+  If the 'three' package actually exposes this module, consider sending a pull request to amend 'https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/three'
+packages/adapters/src/vfx/quarks/quarks-vfx.ts(21,24): error TS7016: Could not find a declaration file for module 'three'. '/home/sprime01/projects/gauntlet-game-studio/node_modules/.bun/three@0.170.0/node_modules/three/build/three.module.js' implicitly has an 'any' type.
+  If the 'three' package actually exposes this module, consider sending a pull request to amend 'https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/three'
+packages/adapters/src/vfx/quarks/quarks-vfx.ts(43,30): error TS2749: 'BatchedParticleRenderer' refers to a value, but is being used as a type here. Did you mean 'typeof BatchedParticleRenderer'?
+error: recipe `check` failed on line 19 with exit code 2
+EXIT=2
+
+--- T19-SCOPE TYPECHECK (isolation from concurrent tasks) ---
+The working tree carries concurrent in-flight work from other tasks (T14/T15/T17/T18:
+packages/adapters/src/agent-skills/, packages/adapters/src/audio/, packages/runtime/src/audio/,
+packages/runtime/src/ui/). Full-repo 'bun x tsc --noEmit' errors, when present during this
+evidence window, referenced ONLY those files (e.g. adapters/src/audio/tone/tone-backend.ts
+TS2339, earlier adapters/src/agent-skills/3dviz/verify.ts TS2307) — never packages/runtime
+T19 scope. Isolated proof that all T19-relevant sources typecheck clean:
+$ bun x tsc --noEmit -p .tmp/t19-scope.tsconfig.json   (runtime + contracts only)
+EXIT=0
+
+Full-repo 'bun x tsc --noEmit' (root tsconfig): errors confined to concurrent tasks' files; zero errors in packages/runtime/src/observability/**, packages/runtime/src/index.ts, packages/runtime/test/observability.test.ts, or package.json.

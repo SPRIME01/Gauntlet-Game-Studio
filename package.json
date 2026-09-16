@@ -18,7 +18,8 @@
     "donor:audit": "bun run ./scripts/donor-audit.ts",
     "donor:dependency-scan": "bun run ./scripts/donor-dependency-scan.ts",
     "runtime:headless-smoke": "bun run ./packages/runtime/src/headless-smoke.ts",
-    "network:headless-smoke": "bun run ./packages/runtime/src/network/headless-smoke.ts"
+    "network:headless-smoke": "bun run ./packages/runtime/src/network/headless-smoke.ts",
+    "test:production-observability": "bun run ./packages/runtime/src/observability/production-check.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {
