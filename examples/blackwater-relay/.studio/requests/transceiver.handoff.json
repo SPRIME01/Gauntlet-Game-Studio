@@ -1,0 +1,50 @@
+{
+  "request_id": "req-transceiver-001",
+  "skill_id": "img2threejs",
+  "instructions_ref": "vendor/skills/img2threejs/metadata.json",
+  "expected_outputs": [
+    "procedural_three_module",
+    "asset_record",
+    "verification_evidence",
+    "src/assets/field-transceiver.ts"
+  ],
+  "acceptance": [
+    "Accepted output imports and runs against the single standard three dependency",
+    "Recomputed silhouette reference similarity >= 0.5 (8x8 occupancy grid IoU)",
+    "measured_triangles within declared max_triangles budget",
+    "Named nodes, sockets, and colliders recorded as AssetRecord affordance metadata only",
+    "Verification re-derived offline with zero model invocation and zero network access"
+  ],
+  "reference_ids": [
+    "field-transceiver-ref"
+  ],
+  "provider_context": {
+    "capability_id": "asset.reconstruct.reference-image",
+    "provider": "agent-skill.img2threejs",
+    "project_root": "blackwater-relay",
+    "pinned_skill": {
+      "id": "img2threejs",
+      "version": "1.0.0",
+      "license": "MIT",
+      "capability": "asset.reconstruct",
+      "source_ref": "vendor/skills/img2threejs/metadata.json"
+    },
+    "references": [
+      {
+        "id": "field-transceiver-ref",
+        "recorded_path": "references/field-transceiver/reference.png",
+        "resolved_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/references/field-transceiver/reference.png",
+        "sha256": "b615ea171c65d5acfcc349121c34f9da2f02c8dd6ec21f94daf1a5722af4022f",
+        "bytes": 156,
+        "provenance_class": "project-generated-reference-fixture",
+        "license": "in-house-generated",
+        "reference_only": true
+      }
+    ],
+    "reference_policy": {
+      "reference_only": true,
+      "note": "Reference imagery is reference-only provenance (REQ-ASSET-004) and must never ship as production content."
+    },
+    "execution_mode": "current coding agent fulfills the handoff; deterministic verify-result re-derives all evidence offline (no model invocation, no network) so CI can verify committed accepted outputs without replaying generation"
+  }
+}

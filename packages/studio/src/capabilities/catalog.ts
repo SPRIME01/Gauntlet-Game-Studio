@@ -242,4 +242,56 @@ export const CAPABILITY_CATALOG: CapabilityDescriptor[] = [
     verification: ["playwright_trace_validation"],
     providers: ["browser.playwright", "browser.agent-browser"],
   },
+  {
+    id: "world.environment.compose",
+    summary:
+      "Agent-skill world/environment composition handoff (3dviz-pro-max): composes architecture, vegetation, lighting, and atmosphere as world kits, sockets, colliders, and scatter metadata integrating with canonical terrain and runtime navigation. Verification is deterministic; composition never owns terrain elevation, navmesh, or specific-object reconstruction.",
+    use_when: [
+      "scene/world composition",
+      "environment construction",
+      "architecture placement",
+      "vegetation scatter",
+      "lighting and atmosphere",
+    ],
+    do_not_use_when: [
+      "reconstructing a specific depicted object or character from reference imagery",
+      "terrain elevation authority or heightfield generation",
+      "navigation authority or navmesh data production",
+    ],
+    inputs: ["world_brief", "terrain_heightfield_ref", "kit_asset_ids"],
+    outputs: [
+      "world_kit_placements",
+      "socket_bindings",
+      "collider_specs",
+      "scatter_metadata",
+      "lighting_atmosphere_spec",
+    ],
+    verification: [
+      "deterministic_result_verification",
+      "authority_boundary_check",
+      "asset_provenance_reference_check",
+    ],
+    providers: ["agent-skill.3dviz"],
+  },
+  {
+    id: "asset.reconstruct.reference-image",
+    summary: "Reference-image reconstruction of one specific depicted object or character into a procedural Three.js module via the pinned img2threejs agent skill. Requires suitable authorized reference imagery before routing; the accepted handoff output is verified deterministically (imports, provenance, reference evidence, affordances, budgets) against the single standard Three.js dependency.",
+    use_when: [
+      "reconstructing a specific depicted object with suitable reference imagery",
+      "reconstructing a specific depicted character from reference photo or concept art",
+      "reference-backed prop or vehicle reconstruction with authorized image",
+    ],
+    do_not_use_when: [
+      "generic text-to-3D generation without a suitable reference image",
+      "scene composition or world environment layout",
+      "procedural terrain heightfield generation",
+      "navmesh generation",
+    ],
+    inputs: ["reference_image_uris", "target_role", "budget_limits", "min_reference_similarity"],
+    outputs: ["procedural_three_module", "asset_record", "verification_evidence"],
+    verification: ["deterministic_result_verification", "reference_comparison_evidence", "budget_check"],
+    providers: ["agent-skill.img2threejs"],
+    requires_user_reference: true,
+    cost_class: "metered",
+  },
 ];

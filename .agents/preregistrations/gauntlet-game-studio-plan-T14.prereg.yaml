@@ -1,0 +1,52 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T14
+title: Integrate img2threejs reference-reconstruction handoff and deterministic fixture verification
+proof_level: P3
+timestamp: "2026-09-16T03:22:11Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T14-001
+    statement: >-
+      Specific depicted subjects route to img2threejs only with suitable authorized reference imagery and
+      accepted results run directly in the single standard Three.js graph. The reference-image reconstruction
+      route (asset.reconstruct.reference-image / agent-skill.img2threejs, REQ-BIND-006) REQUIRES suitable
+      reference imagery: capability preparation blocks and asks for an allowed reference (user-supplied
+      preferred per REQ-ASSET-001, then project-owned/authorized per REQ-ASSET-002) rather than silently
+      degrading into generic text-to-3D. Reference-only imagery remains a distinct provenance class from
+      shipped source material (REQ-ASSET-004). AgentHandoff creation points the coding agent at the pinned
+      img2threejs skill content and validated project/reference inputs and never itself reports capability
+      success; the committed accepted procedural Three.js output is verified deterministically (syntax,
+      runtime import, provenance, reference-comparison evidence, semantic-affordance normalization, budgets)
+      with zero model credentials and zero network/model access, so CI can verify accepted outputs without
+      replaying the generation step. Named nodes/sockets/colliders are normalized into AssetRecord
+      affordance metadata and never auto-promoted into gameplay semantics.
+    settles:
+      - REQ-BIND-006
+      - REQ-ASSET-001
+      - REQ-ASSET-002
+      - REQ-ASSET-004
+
+falsifiers:
+  - id: TEETH-T14-001
+    attack: Remove the required reference image and run capability preparation.
+    expected: Request blocks/asks for allowed reference rather than silently becoming generic text-to-3D.
+  - id: TEETH-T14-002
+    attack: Remove all model credentials/network access and run deterministic result verification.
+    expected: Committed accepted output is verified without regeneration.
+  - id: TEETH-T14-003
+    attack: Resolve the accepted output against a second Three.js installation.
+    expected: Compatibility guard fails.
+
+independent_confirmation:
+  required: true
+  mode: independent
+  focus: >-
+    Fresh independent verifier confirms the reconstruction route (specific depicted subjects only),
+    the reference requirement (missing reference blocks and requests an allowed reference instead of
+    becoming generic text-to-3D), and the deterministic CI separation (verify-result passes with model
+    credentials/network absent and never regenerates output), plus the single standard Three.js
+    compatibility guard. Verifier receives source requirements, this frozen preregistration, the
+    implementation, fresh task evidence, and the exact confirmation question; builder conclusions are
+    non-authoritative context only.

@@ -5,5 +5,7 @@
 
 export const ADAPTERS_VERSION = "0.2.0";
 export * from "./assets";
+export * from "./agent-skills";
+export * from "./agent-skills/3dviz";
 export * from "./vfx";
 export * from "./audio";

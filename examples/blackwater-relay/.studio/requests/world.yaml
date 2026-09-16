@@ -1,0 +1,36 @@
+# T15 (REQ-BIND-005): Blackwater Relay world/environment composition capability request.
+# Prepared for the `world.environment.compose` studio capability (provider agent-skill.3dviz).
+# Field set is exactly the @gauntlet/contracts CapabilityRequest schema (strict).
+id: req-blackwater-world-001
+project_id: blackwater-relay
+capability_id: world.environment.compose
+intent: >-
+  Compose the Blackwater Relay island environment: relay compound architecture, shoreline dock
+  and hut world kits, coastal vegetation scatter, and storm-dusk lighting and fog atmosphere,
+  composed with the canonical procedural island heightfield and runtime navigation geometry.
+acceptance:
+  - Every kit placement references a settled project Asset Registry record (assets/manifest.json).
+  - Sockets resolve heights only from the canonical TerrainHeightfield; composition supplies no elevation data.
+  - Colliders declare blocking intent only; navigation stays runtime Recast authority derived downstream.
+  - Lighting and atmosphere are execution projections and never authoritative game state.
+inputs:
+  world_brief: >-
+    Small storm-lashed island relay station. Rocky shoreline, single dock, relay tower with beacon
+    socket, maintainer hut with antenna socket, scrub vegetation on both shores, storm-dusk mood.
+  terrain_heightfield_ref:
+    generator: sinusoidal-octaves
+    seed: 20260915
+    rows: 129
+    columns: 129
+    size_x: 512
+    size_z: 512
+  kit_asset_ids:
+    - kit-relay-tower
+    - kit-dock-planks
+    - kit-maintainer-hut
+    - veg-shoreline-scrub
+    - skybox-storm-dusk
+budget:
+  max_draw_calls: 200
+  max_triangles: 250000
+quality_profile: standard

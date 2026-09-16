@@ -1,0 +1,44 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T15
+title: Integrate 3dviz world-composition handoff with terrain/navigation composition
+proof_level: P2
+timestamp: "2026-09-16T03:23:13Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T15-001
+    statement: >-
+      Environment intent can be authored through 3dviz without making it responsible for terrain
+      authority, navigation authority, or specific-object reconstruction. The `world.environment.compose`
+      studio capability routes scene/world composition (architecture, vegetation, lighting, atmosphere)
+      to the pinned 3dviz agent skill as an AgentHandoff; handoff outputs (world kits, sockets, colliders,
+      scatter metadata) normalize deterministically into project/runtime forms that compose WITH the
+      canonical TerrainHeightfield (world.terrain) and runtime Recast navigation (world.navigation),
+      never replacing them. Verification is deterministic with no model credentials and rejects
+      composition outputs that claim terrain elevation or navmesh authority or that route specific
+      depicted-object reconstruction through world composition (that intent belongs to the
+      reference-reconstruction capability). The studio director owns routing; 3dviz/agent output is
+      never authority over terrain, navigation, or the runtime.
+    settles:
+      - REQ-BIND-005
+
+falsifiers:
+  - id: TEETH-T15-001
+    attack: Ask to reconstruct one specific depicted transceiver through the world-composition route.
+    expected: Routing rejects/redirects to reference reconstruction.
+  - id: TEETH-T15-002
+    attack: Let 3dviz-created terrain mesh bypass TerrainHeightfield for physics/navigation.
+    expected: Integration gate rejects the competing terrain authority.
+
+independent_confirmation:
+  required: true
+  mode: builder_with_teeth
+  focus: >-
+    The declared task gates pass with fresh evidence for the current revision
+    (capability prepare and deterministic verify-result for world.environment.compose exit 0);
+    both preregistered falsification checks behave as specified (world-composition routing
+    rejects/redirects specific depicted-object reconstruction to the reference-reconstruction
+    capability; the integration gate rejects 3dviz outputs claiming terrain elevation or navmesh
+    authority over the canonical TerrainHeightfield / Recast navigation); all applicable global
+    gates remain green (just check, just test, just lint, just validate-agent-artifacts).

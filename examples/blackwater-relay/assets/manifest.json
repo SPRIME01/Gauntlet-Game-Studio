@@ -1,5 +1,195 @@
 {
   "schema": "gauntlet.asset.manifest",
   "schema_version": "1.0",
-  "records": []
+  "records": [
+    {
+      "id": "kit-relay-tower",
+      "role": "relay_tower",
+      "origin": "project",
+      "construction_route": "world.environment.compose/agent-skill.3dviz",
+      "source_provenance": {
+        "author": "blackwater-relay composed world fixture (T15)",
+        "license": "project-owned",
+        "sha256": "0953cdd2a784ecd162448d1ddce0f222affee01f6af8f6f3e23fc3e8f636978d",
+        "note": "Procedural kit definition committed in src/world/environment.ts; sha256 covers the composed world module."
+      },
+      "runtime_representation": "procedural Three.js",
+      "budget": {},
+      "acceptance_state": "accepted",
+      "semantic_nodes": [
+        "relay_tower_root",
+        "socket_beacon_mount"
+      ],
+      "verification_refs": [
+        "artifacts/plan/T15/teeth.txt"
+      ]
+    },
+    {
+      "id": "kit-dock-planks",
+      "role": "dock",
+      "origin": "project",
+      "construction_route": "world.environment.compose/agent-skill.3dviz",
+      "source_provenance": {
+        "author": "blackwater-relay composed world fixture (T15)",
+        "license": "project-owned",
+        "sha256": "0953cdd2a784ecd162448d1ddce0f222affee01f6af8f6f3e23fc3e8f636978d",
+        "note": "Procedural kit definition committed in src/world/environment.ts."
+      },
+      "runtime_representation": "procedural Three.js",
+      "budget": {},
+      "acceptance_state": "accepted",
+      "semantic_nodes": [
+        "dock_root",
+        "socket_dock_lantern"
+      ],
+      "verification_refs": [
+        "artifacts/plan/T15/teeth.txt"
+      ]
+    },
+    {
+      "id": "kit-maintainer-hut",
+      "role": "maintainer_hut",
+      "origin": "project",
+      "construction_route": "world.environment.compose/agent-skill.3dviz",
+      "source_provenance": {
+        "author": "blackwater-relay composed world fixture (T15)",
+        "license": "project-owned",
+        "sha256": "0953cdd2a784ecd162448d1ddce0f222affee01f6af8f6f3e23fc3e8f636978d",
+        "note": "Procedural kit definition committed in src/world/environment.ts."
+      },
+      "runtime_representation": "procedural Three.js",
+      "budget": {},
+      "acceptance_state": "accepted",
+      "semantic_nodes": [
+        "hut_root",
+        "socket_hut_antenna"
+      ],
+      "verification_refs": [
+        "artifacts/plan/T15/teeth.txt"
+      ]
+    },
+    {
+      "id": "veg-shoreline-scrub",
+      "role": "vegetation_scatter",
+      "origin": "project",
+      "construction_route": "world.environment.compose/agent-skill.3dviz",
+      "source_provenance": {
+        "author": "blackwater-relay composed world fixture (T15)",
+        "license": "project-owned",
+        "sha256": "0953cdd2a784ecd162448d1ddce0f222affee01f6af8f6f3e23fc3e8f636978d",
+        "note": "Deterministic terrain-projected scatter layer definition in src/world/environment.ts."
+      },
+      "runtime_representation": "procedural Three.js",
+      "budget": {},
+      "acceptance_state": "accepted",
+      "verification_refs": [
+        "artifacts/plan/T15/teeth.txt"
+      ]
+    },
+    {
+      "id": "skybox-storm-dusk",
+      "role": "environment_sky",
+      "origin": "project",
+      "construction_route": "world.environment.compose/agent-skill.3dviz",
+      "source_provenance": {
+        "author": "blackwater-relay composed world fixture (T15)",
+        "license": "project-owned",
+        "sha256": "0953cdd2a784ecd162448d1ddce0f222affee01f6af8f6f3e23fc3e8f636978d",
+        "note": "Storm-dusk atmosphere preset binding in src/world/environment.ts."
+      },
+      "runtime_representation": "procedural Three.js",
+      "budget": {},
+      "lod_policy": "cubemap-single",
+      "acceptance_state": "accepted",
+      "verification_refs": [
+        "artifacts/plan/T15/teeth.txt"
+      ]
+    },
+    {
+      "id": "field-transceiver",
+      "role": "prop",
+      "origin": "procedural",
+      "construction_route": "asset.reconstruct.reference-image/agent-skill.img2threejs",
+      "source_provenance": {
+        "uri": "src/assets/field-transceiver.ts",
+        "license": "project-owned",
+        "author": "gauntlet coding agent (T14 interactive AgentHandoff run)",
+        "sha256": "137172725694681f72cd08a05bfa2bc581a679974f00442d915bf58252de4e8a"
+      },
+      "runtime_representation": "procedural_three_module:src/assets/field-transceiver.ts",
+      "budget": {
+        "max_triangles": 2000,
+        "measured_triangles": 128
+      },
+      "acceptance_state": "accepted",
+      "semantic_nodes": [
+        "transceiver-body",
+        "transceiver-panel",
+        "antenna-mast",
+        "antenna-tip",
+        "mount-foot-left",
+        "mount-foot-right"
+      ],
+      "sockets": {
+        "socket-power": {
+          "node": "socket-power",
+          "kind": "attachment",
+          "note": "power line attach point"
+        },
+        "socket-antenna": {
+          "node": "socket-antenna",
+          "kind": "attachment",
+          "note": "antenna mast mount point"
+        }
+      },
+      "collider_policy": "declared-collider-nodes: collider-body (box); recorded metadata only, no auto-promotion to gameplay semantics",
+      "lod_policy": "single-lod-procedural; LOD generation deferred to the asset.optimize route",
+      "verification_refs": [
+        ".studio/results/transceiver.yaml",
+        "references/field-transceiver/reference.png"
+      ]
+    }
+  ],
+  "history": [
+    {
+      "seq": 0,
+      "kind": "reference",
+      "asset_id": "field-transceiver-ref",
+      "at": "2026-09-16T03:49:07.472Z",
+      "data": {
+        "uri": "references/field-transceiver/reference.png",
+        "reference_only": true
+      }
+    },
+    {
+      "seq": 1,
+      "kind": "intake",
+      "asset_id": "field-transceiver",
+      "at": "2026-09-16T03:49:07.472Z",
+      "data": {
+        "origin": "procedural",
+        "construction_route": "asset.reconstruct.reference-image/agent-skill.img2threejs",
+        "state": "pending"
+      }
+    },
+    {
+      "seq": 2,
+      "kind": "accept",
+      "asset_id": "field-transceiver",
+      "at": "2026-09-16T03:49:07.473Z",
+      "data": {
+        "route": "asset.reconstruct.reference-image/agent-skill.img2threejs"
+      }
+    }
+  ],
+  "references": [
+    {
+      "id": "field-transceiver-ref",
+      "uri": "references/field-transceiver/reference.png",
+      "license": "in-house-generated",
+      "sha256": "b615ea171c65d5acfcc349121c34f9da2f02c8dd6ec21f94daf1a5722af4022f",
+      "retrieved_at": "2026-09-16T03:45:00Z",
+      "note": "project-generated reference fixture (stand-in for a user-supplied image); reference-only, never shipped as production content"
+    }
+  ]
 }

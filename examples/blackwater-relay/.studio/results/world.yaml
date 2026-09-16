@@ -1,0 +1,145 @@
+# T15 (REQ-BIND-005): accepted world-environment composition result for Blackwater Relay.
+# Committed lifecycle record of the `world.environment.compose` AgentHandoff:
+# request (.studio/requests/world.yaml) -> routed handoff (agent-skill.3dviz / pinned
+# 3dviz-pro-max skill content) -> accepted output (src/world/environment.ts) ->
+# deterministic result verification (no model credentials, no model invocation).
+schema: gauntlet.world.composition.result
+schema_version: "1.0"
+capability: world.environment.compose
+request_ref: .studio/requests/world.yaml
+
+handoff:
+  request_id: req-blackwater-world-001
+  skill_id: 3dviz
+  instructions_ref: vendor/skills/3dviz-pro-max/metadata.json
+  expected_outputs:
+    - world_kit_placements
+    - socket_bindings
+    - collider_specs
+    - scatter_metadata
+    - lighting_atmosphere_spec
+  acceptance:
+    - Every kit placement references a settled project Asset Registry record (assets/manifest.json).
+    - Sockets resolve heights only from the canonical TerrainHeightfield; composition supplies no elevation data.
+    - Colliders declare blocking intent only; navigation stays runtime Recast authority derived downstream.
+    - Lighting and atmosphere are execution projections and never authoritative game state.
+
+accepted_output:
+  authored_by: >-
+    Interactive coding agent exercising pinned 3dviz-pro-max skill content
+    (vendor/skills/3dviz-pro-max); deterministic handoff authoring with zero model
+    invocations and zero model credentials.
+  composed_with:
+    terrain: canonical TerrainHeightfield authority (world.terrain, sinusoidal-octaves seed 20260915, 129x129 over 512x512) — referenced via injected sampler, never replaced
+    navigation: runtime Recast authority (world.navigation) — navmesh derived downstream from canonical terrain plus collider specs
+  composition:
+    composition_id: bw-relay-env-001
+    capability: world.environment.compose
+    skill_id: 3dviz
+    terrain_authority:
+      mode: canonical_heightfield_reference
+      capability: world.terrain
+      generator: sinusoidal-octaves
+      seed: 20260915
+      rows: 129
+      columns: 129
+      size_x: 512
+      size_z: 512
+    navigation_derivation:
+      mode: runtime_derived
+      capability: world.navigation
+      source: canonical TerrainHeightfield navigation geometry + world-kit collider specs (Recast derives navmesh downstream)
+    kits:
+      - kit_id: kit-place-relay-tower
+        asset_id: kit-relay-tower
+        role: relay_tower
+        position: { x: 8, z: -12, terrain_socked: true, offset_y: 0 }
+        rotation_y: 0
+        scale: 1
+      - kit_id: kit-place-dock-planks
+        asset_id: kit-dock-planks
+        role: dock
+        position: { x: 176, z: 0, terrain_socked: true, offset_y: 0.4 }
+        rotation_y: 0
+        scale: 1
+      - kit_id: kit-place-maintainer-hut
+        asset_id: kit-maintainer-hut
+        role: maintainer_hut
+        position: { x: -36, z: 24, terrain_socked: true, offset_y: 0 }
+        rotation_y: 0.6
+        scale: 1
+    sockets:
+      - socket_id: socket-beacon-mount
+        attaches_to: kit-place-relay-tower
+        terrain_socked: true
+        height_source: canonical_heightfield
+        offset_y: 14
+      - socket_id: socket-dock-lantern
+        attaches_to: kit-place-dock-planks
+        terrain_socked: true
+        height_source: canonical_heightfield
+        offset_y: 1.2
+      - socket_id: socket-hut-antenna
+        attaches_to: kit-place-maintainer-hut
+        terrain_socked: true
+        height_source: canonical_heightfield
+        offset_y: 3.2
+    colliders:
+      - collider_id: collider-relay-tower
+        attached_to: kit-place-relay-tower
+        shape: cylinder
+        blocks_navigation: true
+      - collider_id: collider-maintainer-hut
+        attached_to: kit-place-maintainer-hut
+        shape: box
+        blocks_navigation: true
+      - collider_id: collider-dock-planks
+        attached_to: kit-place-dock-planks
+        shape: box
+        blocks_navigation: false
+    scatter:
+      - layer_id: scatter-scrub-north-shore
+        asset_id: veg-shoreline-scrub
+        placement: terrain-projected
+        placement_seed: 20260916
+        max_instances: 350
+      - layer_id: scatter-scrub-south-shore
+        asset_id: veg-shoreline-scrub
+        placement: terrain-projected
+        placement_seed: 20260917
+        max_instances: 250
+    lighting_atmosphere:
+      preset: storm-dusk
+      asset_ids:
+        - skybox-storm-dusk
+
+result:
+  id: res-req-blackwater-world-001
+  request_id: req-blackwater-world-001
+  provider: agent-skill.3dviz
+  status: success
+  artifacts:
+    - id: world-environment-module
+      path: src/world/environment.ts
+      role: committed_runtime_composition
+      mime_type: text/typescript
+    - id: world-request-record
+      path: .studio/requests/world.yaml
+      role: capability_request
+      mime_type: text/yaml
+    - id: world-result-record
+      path: .studio/results/world.yaml
+      role: handoff_lifecycle_record
+      mime_type: text/yaml
+  asset_ids:
+    - kit-relay-tower
+    - kit-dock-planks
+    - kit-maintainer-hut
+    - veg-shoreline-scrub
+    - skybox-storm-dusk
+  diagnostics:
+    verification: deterministic_result_verification
+    model_invocations: 0
+    terrain_authority: world.terrain canonical heightfield (referenced, never replaced)
+    navigation_authority: world.navigation runtime Recast (derived downstream)
+    composed_into: examples/blackwater-relay/src/world/environment.ts

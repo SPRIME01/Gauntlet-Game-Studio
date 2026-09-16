@@ -1,0 +1,127 @@
+=== T15 GATE EVIDENCE — 2026-09-16T03:46:09Z (fresh runs at final revision) ===
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T15.prereg.yaml
+(frozen 2026-09-16T03:23:13Z, BEFORE implementation and before any evidence evaluation)
+
+NOTE ON CONCURRENT REVISIONS: T14 (img2threejs adapter), T17 (VFX/audio/UI), and T19
+(observability) builders are concurrently in flight in this working tree. Where their
+in-flight files affect a workspace-wide gate, the affected gate is reported with the exact
+root cause and per-suite isolation evidence; nothing below is attributed to T15 that T15
+did not run. T15-owned surfaces are all green.
+
+-----------------------------------------------------------------------------
+NARROW GATE 1 (plan-declared) — capability prepare
+-----------------------------------------------------------------------------
+$ bun run studio -- capability prepare world.environment.compose examples/blackwater-relay/.studio/requests/world.yaml --json
+EXIT=0
+status: success
+routed capability: world.environment.compose
+provider: agent-skill.3dviz
+is_agent_handoff: true
+handoff skill: 3dviz
+handoff expected_outputs: [world_kit_placements, socket_bindings, collider_specs, scatter_metadata, lighting_atmosphere_spec]
+(from full JSON: /tmp/t15-prepare.json capture; declaration validated against the strict
+@gauntlet/contracts CapabilityRequest schema before routing)
+
+-----------------------------------------------------------------------------
+NARROW GATE 2 (plan-declared) — deterministic result verification (no model credentials)
+-----------------------------------------------------------------------------
+$ bun run studio -- capability verify-result world.environment.compose examples/blackwater-relay/.studio/results/world.yaml --json
+EXIT=0
+status: success
+ PASS DOCUMENT_SCHEMA
+ PASS CAPABILITY_BINDING
+ PASS HANDOFF_LIFECYCLE_RECORDED
+ PASS RESULT_ENVELOPE_CONTRACT
+ PASS RESULT_PROVIDER_BINDING
+ PASS RESULT_SETTLED
+ PASS REQUEST_ID_CONSISTENT
+ PASS COMPOSITION_NORMALIZED
+ PASS TERRAIN_AUTHORITY_CANONICAL
+ PASS NAVIGATION_DERIVED_DOWNSTREAM
+ PASS NO_COMPETING_AUTHORITY_EMBEDDED
+ PASS NO_OBJECT_RECONSTRUCTION_ROUTE
+ PASS ASSET_REGISTRY_PRESENT
+ PASS ASSET_PROVENANCE_BOUND  (5 referenced assets bound to settled registry records)
+ PASS SOCKETS_CANONICAL_SOCKED (3 sockets, canonical heightfield only)
+ PASS SCATTER_DETERMINISTIC (2 seeded/bounded layers)
+ PASS NO_MODEL_CREDENTIALS (zero credential-shaped keys, zero model/network invocations)
+summary: passed 17 / failed 0
+
+-----------------------------------------------------------------------------
+SUPPLEMENTARY — handoff lifecycle accept step (studio director settles handoff with artifacts)
+-----------------------------------------------------------------------------
+$ bun run studio -- capability accept '{"request_id":"req-blackwater-world-001", ...}' '[2 artifacts]' agent-skill.3dviz --json
+EXIT=0
+result: res-req-blackwater-world-001 (status success, provider agent-skill.3dviz,
+settled_skill 3dviz, acceptance_evaluated recorded, accepted_artifacts 2)
+
+-----------------------------------------------------------------------------
+SUPPLEMENTARY — example project Asset Registry (T13 gates stay green over the new records)
+-----------------------------------------------------------------------------
+$ bun run studio -- asset verify --all --project examples/blackwater-relay
+EXIT=0
+Assets: 5 (accepted 5, degraded 0, pending 0, rejected 0, blocked 0) — Status: SUCCESS
+
+-----------------------------------------------------------------------------
+SUPPLEMENTARY — capabilities lint (T16 surface stays green with the new catalog entry)
+-----------------------------------------------------------------------------
+$ bun run studio -- capabilities lint --json
+EXIT=0
+lint valid: true | total issues: 0
+
+-----------------------------------------------------------------------------
+T15 TEST SUITE (teeth + integration)
+-----------------------------------------------------------------------------
+$ bun test packages/studio/test/capabilities/3dviz-world-compose.test.ts
+ 13 pass, 0 fail, 59 expect() calls, 1 file
+EXIT=0
+Per-teeth filtered runs: see artifacts/plan/T15/teeth.txt
+
+-----------------------------------------------------------------------------
+WORKSPACE SUITES OWNED / SETTLED BY SETTLED TASKS (scoped run)
+-----------------------------------------------------------------------------
+$ bun test packages/studio packages/adapters packages/contracts apps
+ 129 pass, 0 fail, 606 expect() calls, 13 files
+EXIT=0
+(includes T13 assets 42, T04/T16 routing+overlay, T02 contracts, T14's suites present at
+this revision, CLI suite, and the T15 suite above)
+
+$ bun test packages/runtime/test/authority.test.ts packages/runtime/test/network
+ 34 pass, 0 fail, 207 expect() calls, 6 files
+EXIT=0
+(isolation proof: the two suites that fail ONLY inside the whole-repo single-process run
+pass standalone — the whole-repo failure is Koota's 16-world process pool exhausting
+because concurrently-in-flight T17/T19 runtime test files create worlds process-wide
+without release; T15 code never imports koota or runtime)
+
+-----------------------------------------------------------------------------
+GLOBAL GATES
+-----------------------------------------------------------------------------
+$ just lint       EXIT=0  (check-topology + script compile)
+$ just validate-agent-artifacts  EXIT=0  (traceability + topology)
+$ just test
+  219 pass / 5 fail across 32 files. The 5 failures are EXACTLY the Koota
+  "Too many worlds created. The maximum is 16." process-pool exhaustion described above
+  (packages/runtime/test/authority.test.ts x4, packages/runtime/test/network/single-player.test.ts x1).
+  Both files pass in isolation (34 pass / 0 fail). Root cause lives in concurrently
+  in-flight T17/T19 files (packages/runtime/test/{audio-headless,observability,ui-hud}.test.ts),
+  none of which existed when T15 started and none of which import T15 code.
+  NOT CLAIMED AS PASS for the workspace-wide invocation; T15-scope and settled-task suites
+  are green as recorded above.
+$ just check
+  exit 2 — the ONLY two type errors are in
+  packages/adapters/src/agent-skills/img2threejs/module-contract.ts
+  (lines 115, 310; TS2367 + TS2304), authored by the concurrently in-flight T14 builder.
+  Zero type errors originate from any T15 file (packages/adapters/src/agent-skills/3dviz/**,
+  catalog.ts entry, apps/studio-cli changes, T15 tests). studio/adapters/cli typechecks of
+  the same tree report only those two foreign errors. NOT CLAIMED AS PASS for the
+  workspace-wide invocation while the concurrent builder's file is mid-edit.
+
+-----------------------------------------------------------------------------
+FINAL RETRY OBSERVATION — 2026-09-16T04:05:00Z
+-----------------------------------------------------------------------------
+$ just check  -> exit 2, same two img2threejs/module-contract.ts errors (T14, unchanged).
+$ just test   -> 219 pass / 5 fail, same Koota 16-world pool exhaustion (T17/T19 runtime
+                 test files, unchanged); both affected suites pass standalone (see above).
+State at final retry is identical to the recorded state; T15-owned evidence above remains
+the latest fresh observation for every T15 gate and suite.

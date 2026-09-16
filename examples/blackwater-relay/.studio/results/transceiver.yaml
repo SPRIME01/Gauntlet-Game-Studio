@@ -1,0 +1,71 @@
+# CapabilityResult: Blackwater Relay field transceiver reconstruction (T14).
+# Produced by: studio capability accept (AgentHandoff settlement after the
+# interactive coding-agent run), then enriched with the run's recorded evidence.
+# All recorded values below are RE-DERIVED from disk by
+#   studio capability verify-result asset.reconstruct.reference-image <this file>
+# with zero model invocation and zero network access — CI never replays the
+# generation step.
+id: res-req-transceiver-001
+request_id: req-transceiver-001
+provider: agent-skill.img2threejs
+status: success
+artifacts:
+  - id: field-transceiver-module
+    path: src/assets/field-transceiver.ts
+    role: procedural_three_module
+    mime_type: text/typescript
+    sha256: 137172725694681f72cd08a05bfa2bc581a679974f00442d915bf58252de4e8a
+  - id: field-transceiver-asset-record
+    path: assets/manifest.json#field-transceiver
+    role: asset_record
+asset_ids:
+  - field-transceiver
+affordances:
+  - node:transceiver-body
+  - node:transceiver-panel
+  - node:antenna-mast
+  - node:antenna-tip
+  - node:mount-foot-left
+  - node:mount-foot-right
+  - socket:socket-power
+  - socket:socket-antenna
+  - collider:collider-body
+diagnostics:
+  settled_skill: img2threejs
+  capability_id: asset.reconstruct.reference-image
+  acceptance_evaluated:
+    - Accepted output imports and runs against the single standard three dependency
+    - Recomputed silhouette reference similarity >= 0.5 (8x8 occupancy grid IoU)
+    - measured_triangles within declared max_triangles budget
+    - Named nodes, sockets, and colliders recorded as AssetRecord affordance metadata only
+    - Verification re-derived offline with zero model invocation and zero network access
+  verification:
+    method: deterministic-offline
+    model_invocation: none
+    network_access: none
+    reference_comparison:
+      method: silhouette_grid_8x8_iou
+      reference_id: field-transceiver-ref
+      reference_path: references/field-transceiver/reference.png
+      reference_sha256: b615ea171c65d5acfcc349121c34f9da2f02c8dd6ec21f94daf1a5722af4022f
+      recorded_similarity: 0.8696
+      min_similarity: 0.5
+    budget_measurements:
+      measured_triangles: 128
+    affordances:
+      semantic_nodes:
+        - transceiver-body
+        - transceiver-panel
+        - antenna-mast
+        - antenna-tip
+        - mount-foot-left
+        - mount-foot-right
+      sockets:
+        socket-power: { node: socket-power, kind: attachment }
+        socket-antenna: { node: socket-antenna, kind: attachment }
+      colliders:
+        - node: collider-body
+          shape: box
+      note: >-
+        Affordances are recorded AssetRecord metadata only; they are never
+        auto-promoted into gameplay semantics.

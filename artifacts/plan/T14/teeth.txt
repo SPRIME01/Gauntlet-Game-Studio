@@ -1,0 +1,44 @@
+=== T14 Teeth / Falsification Evidence (fresh runs) ===
+Preregistered falsifiers: .agents/preregistrations/gauntlet-game-studio-plan-T14.prereg.yaml (frozen pre-implementation)
+
+--- TEETH-T14-001: 'Remove the required reference image and run capability preparation.' ---
+Expected: request blocks/asks for allowed reference rather than silently becoming generic text-to-3D.
+
+Test-level (packages/studio/test/capabilities/teeth.test.ts):
+(pass) TEETH-T14-001: removing the reference blocks preparation and asks for an allowed reference (never generic text-to-3D)
+  Variant A: inputs.references + reference_ids removed -> CLI exit 1, status blocked, code REFERENCE_REQUIRED
+  Variant B: reference path pointed at removed.png (file absent) -> CLI exit 1, blocked, REFERENCE_REQUIRED with named detail
+  Library-level: typed block carries allowed_next_steps (user-supplied preferred REQ-ASSET-001; project-owned/authorized REQ-ASSET-002)
+  and route_preserved=asset.reconstruct.reference-image, degraded_to_generic_text_to_3d=false.
+CLI-level (fresh subprocess, reference block removed):
+  EXIT=1
+  status: blocked | code: REFERENCE_REQUIRED | route_preserved: asset.reconstruct.reference-image
+  degraded_to_generic_text_to_3d: False
+  allowed_next_steps: ["supply a user-provided suitable reference image (preferred, REQ-ASSET-001)", "select a project-owned/authorized or clearly licensed/public-domain reference (REQ-ASSET-002)"]
+
+--- TEETH-T14-002: 'Remove all model credentials/network access and run deterministic result verification.' ---
+Expected: committed accepted output is verified without regeneration.
+
+Test-level (packages/studio/test/capabilities/teeth.test.ts):
+(pass) TEETH-T14-002: verification passes with model credentials removed and network poisoned, without regenerating output
+  - all 9 model-credential env vars deleted; globalThis.fetch poisoned to throw; network attempt counter stayed 0
+  - full pipeline ok=true, all 13 checks pass; module sha256 identical before/after (no regeneration)
+(pass) TEETH-T14-002 (CLI surface): studio capability verify-result succeeds in a credential-stripped subprocess
+  CLI-level EXIT=0
+  status: success | verified: True | model_invocation: none | network_access: none | failed_checks: []
+
+--- TEETH-T14-003: 'Resolve the accepted output against a second Three.js installation.' ---
+Expected: compatibility guard fails.
+
+Test-level (packages/studio/test/capabilities/teeth.test.ts):
+(pass) TEETH-T14-003: a second Three.js installation fails the compatibility guard
+  - forged private installation node_modules/three@0.999.9-private under a temp project root
+  - guard unit level: resolvePinnedThree -> ok=false, code=MULTIPLE_THREE_INSTALLATIONS
+  - full pipeline level: verifyImg2ThreeJsResult -> ok=false, THREE_RESOLUTION_GUARD failed with MULTIPLE_THREE_INSTALLATIONS detail
+
+ 4 pass
+ 0 fail
+ 19 expect() calls
+Ran 4 tests across 1 file. [435.00ms]
+
+All three preregistered falsifiers observed behaving as declared.

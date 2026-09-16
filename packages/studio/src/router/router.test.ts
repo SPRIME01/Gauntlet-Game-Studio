@@ -12,11 +12,14 @@ import type { CapabilityRequest, CapabilityDescriptor, AgentHandoff } from "@gau
 
 describe("Capability Registry, Routing, Skill Metadata & AgentHandoff Suite", () => {
   describe("Capability Registry", () => {
-    it("contains all 13 normative studio capabilities", () => {
+    it("contains all normative studio capabilities (baseline 13, plus later plan additions)", () => {
       const caps = defaultCapabilityRegistry.list();
-      expect(caps.length).toBe(13);
+      // The catalog grows only by normative plan settlement (e.g. T14 added
+      // asset.reconstruct.reference-image); the baseline must always remain present.
+      expect(caps.length).toBeGreaterThanOrEqual(13);
       expect(defaultCapabilityRegistry.has("world.composition")).toBe(true);
       expect(defaultCapabilityRegistry.has("asset.reconstruct")).toBe(true);
+      expect(defaultCapabilityRegistry.has("asset.reconstruct.reference-image")).toBe(true);
       expect(defaultCapabilityRegistry.has("world.terrain")).toBe(true);
       expect(defaultCapabilityRegistry.has("world.physics")).toBe(true);
       expect(defaultCapabilityRegistry.has("world.navigation")).toBe(true);

@@ -1,0 +1,99 @@
+=== T15 TEETH / FALSIFICATION EVIDENCE — 2026-09-16T03:52:00Z (fresh runs at final revision) ===
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T15.prereg.yaml (frozen
+2026-09-16T03:23:13Z, before implementation and before any evidence evaluation)
+Falsifiers are exactly the two plan-declared teeth for T15.
+
+-----------------------------------------------------------------------------
+TEETH-T15-001 — Attack: Ask to reconstruct one specific depicted transceiver through the
+world-composition route.
+Expected: Routing rejects/redirects to reference reconstruction.
+-----------------------------------------------------------------------------
+Enforced at three independent layers (all must hold; all observed holding):
+
+1. Prepare-route boundary (live CLI gate, exit-code observed):
+   $ bun run studio -- capability prepare world.environment.compose /tmp/t15-attack-reconstruction.yaml --json
+     (request intent: "Reconstruct the specific depicted field transceiver from the supplied
+      reference photo", capability_id world.environment.compose)
+   EXIT=1
+   diagnostics.error: "Intent 'Reconstruct the specific depicted field transceiver from the
+   supplied reference photo' asks for specific depicted-object reconstruction through the
+   world-composition route; routing rejects it and redirects to the reference-reconstruction
+   capability" (WorldCompositionAuthorityError, violation=object_reconstruction,
+   redirect_capability=asset.reconstruct; guard: assertWorldCompositionIntentBoundary,
+   enforced by the studio CLI prepare path for this capability — the director owns routing).
+
+2. Intent-based routing redirect (existing router, REQ-ROUTE-004):
+   A request with no pinned capability and intent "Reconstruct storm-battered field
+   transceiver model from supplied concept artwork" + reference_ids routes to
+   asset.reconstruct (the reference-reconstruction capability, requires_user_reference=true)
+   with an img2threejs AgentHandoff — the studio router itself sends transceiver
+   reconstruction to the right capability.
+
+3. Adapter + verification boundary:
+   - normalizeWorldCompositionOutput rejects output declaring
+     requested_route "img2threejs reconstruction of the depicted field transceiver"
+     (violation=object_reconstruction, redirect_capability=asset.reconstruct).
+   - verifyWorldCompositionResultDocument fails (valid=false,
+     NO_OBJECT_RECONSTRUCTION_ROUTE) when a committed-style composition carries an
+     img2threejs construction route on any kit.
+
+Fresh filtered test run (packages/studio/test/capabilities/3dviz-world-compose.test.ts):
+(pass) routing rejects the reconstruction intent and redirects to reference reconstruction
+(pass) intent-based routing redirects a transceiver reconstruction request to the reference-reconstruction capability
+(pass) normalization rejects reconstruction-flavored composition output
+(pass) the integration gate fails a result document whose composition claims a reconstruction route
+ 4 pass / 0 fail / 14 expects
+Verdict: PASS — the world-composition route rejects transceiver reconstruction and every
+rejection/redirect points at the reference-reconstruction capability.
+
+-----------------------------------------------------------------------------
+TEETH-T15-002 — Attack: Let 3dviz-created terrain mesh bypass TerrainHeightfield for
+physics/navigation.
+Expected: Integration gate rejects the competing terrain authority.
+-----------------------------------------------------------------------------
+Enforced at two layers (normalization + the deterministic integration/verification gate):
+
+1. Normalization rejects the attack outright:
+   - terrain_authority.mode = "3dviz_terrain_mesh" ->
+     WorldCompositionAuthorityError(violation=terrain_authority), message: "...A 3dviz-created
+     terrain mesh must never bypass TerrainHeightfield for physics or navigation".
+   - Embedded elevation payload (terrain_heights) -> violation=terrain_authority.
+   - Embedded navmesh payload (navmesh_data) -> violation=navigation_authority.
+   - Socket claiming height_source "composition_mesh" -> violation=terrain_authority
+     (sockets resolve from the canonical heightfield only).
+
+2. Integration gate (verifyWorldCompositionResultDocument / CLI verify-result) rejects a
+   committed-style document doctored to bypass TerrainHeightfield:
+   $ bun run studio -- capability verify-result world.environment.compose \
+       examples/blackwater-relay/.studio/results/world-attack-terrain.yaml --json
+   (committed fixture with terrain_authority.mode replaced by "3dviz_terrain_mesh" and
+    terrain_heights embedded; transient attack file deleted immediately after the run)
+   EXIT=1
+   FAIL COMPOSITION_NORMALIZED — "composition normalization failed: World composition output
+        embeds terrain elevation authority ..."
+   FAIL TERRAIN_AUTHORITY_CANONICAL — "...elevation remains canonical TerrainHeightfield
+        authority (world.terrain), composition may only reference it"
+   FAIL NO_COMPETING_AUTHORITY_EMBEDDED — "competing authority keys embedded at:
+        $.accepted_output.composition.terrain_heights"
+   (plus downstream effects: ASSET_PROVENANCE_BOUND / SOCKETS_CANONICAL_SOCKED /
+    SCATTER_DETERMINISTIC not satisfiable for the invalid composition)
+   A navmesh-embedding variant is rejected in the same gate (NO_COMPETING_AUTHORITY_EMBEDDED /
+   NAVIGATION_DERIVED_DOWNSTREAM failing).
+
+Fresh filtered test run (packages/studio/test/capabilities/3dviz-world-compose.test.ts):
+(pass) normalization rejects a competing 3dviz terrain-mesh terrain authority
+(pass) normalization rejects embedded elevation and navmesh payloads outright
+(pass) sockets claiming a non-canonical height source are rejected
+(pass) the integration gate rejects the committed-style document when a 3dviz terrain mesh bypasses TerrainHeightfield
+(pass) the integration gate rejects a doctored document that embeds navmesh authority
+ 5 pass / 0 fail / 14 expects
+Verdict: PASS — the integration gate rejects every competing terrain/navigation authority
+claim; composition composes WITH the canonical TerrainHeightfield (world.terrain) and runtime
+Recast navigation (world.navigation), never in place of them.
+
+-----------------------------------------------------------------------------
+POSITIVE CONTROL (same suite, same revision)
+-----------------------------------------------------------------------------
+The unmodified committed fixture verifies with 17/17 checks passing (see gate.txt narrow
+gate 2) — the teeth fail only the attacking variants, proving the gates are load-bearing
+rather than universally rejecting.

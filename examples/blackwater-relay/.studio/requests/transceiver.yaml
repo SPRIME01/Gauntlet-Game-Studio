@@ -1,0 +1,31 @@
+# CapabilityRequest: Blackwater Relay field transceiver reconstruction (T14).
+# Route: asset.reconstruct.reference-image / agent-skill.img2threejs (REQ-BIND-006).
+# The reference below is a project-generated stand-in fixture (in-house-generated)
+# for an image the user would supply; it is reference-only imagery (REQ-ASSET-004)
+# and never ships as production content.
+id: req-transceiver-001
+project_id: blackwater-relay
+capability_id: asset.reconstruct.reference-image
+intent: >-
+  Reconstruct the depicted storm-relay field transceiver prop from the committed
+  reference image as a procedural Three.js module
+acceptance:
+  - Accepted output imports and runs against the single standard three dependency
+  - Recomputed silhouette reference similarity >= 0.5 (8x8 occupancy grid IoU)
+  - measured_triangles within declared max_triangles budget
+  - Named nodes, sockets, and colliders recorded as AssetRecord affordance metadata only
+  - Verification re-derived offline with zero model invocation and zero network access
+inputs:
+  target_role: prop
+  module_output_path: src/assets/field-transceiver.ts
+  min_reference_similarity: 0.5
+  budget_limits:
+    max_triangles: 2000
+  references:
+    - id: field-transceiver-ref
+      path: references/field-transceiver/reference.png
+      provenance_class: project-generated-reference-fixture
+      license: in-house-generated
+preferred_provider: agent-skill.img2threejs
+reference_ids:
+  - field-transceiver-ref

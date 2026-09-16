@@ -1,0 +1,14 @@
+[
+  {
+    "id": "field-transceiver-module",
+    "path": "src/assets/field-transceiver.ts",
+    "role": "procedural_three_module",
+    "mime_type": "text/typescript",
+    "sha256": "137172725694681f72cd08a05bfa2bc581a679974f00442d915bf58252de4e8a"
+  },
+  {
+    "id": "field-transceiver-asset-record",
+    "path": "assets/manifest.json#field-transceiver",
+    "role": "asset_record"
+  }
+]

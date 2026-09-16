@@ -4,6 +4,7 @@
  * Command-line interface for Gauntlet Game Studio.
  */
 
+import * as fs from "node:fs";
 import * as path from "node:path";
 import {
   getDoctorStudioResult,
@@ -18,13 +19,78 @@ import {
 } from "@gauntlet/studio";
 import {
   validateCapabilityResult,
+  validateCapabilityRequest,
   type StudioResult,
   type CapabilityRequest,
   type AgentHandoff,
   type ArtifactRef,
 } from "@gauntlet/contracts";
+import {
+  assertWorldCompositionIntentBoundary,
+  verifyWorldCompositionResultFile,
+  WORLD_ENVIRONMENT_COMPOSE_CAPABILITY,
+} from "@gauntlet/adapters";
+import {
+  ASSET_RECONSTRUCT_REFERENCE_IMAGE_CAPABILITY,
+  prepareReferenceImageReconstruction,
+  verifyImg2ThreeJsResult,
+} from "@gauntlet/adapters";
 
 export const CLI_VERSION = "0.2.0";
+
+/**
+ * The project root for a file under `.studio/requests|results` is the directory
+ * directly containing `.studio`; otherwise fall back to the process cwd (T14).
+ */
+function projectRootForFile(filePath: string): string {
+  let cur = path.dirname(path.resolve(process.cwd(), filePath));
+  for (;;) {
+    if (path.basename(cur) === ".studio") return path.dirname(cur);
+    const parent = path.dirname(cur);
+    if (parent === cur) return process.cwd();
+    cur = parent;
+  }
+}
+
+/** Walk up from a file's directory to the monorepo root (workspaces package.json). */
+function repoRootForFile(filePath: string): string {
+  const start = path.resolve(process.cwd(), filePath);
+  let cur = path.dirname(start);
+  const startDir = cur;
+  for (;;) {
+    const pkgPath = path.join(cur, "package.json");
+    if (fs.existsSync(pkgPath)) {
+      try {
+        const parsed = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+        const workspaces = parsed.workspaces;
+        if (Array.isArray(workspaces) && workspaces.some((w: unknown) => typeof w === "string" && w.includes("packages/*"))) {
+          return cur;
+        }
+      } catch {
+        // keep walking
+      }
+    }
+    const parent = path.dirname(cur);
+    if (parent === cur) return startDir;
+    cur = parent;
+  }
+}
+
+/**
+ * Loads a capability request/result file (YAML or JSON) relative to the process cwd.
+ * Used by the file-based `capability prepare|verify-result <capability-id> <file>` form.
+ */
+function loadCapabilityFile(filePath: string): unknown {
+  const resolved = path.resolve(process.cwd(), filePath);
+  if (!fs.existsSync(resolved)) {
+    throw new Error(`Capability file not found: ${resolved}`);
+  }
+  const text = fs.readFileSync(resolved, "utf-8");
+  if (resolved.endsWith(".json")) {
+    return JSON.parse(text);
+  }
+  return Bun.YAML.parse(text);
+}
 
 function printHelp() {
   console.log(`
@@ -39,7 +105,9 @@ Commands:
   create <name>                Scaffold a new game project
   capabilities                 List registered studio capabilities
   capability <prepare|accept|verify-result> [args]
-                               Prepare, accept, or verify capability results
+                               Prepare, accept, or verify capability results.
+                               File form (T15): capability prepare|verify-result <capability-id> <file.yaml>
+                               e.g. world.environment.compose requests/results under .studio/
   asset verify --all           Verify the project Asset Registry: provenance, acceptance gates
   asset <other-action>         Asset compiler/source actions (typed placeholders until settled)
   observe <action>             Run observation scenarios
@@ -212,13 +280,98 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       const sub = filteredArgs[1];
       if (sub === "prepare") {
         try {
-          const rawRequest = filteredArgs[2] ? JSON.parse(filteredArgs[2]) : {};
+          const firstArg = filteredArgs[2];
+          let rawRequest: unknown;
+          let referenceEvidenceFor: Array<Record<string, unknown>> | undefined;
+          let handoffOverride: AgentHandoff | undefined;
+          if (firstArg && defaultCapabilityRegistry.has(firstArg)) {
+            // T15 (REQ-BIND-005) file form: capability prepare <capability-id> <request-file>
+            const requestFile = filteredArgs[3];
+            if (!requestFile) {
+              throw new Error(`File-based preparation requires a request file path after capability id '${firstArg}'`);
+            }
+            const request = validateCapabilityRequest(loadCapabilityFile(requestFile));
+            if (request.capability_id !== firstArg) {
+              throw new Error(
+                `Request file capability_id '${request.capability_id}' does not match requested capability '${firstArg}'`
+              );
+            }
+            // TEETH-T15-001 boundary: specific depicted-object reconstruction never travels the
+            // world-composition route; the director rejects and redirects to reference reconstruction.
+            if (firstArg === WORLD_ENVIRONMENT_COMPOSE_CAPABILITY) {
+              assertWorldCompositionIntentBoundary(request.intent);
+            }
+            // T14 (REQ-BIND-006, REQ-ASSET-001, REQ-ASSET-002): the reference-image reconstruction
+            // route REQUIRES suitable reference imagery. Preparation blocks/asks for an allowed
+            // reference instead of silently becoming generic text-to-3D, and on success normalizes
+            // the AgentHandoff against the pinned vendor skill content.
+            let referenceEvidence: Array<Record<string, unknown>> | undefined;
+            let normalizedHandoff: AgentHandoff | undefined;
+            if (firstArg === ASSET_RECONSTRUCT_REFERENCE_IMAGE_CAPABILITY) {
+              const capability = defaultCapabilityRegistry.get(firstArg);
+              if (!capability) throw new Error(`Capability '${firstArg}' is not registered`);
+              const prep = prepareReferenceImageReconstruction(request, capability, {
+                projectRoot: projectRootForFile(requestFile),
+                repoRoot: repoRootForFile(requestFile),
+              });
+              if (prep.status === "blocked") {
+                const res: StudioResult = {
+                  status: "blocked",
+                  operation: "studio.capability.prepare",
+                  result: {
+                    capability_id: prep.capability_id,
+                    provider: prep.provider,
+                    code: prep.code,
+                    message: prep.message,
+                    details: prep.details ?? [],
+                    allowed_next_steps: prep.allowed_next_steps,
+                    route_preserved: firstArg,
+                    degraded_to_generic_text_to_3d: false,
+                  },
+                  diagnostics: {
+                    blocked: true,
+                    code: prep.code,
+                    note: "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D.",
+                  },
+                };
+                if (isJson) console.log(JSON.stringify(res, null, 2));
+                else {
+                  console.error(`Blocked (${prep.code}): ${prep.message}`);
+                  for (const d of prep.details ?? []) console.error(`  - ${d}`);
+                }
+                return 1;
+              }
+              referenceEvidence = prep.references.map((r) => ({
+                id: r.id,
+                path: r.recorded_path,
+                sha256: r.sha256,
+                bytes: r.bytes,
+                provenance_class: r.provenance_class,
+                license: r.license,
+                reference_only: r.reference_only,
+              }));
+              normalizedHandoff = prep.handoff;
+            }
+            rawRequest = request;
+            referenceEvidenceFor = referenceEvidence;
+            handoffOverride = normalizedHandoff;
+          } else {
+            rawRequest = firstArg ? JSON.parse(firstArg) : {};
+          }
           const resolution = routeCapability(rawRequest as CapabilityRequest);
+          const enrichedResolution = {
+            ...resolution,
+            ...(handoffOverride ? { handoff: handoffOverride } : {}),
+            ...(referenceEvidenceFor ? { references: referenceEvidenceFor } : {}),
+          };
           const res: StudioResult = {
             status: "success",
             operation: "studio.capability.prepare",
-            result: resolution,
-            diagnostics: { is_agent_handoff: resolution.is_agent_handoff },
+            result: enrichedResolution,
+            diagnostics: {
+              is_agent_handoff: resolution.is_agent_handoff,
+              ...(referenceEvidenceFor ? { reference_imagery_validated: true, reference_count: referenceEvidenceFor.length } : {}),
+            },
           };
           if (isJson) console.log(JSON.stringify(res, null, 2));
           else console.log(`Routed to capability ${resolution.capability.id} via provider ${resolution.provider}`);
@@ -236,8 +389,24 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         }
       } else if (sub === "accept") {
         try {
-          const handoff: AgentHandoff = JSON.parse(filteredArgs[2] || "{}");
-          const artifacts: ArtifactRef[] = JSON.parse(filteredArgs[3] || "[]");
+          // T14 file form: capability accept <handoff.json> <artifacts.json> [provider]
+          // Settling a handoff requires real accepted artifacts; a handoff alone
+          // never reports capability success (PrematureSettlementError otherwise).
+          const handoffArg = filteredArgs[2] || "{}";
+          const handoffPath = path.resolve(process.cwd(), handoffArg);
+          let handoff: AgentHandoff;
+          let artifacts: ArtifactRef[];
+          if (handoffArg.endsWith(".json") && fs.existsSync(handoffPath) && fs.statSync(handoffPath).isFile()) {
+            handoff = JSON.parse(fs.readFileSync(handoffPath, "utf-8"));
+            const artifactsArg = filteredArgs[3];
+            if (!artifactsArg) throw new Error("File-form accept requires an artifacts JSON file after the handoff file");
+            const artifactsPath = path.resolve(process.cwd(), artifactsArg);
+            artifacts = JSON.parse(fs.readFileSync(artifactsPath, "utf-8"));
+            if (!Array.isArray(artifacts)) throw new Error("Artifacts file must contain a JSON array");
+          } else {
+            handoff = JSON.parse(handoffArg);
+            artifacts = JSON.parse(filteredArgs[3] || "[]");
+          }
           const provider = filteredArgs[4] || `agent-skill.${handoff.skill_id}`;
           const capabilityResult = settleAgentHandoff(handoff, provider, artifacts);
           const res: StudioResult = {
@@ -262,7 +431,79 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         }
       } else if (sub === "verify-result") {
         try {
-          const raw = JSON.parse(filteredArgs[2] || "{}");
+          const firstArg = filteredArgs[2];
+          if (firstArg && defaultCapabilityRegistry.has(firstArg)) {
+            // T15 (REQ-BIND-005) file form: capability verify-result <capability-id> <result-file>
+            // Capability-specific DETERMINISTIC verification — no model credentials, no network.
+            const resultFile = filteredArgs[3];
+            if (!resultFile) {
+              throw new Error(`File-based result verification requires a result file path after capability id '${firstArg}'`);
+            }
+            if (firstArg === WORLD_ENVIRONMENT_COMPOSE_CAPABILITY) {
+              const report = verifyWorldCompositionResultFile(resultFile);
+              const res: StudioResult = {
+                status: report.valid ? "success" : "failed",
+                operation: "studio.capability.verify-result",
+                result: report,
+                diagnostics: {
+                  verified: report.valid,
+                  capability: firstArg,
+                  result_file: resultFile,
+                  checks_passed: report.summary.passed,
+                  checks_failed: report.summary.failed,
+                },
+              };
+              if (isJson) {
+                console.log(JSON.stringify(res, null, 2));
+              } else {
+                console.log(`\n=== World Composition Result Verification (${firstArg}) ===`);
+                for (const c of report.checks) {
+                  console.log(` ${c.pass ? "✓" : "✗"} [${c.code}] ${c.detail}`);
+                }
+                console.log(`Status: ${report.valid ? "VALID" : "INVALID"}\n`);
+              }
+              return report.valid ? 0 : 1;
+            }
+            if (firstArg === ASSET_RECONSTRUCT_REFERENCE_IMAGE_CAPABILITY) {
+              // T14 (REQ-BIND-006, REQ-ASSET-001/002/004): deterministic offline verification of the
+              // committed accepted output — zero model invocation, zero network access, no regeneration.
+              const resultPath = path.resolve(process.cwd(), resultFile);
+              const outcome = await verifyImg2ThreeJsResult(loadCapabilityFile(resultFile), {
+                resultPath,
+                projectRoot: projectRootForFile(resultFile),
+                repoRoot: repoRootForFile(resultFile),
+                capabilityId: firstArg,
+              });
+              const res: StudioResult = {
+                status: outcome.ok ? "success" : "failed",
+                operation: "studio.capability.verify-result",
+                result: outcome,
+                diagnostics: {
+                  verified: outcome.ok,
+                  capability: firstArg,
+                  result_file: resultFile,
+                  deterministic: true,
+                  model_invocation: "none",
+                  network_access: "none",
+                  failed_checks: outcome.checks.filter((c) => c.status === "fail").map((c) => c.id),
+                },
+              };
+              if (isJson) {
+                console.log(JSON.stringify(res, null, 2));
+              } else {
+                console.log(`\n=== Reference Reconstruction Result Verification (${firstArg}) ===`);
+                for (const c of outcome.checks) {
+                  console.log(` ${c.status === "pass" ? "✓" : "✗"} [${c.id}] ${c.detail}`);
+                }
+                console.log(`Status: ${outcome.ok ? "VALID" : "INVALID"}\n`);
+              }
+              return outcome.ok ? 0 : 1;
+            }
+            throw new Error(
+              `Deterministic result verification for capability '${firstArg}' is not settled by the active plan DAG yet`
+            );
+          }
+          const raw = JSON.parse(firstArg || "{}");
           const verified = validateCapabilityResult(raw);
           const res: StudioResult = {
             status: "success",

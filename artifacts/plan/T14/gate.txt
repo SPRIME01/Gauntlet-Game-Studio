@@ -1,0 +1,83 @@
+=== T14 Narrow & Global Gate Evidence (fresh runs) ===
+Date: 2026-09-16T03:54:23Z
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T14.prereg.yaml (frozen before implementation)
+
+--- NARROW GATE 1: bun run studio -- capability prepare asset.reconstruct.reference-image examples/blackwater-relay/.studio/requests/transceiver.yaml --json ---
+EXIT=0
+status: success | routed: routed | provider: agent-skill.img2threejs | is_agent_handoff: True
+handoff skill: img2threejs | instructions_ref: vendor/skills/img2threejs/metadata.json
+pinned_skill: {'id': 'img2threejs', 'version': '1.0.0', 'license': 'MIT', 'capability': 'asset.reconstruct', 'source_ref': 'vendor/skills/img2threejs/metadata.json'}
+reference: field-transceiver-ref | sha256: b615ea171c65d5ac... | provenance_class: project-generated-reference-fixture | reference_only: True
+reference_imagery_validated: True | reference_count: 1
+
+--- NARROW GATE 2: bun run studio -- capability verify-result asset.reconstruct.reference-image examples/blackwater-relay/.studio/results/transceiver.yaml --json ---
+EXIT=0
+status: success | verified: True | failed_checks: []
+  [PASS] RESULT_SCHEMA: CapabilityResult 'res-req-transceiver-001' satisfies studio contracts
+  [PASS] REQUEST_CORRELATION: result 'res-req-transceiver-001' correlates with request 'req-transceiver-001' (capability asset.reconstruct.reference-image)
+  [PASS] PROVIDER_BINDING: accepted output bound to agent-skill.img2threejs
+  [PASS] ARTIFACT_INTEGRITY: committed module artifact present and hash-verified: src/assets/field-transceiver.ts
+  [PASS] MODULE_SYNTAX: module parses cleanly (TypeScript)
+  [PASS] MODULE_IMPORTS: imports resolve against 'three' only; no network APIs; no gameplay/state imports
+  [PASS] THREE_RESOLUTION_GUARD: Single standard three installation resolved: /home/sprime01/projects/gauntlet-game-studio/node_modules/.bun/three@0.170.0/node_modules/three (version 
+  [PASS] SEMANTIC_AFFORDANCES: 9 named node(s), 2 socket(s), 1 collider(s) all exist structurally; recorded as AssetRecord affordance metadata only
+  [PASS] MODULE_RUNTIME: module imports and instantiates against pinned three@0.170.0; 128 triangle(s), 10 named node(s)
+  [PASS] REFERENCE_COMPARISON: recomputed silhouette IoU 0.8696 >= required 0.5; recorded evidence consistent (field-transceiver-ref)
+  [PASS] BUDGET: recomputed measured_triangles=128 within declared limits; recorded measurements consistent
+  [PASS] OFFLINE_VERIFICATION: recorded run declares zero model invocation and zero network access; verification path is offline by construction (no network imports, no credential r
+  [PASS] REFERENCE_PROVENANCE: reference 'field-transceiver-ref' provenance class 'project-generated-reference-fixture' registered reference-only and distinct from production record
+recomputed: {"pinned_three": {"version": "0.170.0", "realDir": "/home/sprime01/projects/gauntlet-game-studio/node_modules/.bun/three@0.170.0/node_modules/three"}, "triangles": 128, "node_names": ["field-transceiver", "transceiver-bo
+
+--- NARROW GATE 2 (model-credential-stripped env; network-absent conditions) ---
+EXIT=0
+status: success | model_invocation: none | network_access: none | failed_checks: []
+Static no-network evidence (verifier + handoff + module-contract + three-resolution + png import no net modules, no fetch):
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:63:  { pattern: "fetch(", reason: "network API fetch()" },
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:64:  { pattern: "XMLHttpRequest", reason: "network API XMLHttpRequest" },
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:65:  { pattern: "WebSocket", reason: "network API WebSocket" },
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:77:  "node:http",
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:78:  "node:https",
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:79:  "node:net",
+packages/adapters/src/agent-skills/img2threejs/module-contract.ts:81:  "undici",
+  (note: the only matches are the deny-list PATTERN LITERALS the scanner uses to
+   reject network APIs in candidate modules; no network client is imported or
+   called anywhere in packages/adapters/src/agent-skills/img2threejs/)
+
+--- SUPPORTING: bun run studio -- asset verify --all --project examples/blackwater-relay --json ---
+EXIT=0
+status: success | totals: {'total': 6, 'accepted': 6, 'degraded': 0, 'pending': 0, 'rejected': 0, 'blocked': 0, 'not_acceptable': 0}
+  kit-relay-tower accepted relay_tower project acceptable: True
+  kit-dock-planks accepted dock project acceptable: True
+  kit-maintainer-hut accepted maintainer_hut project acceptable: True
+  veg-shoreline-scrub accepted vegetation_scatter project acceptable: True
+  skybox-storm-dusk accepted environment_sky project acceptable: True
+  field-transceiver accepted prop procedural acceptable: True
+--- SUPPORTING: bun test packages/studio/test/capabilities ---
+
+ 27 pass
+ 0 fail
+ 127 expect() calls
+Ran 27 tests across 3 files. [474.00ms]
+EXIT=0
+
+--- GLOBAL GATES (fresh runs) ---
+just check            -> EXIT=0 (traceability, topology, tsc --noEmit clean)
+just lint             -> EXIT=0 (topology + script compile)
+just validate-agent-artifacts -> EXIT=0
+just test             -> 233 pass / 2 fail on the SHARED IN-FLIGHT TREE at final re-run
+                         (was 5 fail earlier in the session; concurrent builders are actively
+                         converging); T14-attributable failures: NONE.
+  Isolation evidence:
+  - bun test packages/studio/test/capabilities -> 27 pass / 0 fail
+  - bun test packages/studio -> 95 pass / 0 fail
+  - bun test with packages/studio/test/capabilities excluded -> SAME failures
+    (T14-independent)
+  - committed HEAD (247afa0) via detached worktree -> 184 pass / 0 fail
+  - the remaining failures are 'Koota: Too many worlds created. The maximum is 16.'
+    world-cap exhaustion in packages/runtime/test (authority "Headless Parity",
+    network single-player TEETH-T12-003) caused by cumulative GameWorld creation
+    from OTHER builders' in-flight uncommitted test files (packages/adapters/test/
+    vfx-quarks.test.ts [T15], packages/runtime/test/audio-headless|observability|
+    ui-hud [T17]). T14 adds zero Koota worlds. Failing files pass in isolation
+    (bun test packages/runtime/test/authority.test.ts -> 5/5;
+     bun test packages/runtime/test/network -> 29/29).

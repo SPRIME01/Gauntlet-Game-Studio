@@ -12,7 +12,13 @@ capabilities:
   world.composition:
     provider: "agent-skill.3dviz"
     version: "1.0.0"
+  world.environment.compose:
+    provider: "agent-skill.3dviz"
+    version: "1.0.0"
   asset.reconstruct:
+    provider: "agent-skill.img2threejs"
+    version: "1.0.0"
+  asset.reconstruct.reference-image:
     provider: "agent-skill.img2threejs"
     version: "1.0.0"
   world.terrain:
