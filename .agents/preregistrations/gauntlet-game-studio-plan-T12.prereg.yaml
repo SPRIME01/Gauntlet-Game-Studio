@@ -1,0 +1,57 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T12
+title: Implement optional authoritative multiplayer over Bun native WebSocket baseline and transport abstraction
+proof_level: P3
+timestamp: "2026-09-15T22:05:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T12-001
+    statement: >-
+      Networked play preserves server/Koota semantic authority while single-player remains network-free
+      and transport details remain replaceable. Client actions are validated sequenced commands/intents
+      (NetworkEnvelope from @gauntlet/contracts) and never client-authored authoritative state; server-side
+      validation precedes any authoritative semantic mutation. The authoritative server buffers and
+      acknowledges client command sequences, publishes interest-filtered authoritative state projections
+      sufficient for client reconciliation, and exposes explicit connection/disconnect/timeout states that
+      never silently mutate semantic authority. The studio transport abstraction explicitly exposes material
+      characteristics (reliability, ordering, unreliable/unordered delivery support, backpressure, connection
+      state, latency/RTT, message-size constraints); Bun native WebSockets is the zero-dependency baseline
+      transport binding; WebRTC/geckos remains an optional advanced transport, documented as not-baseline
+      with no new dependency. Single-player scenarios start and behave normally with the network subsystem
+      unavailable and never initialize a server or transport. Network diagnostics (ping/RTT, bandwidth via
+      BandwidthTracker, latency/jitter/packet-loss via LatencySimulator, command/replication counters) are
+      exposed to observability. Koota remains the sole semantic authority; envelopes and projections are
+      not authoritative state.
+    settles:
+      - REQ-BIND-013
+      - REQ-NET-001
+      - REQ-NET-002
+      - REQ-NET-003
+      - REQ-NET-004
+      - REQ-NET-005
+      - REQ-NET-006
+      - REQ-NET-007
+      - REQ-NET-009
+      - REQ-SAFE-006
+      - REQ-SEC-007
+
+falsifiers:
+  - id: TEETH-T12-001
+    attack: Send forged client state instead of a permitted command.
+    expected: Server validation rejects it and authoritative Koota state does not change.
+  - id: TEETH-T12-002
+    attack: Reorder/delay client commands through the latency simulator.
+    expected: Sequence/acknowledgement/reconciliation remains bounded and diagnostics expose impairment.
+  - id: TEETH-T12-003
+    attack: Start a single-player scenario with network dependencies unavailable.
+    expected: The scenario starts and behaves normally without network initialization.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Server/Koota authority preservation under forged client state, bounded sequencing/ack/reconciliation
+    under latency-simulator impairment, single-player network-freedom, transport characteristic exposure
+    with Bun WebSocket baseline and no new dependencies, and explicit connection failure states.

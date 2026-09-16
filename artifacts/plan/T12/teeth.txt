@@ -1,0 +1,76 @@
+=== T12 TEETH / FALSIFICATION EVIDENCE — 2026-09-16T02:45:18Z ===
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T12.prereg.yaml (frozen before implementation/evidence)
+
+-----------------------------------------------------------------------------
+TEETH-T12-001 — Attack: Send forged client state instead of a permitted command.
+Expected: Server validation rejects it and authoritative Koota state does not change.
+-----------------------------------------------------------------------------
+Action: raw client envelopes with kind 'state.set' (teleport payload), kind
+  'replication.snapshot' (impersonated server output), oversized cmd.move payload,
+  invalid payload shapes, cross-client entity ownership, client_id forgery, and
+  sequence replay are injected over the in-memory transport (bypassing client helpers).
+
+Fresh test run:
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/network/authority.test.ts:
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > TEETH-T12-001: forged client state is rejected and authoritative Koota state does not change [7.07ms]
+
+ 1 pass
+ 8 filtered out
+ 0 fail
+ 7 expect() calls
+Ran 1 test across 1 file. [73.00ms]
+Verdict: PASS — forged_rejected counters increment, net.reject returned, and the
+  authoritative Koota player entity remains bit-for-bit at [0, 0, 0] with no extra entities.
+
+-----------------------------------------------------------------------------
+TEETH-T12-002 — Attack: Reorder/delay client commands through the latency simulator.
+Expected: Sequence/acknowledgement/reconciliation remains bounded and diagnostics expose impairment.
+-----------------------------------------------------------------------------
+Action: 24 sequenced cmd.move commands routed through LatencyImpairedTransport
+  (fixed 4ms + 24ms deterministic jitter => in-flight reordering; zero loss), then
+  authority settled via two ticks. A companion attack with deterministic packet loss
+  destroys sequences 1-2 in flight and forces bounded skip recovery.
+
+Fresh test run:
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > TEETH-T12-002: reordered/delayed commands through the latency simulator keep sequence/ack/reconciliation bounded and diagnostics expose the impairment [127.26ms]
+ 1 pass
+ 0 fail
+ 16 expect() calls
+ 1 pass
+ 5 filtered out
+ 0 fail
+ 8 expect() calls
+Ran 1 test across 1 file. [101.00ms]
+Verdict: PASS — out_of_order_buffered/processed > 0 (impairment observed), all 24
+  commands processed exactly once in strict sequence order, ack advanced to 24,
+  pending window bounded (<= 64, ends 0), reconciliation matches authority to 1e-5,
+  LatencySimulator stats exposed via client diagnostics (scheduled=completed=24, dropped=0).
+  Under loss: explicit sequence_skips=2, buffer backpressure refuses new arrivals
+  (buffered_overflow_dropped=6 with explicit net.reject), session fully recovers
+  (post-recovery command processed, ack=13). No unbounded memory, no wedge.
+
+-----------------------------------------------------------------------------
+TEETH-T12-003 — Attack: Start a single-player scenario with network dependencies unavailable.
+Expected: The scenario starts and behaves normally without network initialization.
+-----------------------------------------------------------------------------
+Action: a local-authoritative kernel is booted with only a physics subsystem (no
+  network subsystem registered, no transport/server constructed) and runs 60
+  authoritative gameplay ticks through the readiness-barrier-gated scenario start.
+
+Fresh test run:
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/network/single-player.test.ts:
+(pass) Single-player network-freedom (T12 - REQ-NET-001, REQ-BIND-013, TEETH-T12-003) > TEETH-T12-003: a single-player scenario starts and behaves normally with network dependencies unavailable [2.69ms]
+(pass) Single-player network-freedom (T12 - REQ-NET-001, REQ-BIND-013, TEETH-T12-003) > single-player world snapshot/restore round-trips without any network representation [0.98ms]
+
+ 2 pass
+ 0 fail
+ 12 expect() calls
+Ran 2 tests across 1 file. [72.00ms]
+Verdict: PASS — barrier ready without a network subsystem, scenario start proceeds,
+  60 ticks advance normally, hero entity integrates velocity to x=1.0, semantic
+  state contains zero provider/donor objects, and AuthoritativeServer.getActiveServerCount()
+  remains 0 throughout (no server or transport was ever initialized).

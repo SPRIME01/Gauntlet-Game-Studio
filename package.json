@@ -17,7 +17,8 @@
     "third-party:verify": "bun run ./scripts/verify-third-party.ts",
     "donor:audit": "bun run ./scripts/donor-audit.ts",
     "donor:dependency-scan": "bun run ./scripts/donor-dependency-scan.ts",
-    "runtime:headless-smoke": "bun run ./packages/runtime/src/headless-smoke.ts"
+    "runtime:headless-smoke": "bun run ./packages/runtime/src/headless-smoke.ts",
+    "network:headless-smoke": "bun run ./packages/runtime/src/network/headless-smoke.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {

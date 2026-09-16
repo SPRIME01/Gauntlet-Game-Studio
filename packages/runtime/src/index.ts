@@ -20,3 +20,4 @@ export * from "./physics";
 export * from "./navigation";
 export * from "./spatial";
 export * from "./diagnostics";
+export * from "./network";

@@ -92,9 +92,12 @@
         "provenance_path": "third_party/mavon-engine/PROVENANCE.md",
         "destination_modules": [
           "packages/runtime/src/diagnostics/bandwidth.ts",
-          "packages/runtime/src/diagnostics/latency-sim.ts"
+          "packages/runtime/src/diagnostics/latency-sim.ts",
+          "packages/runtime/src/network/protocol.ts",
+          "packages/runtime/src/network/server.ts",
+          "packages/runtime/src/network/client.ts"
         ],
-        "purpose": "Adapted bandwidth tracking and latency simulation mechanisms for Gauntlet Runtime"
+        "purpose": "Adapted bandwidth tracking and latency simulation mechanisms for Gauntlet Runtime; command buffering/packet sequencing (Networking/Server/Commands.ts) rewritten from concept (REWRITE_FROM_CONCEPT, settled in T12) onto @gauntlet/contracts NetworkEnvelope and Koota authority"
       }
     ],
     "external_asset": [

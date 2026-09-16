@@ -1,0 +1,118 @@
+=== T12 GATE EVIDENCE — 2026-09-16T02:44:31Z ===
+
+$ bun test packages/runtime/test/network
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/network/reconciliation.test.ts:
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > TEETH-T12-002: reordered/delayed commands through the latency simulator keep sequence/ack/reconciliation bounded and diagnostics expose the impairment [131.62ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > client pending window is bounded under a silent server (no unbounded memory) [2.64ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > packet loss recovers with explicit bounded sequence skips, never a wedged session [22.88ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > ping/RTT diagnostics measure the command round trip (client-initiated) [1.00ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > interest/relevance filtering: clients receive only nearby entities (REQ-NET-005) [1.17ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > reconciliation applies server truth over local prediction and replays only unacked commands [0.77ms]
+
+packages/runtime/test/network/protocol.test.ts:
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > round-trips a contract-valid envelope through encode/decode [0.09ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > reuses the authoritative @gauntlet/contracts NetworkEnvelope schema [0.08ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > rejects malformed JSON, empty messages, and oversized messages explicitly [0.16ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > rejects contract schema violations (strict envelope shape) [0.92ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > validates command payloads against the closed kind whitelist (server-side) [0.09ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > builds bounded, well-typed server envelopes [0.04ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > throws when encoding an envelope beyond the wire size limit [0.25ms]
+
+packages/runtime/test/network/single-player.test.ts:
+(pass) Single-player network-freedom (T12 - REQ-NET-001, REQ-BIND-013, TEETH-T12-003) > TEETH-T12-003: a single-player scenario starts and behaves normally with network dependencies unavailable [0.83ms]
+(pass) Single-player network-freedom (T12 - REQ-NET-001, REQ-BIND-013, TEETH-T12-003) > single-player world snapshot/restore round-trips without any network representation [0.28ms]
+
+packages/runtime/test/network/transport.test.ts:
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > exposes explicit material characteristics for the WebSocket-class baseline [0.21ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > REJECTS delivery options the transport does not support (no silent semantic downgrade) [0.13ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > surfaces explicit connection states including disconnect (in-memory) [0.13ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > LatencyImpairedTransport reports honest characteristics and observable impairment [0.11ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > Bun native WebSocket transport carries a real loopback message with zero new dependencies [106.07ms]
+
+packages/runtime/test/network/authority.test.ts:
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > TEETH-T12-001: forged client state is rejected and authoritative Koota state does not change [1.66ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > server-side validation precedes semantic mutation: invalid command payloads never touch Koota [0.44ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > a client may only move its OWN player entity (ownership enforcement) [0.44ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > duplicate/replayed sequences are dropped and never re-processed [0.63ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > client_id forgery is rejected [0.36ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > malformed and oversized raw messages are counted and rejected without crashing the session [1.00ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > welcome spawns the player in Koota; disconnect and timeout are explicit states with explicit despawn [61.67ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > server diagnostics expose bandwidth, commands, replication, and transport identity [1.02ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > the server is never a scheduler: exactly one active server registry for single-player proofs [0.05ms]
+
+ 29 pass
+ 0 fail
+ 178 expect() calls
+Ran 29 tests across 5 files. [411.00ms]
+EXIT=0
+
+$ bun run network:headless-smoke
+$ bun run ./packages/runtime/src/network/headless-smoke.ts
+=== Gauntlet Runtime Network Headless Smoke Verification ===
+OK: authoritative server listening on ws://127.0.0.1:42711 (transport: bun-websocket)
+OK: client connected over Bun native WebSocket transport.
+OK: welcome received (client_id=client-1, entity_id=player-client-1)
+OK:   commands processed >= 2 (processed=2)
+OK:   zero forged rejections (forged=0)
+OK:   server mutated Koota position (player.x=0.1667)
+OK:   acks advanced (acked=2)
+OK:   client received snapshots (snapshots=30)
+OK:   client reconciled projection (projection entities=1)
+OK:   landmark filtered by interest (far landmark excluded)
+OK:   RTT measured (rtt=6.63ms)
+OK:   bandwidth observed (bytes=9326)
+OK:   connection state connected (state=connected)
+SUCCESS: Network headless smoke verification passed.
+EXIT=0
+
+$ just check
+EXIT=0
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun x tsc --noEmit
+
+$ just test
+EXIT=0
+ 184 pass
+ 0 fail
+ 1611 expect() calls
+Ran 184 tests across 27 files. [878.00ms]
+
+$ just lint
+EXIT=0
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+
+$ just validate-agent-artifacts
+EXIT=0
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+
+$ bun run donor:dependency-scan
+EXIT=0
+$ bun run ./scripts/donor-dependency-scan.ts
+=== Gauntlet Studio Donor Dependency & White-Label Scanner (REQ-DONOR-004, REQ-DONOR-005, REQ-DONOR-007, REQ-SEC-006) ===
+1. Scanning first-party source files for forbidden donor imports...
+2. Scanning package manifests for donor package dependencies...
+3. Scanning TypeScript configs for donor path mappings...
+SUCCESS: Zero forbidden donor imports, dependencies, or path mappings detected.
+
+$ bun run donor:audit
+EXIT=0
+OK: temporary_donor attribution verified in vendor/attribution.json.
+OK: copied_code attribution verified in vendor/attribution.json.
+OK: Zero forbidden donor semantic entities defined or imported in packages/runtime/src.
+OK: Generated /home/sprime01/projects/gauntlet-game-studio/artifacts/plan/T09/donor-inventory.md
+SUCCESS: Mavon donor audit completed with 0 errors.
+
+$ bun run third-party:verify
+EXIT=0
+OK: Overlay policy verified (threejs-game-director strictly forbidden).
+OK: All 5 attribution classes present in vendor/attribution.json.
+OK: THIRD_PARTY_NOTICES.md verified.
+SUCCESS: All third-party attribution and overlay policies verified.
