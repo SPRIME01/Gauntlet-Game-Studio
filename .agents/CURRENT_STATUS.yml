@@ -13,20 +13,19 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T18
+  last_settled_task: T22
   in_flight_task: null
-  workable_task: T22
+  workable_task: T23
   ready_tasks:
-    - T22
+    - T23
   blocked_tasks:
-    T23: [T22]
     T24: [T23]
     T25: [T24]
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T22
+  task: T23
   phase: ready
   blocker: null
 
@@ -157,6 +156,12 @@ latest_evidence:
     commit: 7916bfe
     gate: PASS (bun run test:performance-fixtures 31/31 + Chrome legs, bun run studio -- verify --scenario performance-fixture --profile test-budget --json)
     teeth: PASS (attack 1 byte-identical-pixels draw-call/frame-time regression settles failed with budget_error, attack 2 average-only reporting with missing percentiles fails the profile gate)
+  T22:
+    report: artifacts/plan/T22/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: ed71af4
+    gate: PASS (bun run --cwd examples/blackwater-relay build, ... test:e2e 6/6 SETTLED, studio verify --suite single-player 6/6 settled)
+    teeth: PASS (attack 1 transport APIs sabotaged yet all six scenarios settle with zero network, attack 2 blender-absent/.tmp-ignored rebuild stays green on committed derivatives, attack 3 corrupt-gate and beacon-divergence fixtures settle failed via semantic evidence with pixels/telemetry passing)
   T18:
     report: artifacts/plan/T18/summary.md
     confirmation: independent CONFIRM
@@ -292,20 +297,17 @@ observations:
     evidence: artifacts/plan/T18/summary.md, artifacts/plan/T21/hardening-round1.md
 
 next_action:
-  task: T22
+  task: T23
   action: >-
-    Assemble and settle the Blackwater Relay single-player vertical slice (T22):
-    1. Freeze P3 preregistration for T22.
-    2. Finalize the game spec with frozen named scenarios and quality profiles; compose 3dviz environment, canonical
-       terrain, Recast/BVH traversal, accepted sourced assets, img2threejs transceiver, committed service-drone
-       derivative, Quarks VFX, Tone audio, DOM HUD, Koota gameplay state, Rapier physics.
-    3. Implement named scenarios boot, active-play, transceiver-interaction, patrol-obstacle, beacon-activation,
-       performance-flythrough; run with networking entirely disabled.
-    4. Capture fresh state + pixels + telemetry; run declared gates and teeth; obtain independent_adversarial
-       confirmation before settlement.
+    Settle Blackwater Relay authoritative multiplayer and impairment scenarios (T23):
+    1. Freeze P3 preregistration for T23.
+    2. Add multiplayer-sync, interest-filtering, and multiplayer-latency scenarios; two independent browser clients
+       against the Bun headless authoritative server over the Bun native WebSocket baseline.
+    3. Prove server/Koota authority, reconciliation, relevance filtering, disconnect/recovery, and network
+       telemetry; capture command/ack/reconciliation/ping/bandwidth diagnostics.
+    4. Run declared gates and teeth; obtain independent_adversarial confirmation before settlement.
   reason: >-
-    T18 settled and both T22 prerequisites from the T21 confirmation are resolved (commit 04ee2f3); T22 is the
-    only ready task, gating T23-T25.
+    T22 settled cleanly; T23 is the only ready task, gating T24-T25.
 
 handoff:
   settled_summary:
@@ -331,8 +333,9 @@ handoff:
     - "T20: Playwright proof harness over the versioned observability contract, immutable run-scoped evidence store, and Gauntlet settlement bridge where pixels cannot override semantic contradiction; independent adversarial confirmation CONFIRM (commit 480fc69)."
     - "T21: Quality profiles and performance settlement; structural vs hardware-sensitive budget separation, software-renderer guard, byte-identical-pixels regression teeth; independent adversarial confirmation CONFIRM (commit 7916bfe)."
     - "T18: Blender 5.2.2 LTS DCC escalation via deterministic --background + bpy; service-drone GLB reproduces byte-identically, flows through normalization + Asset Registry; normal build Blender-free with typed scoped blockage; independent confirmation CONFIRM (commit 03c0a61). Hardening round 1 resolved both T21-confirmation prerequisites for T22 (commit 04ee2f3)."
+    - "T22: Blackwater Relay single-player vertical slice assembled and settled: six frozen scenarios, one canonical heightfield, one scheduler step owner, network-free proof, semantic-vs-pixel corruption teeth; independent adversarial confirmation CONFIRM (commit ed71af4)."
   unresolved_summary:
-    - "T22 prerequisites from the T21 confirmation are resolved (hardening round 1, commit 04ee2f3). Remaining chain: T22 -> T23 -> T24 -> T25, each P3 with independent_adversarial confirmation."
+    - "Remaining chain: T23 -> T24 -> T25, each P3 with independent_adversarial confirmation. Note: plan gate text bun --cwd <dir> run <script> no-ops under bun 1.4; the working order bun run --cwd <dir> <script> is documented in artifacts/plan/T22/summary.md."
     - "T22 hardening prerequisites recorded in artifacts/plan/T21/confirmation.md: wire memory budget capture (max_memory_mb declared but unmeasured) and make declared hardware budgets imply report-requirements before target-hardware settlement."
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
