@@ -1,0 +1,188 @@
+=== T17 GATE EVIDENCE — 2026-09-16T04:04:05Z ===
+
+$ bun test packages/runtime/test/audio-headless.test.ts
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/audio-headless.test.ts:
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > imports and constructs NullAudioBackend with zero DOM, zero AudioContext, zero Tone.js [0.06ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > NullAudioBackend unlock/suspend lifecycle and counted no-op playback [1.44ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > TEETH-T17-002: headless simulation runs with no DOM and no AudioContext using the null backend [4.11ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > TEETH-T17-002 (structural): packages/runtime has zero Tone.js/AudioContext dependencies anywhere in source [1.43ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > core semantics carry no provider audio objects across the boundary (Koota purity) [0.89ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > unavailable/misbehaving audio degrades without touching unrelated game logic (REQ-SAFE-007) [0.57ms]
+
+ 6 pass
+ 0 fail
+ 33 expect() calls
+Ran 6 tests across 1 file. [113.00ms]
+EXIT=0
+
+$ bun test packages/adapters/test/vfx-quarks.test.ts (VFX projection tests, headless)
+bun test v1.4.0 (34cbb9a40)
+
+packages/adapters/test/vfx-quarks.test.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > is fully headless: defines, spawns, and steps quarks effects with no DOM/WebGL/AudioContext [2.90ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > deterministic stepping: identical configs produce identical particle-count traces [3.18ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > is an execution projection: direct emitter mutation never back-propagates into Koota [2.70ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > destroy/recreate discipline: destroying the projection leaves the authoritative entity intact [0.68ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > unknown effect ids are suppressed and counted, never thrown (REQ-SAFE-007 discipline) [0.08ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > effect lifecycle decays deterministically: short bursts fully expire under fixed steps [1.40ms]
+
+ 6 pass
+ 0 fail
+ 32 expect() calls
+Ran 6 tests across 1 file. [145.00ms]
+EXIT=0
+
+$ bun test packages/runtime/test/ui-hud.test.ts (HUD headless safety)
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/ui-hud.test.ts:
+(pass) DOM/CSS HUD conventions headless safety (T17) > HudModel is pure data and import-safe with no DOM [0.15ms]
+(pass) DOM/CSS HUD conventions headless safety (T17) > DomHudRenderer refuses to construct without a DOM instead of crashing the server path [0.10ms]
+(pass) DOM/CSS HUD conventions headless safety (T17) > HUD stylesheet conventions are first-party CSS text with stable class names [0.08ms]
+
+ 3 pass
+ 0 fail
+ 15 expect() calls
+Ran 3 tests across 1 file. [101.00ms]
+EXIT=0
+
+$ bun run test:audio-browser (Playwright + real system Chrome, real user-gesture unlock, no autoplay bypass flags)
+$ bun run ./packages/adapters/test/audio-browser/run.ts
+=== T17 browser audio gesture-unlock proof (real system Chrome, no autoplay bypass) ===
+OK: system Chrome present at /usr/bin/google-chrome
+OK: browser entry bundled to /home/sprime01/projects/gauntlet-game-studio/.tmp/t17-browser-bundle/entry.js
+OK: fixture served at http://127.0.0.1:43353
+MODE: headed (production-compatible); chrome args: ["--user-data-dir=/home/sprime01/projects/gauntlet-game-studio/.tmp/t17-chrome-profile","--no-first-run","--remote-debugging-port=39006","http://127.0.0.1:43353"]
+PHASE1 initial: {"state":"locked","contextState":"not-created","unlockAttempted":false,"activation":{"isActive":false,"hasBeenActive":false}}
+PHASE1 after un-gestured unlock attempt: {"state":"suspended","contextState":"suspended","ticks":210,"crashed":false,"diag":{"kind":"tone","state":"suspended","is_headless":false,"intents_played":0,"intents_suppressed":0,"active_handles":0,"unmapped_events":0,"registered_sounds":1}}
+PHASE1 playSound-while-locked: {"stopped":true,"diag":{"kind":"tone","state":"suspended","is_headless":false,"intents_played":0,"intents_suppressed":1,"active_handles":0,"unmapped_events":0,"registered_sounds":1}}
+PASS: TEETH-T17-001 — un-gestured unlock leaves audio explicitly locked/suspended; game logic unaffected
+PHASE2 pre-click (still un-gestured result): {"state":"suspended","contextState":"suspended"}
+PHASE2 after real click: {"state":"ready","contextState":"running","diag":{"kind":"tone","state":"ready","is_headless":false,"intents_played":1,"intents_suppressed":1,"active_handles":1,"unmapped_events":0,"registered_sounds":1},"ticks":238,"diagText":"played=true intents_played=1"}
+PASS: real user gesture unlocks audio to ready through browser policy; playback participates
+SUCCESS: T17 browser audio gesture-unlock proof passed.
+EXIT=0
+
+$ just check
+just validate-agent-artifacts
+python3 scripts/check-traceability.py
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 193 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 152 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 193)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+OK:   Plan status is 'approved'.
+OK:   All 152 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun x tsc --noEmit
+EXIT=0
+
+$ just test
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > the server is never a scheduler: exactly one active server registry for single-player proofs [0.02ms]
+
+ 238 pass
+ 0 fail
+ 1945 expect() calls
+Ran 238 tests across 34 files. [1088.00ms]
+PIPE_EXIT=0
+
+$ just lint
+just validate-agent-artifacts
+python3 scripts/check-traceability.py
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 193 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 152 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 193)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+OK:   Plan status is 'approved'.
+OK:   All 152 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+EXIT=0
+
+$ just validate-agent-artifacts
+python3 scripts/check-traceability.py
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 193 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 152 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 193)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+OK:   Plan status is 'approved'.
+OK:   All 152 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+EXIT=0
+
+$ bun run third-party:verify
+$ bun run ./scripts/verify-third-party.ts
+=== Gauntlet Studio Third-Party Attribution & Overlay Verifier (REQ-SOURCE-005, REQ-SOURCE-006) ===
+OK: Overlay policy verified (threejs-game-director strictly forbidden).
+OK: All 5 attribution classes present in vendor/attribution.json.
+OK: THIRD_PARTY_NOTICES.md verified.
+SUCCESS: All third-party attribution and overlay policies verified.
+EXIT=0

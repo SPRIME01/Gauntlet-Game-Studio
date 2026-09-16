@@ -1,0 +1,67 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T17
+title: Integrate Quarks VFX, Tone audio boundary, and DOM UI
+proof_level: P3
+timestamp: "2026-09-16T03:17:36Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T17-001
+    statement: >-
+      VFX/audio/UI can participate in gameplay consequences while audio unlock follows real
+      browser gesture policy and headless simulation remains independent of AudioContext.
+      three.quarks is integrated as the preferred VFX binding strictly behind a game/runtime
+      effect projection (an inspectable execution projection that never owns gameplay semantics
+      and never back-propagates into authoritative state). The studio-owned AudioBackend
+      abstraction (state: locked | suspended | ready; explicit is_headless) is defined in
+      packages/runtime/src/audio; core semantic systems and headless server code interact with
+      audio only through this abstraction and pure data intents. NullAudioBackend is the
+      mandatory backend for headless/server/pure tests and contains zero Web Audio or Tone.js
+      imports; importing core game logic never requires window.AudioContext. The Tone.js browser
+      backend in packages/adapters/src/audio/tone implements the same abstraction with an
+      explicit locked/suspended -> real user gesture -> ready lifecycle and never bypasses
+      autoplay policy. Unavailable or still-locked audio degrades only audio-dependent behavior
+      and never crashes headless simulation or unrelated game logic. DOM/CSS HUD conventions are
+      headless-safe: the HUD state model is pure data and no DOM is required in any server path.
+
+settles:
+  - REQ-BIND-009
+  - REQ-BIND-012
+  - REQ-AUDIO-001
+  - REQ-AUDIO-002
+  - REQ-AUDIO-003
+  - REQ-SAFE-007
+
+falsifiers:
+  - id: TEETH-T17-001
+    attack: Start browser audio without a user gesture.
+    expected: >-
+      Audio remains explicitly locked/suspended without crashing unrelated game logic.
+      The browser proof (Playwright + real system Chrome, no autoplay-policy bypass flags)
+      must observe the backend in locked/suspended state after an un-gestured unlock attempt,
+      with the surrounding simulation continuing to tick; only after a real trusted user
+      gesture (click) does the backend reach ready.
+  - id: TEETH-T17-002
+    attack: Run headless server/tests with no DOM or AudioContext.
+    expected: >-
+      Simulation passes using the non-browser audio backend/no-op behavior. A full headless
+      simulation (Koota authority + scheduler + readiness barrier) runs green under Bun with
+      NullAudioBackend, zero DOM, zero AudioContext, and zero Tone.js dependencies, and a
+      source-boundary scan proves packages/runtime never imports Tone.js or instantiates
+      AudioContext.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Real gesture-policy conformance of the browser audio lifecycle (locked/suspended without
+    gesture, ready only after a trusted gesture, no bypass flags), headless independence from
+    DOM/AudioContext/Tone.js, AudioBackend boundary discipline (no Tone/AudioContext objects in
+    game semantics), quarks VFX as an inspectable execution projection that cannot mutate
+    authoritative state, and headless-safe DOM/CSS HUD conventions.
+  known_confounds:
+    - Stale evidence or a different project revision.
+    - Unavailable optional provider/tool being mistaken for core capability failure
+      (e.g. missing system Chrome would block only the browser-proof leg, not the
+      audio boundary or headless legs).

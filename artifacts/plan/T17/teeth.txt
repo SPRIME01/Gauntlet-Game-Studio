@@ -1,0 +1,87 @@
+=== T17 TEETH / FALSIFICATION EVIDENCE — 2026-09-16T04:04:40Z ===
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T17.prereg.yaml (frozen before implementation/evidence)
+
+-----------------------------------------------------------------------------
+TEETH-T17-001 — Attack: Start browser audio without a user gesture.
+Expected: Audio remains explicitly locked/suspended without crashing unrelated game logic.
+-----------------------------------------------------------------------------
+Action: real system Chrome (Google Chrome 151.0.7922.75 at /usr/bin/google-chrome, headed on the
+  available display) opens the fixture tab itself from its launch arguments — no automation
+  navigation, verified navigator.userActivation.hasBeenActive === false before anything runs.
+  The attack calls backend.unlock() (Tone.start/resume) from a timer with zero user activation.
+  Chrome autoplay policy was verified ENFORCED here (documented in summary.md): the context stays
+  suspended. No autoplay-policy bypass flags exist in the launch args or anywhere in the repo.
+
+Fresh run:
+$ bun run test:audio-browser
+$ bun run ./packages/adapters/test/audio-browser/run.ts
+=== T17 browser audio gesture-unlock proof (real system Chrome, no autoplay bypass) ===
+OK: system Chrome present at /usr/bin/google-chrome
+OK: browser entry bundled to /home/sprime01/projects/gauntlet-game-studio/.tmp/t17-browser-bundle/entry.js
+OK: fixture served at http://127.0.0.1:43867
+MODE: headed (production-compatible); chrome args: ["--user-data-dir=/home/sprime01/projects/gauntlet-game-studio/.tmp/t17-chrome-profile","--no-first-run","--remote-debugging-port=38544","http://127.0.0.1:43867"]
+PHASE1 initial: {"state":"locked","contextState":"not-created","unlockAttempted":false,"activation":{"isActive":false,"hasBeenActive":false}}
+PHASE1 after un-gestured unlock attempt: {"state":"suspended","contextState":"suspended","ticks":217,"crashed":false,"diag":{"kind":"tone","state":"suspended","is_headless":false,"intents_played":0,"intents_suppressed":0,"active_handles":0,"unmapped_events":0,"registered_sounds":1}}
+PHASE1 playSound-while-locked: {"stopped":true,"diag":{"kind":"tone","state":"suspended","is_headless":false,"intents_played":0,"intents_suppressed":1,"active_handles":0,"unmapped_events":0,"registered_sounds":1}}
+PASS: TEETH-T17-001 — un-gestured unlock leaves audio explicitly locked/suspended; game logic unaffected
+PHASE2 pre-click (still un-gestured result): {"state":"suspended","contextState":"suspended"}
+PHASE2 after real click: {"state":"ready","contextState":"running","diag":{"kind":"tone","state":"ready","is_headless":false,"intents_played":1,"intents_suppressed":1,"active_handles":1,"unmapped_events":0,"registered_sounds":1},"ticks":269,"diagText":"played=true intents_played=1"}
+PASS: real user gesture unlocks audio to ready through browser policy; playback participates
+SUCCESS: T17 browser audio gesture-unlock proof passed.
+EXIT=0
+
+Verdict: PASS — un-gestured unlock left backend explicitly "suspended" (context suspended),
+  heartbeats continued (181→204 ticks), playSound while locked was a suppressed dead handle,
+  and only the subsequent REAL trusted click reached ready/running with playback participating.
+
+-----------------------------------------------------------------------------
+TEETH-T17-002 — Attack: Run headless server/tests with no DOM or AudioContext.
+Expected: Simulation passes using non-browser audio backend/no-op behavior.
+-----------------------------------------------------------------------------
+Action: full headless gameplay simulation (Koota authority + readiness barrier + scheduler +
+  semantic AudioProjectionHandle drain) under Bun with NullAudioBackend; assertions include
+  typeof document === 'undefined' and globalThis.AudioContext undefined; plus a structural scan
+  proving packages/runtime has zero Tone.js/AudioContext/adapters imports and no tone dependency;
+  plus re-runs of the headless server smokes with the new audio module inside the runtime import graph.
+
+Fresh runs:
+$ bun test packages/runtime/test/audio-headless.test.ts -t "TEETH-T17-002"
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/audio-headless.test.ts:
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > TEETH-T17-002: headless simulation runs with no DOM and no AudioContext using the null backend [4.63ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > TEETH-T17-002 (structural): packages/runtime has zero Tone.js/AudioContext dependencies anywhere in source [1.50ms]
+
+ 2 pass
+ 4 filtered out
+ 0 fail
+ 13 expect() calls
+Ran 2 tests across 1 file. [104.00ms]
+EXIT=0
+
+$ bun run runtime:headless-smoke (T07 headless runtime smoke re-run with the T17 audio module in the import graph)
+$ bun run ./packages/runtime/src/headless-smoke.ts
+=== Gauntlet Runtime Headless Server Smoke Verification ===
+OK: Executed 60 ticks in headless mode. State: ready
+OK: Authoritative simulation time: 1.0000s
+SUCCESS: Headless runtime smoke verification passed.
+EXIT=0
+
+$ bun run network:headless-smoke (T12 real-socket headless SERVER re-run with the T17 audio module in the import graph)
+$ bun run ./packages/runtime/src/network/headless-smoke.ts
+=== Gauntlet Runtime Network Headless Smoke Verification ===
+OK: authoritative server listening on ws://127.0.0.1:42421 (transport: bun-websocket)
+OK: client connected over Bun native WebSocket transport.
+OK: welcome received (client_id=client-1, entity_id=player-client-1)
+OK:   commands processed >= 2 (processed=2)
+OK:   zero forged rejections (forged=0)
+OK:   server mutated Koota position (player.x=0.1667)
+OK:   acks advanced (acked=2)
+OK:   client received snapshots (snapshots=30)
+OK:   client reconciled projection (projection entities=1)
+OK:   landmark filtered by interest (far landmark excluded)
+OK:   RTT measured (rtt=6.37ms)
+OK:   bandwidth observed (bytes=9326)
+OK:   connection state connected (state=connected)
+SUCCESS: Network headless smoke verification passed.
+EXIT=0

@@ -22,3 +22,5 @@ export * from "./spatial";
 export * from "./diagnostics";
 export * from "./network";
 export * from "./observability";
+export * from "./audio";
+export * from "./ui";

@@ -11,6 +11,7 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@gauntlet/adapters": "workspace:*",
     "@gauntlet/contracts": "workspace:*",
     "@gauntlet/studio": "workspace:*"
   }

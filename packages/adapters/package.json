@@ -10,7 +10,15 @@
   },
   "dependencies": {
     "@gauntlet/contracts": "workspace:*",
+    "@gauntlet/runtime": "workspace:*",
     "@gltf-transform/core": "4.5.0",
-    "@gltf-transform/functions": "4.5.0"
+    "@gltf-transform/functions": "4.5.0",
+    "three": "^0.170.0",
+    "three.quarks": "0.16.0",
+    "tone": "15.1.22"
+  },
+  "devDependencies": {
+    "@types/three": "^0.170.0",
+    "playwright": "1.63.0"
   }
 }
