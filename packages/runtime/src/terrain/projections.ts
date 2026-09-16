@@ -61,15 +61,15 @@ export function createTerrainRenderProjection(
       const i01 = r * columns + (c + 1);
       const i11 = (r + 1) * columns + (c + 1);
 
-      // First triangle
+      // First triangle (CCW winding with normal pointing +Y)
       indices[idxOffset++] = i00;
-      indices[idxOffset++] = i10;
       indices[idxOffset++] = i01;
+      indices[idxOffset++] = i10;
 
       // Second triangle
       indices[idxOffset++] = i01;
-      indices[idxOffset++] = i10;
       indices[idxOffset++] = i11;
+      indices[idxOffset++] = i10;
     }
   }
 
@@ -162,13 +162,14 @@ export function createTerrainNavigationGeometry(
       const i01 = r * columns + (c + 1);
       const i11 = (r + 1) * columns + (c + 1);
 
+      // CCW winding with normal pointing +Y
       indices[idxOffset++] = i00;
-      indices[idxOffset++] = i10;
       indices[idxOffset++] = i01;
+      indices[idxOffset++] = i10;
 
       indices[idxOffset++] = i01;
-      indices[idxOffset++] = i10;
       indices[idxOffset++] = i11;
+      indices[idxOffset++] = i10;
     }
   }
 

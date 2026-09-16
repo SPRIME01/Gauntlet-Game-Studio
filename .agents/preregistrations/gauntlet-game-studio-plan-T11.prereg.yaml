@@ -1,0 +1,29 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T11
+title: Integrate Recast navigation and three-mesh-bvh spatial queries
+proof_level: P2
+timestamp: "2026-09-15T20:01:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T11-001
+    statement: >-
+      Recast Navigation JS provides deterministic pathfinding, corridor traversal queries,
+      and crowd agent steering over accepted terrain/world geometry without becoming semantic state.
+      three-mesh-bvh provides accelerated line-of-sight and spatial raycasts with guaranteed fallback
+      parity to standard raycasting when acceleration is absent or disabled.
+    settles:
+      - REQ-BIND-003
+      - REQ-BIND-004
+
+falsifiers:
+  - id: TEETH-T11-001
+    attack: Block a known traversable corridor in the world after navmesh generation without updating the navigation source.
+    expected: Fresh navigation verification detects stale/incorrect traversal state; obstacle updates invalidate prior paths.
+  - id: TEETH-T11-002
+    attack: Disable or bypass three-mesh-bvh acceleration structures.
+    expected: Spatial queries fall back cleanly to standard geometric raycasts and produce identical hit results without semantic failure.
+
+independent_confirmation:
+  required: false

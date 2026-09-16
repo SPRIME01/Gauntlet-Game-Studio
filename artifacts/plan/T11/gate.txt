@@ -1,0 +1,21 @@
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/navigation.test.ts:
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > integrates with SubsystemBarrier to signal readiness [0.77ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > generates NavMesh from canonical terrain navigation geometry [30.34ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > computes deterministic paths across traversable terrain [9.73ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > identifies walkable vs unwalkable coordinates [10.22ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > manages crowd agent projections correlated with authoritative entity IDs [8.96ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > TEETH-T11-001: detects stale traversal state when a corridor is blocked without navmesh update [10.06ms]
+
+packages/runtime/test/spatial.test.ts:
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > initializes with zero queries and empty diagnostics [0.04ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > builds and binds MeshBVH to geometry [0.18ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > performs accelerated raycast against indexed mesh [0.38ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > detects line of sight obstruction [0.36ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > TEETH-T11-002: verifies strict fallback parity when BVH acceleration is disabled or bypassed [5.44ms]
+
+ 11 pass
+ 0 fail
+ 79 expect() calls
+Ran 11 tests across 2 files. [157.00ms]

@@ -1,0 +1,25 @@
+bun test v1.4.0 (34cbb9a40)
+
+packages/runtime/test/scheduler.test.ts:
+
+packages/runtime/test/terrain-parity.test.ts:
+
+packages/runtime/test/navigation.test.ts:
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > TEETH-T11-001: detects stale traversal state when a corridor is blocked without navmesh update [30.53ms]
+
+packages/runtime/test/physics.test.ts:
+
+packages/runtime/test/projections.test.ts:
+
+packages/runtime/test/readiness.test.ts:
+
+packages/runtime/test/spatial.test.ts:
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > TEETH-T11-002: verifies strict fallback parity when BVH acceleration is disabled or bypassed [7.53ms]
+
+packages/runtime/test/authority.test.ts:
+
+ 2 pass
+ 36 filtered out
+ 0 fail
+ 39 expect() calls
+Ran 2 tests across 8 files. [135.00ms]

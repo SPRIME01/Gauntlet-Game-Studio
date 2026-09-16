@@ -17,3 +17,5 @@ export * from "./state";
 export * from "./projections";
 export * from "./terrain";
 export * from "./physics";
+export * from "./navigation";
+export * from "./spatial";
