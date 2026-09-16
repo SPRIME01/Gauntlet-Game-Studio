@@ -1,0 +1,25 @@
+=== Donor-absent independence check (TEETH-T09-003 extended) ===
+Donor quarantined at .tmp/donor.stashed; .tmp/donor absent from resolution.
+
+$ bun run donor:audit (donor absent)
+$ bun run ./scripts/donor-audit.ts
+=== Gauntlet Studio Mavon Donor Audit (REQ-DONOR-001, REQ-DONOR-002, REQ-DONOR-003, REQ-DONOR-005, REQ-DONOR-006) ===
+INFO: .tmp/donor/Core absent (clean donor-absent checkout).
+OK: third_party/mavon-engine/LICENSE verified (MIT License preserved).
+OK: third_party/mavon-engine/PROVENANCE.md verified.
+OK: temporary_donor attribution verified in vendor/attribution.json.
+OK: copied_code attribution verified in vendor/attribution.json.
+OK: Zero forbidden donor semantic entities defined or imported in packages/runtime/src.
+OK: Generated /home/sprime01/projects/gauntlet-game-studio/artifacts/plan/T09/donor-inventory.md
+SUCCESS: Mavon donor audit completed with 0 errors.
+
+$ bun test packages/runtime (donor absent)
+
+ 43 pass
+ 0 fail
+ 923 expect() calls
+Ran 43 tests across 9 files. [346.00ms]
+
+$ bun run donor:dependency-scan (donor absent)
+3. Scanning TypeScript configs for donor path mappings...
+SUCCESS: Zero forbidden donor imports, dependencies, or path mappings detected.

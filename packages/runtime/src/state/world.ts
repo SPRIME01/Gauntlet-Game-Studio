@@ -325,22 +325,30 @@ export class GameWorld {
   }
 
   /**
+   * Asserts that a given data object does not contain forbidden provider or donor instances.
+   * REQ-RUNTIME-001, REQ-DONOR-003.
+   */
+  public assertValidSemanticData(obj: any, entityId = "state-entity"): void {
+    const forbiddenConstructors = [
+      "Object3D", "Mesh", "Group", "Scene", "Camera", "PerspectiveCamera",
+      "RigidBody", "Collider", "World", "Crowd", "NavMesh",
+      "Element", "HTMLElement", "HTMLCanvasElement", "AudioContext",
+      "GameObject", "BaseWorld", "Actor", "LivingActor"
+    ];
+    this.scanForForbiddenObjects(obj, entityId, forbiddenConstructors);
+  }
+
+  /**
    * Verifies that no provider or DOM instances have leaked into trait values.
    * REQ-RUNTIME-001 invariant check.
    */
   public assertNoProviderObjectsInState(): void {
-    const forbiddenConstructors = [
-      "Object3D", "Mesh", "Group", "Scene", "Camera", "PerspectiveCamera",
-      "RigidBody", "Collider", "World", "Crowd", "NavMesh",
-      "Element", "HTMLElement", "HTMLCanvasElement", "AudioContext"
-    ];
-
     for (const [id, entity] of this.entityRegistry.entries()) {
       const traits = [Transform, Velocity, RenderProjectionHandle, PhysicsProjectionHandle, NavigationProjectionHandle, AssetBinding];
       for (const t of traits) {
         if (entity.has(t)) {
           const val = entity.get(t);
-          this.scanForForbiddenObjects(val, id, forbiddenConstructors);
+          this.assertValidSemanticData(val, id);
         }
       }
     }

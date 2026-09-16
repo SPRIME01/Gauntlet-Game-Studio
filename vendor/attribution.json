@@ -74,13 +74,29 @@
     ],
     "temporary_donor": [
       {
-        "id": "mavon-editor-or-donor",
-        "donor_path": ".tmp/donor",
+        "id": "mavon-engine-core",
+        "donor_path": ".tmp/donor/Core",
+        "repository": "https://github.com/MavonEngine/Core.git",
+        "commit": "20d4a4db7b5ec08f8f1cc5aeb8be4707fa0ef67c",
+        "license": "MIT",
         "status": "isolated_gitignored",
         "purpose": "Temporary disposable reference for transplantation analysis only; never imported into runtime"
       }
     ],
-    "copied_code": [],
+    "copied_code": [
+      {
+        "source": "MavonEngine/Core",
+        "commit": "20d4a4db7b5ec08f8f1cc5aeb8be4707fa0ef67c",
+        "license": "MIT",
+        "notice_path": "third_party/mavon-engine/LICENSE",
+        "provenance_path": "third_party/mavon-engine/PROVENANCE.md",
+        "destination_modules": [
+          "packages/runtime/src/diagnostics/bandwidth.ts",
+          "packages/runtime/src/diagnostics/latency-sim.ts"
+        ],
+        "purpose": "Adapted bandwidth tracking and latency simulation mechanisms for Gauntlet Runtime"
+      }
+    ],
     "external_asset": [
       {
         "source": "Poly Haven",

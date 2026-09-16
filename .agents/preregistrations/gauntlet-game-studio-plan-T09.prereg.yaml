@@ -1,0 +1,44 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T09
+title: Strategically mine Mavon donor mechanisms into first-party runtime
+proof_level: P3
+timestamp: "2026-09-15T20:12:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T09-001
+    statement: >-
+      Mavon Engine is treated strictly as an isolated, temporary MIT-licensed code donor under .tmp/donor/
+      and not as a runtime dependency, provider, submodule, or architectural authority. Donor mechanisms are
+      inventoried, classified, and high-value mechanisms (latency simulation, bandwidth tracking, command
+      buffering/sequencing ideas) are adapted into clean first-party Gauntlet Runtime modules without adopting
+      donor semantic models (GameObject, BaseWorld, Actor). All public APIs, logs, and docs use Gauntlet identity,
+      while required MIT attribution and provenance are preserved in third_party/mavon-engine/ and
+      THIRD_PARTY_NOTICES.md. Strict static scans forbid runtime imports from .tmp/donor/ or donor package names.
+    settles:
+      - REQ-DONOR-001
+      - REQ-DONOR-002
+      - REQ-DONOR-003
+      - REQ-DONOR-005
+      - REQ-DONOR-006
+      - REQ-DONOR-007
+      - REQ-SEC-006
+
+falsifiers:
+  - id: TEETH-T09-001
+    attack: Attempt to copy or import donor GameObject/BaseWorld semantic authority into runtime packages or networking.
+    expected: Architecture review and tests reject the transplant; networking operates exclusively on Koota semantic state and runtime projections.
+  - id: TEETH-T09-002
+    attack: Introduce public MavonEngine runtime names/log banners or an import from .tmp/donor/ or @mavon/*.
+    expected: donor:dependency-scan fails immediately and rejects the build.
+  - id: TEETH-T09-003
+    attack: Remove .tmp/donor/ from module resolution during build and test.
+    expected: Committed first-party source compiles, runs, and passes all tests completely independent of .tmp/donor/ existence.
+
+independent_confirmation:
+  required: true
+  mode: independent
+  focus: >-
+    Donor isolation, zero runtime dependency on .tmp/donor/, rejection of GameObject/BaseWorld authority,
+    and complete white-labeling with required MIT attribution.

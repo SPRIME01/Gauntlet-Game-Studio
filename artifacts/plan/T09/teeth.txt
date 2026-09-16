@@ -1,0 +1,38 @@
+# T09 Teeth / Falsification Evidence
+
+## TEETH-T09-001 — Reject donor GameObject/BaseWorld semantic authority
+- Attack: instantiate donor-style `GameObject` and `BaseWorld` classes and submit them as semantic data through
+  `GameWorld.assertValidSemanticData` (packages/runtime/src/state/world.ts).
+- Observed: throws `Forbidden provider object 'GameObject'` / `Forbidden provider object 'BaseWorld'`; donor
+  constructors were appended to the runtime's forbidden-instance guard list, and authoritative state remains
+  Koota-only (packages/runtime/src/state/world.ts:336).
+- Automated proof: packages/runtime/test/donor-isolation.test.ts "TEETH-T09-001" (pass).
+- Result: REJECTED (attack failed to infiltrate) — PASS.
+
+## TEETH-T09-002 — Reject public Mavon branding / .tmp/donor imports
+- Attack: forbidden import patterns (`from "../../../.tmp/donor/Core/packages/core"`, `from "@mavon/core"`,
+  `from "mavon-engine"`) and a `MavonEngine` log banner are detected by scan regexes and branding rules.
+- Automated proof: packages/runtime/test/donor-isolation.test.ts "TEETH-T09-002" (pass).
+- Live-fire proof: independent verifier injected a `.tmp/donor` import plus `MavonEngine` banner into a disposable
+  working-copy; `bun run donor:dependency-scan` exited 1 with 3 violations (see confirmation.md).
+- Result: REJECTED — PASS.
+
+## TEETH-T09-003 — First-party runtime independent of .tmp/donor/ existence
+- Attack: physically remove `.tmp/donor/` from module resolution (`mv .tmp/donor .tmp/donor.stashed`), then run
+  donor:audit (absent branch), donor:dependency-scan, and the full `bun test packages/runtime` suite.
+- Observed: audit reports "clean donor-absent checkout" and exits 0; dependency scan exits 0; 43/43 runtime tests
+  pass (923 expects) with zero donor references. Donor restored afterwards, HEAD verified unchanged
+  (20d4a4db7b5ec08f8f1cc5aeb8be4707fa0ef67c).
+- Full log: artifacts/plan/T09/donor-absent.txt
+- Independent corroboration: verifier built a true donor-absent working-tree copy in /tmp and additionally passed
+  `tsc --noEmit` there (see confirmation.md).
+- Result: independence proven — PASS.
+
+## Falsifier coverage summary
+- All three preregistered falsifiers (TEETH-T09-001/002/003) were exercised with fresh passing evidence.
+- Non-blocking observations recorded by the independent verifier (compensated by layered enforcement, zero actual
+  occurrences):
+  1. donor-audit.ts static symbol list omits plain `GameObject`/`Actor` tokens (covered by the runtime constructor
+     guard in world.ts, the TEETH-T09-001 test, and independent grep showing zero first-party occurrences).
+  2. donor-dependency-scan.ts branding check scopes to packages/runtime/src (apps/templates are covered by
+     doctor.ts donor_dependency_check and exhaustive search showing zero occurrences).

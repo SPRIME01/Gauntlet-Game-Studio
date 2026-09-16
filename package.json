@@ -15,6 +15,8 @@
     "test:generated-game": "bun test packages/studio/src/generator.test.ts",
     "source:verify": "bun run ./scripts/verify-source.ts",
     "third-party:verify": "bun run ./scripts/verify-third-party.ts",
+    "donor:audit": "bun run ./scripts/donor-audit.ts",
+    "donor:dependency-scan": "bun run ./scripts/donor-dependency-scan.ts",
     "runtime:headless-smoke": "bun run ./packages/runtime/src/headless-smoke.ts"
   },
   "packageManager": "bun@1.4.0",
