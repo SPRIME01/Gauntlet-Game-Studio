@@ -13,15 +13,14 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T11
+  last_settled_task: T09
   in_flight_task: null
-  workable_task: T09
+  workable_task: T12
   ready_tasks:
-    - T09
+    - T12
     - T13
     - T16
   blocked_tasks:
-    T12: [T09]
     T14: [T13]
     T15: [T13]
     T17: [T16]
@@ -37,8 +36,8 @@ execution:
   plan_blocker: null
 
 active:
-  task: T09
-  phase: preregistration
+  task: T12
+  phase: ready
   blocker: null
 
 latest_evidence:
@@ -108,6 +107,12 @@ latest_evidence:
     commit: 10cdf6e
     gate: PASS (bun test packages/runtime/test/navigation.test.ts 6/6, bun test packages/runtime/test/spatial.test.ts 5/5)
     teeth: PASS (attack 1 detected stale corridor traversal on blocked world geometry, attack 2 verified strict fallback parity when BVH acceleration is disabled)
+  T09:
+    report: artifacts/plan/T09/summary.md
+    confirmation: independent CONFIRM
+    commit: 91b3e21
+    gate: PASS (bun run donor:audit, bun run donor:dependency-scan, bun run third-party:verify, bun test packages/runtime/test/donor-isolation.test.ts 5/5)
+    teeth: PASS (attack 1 rejected donor GameObject/BaseWorld semantic authority via assertValidSemanticData, attack 2 detected injected donor import/branding with scan exit 1, attack 3 proven full suite green with .tmp/donor physically absent)
 
 observations:
   - status: OBSERVED
@@ -181,17 +186,32 @@ observations:
       cross-projection parity verified across Three.js render mesh, Rapier heightfield collider, and Recast navigation geometry;
       RapierPhysicsAdapter enforces singular step ownership per tick. Teeth checks caught transposition, axis inversion, and duplicate stepping.
     evidence: artifacts/plan/T10/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T11 settled: Recast navigation adapter with deterministic navmesh/path/crowd projections and three-mesh-bvh
+      accelerated spatial queries with strict fallback parity integrated in packages/runtime/src/navigation and
+      packages/runtime/src/spatial. Teeth checks caught stale corridor traversal and verified fallback parity.
+    evidence: artifacts/plan/T11/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T09 settled: Mavon donor (MavonEngine/Core @ 20d4a4db, MIT) inventoried and classified in
+      third_party/mavon-engine/PROVENANCE.md; BandwidthTracker and LatencySimulator transplanted as white-labeled
+      adaptations into packages/runtime/src/diagnostics; donor GameObject/BaseWorld/Actor authority rejected via
+      GameWorld.assertValidSemanticData; donor:audit and donor:dependency-scan gates enforce isolation; full test
+      suite proven green with .tmp/donor physically absent. Independent confirmation: CONFIRM.
+    evidence: artifacts/plan/T09/summary.md
 
 next_action:
-  task: T11
+  task: T12
   action: >-
-    Implement Recast navigation adapter, crowd simulation, and deterministic navmesh generation (T11):
-    1. Freeze P3 preregistration in .agents/preregistrations/gauntlet-game-studio-plan-T11.prereg.yaml.
-    2. Integrate recast-navigation using navigation geometry derived from TerrainHeightfield.
-    3. Implement deterministic path queries and crowd agent steering.
-    4. Implement adversarial tests for impassable slopes, water boundaries, and path determinism.
+    Implement runtime networking foundations (T12):
+    1. Freeze P2/P3 preregistration in .agents/preregistrations/ for T12.
+    2. Implement the transport-neutral NetworkEnvelope contracts, command sequencing/buffering, and the Bun native
+       WebSocket baseline transport behind the studio transport abstraction.
+    3. Wire network diagnostics (bandwidth/latency simulation) from packages/runtime/src/diagnostics.
+    4. Add adversarial tests for envelope validation, sequencing, and transport-characteristic exposure.
   reason: >-
-    T10 settled cleanly; T11 is unblocked and on the critical path.
+    T09 settled cleanly; T12 is unblocked (T08, T09, T10 all settled) and gates T19 on the critical path.
 
 handoff:
   settled_summary:
@@ -206,6 +226,8 @@ handoff:
     - "T07: Implemented first-party runtime lifecycle, readiness barrier, simulation scheduler, and headless split; verified teeth checks and 67 workspace tests (commit fe35a9c)."
     - "T08: Implemented Koota semantic authority, projection correlation, Three.js render projection manager, and asset affordance filter; verified teeth checks and 76 workspace tests (commit 212ec65)."
     - "T10: Integrated Rapier physics adapter and canonical mathematical TerrainHeightfield projections; verified teeth checks and 87 workspace tests."
+    - "T11: Integrated Recast navigation adapter with deterministic path/crowd queries and three-mesh-bvh spatial acceleration with fallback parity."
+    - "T09: Mined Mavon donor mechanisms (BandwidthTracker, LatencySimulator) into white-labeled packages/runtime/src/diagnostics with MIT attribution in third_party/mavon-engine/; enforced donor isolation via donor:audit/donor:dependency-scan gates and donor-absent proof; independent confirmation CONFIRM."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
