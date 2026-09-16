@@ -13,30 +13,27 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T09
+  last_settled_task: T16
   in_flight_task: null
-  workable_task: T12
+  workable_task: T19
   ready_tasks:
-    - T12
-    - T13
-    - T16
+    - T14
+    - T15
+    - T17
+    - T18
+    - T19
   blocked_tasks:
-    T14: [T13]
-    T15: [T13]
-    T17: [T16]
-    T18: [T13]
-    T19: [T12]
     T20: [T19]
     T21: [T19, T20]
-    T22: [T13, T14, T15, T16, T17, T18, T20, T21]
-    T23: [T12, T22]
+    T22: [T14, T15, T17, T18, T20, T21]
+    T23: [T22]
     T24: [T23]
     T25: [T24]
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T12
+  task: T19
   phase: ready
   blocker: null
 
@@ -113,6 +110,24 @@ latest_evidence:
     commit: 91b3e21
     gate: PASS (bun run donor:audit, bun run donor:dependency-scan, bun run third-party:verify, bun test packages/runtime/test/donor-isolation.test.ts 5/5)
     teeth: PASS (attack 1 rejected donor GameObject/BaseWorld semantic authority via assertValidSemanticData, attack 2 detected injected donor import/branding with scan exit 1, attack 3 proven full suite green with .tmp/donor physically absent)
+  T12:
+    report: artifacts/plan/T12/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: 31f8d1f
+    gate: PASS (bun test packages/runtime/test/network 29/29, bun run network:headless-smoke)
+    teeth: PASS (attack 1 forged client state rejected with Koota state byte-identical, attack 2 reordered/dropped commands recover boundedly with diagnostics exposing impairment, attack 3 single-player runs with zero network initialization)
+  T13:
+    report: artifacts/plan/T13/summary.md
+    confirmation: peer CONFIRM
+    commit: 72cfb6f
+    gate: PASS (bun test packages/studio/test/assets 42/42, bun run studio -- asset verify --all --json)
+    teeth: PASS (attack 1 unknown/unacceptable license blocks production acceptance, attack 2 over-budget asset cannot be accepted without explicit recorded waiver yielding degraded)
+  T16:
+    report: artifacts/plan/T16/summary.md
+    confirmation: peer CONFIRM
+    commit: b2a3074
+    gate: PASS (bun run studio -- capabilities lint --json, bun test packages/studio/test/skill-overlays 7/7)
+    teeth: PASS (attack 1 director discovery variants rejected FORBIDDEN_UPSTREAM_AUTHORITY by live CLI gate, attack 2 credential-only generator preference rejected QUARANTINED_SKILL/CREDENTIAL_PREFERENCE_REJECTED)
 
 observations:
   - status: OBSERVED
@@ -200,18 +215,39 @@ observations:
       GameWorld.assertValidSemanticData; donor:audit and donor:dependency-scan gates enforce isolation; full test
       suite proven green with .tmp/donor physically absent. Independent confirmation: CONFIRM.
     evidence: artifacts/plan/T09/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T12 settled: authoritative multiplayer foundations over Bun native WebSocket baseline behind a
+      transport abstraction exposing material characteristics; validated sequenced commands, server-side
+      validation-before-mutation over Koota, buffering/acks, replication projections, reconciliation,
+      interest filtering, connection lifecycle, and network diagnostics; single-player proven network-free.
+      Independent adversarial confirmation: CONFIRM.
+    evidence: artifacts/plan/T12/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T13 settled: AssetRegistry with acceptance gates, per-origin provenance/license/source-hash intake,
+      append-only rejection/supersession history; glTF-Transform adapter (WebP baseline, KTX2 gated behind toktx
+      preflight, no silent downgrade); Poly Haven CC0 intake with provenance capture; studio asset verify CLI.
+      Peer confirmation: CONFIRM.
+    evidence: artifacts/plan/T13/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T16 settled: threejs-game-skills specialists integrated through the studio-owned overlay with
+      progressive disclosure; upstream director discovery structurally forbidden; generic generators quarantined
+      behind explicit enablement; capabilities lint enforces the full discoverable surface. Peer confirmation:
+      CONFIRM.
+    evidence: artifacts/plan/T16/summary.md
 
 next_action:
-  task: T12
+  task: T19
   action: >-
-    Implement runtime networking foundations (T12):
-    1. Freeze P2/P3 preregistration in .agents/preregistrations/ for T12.
-    2. Implement the transport-neutral NetworkEnvelope contracts, command sequencing/buffering, and the Bun native
-       WebSocket baseline transport behind the studio transport abstraction.
-    3. Wire network diagnostics (bandwidth/latency simulation) from packages/runtime/src/diagnostics.
-    4. Add adversarial tests for envelope validation, sequencing, and transport-characteristic exposure.
+    Implement T19 per the plan definition (unblocked by T08/T10/T11/T12 settlements; on the critical path):
+    1. Freeze preregistration for T19.
+    2. Implement the task scope within packages/runtime per the plan steps.
+    3. Run declared gates and teeth; record evidence in artifacts/plan/T19/.
+    4. Obtain the declared confirmation mode before settlement.
   reason: >-
-    T09 settled cleanly; T12 is unblocked (T08, T09, T10 all settled) and gates T19 on the critical path.
+    T12/T13/T16 settled cleanly; T19 is unblocked and on the critical path toward T20/T21/T22.
 
 handoff:
   settled_summary:
@@ -228,6 +264,9 @@ handoff:
     - "T10: Integrated Rapier physics adapter and canonical mathematical TerrainHeightfield projections; verified teeth checks and 87 workspace tests."
     - "T11: Integrated Recast navigation adapter with deterministic path/crowd queries and three-mesh-bvh spatial acceleration with fallback parity."
     - "T09: Mined Mavon donor mechanisms (BandwidthTracker, LatencySimulator) into white-labeled packages/runtime/src/diagnostics with MIT attribution in third_party/mavon-engine/; enforced donor isolation via donor:audit/donor:dependency-scan gates and donor-absent proof; independent confirmation CONFIRM."
+    - "T12: Implemented authoritative multiplayer foundations (Bun WebSocket baseline, transport abstraction, sequenced validated commands, replication/reconciliation, interest filtering, network diagnostics); single-player proven network-free; independent adversarial confirmation CONFIRM (commit 31f8d1f)."
+    - "T13: Implemented Asset Registry with provenance/acceptance gates, glTF-Transform compiler (WebP baseline, KTX2 toktx-gated), Poly Haven CC0 intake, and asset verify CLI; peer confirmation CONFIRM (commit 72cfb6f)."
+    - "T16: Integrated threejs-game-skills specialists via studio-owned overlay with director exclusion and generator quarantine enforced at the lint gate; peer confirmation CONFIRM (commit b2a3074)."
   unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
