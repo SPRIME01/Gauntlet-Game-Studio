@@ -1,0 +1,50 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T13
+title: Implement Asset Registry, provenance gates, source intake, and glTF compiler
+proof_level: P2
+timestamp: "2026-09-15T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T13-001
+    statement: >-
+      No external/generated asset can become accepted production content without traceable provenance and
+      project-required runtime acceptance gates. The project-local Asset Registry is built strictly on the
+      frozen AssetRecord contract (packages/contracts): every external or generated asset MUST have a valid
+      AssetRecord whose provenance/license/source-hash intake passes validation before production acceptance.
+      Provenance classes (user-provided references vs shipped source assets vs external sourced assets) remain
+      distinguishable; reference-only imagery can never be accepted as production content. Rejected and
+      superseded routes are preserved append-only so acceptance and replacement history is reconstructable.
+      The glTF-Transform compiler establishes WebP as the portable baseline texture path; KTX2 is optional and
+      only reachable after a successful toktx preflight — a quality profile requiring KTX2 with toktx
+      unavailable reports typed BLOCKED and never silently downgrades. Release/asset checks reject unknown
+      provenance, missing collider/LOD policy where required, and budget failure.
+    settles:
+      - REQ-OUT-002
+      - REQ-ASSET-003
+      - REQ-ASSET-005
+      - REQ-ASSET-006
+      - REQ-ASSET-007
+      - REQ-BIND-008
+      - REQ-SAFE-003
+      - REQ-SEC-004
+
+falsifiers:
+  - id: TEETH-T13-001
+    attack: Import an asset with unknown/unacceptable license state.
+    expected: Production acceptance is blocked. The registry intake records the asset in a non-accepted state
+      (blocked), the acceptance gate refuses to accept it, and the release/verify check reports it as not
+      production-acceptable.
+  - id: TEETH-T13-002
+    attack: Mark an over-budget asset accepted solely because it looks correct.
+    expected: The acceptance/budget gate rejects the asset (rejected state with recorded reason) or requires an
+      explicit, recorded policy waiver (degraded state with waiver evidence); it is never silently accepted.
+
+independent_confirmation:
+  required: true
+  mode: peer
+  focus: >-
+    Provenance/license gate enforcement, budget gate enforcement with waiver discipline, append-only
+    rejection/supersession history, WebP-baseline/KTX2-preflight compiler behavior without silent downgrade,
+    and typed blocked degradation when network or optional tooling is unavailable.

@@ -1,0 +1,87 @@
+=== T13 Narrow & Global Gate Evidence (fresh runs) ===
+Date: 2026-09-16T02:37:47Z
+Preregistration: .agents/preregistrations/gauntlet-game-studio-plan-T13.prereg.yaml (frozen before implementation)
+
+--- NARROW GATE 1: bun test packages/studio/test/assets ---
+ 42 pass
+ 0 fail
+ 181 expect() calls
+Ran 42 tests across 4 files. [346.00ms]
+EXIT=0
+
+--- NARROW GATE 2a: bun run studio -- asset verify --all --json (verbatim, repo root) ---
+EXIT=0
+  "status": "success",
+    "note": "No asset registry found in this project; 0 assets verified (vacuous pass).",
+
+--- NARROW GATE 2b: bun run studio -- asset verify --all --json --project packages/studio/test/assets/fixtures/fixture-project ---
+EXIT=0
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import json; d=json.load(open('/tmp/t13-verify-fixture.json')); print('status:', d['status']); print('totals:', d['result']['totals'])
+                   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+--- NARROW GATE 2b (retry parse; note: 'bun run studio' echoes the script line, JSON follows) ---
+EXIT=0
+status: success
+totals: {"total": 3, "accepted": 1, "degraded": 1, "pending": 1, "rejected": 0, "blocked": 0, "not_acceptable": 0}
+manifest: /home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project/assets/manifest.json
+
+--- GLOBAL GATES ---
+just validate-agent-artifacts EXIT=0
+just lint EXIT=0
+just check EXIT=2
+tsc errors OUTSIDE packages/runtime/src/network (T12 in-flight): 0
+tsc errors TOTAL: 6
+just test (bun test) EXIT=1
+ 179 pass
+ 5 fail
+ 1596 expect() calls
+Ran 184 tests across 27 files. [878.00ms]
+failing suites belong to: T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006)
+
+--- SCOPED SUITE PROOF (everything outside T12's in-flight network files) ---
+ 0 fail
+ 502 expect() calls
+Ran 110 tests across 11 files. [346.00ms]
+ 0 fail
+ 923 expect() calls
+Ran 43 tests across 9 files. [248.00ms]
+
+=== FINAL GATE RUN (all green) ===
+Date: 2026-09-16T02:44:39Z
+Note: an earlier run window is preserved above. During that window, global 'just check'/'just test'
+failures were confined to packages/runtime/src/network/* (T12, in-flight work by a concurrent agent).
+T12 landed its fixes during a bounded retry; the final run below is fully green.
+
+--- bun test packages/studio/test/assets ---
+ 42 pass
+ 0 fail
+ 181 expect() calls
+Ran 42 tests across 4 files. [266.00ms]
+EXIT=0
+
+--- bun run studio -- asset verify --all --json (verbatim) ---
+EXIT=0
+
+--- just check ---
+EXIT=0
+--- just test ---
+EXIT=0
+--- just lint ---
+EXIT=0
+--- just validate-agent-artifacts ---
+EXIT=0

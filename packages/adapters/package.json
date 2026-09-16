@@ -9,6 +9,8 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@gauntlet/contracts": "workspace:*"
+    "@gauntlet/contracts": "workspace:*",
+    "@gltf-transform/core": "4.5.0",
+    "@gltf-transform/functions": "4.5.0"
   }
 }

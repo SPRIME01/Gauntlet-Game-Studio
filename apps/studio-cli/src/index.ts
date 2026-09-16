@@ -14,6 +14,7 @@ import {
   lintStudioSkillSurface,
   loadSkillOverlayPolicy,
   createGameProject,
+  AssetRegistry,
 } from "@gauntlet/studio";
 import {
   validateCapabilityResult,
@@ -39,7 +40,8 @@ Commands:
   capabilities                 List registered studio capabilities
   capability <prepare|accept|verify-result> [args]
                                Prepare, accept, or verify capability results
-  asset <action>               Asset compiler and provenance inspection
+  asset verify --all           Verify the project Asset Registry: provenance, acceptance gates
+  asset <other-action>         Asset compiler/source actions (typed placeholders until settled)
   observe <action>             Run observation scenarios
   verify <action>              Run verification against frozen expectations
   evidence <action>            Inspect or generate evidence manifests
@@ -294,7 +296,117 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       }
     }
 
-    case "asset":
+    case "asset": {
+      const sub = filteredArgs[1];
+      if (sub === "verify") {
+        // T13 (REQ-OUT-002, REQ-ASSET-006, REQ-ASSET-007, REQ-SAFE-003, REQ-SEC-004):
+        // release/asset check over the project-local Asset Registry.
+        const allFlag = filteredArgs.includes("--all");
+        const projectIdx = filteredArgs.indexOf("--project");
+        const explicitProject = projectIdx >= 0 && typeof filteredArgs[projectIdx + 1] === "string";
+        const projectRoot = explicitProject ? path.resolve(filteredArgs[projectIdx + 1]) : process.cwd();
+
+        if (!allFlag) {
+          const res: StudioResult = {
+            status: "blocked",
+            operation: "studio.asset.verify",
+            diagnostics: {
+              message: "Only 'asset verify --all' is settled by T13; per-asset verification is governed by later plan tasks.",
+              unlocked_in: "T14/T15/T18",
+            },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.log("'asset verify' requires --all (per-asset verification is pending plan settlement).");
+          return 0;
+        }
+
+        try {
+          const registry = new AssetRegistry(projectRoot);
+          if (!registry.exists()) {
+            if (explicitProject) {
+              const res: StudioResult = {
+                status: "blocked",
+                operation: "studio.asset.verify",
+                diagnostics: {
+                  code: "MANIFEST_MISSING",
+                  error: `No asset registry found at ${registry.manifestPath}`,
+                },
+              };
+              if (isJson) console.log(JSON.stringify(res, null, 2));
+              else console.error(`Blocked: no asset registry found at ${registry.manifestPath}`);
+              return 2;
+            }
+            const res: StudioResult = {
+              status: "success",
+              operation: "studio.asset.verify",
+              result: {
+                totals: { total: 0, accepted: 0, degraded: 0, pending: 0, rejected: 0, blocked: 0, not_acceptable: 0 },
+                assets: [],
+              },
+              diagnostics: {
+                note: "No asset registry found in this project; 0 assets verified (vacuous pass).",
+                manifest_path: registry.manifestPath,
+              },
+            };
+            if (isJson) console.log(JSON.stringify(res, null, 2));
+            else console.log(`No asset registry at ${registry.manifestPath}; 0 assets verified.`);
+            return 0;
+          }
+
+          registry.load();
+          const report = registry.verifyAll();
+          const res: StudioResult = {
+            status: report.status,
+            operation: "studio.asset.verify",
+            result: report,
+            diagnostics: {
+              project_root: projectRoot,
+              manifest_path: report.manifest_path,
+              total: report.totals.total,
+              not_acceptable: report.totals.not_acceptable,
+            },
+          };
+          if (isJson) {
+            console.log(JSON.stringify(res, null, 2));
+          } else {
+            console.log(`\n=== Asset Registry Verify (${projectRoot}) ===`);
+            console.log(`Manifest: ${report.manifest_path}`);
+            const t = report.totals;
+            console.log(`Assets: ${t.total} (accepted ${t.accepted}, degraded ${t.degraded}, pending ${t.pending}, rejected ${t.rejected}, blocked ${t.blocked})`);
+            for (const asset of report.assets) {
+              const mark = asset.production_acceptable ? (asset.acceptance_state === "degraded" ? "⚠" : "✓") : "✗";
+              const suffix = asset.clean_pending ? " (clean pending)" : asset.blockers.length > 0 ? ` — ${asset.blockers.map((b) => b.gate).join(", ")}` : "";
+              console.log(` ${mark} ${asset.asset_id} [${asset.acceptance_state}] ${asset.role} (${asset.origin})${suffix}`);
+            }
+            console.log(`Status: ${report.status.toUpperCase()}\n`);
+          }
+          return report.status === "success" ? 0 : 1;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.asset.verify",
+            diagnostics: { error: msg },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      }
+
+      const res: StudioResult = {
+        status: "blocked",
+        operation: `studio.asset.${sub ?? "default"}`,
+        diagnostics: {
+          message: `Asset action '${sub}' is governed by future task settlement in the active plan DAG.`,
+          unlocked_in: "T14/T15/T18",
+        },
+      };
+      if (isJson) console.log(JSON.stringify(res, null, 2));
+      else console.log(`Asset action '${sub}' is pending plan settlement.`);
+      return 0;
+    }
+
     case "observe":
     case "verify":
     case "evidence": {
@@ -303,7 +415,7 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         operation: `studio.${command}`,
         diagnostics: {
           message: `Command '${command}' is governed by future task settlement in the active plan DAG.`,
-          unlocked_in: command === "asset" ? "T13" : "T20",
+          unlocked_in: "T20",
         },
       };
       if (isJson) console.log(JSON.stringify(res, null, 2));

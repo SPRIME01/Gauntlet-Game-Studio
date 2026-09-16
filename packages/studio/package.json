@@ -11,5 +11,8 @@
   "dependencies": {
     "@gauntlet/contracts": "workspace:*",
     "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@gauntlet/adapters": "workspace:*"
   }
 }

@@ -140,6 +140,27 @@ describe("Studio CLI, Configuration & Doctor Diagnostic Suite", () => {
       expect(exitCode).toBe(0);
     });
 
+    it("asset verify --all --json verifies the fixture registry with exit 0 (T13)", async () => {
+      const fixtureProject = path.resolve(import.meta.dir, "../../../packages/studio/test/assets/fixtures/fixture-project");
+      const exitCode = await main(["asset", "verify", "--all", "--json", "--project", fixtureProject]);
+      expect(exitCode).toBe(0);
+    });
+
+    it("asset verify --all on an explicit project without a manifest blocks with exit 2", async () => {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "no-manifest-"));
+      try {
+        const exitCode = await main(["asset", "verify", "--all", "--json", "--project", tempDir]);
+        expect(exitCode).toBe(2);
+      } finally {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it("unsettled asset actions remain typed placeholders with exit 0", async () => {
+      const exitCode = await main(["asset", "compile", "--json"]);
+      expect(exitCode).toBe(0);
+    });
+
     it("unknown command returns 1 with error diagnostic", async () => {
       const exitCode = await main(["nonexistent_command", "--json"]);
       expect(exitCode).toBe(1);

@@ -1,0 +1,120 @@
+{
+  "schema": "gauntlet.asset.manifest",
+  "schema_version": "1.0",
+  "records": [
+    {
+      "id": "blackwater-barrel",
+      "role": "prop_barrel",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/wooden-barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "938b1351c6df011a448582c8b3511bdc07cdc59155a64dff6c72354a25601db6",
+        "retrieved_at": "2026-09-15T00:00:00Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {
+        "max_triangles": 5000,
+        "measured_triangles": 3120,
+        "required_texture_format": "webp",
+        "texture_format": "webp"
+      },
+      "collider_policy": "mesh-exact",
+      "lod_policy": "3-step-50-percent",
+      "acceptance_state": "accepted",
+      "semantic_nodes": ["barrel_root"],
+      "verification_refs": ["artifacts/plan/T13/fixture-verification.txt"]
+    },
+    {
+      "id": "skybox-atlas",
+      "role": "environment_sky",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/kloppenheim-02",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "881ba5e1a25b60bb37e52b1cd47e9dd481d30757b0f7399e469d873b20ff85bc",
+        "retrieved_at": "2026-09-15T00:00:00Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {
+        "max_draw_calls": 8,
+        "measured_draw_calls": 12
+      },
+      "lod_policy": "cubemap-single",
+      "acceptance_state": "degraded",
+      "verification_refs": ["artifacts/plan/T13/fixture-verification.txt"]
+    },
+    {
+      "id": "grid-floor-procedural",
+      "role": "ground_plane",
+      "origin": "procedural",
+      "construction_route": "procedural/deterministic-elevation",
+      "source_provenance": {
+        "license": "project-owned",
+        "sha256": "2552bbcf11893440061e4332aad2abfd5aca4db3ce0adc939fe549384e420feb"
+      },
+      "runtime_representation": "procedural Three.js",
+      "budget": {},
+      "acceptance_state": "pending"
+    }
+  ],
+  "history": [
+    {
+      "seq": 0,
+      "kind": "intake",
+      "asset_id": "blackwater-barrel",
+      "at": "2026-09-15T00:00:00Z",
+      "data": { "origin": "cc0", "construction_route": "asset.source/asset.polyhaven", "state": "pending" }
+    },
+    {
+      "seq": 1,
+      "kind": "accept",
+      "asset_id": "blackwater-barrel",
+      "at": "2026-09-15T00:00:00Z",
+      "data": { "route": "asset.source/asset.polyhaven" }
+    },
+    {
+      "seq": 2,
+      "kind": "intake",
+      "asset_id": "skybox-atlas",
+      "at": "2026-09-15T00:00:00Z",
+      "data": { "origin": "cc0", "construction_route": "asset.source/asset.polyhaven", "state": "pending" }
+    },
+    {
+      "seq": 3,
+      "kind": "waiver",
+      "asset_id": "skybox-atlas",
+      "at": "2026-09-15T00:00:00Z",
+      "reason": "skybox atlas shares the environment pass; draw-call overshoot approved for the fixture scene",
+      "data": { "gate": "budget", "author": "fixture-studio-lead", "ref": "DEC-T13-FIXTURE" }
+    },
+    {
+      "seq": 4,
+      "kind": "degrade",
+      "asset_id": "skybox-atlas",
+      "at": "2026-09-15T00:00:00Z",
+      "reason": "accepted under explicit budget policy waiver"
+    },
+    {
+      "seq": 5,
+      "kind": "intake",
+      "asset_id": "grid-floor-procedural",
+      "at": "2026-09-15T00:00:00Z",
+      "data": { "origin": "procedural", "construction_route": "procedural/deterministic-elevation", "state": "pending" }
+    }
+  ],
+  "references": [
+    {
+      "id": "barrel-photo-ref",
+      "uri": "user://reference-photos/barrel-01.jpg",
+      "license": "user-authorized",
+      "sha256": "938b1351c6df011a448582c8b3511bdc07cdc59155a64dff6c72354a25601db6",
+      "retrieved_at": "2026-09-15T00:00:00Z",
+      "note": "Reference-only user photograph; distinct from shipped source assets; never production content."
+    }
+  ]
+}

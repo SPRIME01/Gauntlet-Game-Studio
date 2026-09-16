@@ -1,0 +1,36 @@
+=== T13 Teeth / Falsification Evidence (fresh runs) ===
+Preregistered falsifiers: .agents/preregistrations/gauntlet-game-studio-plan-T13.prereg.yaml (frozen pre-implementation)
+
+--- TEETH-T13-001: 'Import an asset with unknown/unacceptable license state.' Expected: production acceptance blocked ---
+
+Test-level (packages/studio/test/assets/teeth.test.ts + registry.test.ts):
+(pass) T13 Teeth: no production acceptance without provenance and budget gates > TEETH-T13-001: importing an asset with unknown/unacceptable license state blocks production acceptance [4.62ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > blocks unknown and unacceptable license states at intake instead of dropping or accepting them [0.32ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > refuses intake into an accepted state with invalid provenance [0.19ms]
+
+Observed: intake records the asset in a BLOCKED state (not dropped, not accepted); accept() refuses
+(state remains blocked, report.production_acceptable=false); verifyAll reports overall FAILED with the
+block event preserved append-only in manifest history (REQ-ASSET-007).
+
+CLI-level: studio asset verify --all over a fixture carrying an unknown-license import (.tmp/t13-teeth-fixture):
+EXIT=1
+overall status: failed
+  mystery-import [pending] production_acceptable=False blockers=['provenance(blocked)', 'collider_policy(fail)', 'lod_policy(fail)']
+  overbudget-import [pending] production_acceptable=False blockers=['budget(fail)']
+
+--- TEETH-T13-002: 'Mark an over-budget asset accepted solely because it looks correct.' Expected: rejected or explicit recorded waiver ---
+
+Test-level:
+(pass) T13 Teeth: no production acceptance without provenance and budget gates > TEETH-T13-002: an over-budget asset cannot be marked accepted solely because it looks correct [0.49ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > rejects an over-budget asset and an unmeasured budget limit [0.30ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Release/asset checks (verifyAll) > counts explicit-waiver degraded assets as production-acceptable but visible [0.16ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Release/asset checks (verifyAll) > does not extend waivers to non-budget gate failures [0.06ms]
+
+Observed: accept() on an over-budget asset REJECTS it (waiver_applied=false); the release check reports
+FAILED; the only acceptance path is an explicit recorded waiver (author+reason+gate in manifest history)
+which yields state=degraded, visibly flagged; waivers never extend to provenance/collider/LOD failures.
+
+--- Related gate (REQ-BIND-008): KTX2 profile without toktx reports blocked, never silently downgrades ---
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > plans WebP as the portable baseline and KTX2 as toktx-dependent [0.06ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > reports a typed BLOCKED result when a KTX2 profile runs without toktx and never downgrades [5.38ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > preflight reflects real toktx availability without throwing [50.43ms]
