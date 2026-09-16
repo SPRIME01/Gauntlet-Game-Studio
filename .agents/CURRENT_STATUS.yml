@@ -280,20 +280,32 @@ observations:
       real-gesture browser proof and headless purity (independent_adversarial CONFIRM); versioned observability
       bridge with production mutation lockout (independent_adversarial CONFIRM).
     evidence: artifacts/plan/T14/summary.md, artifacts/plan/T15/summary.md, artifacts/plan/T17/summary.md, artifacts/plan/T19/summary.md
+  - status: OBSERVED
+    statement: >-
+      Task T18 settled with Blender 5.2.2 LTS now installed: dcc.blender.process escalation capability with a
+      deterministic blender --background + bpy chain reproducing the service-drone GLB byte-identically; derivative
+      accepted through glTF-Transform normalization and Asset Registry (append-only history); normal build/test
+      proven Blender-free with typed scoped regeneration blockage; DCC/quest/NPC semantic metadata rejected at
+      intake, verify-result, and the Koota runtime guard. Independent confirmation: CONFIRM. The two T22
+      prerequisites from the T21 confirmation (memory capture; report requirements) were resolved in hardening
+      round 1 with no weakening of original acceptance.
+    evidence: artifacts/plan/T18/summary.md, artifacts/plan/T21/hardening-round1.md
 
 next_action:
-  task: T18
+  task: T22
   action: >-
-    Resume T18 (Implement Blender escalation and committed derived-asset workflow) once Blender is available:
-    1. Install Blender or produce the service-drone retarget/bake derivative on a donor host through dcc.blender.process.
-    2. Freeze the T18 preregistration (if not already frozen at execution time), produce and commit the accepted GLB/glTF derivative with regeneration metadata.
-    3. Run the declared gates (dcc.blender.process verify-result, test:blender-absent-build) and teeth.
-    4. Obtain independent confirmation; then T22 (Blackwater single-player vertical slice) unblocks and with it T23-T25.
+    Assemble and settle the Blackwater Relay single-player vertical slice (T22):
+    1. Freeze P3 preregistration for T22.
+    2. Finalize the game spec with frozen named scenarios and quality profiles; compose 3dviz environment, canonical
+       terrain, Recast/BVH traversal, accepted sourced assets, img2threejs transceiver, committed service-drone
+       derivative, Quarks VFX, Tone audio, DOM HUD, Koota gameplay state, Rapier physics.
+    3. Implement named scenarios boot, active-play, transceiver-interaction, patrol-obstacle, beacon-activation,
+       performance-flythrough; run with networking entirely disabled.
+    4. Capture fresh state + pixels + telemetry; run declared gates and teeth; obtain independent_adversarial
+       confirmation before settlement.
   reason: >-
-    All other 21 tasks are settled with fresh evidence and the required confirmations. T18 is the sole gate
-    on the remaining chain. Before T22 target-hardware settlement under the `target` profile, also address the
-    two advisory findings in artifacts/plan/T21/confirmation.md (wire memory budget capture; make declared
-    hardware budgets imply report-requirements).
+    T18 settled and both T22 prerequisites from the T21 confirmation are resolved (commit 04ee2f3); T22 is the
+    only ready task, gating T23-T25.
 
 handoff:
   settled_summary:
@@ -318,8 +330,9 @@ handoff:
     - "T14+T15: img2threejs reference-reconstruction handoff (independent CONFIRM) and 3dviz world-composition handoff (builder_with_teeth) with deterministic offline result verification, single-three guards, and Blackwater fixtures (commit f3d8e6e)."
     - "T20: Playwright proof harness over the versioned observability contract, immutable run-scoped evidence store, and Gauntlet settlement bridge where pixels cannot override semantic contradiction; independent adversarial confirmation CONFIRM (commit 480fc69)."
     - "T21: Quality profiles and performance settlement; structural vs hardware-sensitive budget separation, software-renderer guard, byte-identical-pixels regression teeth; independent adversarial confirmation CONFIRM (commit 7916bfe)."
+    - "T18: Blender 5.2.2 LTS DCC escalation via deterministic --background + bpy; service-drone GLB reproduces byte-identically, flows through normalization + Asset Registry; normal build Blender-free with typed scoped blockage; independent confirmation CONFIRM (commit 03c0a61). Hardening round 1 resolved both T21-confirmation prerequisites for T22 (commit 04ee2f3)."
   unresolved_summary:
-    - "T18 is ready but environment-blocked: Blender is not installed on this host, so the service-drone retarget/bake derivative cannot be produced through dcc.blender.process. Deterministic CI remains green; T22-T25 stay gated behind T18."
+    - "T22 prerequisites from the T21 confirmation are resolved (hardening round 1, commit 04ee2f3). Remaining chain: T22 -> T23 -> T24 -> T25, each P3 with independent_adversarial confirmation."
     - "T22 hardening prerequisites recorded in artifacts/plan/T21/confirmation.md: wire memory budget capture (max_memory_mb declared but unmeasured) and make declared hardware budgets imply report-requirements before target-hardware settlement."
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
