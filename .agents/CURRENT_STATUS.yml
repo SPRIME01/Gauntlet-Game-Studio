@@ -13,19 +13,18 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T22
+  last_settled_task: T23
   in_flight_task: null
-  workable_task: T23
+  workable_task: T24
   ready_tasks:
-    - T23
+    - T24
   blocked_tasks:
-    T24: [T23]
     T25: [T24]
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T23
+  task: T24
   phase: ready
   blocker: null
 
@@ -297,17 +296,18 @@ observations:
     evidence: artifacts/plan/T18/summary.md, artifacts/plan/T21/hardening-round1.md
 
 next_action:
-  task: T23
+  task: T24
   action: >-
-    Settle Blackwater Relay authoritative multiplayer and impairment scenarios (T23):
-    1. Freeze P3 preregistration for T23.
-    2. Add multiplayer-sync, interest-filtering, and multiplayer-latency scenarios; two independent browser clients
-       against the Bun headless authoritative server over the Bun native WebSocket baseline.
-    3. Prove server/Koota authority, reconciliation, relevance filtering, disconnect/recovery, and network
-       telemetry; capture command/ack/reconciliation/ping/bandwidth diagnostics.
-    4. Run declared gates and teeth; obtain independent_adversarial confirmation before settlement.
+    Execute the adversarial recovery, security, donor-independence, and environment-removal matrix (T24):
+    1. Freeze P3 preregistration for T24.
+    2. Fresh clean checkout/worktree without .tmp/donor/: install/check/test/build/reference-game deterministic
+       verification; credentials-free deterministic CI; Blender-absent normal build plus scoped regeneration blockage.
+    3. Inject delayed/failed WASM init, unavailable browser proof, provider unavailability, unsafe assets, budget
+       failure, network disconnect, audio locked; execute VAR-001..014 and RECOV-001..008 applicable cases.
+    4. Security checks: secret leakage, path traversal, untrusted client commands, donor imports/identity,
+       production observability mutation. Bind conformance:recovery / conformance:security / conformance:clean-checkout gates.
   reason: >-
-    T22 settled cleanly; T23 is the only ready task, gating T24-T25.
+    T23 settled cleanly; T24 is the only ready task, gating T25.
 
 handoff:
   settled_summary:
@@ -334,8 +334,9 @@ handoff:
     - "T21: Quality profiles and performance settlement; structural vs hardware-sensitive budget separation, software-renderer guard, byte-identical-pixels regression teeth; independent adversarial confirmation CONFIRM (commit 7916bfe)."
     - "T18: Blender 5.2.2 LTS DCC escalation via deterministic --background + bpy; service-drone GLB reproduces byte-identically, flows through normalization + Asset Registry; normal build Blender-free with typed scoped blockage; independent confirmation CONFIRM (commit 03c0a61). Hardening round 1 resolved both T21-confirmation prerequisites for T22 (commit 04ee2f3)."
     - "T22: Blackwater Relay single-player vertical slice assembled and settled: six frozen scenarios, one canonical heightfield, one scheduler step owner, network-free proof, semantic-vs-pixel corruption teeth; independent adversarial confirmation CONFIRM (commit ed71af4)."
+    - "T23: Authoritative multiplayer settled: two browser clients + headless server on the same simulation contracts; hostile-client battery, bounded ~9x impairment recovery, SIGKILL disconnect/reconnect; independent adversarial confirmation CONFIRM."
   unresolved_summary:
-    - "Remaining chain: T23 -> T24 -> T25, each P3 with independent_adversarial confirmation. Note: plan gate text bun --cwd <dir> run <script> no-ops under bun 1.4; the working order bun run --cwd <dir> <script> is documented in artifacts/plan/T22/summary.md."
+    - "Remaining chain: T24 -> T25, each P3 with independent_adversarial confirmation. Note: plan gate text bun --cwd <dir> run <script> no-ops under bun 1.4; the working order bun run --cwd <dir> <script> is documented in artifacts/plan/T22/summary.md."
     - "T22 hardening prerequisites recorded in artifacts/plan/T21/confirmation.md: wire memory budget capture (max_memory_mb declared but unmeasured) and make declared hardware budgets imply report-requirements before target-hardware settlement."
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
