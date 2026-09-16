@@ -1,0 +1,77 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T20
+title: Implement browser proof harness, immutable evidence, and Gauntlet settlement bridge
+proof_level: P3
+timestamp: "2026-09-15T12:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T20-001
+    statement: >-
+      A requirement cannot settle merely because a provider/build succeeded or a screenshot looks
+      plausible; required evidence is fresh, correlated, and channel-appropriate. Concretely: the
+      deterministic browser-proof binding is Playwright (REQ-BIND-010) driving scenarios ONLY through
+      the stable T19 observability contract methods (`__GAUNTLET_STUDIO_OBS__` v1) — never transient
+      DOM selectors or provider-internal object names; agent-browser remains exploratory-only with no
+      settlement role. Every proof run records an ObservationRun (run ID, project revision, scenario,
+      environment, seed, channels) plus an EvidenceManifest binding hashed state snapshots, rendered
+      captures, console/network diagnostics, trace, and result under `artifacts/runs/<run-id>/`
+      (REQ-OUT-003, REQ-GOAL-004). Evidence is immutable once written; failed/contradictory evidence
+      is preserved append-only and never overwritten; freshness is decided from run/revision identity,
+      never filename convention (REQ-GAUNTLET-006). The Gauntlet settlement bridge compares frozen
+      (preregistered-before-evaluation) expectations against observed channel evidence and produces a
+      SettlementRecord classified settled|blocked|failed|incomplete (REQ-GAUNTLET-002, REQ-GAUNTLET-004),
+      with contradiction logic across state/pixels/telemetry/network: a correct screenshot with
+      intentionally incorrect Koota semantic state MUST fail overall verification — pixels cannot
+      override a semantic contradiction (REQ-GAUNTLET-003, REQ-VERIFY-001, REQ-VERIFY-002). Required
+      browser proof that cannot run because Playwright/Chrome is unavailable is reported blocked and
+      can never settle the requirement (REQ-VERIFY-005, RECOV-004). Provider or build success is
+      structurally not an input to settlement.
+    settles:
+      - REQ-GOAL-004
+      - REQ-OUT-003
+      - REQ-BIND-010
+      - REQ-VERIFY-001
+      - REQ-VERIFY-002
+      - REQ-VERIFY-005
+      - REQ-GAUNTLET-001
+      - REQ-GAUNTLET-002
+      - REQ-GAUNTLET-003
+      - REQ-GAUNTLET-004
+      - REQ-GAUNTLET-005
+      - REQ-GAUNTLET-006
+
+falsifiers:
+  - id: TEETH-T20-001
+    attack: Provide a correct screenshot with intentionally incorrect Koota semantic state.
+    expected: Overall verification fails; pixels cannot override semantic contradiction.
+  - id: TEETH-T20-002
+    attack: Reuse a passing EvidenceManifest from another project revision.
+    expected: Freshness/correlation validation rejects settlement.
+  - id: TEETH-T20-003
+    attack: Skip required browser proof because Playwright is unavailable.
+    expected: Result is blocked/skipped, never passed.
+
+known_confounds:
+  - Stale evidence or a different project revision.
+  - Unavailable optional provider/tool being mistaken for core capability failure.
+  - The committed deterministic fixture page simulates game semantics behind a contract-v1-shaped
+    surface; it proves the harness/settlement machinery, not a real game title (real titles mount the
+    real T19 bridge; the harness validates the mounted surface against contract v1 before reading).
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    TEETH-T20-001 bites end-to-end: a fixture scenario whose rendered pixels are visually correct
+    (capture constraints pass) while `entities.snapshot()` (read via the stable observability methods
+    only) reports semantic state that violates the frozen expectation produces overall decision
+    "failed" with a recorded pixels-vs-state contradiction and never "settled". TEETH-T20-002 bites:
+    a manifest from another project revision (or a manifest uncorrelated with its run) is rejected by
+    freshness/correlation validation at the store layer (typed error) and at settlement (decision not
+    settled). TEETH-T20-003 bites: with Playwright unavailability injected (simulated loader failure,
+    no uninstall), the harness returns a typed blocked result and settlement is "blocked", never
+    "passed"/"settled". Browser launches use the system Chrome executable path with no autoplay-policy
+    bypass flags; runs are written under artifacts/runs/<run-id>/ with hashed artifacts; `studio
+    evidence check-fixtures --json` and `bun run test:proof-harness` exit 0 with all global gates green.

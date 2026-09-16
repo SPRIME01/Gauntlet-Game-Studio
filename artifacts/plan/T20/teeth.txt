@@ -1,0 +1,86 @@
+=== T20 teeth / falsification evidence (preregistered in .agents/preregistrations/gauntlet-game-studio-plan-T20.prereg.yaml) ===
+Fresh runs at project revision eef7ebad2cdcd05fb0e2f5eca23a02ae8ac921d4 (2026-09-16). Deterministic
+layers run in bun test; TEETH-T20-001 is additionally proven END-TO-END with real system Chrome
+(Google Chrome 151.0.7922.75 at /usr/bin/google-chrome, no autoplay-policy bypass flags).
+
+------------------------------------------------------------------------------------------
+TEETH-T20-001  attack: Provide a correct screenshot with intentionally incorrect Koota semantic state.
+               expected: Overall verification fails; pixels cannot override semantic contradiction.
+------------------------------------------------------------------------------------------
+Deterministic settlement layer (bun test packages/studio/test/proof, settlement.test.ts):
+  (pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > fails settlement and records the pixels-vs-state contradiction [0.97ms]
+  (pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > never lets an observation-level pass manifest become a settled requirement [0.11ms]
+  (pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > classifies a missing entity as insufficiently represented (REQ-GAUNTLET-004) [0.09ms]
+  (pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > settles only when state, pixels, telemetry, and network all agree [0.17ms]
+  (pass) TEETH-T20-002: evidence from another project revision cannot settle > returns incomplete with evidence_stale for a foreign-revision manifest [0.13ms]
+  (pass) TEETH-T20-002: evidence from another project revision cannot settle > rejects a current-revision run cited with a foreign-revision manifest [0.06ms]
+  (pass) TEETH-T20-002: evidence from another project revision cannot settle > rejects manifests uncorrelated with the run [0.05ms]
+  (pass) TEETH-T20-002: evidence from another project revision cannot settle > an expectation bound to an older revision cannot settle on current evidence [0.21ms]
+  (pass) TEETH-T20-003: missing browser proof blocks and never passes > blocks a pixels claim when the browser proof could not run [0.09ms]
+  (pass) TEETH-T20-003: missing browser proof blocks and never passes > blocks on a typed blocked observation manifest even with availability claimed [0.08ms]
+  (pass) TEETH-T20-003: missing browser proof blocks and never passes > reports incomplete (never passed) when a required channel was simply not captured [0.10ms]
+  (pass) TEETH-T20-003: missing browser proof blocks and never passes > cannot settle at all without any evidence manifest [0.03ms]
+  Ran 22 tests across 2 files. [98.00ms]
+
+End-to-end browser layer (bun run ./packages/studio/test/proof/run-browser-proof.ts, LEG B):
+  - The fixture scenario fixture-wrong-state renders pixels byte-IDENTICAL to the agreeing fixture
+    (both captures sha256 b0728f1c91d3bab45670515879a17d07e17a34f93b5d4fb6e585fc012ffb0249 — the
+    screenshots are literally indistinguishable), while entities.snapshot() read via the stable
+    __GAUNTLET_STUDIO_OBS__ v1 methods reports the authoritative player position [0,0,0] against the
+    frozen expectation [3,0,0].
+  - Observed: pixel channel PASS (2/2 checks), telemetry PASS (3/3), network PASS (2/2), state FAIL
+    (SEMANTIC_POSITION_MISMATCH) -> overall SettlementRecord decision 'failed', blockage_class
+    'represented_but_deficient', contradiction recorded:
+    "pixels_pass_state_fail: rendered captures satisfy visual constraints while the authoritative
+    semantic state violates the frozen expectation; pixels cannot override a semantic contradiction".
+  - Verdict: PASS — overall verification failed; the correct screenshot did NOT settle the requirement.
+  - Committed preserved contradictory evidence (append-only, never overwritten):
+    packages/studio/test/proof/fixtures/run-fixture-contradiction/ (run.json + manifest-01.json +
+    settlement-01.json with decision "failed").
+  - CLI cross-check: 'studio verify fixture-wrong-state --json' exit 1 with decision "failed"
+    (artifacts/plan/T20/gate.txt).
+
+------------------------------------------------------------------------------------------
+TEETH-T20-002  attack: Reuse a passing EvidenceManifest from another project revision.
+               expected: Freshness/correlation validation rejects settlement.
+------------------------------------------------------------------------------------------
+Deterministic settlement layer (settlement.test.ts, TEETH-T20-002 describe block):
+  - foreign-revision run+manifest with perfectly agreeing channel evidence -> decision 'incomplete',
+    blockage_class 'evidence_stale', record decision != settled.
+  - current-revision run cited with foreign-revision manifest -> 'incomplete'/'evidence_stale'.
+  - manifest whose run_id references a different run -> 'incomplete'/'evidence_uncorrelated'.
+  - expectation bound to an older revision vs current evidence -> 'incomplete'/'evidence_stale'.
+Store layer (evidence.test.ts):
+  - store.validateFreshness(passing manifest, foreign revision) throws EvidenceStaleError
+    (code EVIDENCE_STALE); the same manifest validates fresh for its own revision.
+  - Freshness is identity-based, NOT filename-based: the manifest's project_revision field decides.
+Browser gate (LEG D):
+  - settle leg A's evidence against foreign revision 0000…0000 -> 'incomplete'/'evidence_stale';
+    store.validateFreshness throws; rewriting the run directory throws EvidenceImmutabilityError.
+  - Verdict: PASS — settlement rejected.
+  - Committed negative control: packages/studio/test/proof/fixtures/run-fixture-stale/ (must_reject:
+    "stale_revision") — 'studio evidence check-fixtures --json' reports it rejected_as_expected.
+
+------------------------------------------------------------------------------------------
+TEETH-T20-003  attack: Skip required browser proof because Playwright is unavailable.
+               expected: Result is blocked/skipped, never passed.
+------------------------------------------------------------------------------------------
+Deterministic layers (settlement.test.ts TEETH-T20-003 describe block):
+  - pixels claim + browser_proof_available=false -> decision 'blocked', blockage_class
+    'browser_proof_unavailable', record decision 'blocked' with next_affordance pointing at
+    restoring browser proof availability.
+  - typed blocked observation manifest (result "blocked") even with availability claimed -> 'blocked'.
+  - required channel simply not captured -> 'incomplete'/'evidence_channel_missing' (never passed).
+  - no evidence at all -> 'incomplete'/'evidence_missing' (settlement requires evidence, not
+    provider or build success).
+Browser gate (LEG C) — Playwright unavailability is INJECTED via the harness playwrightLoader seam
+(simulated loader failure; nothing uninstalled):
+  - runScenario returns typed blockage { code: PLAYWRIGHT_UNAVAILABLE }, writes an immutable
+    blocked manifest citing a blockage.json artifact; settlement decision 'blocked', never
+    'settled'/'passed'.
+  - Verdict: PASS.
+
+------------------------------------------------------------------------------------------
+Environment note: the browser legs ran headed (WSLg DISPLAY present); headless is used when no
+display exists (same flags, zero autoplay-policy bypass flags in both modes). Blocked results are
+scoped environmental blockages with typed codes (RECOV-004) — never silent passes.

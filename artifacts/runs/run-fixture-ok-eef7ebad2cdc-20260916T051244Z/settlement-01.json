@@ -1,0 +1,19 @@
+{
+  "id": "settlement-fixture-ok-run-fixture-ok-eef7ebad2cdc-20260916T051244Z",
+  "requirement_ids": [
+    "REQ-GOAL-004",
+    "REQ-OUT-003",
+    "REQ-BIND-010",
+    "REQ-VERIFY-001",
+    "REQ-VERIFY-002",
+    "REQ-GAUNTLET-003"
+  ],
+  "decision": "blocked",
+  "evidence_manifest_ids": [
+    "run-fixture-ok-eef7ebad2cdc-20260916T051244Z-manifest-01"
+  ],
+  "reason": "required browser proof is unavailable (Playwright is unavailable; required browser proof is blocked, never passed (RECOV-004): simulated Playwright unavailability (injected; nothing uninstalled)); blocked, never passed",
+  "settled_at": "2026-09-16T05:12:44Z",
+  "blockage_class": "browser_proof_unavailable",
+  "next_affordance": "restore browser proof availability (Playwright + system Chrome) and re-run a fresh observation"
+}

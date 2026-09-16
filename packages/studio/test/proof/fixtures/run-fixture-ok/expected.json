@@ -1,0 +1,4 @@
+{
+  "description": "Valid fresh evidence: fixture-ok observed end-to-end via the stable observability surface; schema, correlation, and artifact hashes must validate.",
+  "must_validate": true
+}

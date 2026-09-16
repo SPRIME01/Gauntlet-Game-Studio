@@ -1,0 +1,128 @@
+{
+  "id": "run-fixture-contradiction",
+  "project_revision": "rev-fixture-a",
+  "scenario_id": "fixture-wrong-state",
+  "environment": {
+    "browser": "chrome",
+    "browser_version": "151.0.7922.75",
+    "headless": false,
+    "viewport": {
+      "width": 640,
+      "height": 360
+    },
+    "platform": "linux",
+    "quality_profile": "proof",
+    "executable_path": "/usr/bin/google-chrome",
+    "autoplay_bypass_flags": false
+  },
+  "channels": [
+    {
+      "channel": "state",
+      "source": "koota",
+      "snapshot": {
+        "version": 1,
+        "timestamp": 0,
+        "entities": [
+          {
+            "id": "player",
+            "transform": {
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            "tags": [
+              "player"
+            ]
+          },
+          {
+            "id": "checkpoint-beacon",
+            "transform": {
+              "position": [
+                3,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "scale": [
+                1,
+                1,
+                1
+              ]
+            },
+            "tags": [
+              "beacon"
+            ]
+          }
+        ]
+      },
+      "tick": {
+        "tick": 3,
+        "time": 0.05,
+        "running": false,
+        "paused": true,
+        "fixed_delta_time": 0.016666666666666666,
+        "alpha": 0
+      },
+      "read_via": [
+        "entities.snapshot()",
+        "tick()"
+      ]
+    },
+    {
+      "channel": "pixels",
+      "captures": [
+        {
+          "view": "main",
+          "artifact": "artifacts/screenshot-main.png",
+          "sha256": "b0728f1c91d3bab45670515879a17d07e17a34f93b5d4fb6e585fc012ffb0249",
+          "width": 640,
+          "height": 360,
+          "bytes": 6296
+        }
+      ]
+    },
+    {
+      "channel": "telemetry",
+      "console": [],
+      "page_errors": [],
+      "tick_after_steps": 3
+    },
+    {
+      "channel": "network",
+      "responses": [
+        {
+          "url": "http://127.0.0.1:42211/?scenario=fixture-wrong-state",
+          "status": 200,
+          "ok": true
+        }
+      ],
+      "surface_read": {
+        "present": false,
+        "reason": "fixture: network not wired"
+      }
+    }
+  ],
+  "seed": 1337,
+  "camera_views": [
+    "main"
+  ],
+  "timestamp": "2026-09-15T12:00:00Z"
+}

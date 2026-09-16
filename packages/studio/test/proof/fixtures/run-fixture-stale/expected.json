@@ -1,0 +1,5 @@
+{
+  "description": "Negative control: evidence from another project revision (rev-fixture-old) MUST be rejected by identity-based freshness validation.",
+  "must_reject": "stale_revision",
+  "current_revision": "rev-fixture-a"
+}

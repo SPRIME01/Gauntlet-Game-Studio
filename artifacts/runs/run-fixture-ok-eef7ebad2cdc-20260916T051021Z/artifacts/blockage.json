@@ -1,0 +1,6 @@
+{
+  "code": "PLAYWRIGHT_UNAVAILABLE",
+  "message": "Playwright is unavailable; required browser proof is blocked, never passed (RECOV-004): simulated Playwright unavailability (injected; nothing uninstalled)",
+  "run_id": "run-fixture-ok-eef7ebad2cdc-20260916T051021Z",
+  "scenario_id": "fixture-ok"
+}

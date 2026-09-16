@@ -1,0 +1,70 @@
+{
+  "channel": "state",
+  "source": "koota",
+  "snapshot": {
+    "version": 1,
+    "timestamp": 0,
+    "entities": [
+      {
+        "id": "player",
+        "transform": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "tags": [
+          "player"
+        ]
+      },
+      {
+        "id": "checkpoint-beacon",
+        "transform": {
+          "position": [
+            3,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "tags": [
+          "beacon"
+        ]
+      }
+    ]
+  },
+  "tick": {
+    "tick": 3,
+    "time": 0.05,
+    "running": false,
+    "paused": true,
+    "fixed_delta_time": 0.016666666666666666,
+    "alpha": 0
+  },
+  "read_via": [
+    "entities.snapshot()",
+    "tick()"
+  ]
+}

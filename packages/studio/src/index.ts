@@ -14,3 +14,5 @@ export * from "./router/router";
 export * from "./generator";
 export * from "./skills/overlay";
 export * from "./assets";
+export * from "./evidence";
+export * from "./gauntlet";

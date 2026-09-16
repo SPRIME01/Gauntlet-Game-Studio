@@ -1,0 +1,4 @@
+{
+  "present": false,
+  "reason": "fixture: no WebGL renderer mounted"
+}

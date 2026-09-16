@@ -9,3 +9,4 @@ export * from "./agent-skills";
 export * from "./agent-skills/3dviz";
 export * from "./vfx";
 export * from "./audio";
+export * from "./browser";

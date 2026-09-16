@@ -16,6 +16,13 @@ import {
   loadSkillOverlayPolicy,
   createGameProject,
   AssetRegistry,
+  EvidenceStore,
+  RevisionUnavailableError,
+  resolveProjectRevision,
+  parseFrozenExpectation,
+  settleExpectation,
+  type FrozenExpectation,
+  type SettlementOutcome,
 } from "@gauntlet/studio";
 import {
   validateCapabilityResult,
@@ -35,8 +42,82 @@ import {
   prepareReferenceImageReconstruction,
   verifyImg2ThreeJsResult,
 } from "@gauntlet/adapters";
+import {
+  buildFixtureScenario,
+  runScenario,
+  type ChannelEvidence,
+  type ScenarioRunResult,
+} from "@gauntlet/adapters";
 
 export const CLI_VERSION = "0.2.0";
+
+/** Monorepo root (this CLI lives at apps/studio-cli/src). */
+const REPO_ROOT = path.resolve(import.meta.dir, "..", "..", "..");
+const PROOF_EXPECTATIONS_DIR = path.join(REPO_ROOT, "packages", "studio", "test", "proof", "expectations");
+const PROOF_FIXTURES_DIR = path.join(REPO_ROOT, "packages", "studio", "test", "proof", "fixtures");
+
+/** Reads a `--flag <value>` option pair; returns undefined when absent. */
+function flagValue(args: string[], flag: string): string | undefined {
+  const idx = args.indexOf(flag);
+  return idx >= 0 && typeof args[idx + 1] === "string" ? args[idx + 1] : undefined;
+}
+
+/**
+ * Resolves the project revision for evidence freshness; maps typed failures onto a
+ * structured blocked result with the stable blocked exit code 2.
+ */
+function revisionOrBlocked(operation: string, explicit?: string): { revision?: string; blocked?: StudioResult } {
+  try {
+    return { revision: resolveProjectRevision(process.cwd(), { explicit }) };
+  } catch (err) {
+    if (err instanceof RevisionUnavailableError) {
+      return {
+        blocked: {
+          status: "blocked",
+          operation,
+          diagnostics: { code: err.code, error: err.message },
+        },
+      };
+    }
+    throw err;
+  }
+}
+
+/** Resolves a frozen expectation by id (committed fixture) or explicit JSON path. */
+function loadFrozenExpectation(idOrPath: string): FrozenExpectation {
+  const candidate = path.resolve(process.cwd(), idOrPath);
+  const file = fs.existsSync(candidate) ? candidate : path.join(PROOF_EXPECTATIONS_DIR, `${idOrPath}.json`);
+  if (!fs.existsSync(file)) {
+    throw new Error(
+      `frozen expectation '${idOrPath}' not found (committed expectations: ${PROOF_EXPECTATIONS_DIR})`
+    );
+  }
+  return parseFrozenExpectation(JSON.parse(fs.readFileSync(file, "utf-8")));
+}
+
+/** Maps a harness observation onto the settlement input channels. */
+function settleObserved(
+  expectation: FrozenExpectation,
+  observed: ScenarioRunResult,
+  currentRevision: string,
+  now?: string
+): SettlementOutcome {
+  const run = observed.run ? (JSON.parse(JSON.stringify(observed.run)) as never) : null;
+  const manifests = observed.manifest ? [JSON.parse(JSON.stringify(observed.manifest)) as never] : [];
+  const channels: ChannelEvidence[] = observed.channels ?? [];
+  return settleExpectation({
+    expectation,
+    run,
+    manifests,
+    channels,
+    availability: {
+      browser_proof_available: observed.status === "observed",
+      unavailable_reason: observed.blockage?.message,
+    },
+    currentRevision,
+    now,
+  });
+}
 
 /**
  * The project root for a file under `.studio/requests|results` is the directory
@@ -110,9 +191,14 @@ Commands:
                                e.g. world.environment.compose requests/results under .studio/
   asset verify --all           Verify the project Asset Registry: provenance, acceptance gates
   asset <other-action>         Asset compiler/source actions (typed placeholders until settled)
-  observe <action>             Run observation scenarios
-  verify <action>              Run verification against frozen expectations
-  evidence <action>            Inspect or generate evidence manifests
+  observe [scenario]           Observe a deterministic proof scenario via the Playwright harness
+                               (system Chrome, stable observability methods only); writes immutable
+                               run evidence under artifacts/runs/<run-id>/  [T20]
+  verify <expectation>         Verify a frozen expectation against a fresh observation and append a
+                               SettlementRecord (settled|blocked|failed|incomplete)  [T20]
+  evidence check-fixtures      Validate committed evidence fixtures: schemas, run/manifest correlation,
+                               artifact hashes, and negative controls (must-reject)  [T20]
+  evidence <other-action>      Other evidence actions (typed placeholders until settled)
 
 Global Options:
   --json                       Emit structured machine-readable JSON output
@@ -648,19 +734,235 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       return 0;
     }
 
-    case "observe":
-    case "verify":
+    case "observe": {
+      // T20 (REQ-BIND-010, REQ-OUT-003): deterministic Playwright observation via the
+      // stable __GAUNTLET_STUDIO_OBS__ v1 methods, stored as immutable evidence.
+      // Observation only — no expectation interpretation happens here.
+      const scenarioId = filteredArgs[1] || "fixture-ok";
+      const outDir = flagValue(filteredArgs, "--out");
+      const revisionFlag = flagValue(filteredArgs, "--revision");
+      try {
+        const rev = revisionOrBlocked("studio.observe", revisionFlag);
+        if (rev.blocked) {
+          if (isJson) console.log(JSON.stringify(rev.blocked, null, 2));
+          else console.error(`Blocked (${rev.blocked.diagnostics.code}): ${rev.blocked.diagnostics.error}`);
+          return 2;
+        }
+        let scenario;
+        try {
+          scenario = buildFixtureScenario(scenarioId);
+        } catch {
+          throw new Error(
+            `unknown scenario '${scenarioId}'; deterministic fixture scenarios: fixture-ok, fixture-wrong-state ` +
+              `(real-title scenario routing settles with later plan tasks)`
+          );
+        }
+        const store = new EvidenceStore({
+          projectRoot: process.cwd(),
+          ...(outDir ? { runsRoot: path.resolve(outDir) } : {}),
+        });
+        const observed = await runScenario({
+          scenario,
+          projectRevision: rev.revision!,
+          requirementIds: ["REQ-OUT-003", "REQ-GOAL-004"],
+          sink: store.createRunWriter(),
+          headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
+          timeoutMs: 45000,
+        });
+        const runDir = observed.run_dir ?? (observed.run ? store.runDir(observed.run.id) : undefined);
+        const payload = {
+          status: observed.status,
+          scenario_id: scenarioId,
+          project_revision: rev.revision,
+          run_id: observed.run?.id,
+          manifest_id: observed.manifest?.id,
+          manifest_result: observed.manifest?.result,
+          channels: observed.channels.map((c) => c.channel),
+          artifacts: observed.manifest?.artifacts.map((a) => ({ path: a.path, sha256: a.sha256, role: a.role })),
+          run_dir: runDir,
+          blockage: observed.blockage,
+        };
+        const res: StudioResult =
+          observed.status === "observed"
+            ? {
+                status: "success",
+                operation: "studio.observe",
+                result: payload,
+                diagnostics: {
+                  observation_only: true,
+                  note: "Observation is not interpretation; settle expectations via 'studio verify'.",
+                },
+              }
+            : {
+                status: "blocked",
+                operation: "studio.observe",
+                result: payload,
+                diagnostics: { code: observed.blockage?.code, error: observed.blockage?.message },
+              };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else if (observed.status === "observed") {
+          console.log(`Observed ${scenarioId} as run ${observed.run?.id} (${observed.run_dir})`);
+          console.log(`Channels: ${observed.channels.map((c) => c.channel).join(", ")}`);
+        } else {
+          console.error(`Blocked (${observed.blockage?.code}): ${observed.blockage?.message}`);
+        }
+        return observed.status === "observed" ? 0 : 2;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const res: StudioResult = {
+          status: "failed",
+          operation: "studio.observe",
+          diagnostics: { error: msg },
+        };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else console.error(`Error: ${msg}`);
+        return 1;
+      }
+    }
+
+    case "verify": {
+      // T20 (REQ-GAUNTLET-001..006, REQ-VERIFY-001/002/005): fresh observation vs the
+      // FROZEN expectation -> append-only SettlementRecord. Exit codes: 0 settled,
+      // 1 failed, 2 blocked/incomplete — a blockage can never read as a pass.
+      const idOrPath = filteredArgs[1];
+      const revisionFlag = flagValue(filteredArgs, "--revision");
+      try {
+        if (!idOrPath) throw new Error("usage: studio verify <expectation-id-or-json-path>");
+        const expectation = loadFrozenExpectation(idOrPath);
+        const rev = revisionOrBlocked("studio.verify", revisionFlag);
+        if (rev.blocked) {
+          if (isJson) console.log(JSON.stringify(rev.blocked, null, 2));
+          else console.error(`Blocked (${rev.blocked.diagnostics.code}): ${rev.blocked.diagnostics.error}`);
+          return 2;
+        }
+        const scenario = buildFixtureScenario(expectation.scenario_id, {
+          seed: expectation.seed,
+          steps: expectation.steps,
+          view: expectation.view,
+        });
+        const store = new EvidenceStore({ projectRoot: process.cwd() });
+        const observed = await runScenario({
+          scenario,
+          projectRevision: rev.revision!,
+          requirementIds: [...expectation.requirement_ids],
+          sink: store.createRunWriter(),
+          headless: !process.env.DISPLAY && !process.env.WAYLAND_DISPLAY,
+          timeoutMs: 45000,
+        });
+        const outcome = settleObserved(expectation, observed, rev.revision!);
+        let settlementPath: string | undefined;
+        if (outcome.record && observed.run) {
+          store.appendSettlement(observed.run.id, outcome.record);
+          settlementPath = path.join(store.runDir(observed.run.id), "settlement-01.json");
+        }
+        const res: StudioResult = {
+          status:
+            outcome.decision === "settled" ? "success" : outcome.decision === "failed" ? "failed" : "blocked",
+          operation: "studio.verify",
+          result: {
+            expectation_id: expectation.id,
+            scenario_id: expectation.scenario_id,
+            decision: outcome.decision,
+            blockage_class: outcome.blockage_class,
+            reason: outcome.reason,
+            contradictions: outcome.contradictions,
+            requirement_ids: expectation.requirement_ids,
+            run_id: observed.run?.id,
+            run_dir: observed.run_dir ?? (observed.run ? store.runDir(observed.run.id) : undefined),
+            settlement_path: settlementPath,
+            channel_verdicts: outcome.channel_verdicts.map((v) => ({
+              channel: v.channel,
+              evaluated: v.evaluated,
+              pass: v.pass,
+              failed_checks: v.checks.filter((c) => !c.pass),
+            })),
+          },
+          diagnostics: {
+            fresh_observation: true,
+            settlement_append_only: true,
+            exit_code_semantics: "0=settled 1=failed 2=blocked/incomplete",
+          },
+        };
+        if (isJson) {
+          console.log(JSON.stringify(res, null, 2));
+        } else {
+          console.log(`Expectation ${expectation.id}: ${outcome.decision.toUpperCase()}`);
+          if (outcome.blockage_class) console.log(`Blockage: ${outcome.blockage_class}`);
+          console.log(`Reason: ${outcome.reason}`);
+          for (const c of outcome.contradictions) console.log(`Contradiction: ${c}`);
+          if (settlementPath) console.log(`Settlement appended: ${settlementPath}`);
+        }
+        return outcome.decision === "settled" ? 0 : outcome.decision === "failed" ? 1 : 2;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const res: StudioResult = {
+          status: "failed",
+          operation: "studio.verify",
+          diagnostics: { error: msg },
+        };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else console.error(`Error: ${msg}`);
+        return 1;
+      }
+    }
+
     case "evidence": {
+      const sub = filteredArgs[1];
+      if (sub === "check-fixtures") {
+        // T20 gate: validate committed evidence fixtures — schema enforcement,
+        // run/manifest correlation, artifact hash re-verification, and negative
+        // controls that MUST reject (stale revision etc.).
+        try {
+          const fixturesFlag = flagValue(filteredArgs, "--fixtures");
+          const fixturesRoot = path.resolve(fixturesFlag ?? PROOF_FIXTURES_DIR);
+          const store = new EvidenceStore({ projectRoot: process.cwd() });
+          const report = store.checkFixtures(fixturesRoot);
+          const res: StudioResult = {
+            status: report.status === "success" ? "success" : "failed",
+            operation: "studio.evidence.check-fixtures",
+            result: report,
+            diagnostics: {
+              fixtures_root: fixturesRoot,
+              total: report.totals.total,
+              passed: report.totals.passed,
+              failed: report.totals.failed,
+            },
+          };
+          if (isJson) {
+            console.log(JSON.stringify(res, null, 2));
+          } else {
+            console.log(`\n=== Evidence Fixture Check (${fixturesRoot}) ===`);
+            for (const f of report.fixtures) {
+              console.log(` ${f.status === "invalid" ? "✗" : "✓"} ${f.fixture} [${f.status}]`);
+              for (const c of f.checks) {
+                if (!c.pass) console.log(`   FAIL ${c.code}: ${c.detail}`);
+              }
+            }
+            console.log(`Status: ${report.status.toUpperCase()}\n`);
+          }
+          return report.status === "success" ? 0 : 1;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.evidence.check-fixtures",
+            diagnostics: { error: msg },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      }
       const res: StudioResult = {
         status: "blocked",
-        operation: `studio.${command}`,
+        operation: `studio.evidence.${sub ?? "default"}`,
         diagnostics: {
-          message: `Command '${command}' is governed by future task settlement in the active plan DAG.`,
-          unlocked_in: "T20",
+          message: `Evidence action '${sub}' is governed by future task settlement in the active plan DAG.`,
+          settled_in: "T20 (check-fixtures)",
         },
       };
       if (isJson) console.log(JSON.stringify(res, null, 2));
-      else console.log(`Command '${command}' is pending plan settlement.`);
+      else console.log(`Evidence action '${sub}' is pending plan settlement.`);
       return 0;
     }
 

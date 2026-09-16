@@ -1,0 +1,54 @@
+{
+  "id": "run-fixture-wrong-state-eef7ebad2cdc-20260916T050550Z-manifest-01",
+  "run_id": "run-fixture-wrong-state-eef7ebad2cdc-20260916T050550Z",
+  "project_revision": "eef7ebad2cdcd05fb0e2f5eca23a02ae8ac921d4",
+  "requirement_ids": [
+    "REQ-VERIFY-001",
+    "REQ-VERIFY-002",
+    "REQ-GOAL-004"
+  ],
+  "artifacts": [
+    {
+      "id": "artifact-artifacts/state-snapshot.json",
+      "path": "artifacts/state-snapshot.json",
+      "sha256": "a3e88d7a5ab04101334742654880348ca9dda4003c066c34d41eb7cc6b2e7a11",
+      "role": "state-snapshot",
+      "mime_type": "application/json",
+      "size_bytes": 1105
+    },
+    {
+      "id": "artifact-artifacts/screenshot-main.png",
+      "path": "artifacts/screenshot-main.png",
+      "sha256": "b0728f1c91d3bab45670515879a17d07e17a34f93b5d4fb6e585fc012ffb0249",
+      "role": "rendered-capture",
+      "mime_type": "image/png",
+      "size_bytes": 6296
+    },
+    {
+      "id": "artifact-artifacts/telemetry.json",
+      "path": "artifacts/telemetry.json",
+      "sha256": "a604ede384fe393ccbabaffaf96de0155b318d4949a6bfe678afca727039dc49",
+      "role": "telemetry",
+      "mime_type": "application/json",
+      "size_bytes": 92
+    },
+    {
+      "id": "artifact-artifacts/network.json",
+      "path": "artifacts/network.json",
+      "sha256": "484d2787c1466fcbec46a72983bcdae4554e1f2268e908eedc2e354940a7df87",
+      "role": "network",
+      "mime_type": "application/json",
+      "size_bytes": 258
+    },
+    {
+      "id": "artifact-artifacts/renderer-probe.json",
+      "path": "artifacts/renderer-probe.json",
+      "sha256": "40949d0821bcef913e63a0e147be75733ae1e8eac31e6bcc8a4ab8d84cc6b252",
+      "role": "renderer-identity",
+      "mime_type": "application/json",
+      "size_bytes": 73
+    }
+  ],
+  "result": "pass",
+  "created_at": "2026-09-16T05:05:50Z"
+}
