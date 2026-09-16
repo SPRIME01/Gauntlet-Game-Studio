@@ -48,6 +48,13 @@ export const RelativeBaselineSchema = z
   })
   .strict();
 
+/**
+ * Hardware-sensitive budgets. Declaring a budget here implies a REPORT REQUIREMENT
+ * (T21 hardening): evidence that contains NO value for a budgeted metric fails
+ * evaluation as PERF_METRIC_UNREPORTED — a declared budget can never be vacated by
+ * omitting the measurement. Includes JS-heap memory (`max_memory_mb`, measured from
+ * Chrome performance.memory via the harness page-evaluation seam).
+ */
 export const HardwareBudgetsSchema = z
   .object({
     target_fps: z.number().positive().optional(),

@@ -431,12 +431,29 @@ export async function runScenario(opts: RunScenarioOptions): Promise<ScenarioRun
         stats?: Record<string, unknown>;
       };
     }
+    // JS-heap memory observation (T21 hardening): Chrome `performance.memory`
+    // (usedJSHeapSize/jsHeapSizeLimit) read through the page-evaluation seam —
+    // observation only, same discipline as every other channel capture. Browsers or
+    // contexts that expose no reading yield null; the absence is then recorded in
+    // the evidence `unreported` list (a declared max_memory_mb budget fails
+    // evaluation as unreported — it can never silently pass).
+    let memoryRead: { usedJSHeapSize?: unknown; jsHeapSizeLimit?: unknown } | null = null;
+    if (opts.qualityProfile) {
+      memoryRead = (await page
+        .evaluate(`(() => {
+          const mem = (performance).memory;
+          if (!mem || typeof mem !== "object") return null;
+          return { usedJSHeapSize: mem.usedJSHeapSize, jsHeapSizeLimit: mem.jsHeapSizeLimit };
+        })()`)
+        .catch(() => null)) as { usedJSHeapSize?: unknown; jsHeapSizeLimit?: unknown } | null;
+    }
     const performanceEvidence = capturePerformanceEvidence({
       quality_profile: qualityProfile,
       rendererStats: statsRead.present ? statsRead.stats ?? null : null,
       rendererStatsReason: statsRead.reason,
       rendererIdentity: (rendererProbe.identity ?? undefined) as Record<string, unknown> | undefined,
       console_errors: consoleEntries.filter((e) => e.type === "error" || e.type === "warning").length,
+      memory: memoryRead,
     });
 
     if (opts.captureTrace) {

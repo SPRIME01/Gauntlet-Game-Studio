@@ -1,0 +1,19 @@
+{
+  "id": "settlement-performance-fixture-no-fps-run-performance-fixture-no-fps-f0a07cb36dd5-20260916T182430Z",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-001",
+    "REQ-PERF-002",
+    "REQ-PERF-003",
+    "REQ-PERF-004",
+    "REQ-GAUNTLET-003"
+  ],
+  "decision": "failed",
+  "evidence_manifest_ids": [
+    "run-performance-fixture-no-fps-f0a07cb36dd5-20260916T182430Z-manifest-01"
+  ],
+  "reason": "verification failed — performance/PERF_METRIC_UNREPORTED: profile 'test-budget' declares hardware_budgets.min_fps_avg (min 55) but the evidence reports no average FPS value; a declared hardware budget implies a report requirement and cannot be vacated by omitting the measurement [contradiction: performance_contradiction: rendered captures and authoritative semantic state satisfy their constraints while a declared runtime-profile budget is violated; visual or semantic success cannot settle a performance requirement (REQ-PERF-004)] (classified: runtime_consequence_deficit); failed evidence is preserved append-only",
+  "settled_at": "2026-09-16T18:24:30Z",
+  "blockage_class": "runtime_consequence_deficit",
+  "next_affordance": "apply a bounded, evidence-producing correction; preserve the failed evidence"
+}

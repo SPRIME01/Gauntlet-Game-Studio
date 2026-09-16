@@ -17,6 +17,7 @@
 
 import type {
   FrameTimeDistribution,
+  JsHeapMemoryBytes,
   PerformanceChannelEvidence,
   RendererEvidenceClass,
 } from "./types";
@@ -72,6 +73,28 @@ function num(value: unknown): number | undefined {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
+const MB = 1024 * 1024;
+
+/**
+ * Normalizes a raw Chrome `performance.memory` read (bytes) into MB. Pure and
+ * deterministic; returns null when the browser exposes no usable JS-heap reading
+ * (non-Chromium engines, permission-restricted contexts) so the absence can be
+ * recorded honestly in `unreported` instead of fabricated.
+ */
+export function normalizeJsHeapMemory(raw: JsHeapMemoryBytes | null | undefined): {
+  used_mb?: number;
+  limit_mb?: number;
+} | null {
+  if (!raw || typeof raw !== "object") return null;
+  const usedBytes = num(raw.usedJSHeapSize);
+  if (usedBytes === undefined || usedBytes < 0) return null;
+  const limitBytes = num(raw.jsHeapSizeLimit);
+  return {
+    used_mb: usedBytes / MB,
+    ...(limitBytes !== undefined && limitBytes > 0 ? { limit_mb: limitBytes / MB } : {}),
+  };
+}
+
 export interface CapturePerformanceInput {
   /** Named quality profile the capture is taken under (declared by the game project). */
   quality_profile: string;
@@ -82,6 +105,14 @@ export interface CapturePerformanceInput {
   rendererIdentity?: Record<string, unknown>;
   /** Console error/warning count observed during the run (telemetry channel collector). */
   console_errors: number;
+  /**
+   * Raw Chrome `performance.memory` read from the harness page-evaluation seam
+   * (T21 hardening). Used as the JS-heap memory source when the stable renderer
+   * stats do not declare `memory_used_mb` themselves; a browser that exposes no
+   * reading records the metric in `unreported` (a declared `max_memory_mb` budget
+   * then fails evaluation as unreported — never silently passes).
+   */
+  memory?: JsHeapMemoryBytes | null;
 }
 
 /**
@@ -108,6 +139,7 @@ export function capturePerformanceEvidence(input: CapturePerformanceInput): Perf
         "textures",
         "resources",
         "readiness_ms",
+        "memory_used_mb",
       ],
       renderer_class: classifyRendererIdentity(input.rendererIdentity),
       read_via: readVia,
@@ -150,6 +182,23 @@ export function capturePerformanceEvidence(input: CapturePerformanceInput): Perf
     unreported.push("frame_time_ms.p50", "frame_time_ms.p95", "frame_time_ms.p99");
   }
 
+  // JS-heap memory (T21 hardening): the stable renderer stats seam takes precedence
+  // (a title/fixture that measures its own heap reports `memory_used_mb` in MB);
+  // otherwise the harness-provided Chrome `performance.memory` page read is used.
+  // Neither source reporting the heap records `memory_used_mb` in `unreported`.
+  const statsMemoryUsed = num(stats.memory_used_mb);
+  const statsMemoryLimit = num(stats.memory_heap_limit_mb);
+  let memoryUsedMb = statsMemoryUsed;
+  let memoryLimitMb = statsMemoryLimit;
+  if (memoryUsedMb === undefined) {
+    const heap = normalizeJsHeapMemory(input.memory);
+    if (heap) {
+      memoryUsedMb = heap.used_mb;
+      memoryLimitMb = heap.limit_mb;
+    }
+  }
+  if (memoryUsedMb === undefined) unreported.push("memory_used_mb");
+
   return {
     channel: "performance",
     quality_profile: input.quality_profile,
@@ -162,6 +211,8 @@ export function capturePerformanceEvidence(input: CapturePerformanceInput): Perf
       ...(textures !== undefined ? { textures } : {}),
       ...(resources !== undefined ? { resources } : {}),
       ...(readinessMs !== undefined ? { readiness_ms: readinessMs } : {}),
+      ...(memoryUsedMb !== undefined ? { memory_used_mb: memoryUsedMb } : {}),
+      ...(memoryLimitMb !== undefined ? { memory_heap_limit_mb: memoryLimitMb } : {}),
       console_errors: input.console_errors,
     },
     unreported,

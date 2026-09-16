@@ -32,6 +32,12 @@
  *                                 but a SwiftShader-class renderer identity; hardware-
  *                                 sensitive evidence is non-target and can never settle
  *                                 a hardware-target profile.
+ *   performance-fixture-no-fps  — T21-hardening (TEETH-T22-H1) fixture: reports HEALTHY
+ *                                 frame-time percentiles but omits fps_avg entirely —
+ *                                 the exact T21-verifier vacating scenario. A declared
+ *                                 min_fps_avg budget must fail as PERF_METRIC_UNREPORTED
+ *                                 (declared budgets imply report requirements), never
+ *                                 silently pass.
  *
  * Determinism: no Date.now(), no Math.random(), no animations; the canvas is painted
  * once from fixed values and every reported metric is a fixed function of the variant,
@@ -45,7 +51,8 @@ export interface FixtureScenarioOptions {
     | "perf-ok"
     | "perf-regress"
     | "perf-avg-only"
-    | "perf-swiftshader";
+    | "perf-swiftshader"
+    | "perf-no-fps";
 }
 
 export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
@@ -80,6 +87,7 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
     if (/performance-fixture-regress|perf-regress/.test(name)) return "perf-regress";
     if (/performance-fixture-avg-only|avg-only/.test(name)) return "perf-avg-only";
     if (/performance-fixture-swiftshader|swiftshader/.test(name)) return "perf-swiftshader";
+    if (/performance-fixture-no-fps|no-fps/.test(name)) return "perf-no-fps";
     if (/^performance-fixture$|perf-ok/.test(name)) return "perf-ok";
     return null;
   }
@@ -95,12 +103,14 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
     "perf-regress":     { draw_calls: 36, triangles: 420, textures: 3, resources: 7, fps_avg: 24, readiness_ms: 120, ft: [20.0, 58.0] },
     "perf-avg-only":    { draw_calls: 18, triangles: 420, textures: 3, resources: 7, fps_avg: 60, readiness_ms: 120, ft: null },
     "perf-swiftshader": { draw_calls: 18, triangles: 420, textures: 3, resources: 7, fps_avg: 60, readiness_ms: 120, ft: [15.2, 19.8] },
+    "perf-no-fps":      { draw_calls: 18, triangles: 420, textures: 3, resources: 7, fps_avg: null, readiness_ms: 120, ft: [15.2, 19.8] },
   };
   var IDENTITY = {
     "perf-ok":          "ANGLE (Deterministic Fixture GL, HardwareClass)",
     "perf-regress":     "ANGLE (Deterministic Fixture GL, HardwareClass)",
     "perf-avg-only":    "ANGLE (Deterministic Fixture GL, HardwareClass)",
     "perf-swiftshader": "SwiftShader (Deterministic Fixture SoftwareGL)",
+    "perf-no-fps":      "ANGLE (Deterministic Fixture GL, HardwareClass)",
   };
 
   var state = { steps: 0, seed: 0, paused: false, view: "main" };
@@ -186,6 +196,7 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
         "performance-fixture-regress",
         "performance-fixture-avg-only",
         "performance-fixture-swiftshader",
+        "performance-fixture-no-fps",
       ];
     },
     resetScenario: function (name) {
@@ -266,6 +277,10 @@ export function fixtureScenarioHtml(options: FixtureScenarioOptions): string {
           fps_avg: perf.fps_avg,
           readiness_ms: perf.readiness_ms,
         };
+        // The no-fps variant omits fps_avg ENTIRELY (not zero, not a healthy value):
+        // the exact vacating shape from the T21 confirmation record. All other
+        // variants keep their declared metrics unchanged.
+        if (typeof stats.fps_avg !== "number") delete stats.fps_avg;
         if (perf.ft) {
           var samples = deterministicFrameTimeSamples(perf.ft);
           stats.frame_time_samples_ms = samples;
@@ -316,6 +331,7 @@ export const PERFORMANCE_OK_SCENARIO_ID = "performance-fixture";
 export const PERFORMANCE_REGRESS_SCENARIO_ID = "performance-fixture-regress";
 export const PERFORMANCE_AVG_ONLY_SCENARIO_ID = "performance-fixture-avg-only";
 export const PERFORMANCE_SWIFTSHADER_SCENARIO_ID = "performance-fixture-swiftshader";
+export const PERFORMANCE_NO_FPS_SCENARIO_ID = "performance-fixture-no-fps";
 
 const SCENARIO_VARIANTS: Record<string, FixtureScenarioOptions["variant"]> = {
   [FIXTURE_OK_SCENARIO_ID]: "ok",
@@ -324,6 +340,7 @@ const SCENARIO_VARIANTS: Record<string, FixtureScenarioOptions["variant"]> = {
   [PERFORMANCE_REGRESS_SCENARIO_ID]: "perf-regress",
   [PERFORMANCE_AVG_ONLY_SCENARIO_ID]: "perf-avg-only",
   [PERFORMANCE_SWIFTSHADER_SCENARIO_ID]: "perf-swiftshader",
+  [PERFORMANCE_NO_FPS_SCENARIO_ID]: "perf-no-fps",
 };
 
 export function buildFixtureScenario(

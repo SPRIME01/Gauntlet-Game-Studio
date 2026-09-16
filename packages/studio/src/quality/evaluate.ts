@@ -8,6 +8,17 @@
  * hardware-sensitive acceptance additionally requires the profile's evidence class to
  * be satisfiable by the observed renderer class.
  *
+ * Declared budgets imply report requirements (T21 hardening round 1, resolving the
+ * advisory findings in artifacts/plan/T21/confirmation.md): when a profile declares a
+ * hardware-sensitive budget on a metric and the evidence contains NO value for that
+ * metric, the check FAILS with a typed `PERF_METRIC_UNREPORTED` violation — a declared
+ * budget can never be silently vacated by omitting the measurement (the T21 verifier
+ * demonstrated `fps_avg` omitted with healthy percentiles evaluating pass:true).
+ * Structural checks keep their existing semantics. JS-heap memory
+ * (`memory_used_mb`, captured through the T20 harness page-evaluation seam / stable
+ * renderer stats seam) is evaluated against `hardware_budgets.max_memory_mb` when
+ * declared.
+ *
  * This module EVALUATES; it never settles. Settlement mapping (failed/blocked) lives
  * in the T20 Gauntlet settlement bridge, which consumes these verdicts.
  */
@@ -64,6 +75,9 @@ const STRUCTURAL_CHECK_CODES = new Set([
   "PERF_ASSET_REGISTRY",
   "PERF_METRIC_RULE_MISSING_PERCENTILE",
   "PERF_AVERAGE_ONLY_REPORTING",
+  // T21 hardening: an unreported declared metric is deterministically detectable
+  // (the value is present in the evidence or it is not) in ANY environment.
+  "PERF_METRIC_UNREPORTED",
 ]);
 
 export function isStructuralPerfCode(code: string): boolean {
@@ -222,9 +236,6 @@ export function evaluatePerformanceEvidence(
     );
   }
 
-  const structuralChecks = checks.filter((c) => c.budget_class === "structural");
-  const structuralFailed = structuralChecks.some((c) => !c.pass);
-
   // ---- Hardware-sensitive guard: hardware-target profiles can never be settled by
   // non-target (software/unknown renderer) evidence (REQ-PERF-003).
   const rendererAllowsHardware = evidence.renderer_class === "hardware";
@@ -240,17 +251,33 @@ export function evaluatePerformanceEvidence(
     });
   }
 
-  // ---- Hardware-sensitive budgets (frame-time percentiles, FPS, load timing).
+  // ---- Hardware-sensitive budgets (frame-time percentiles, FPS, load timing, memory).
   const hardware: Array<{ code: string; limit: number | undefined; measured: number | undefined; label: string; compare: "max" | "min"; budget: string }> = [
     { code: "PERF_FPS_AVG", limit: profile.hardware_budgets.min_fps_avg, measured: metrics.fps_avg, label: "average FPS", compare: "min", budget: "hardware_budgets.min_fps_avg" },
     { code: "PERF_FRAME_TIME_P50", limit: profile.hardware_budgets.max_frame_time_p50_ms, measured: dist?.p50, label: "frame time p50", compare: "max", budget: "hardware_budgets.max_frame_time_p50_ms" },
     { code: "PERF_FRAME_TIME_P95", limit: profile.hardware_budgets.max_frame_time_p95_ms, measured: dist?.p95, label: "frame time p95", compare: "max", budget: "hardware_budgets.max_frame_time_p95_ms" },
     { code: "PERF_FRAME_TIME_P99", limit: profile.hardware_budgets.max_frame_time_p99_ms, measured: dist?.p99, label: "frame time p99", compare: "max", budget: "hardware_budgets.max_frame_time_p99_ms" },
     { code: "PERF_LOAD_TIME", limit: profile.hardware_budgets.max_load_ms, measured: metrics.readiness_ms, label: "readiness/load time", compare: "max", budget: "hardware_budgets.max_load_ms" },
+    { code: "PERF_MEMORY", limit: profile.hardware_budgets.max_memory_mb, measured: metrics.memory_used_mb, label: "JS heap memory used", compare: "max", budget: "hardware_budgets.max_memory_mb" },
   ];
   for (const item of hardware) {
     if (item.limit === undefined) continue; // profile does not gate this metric
-    if (typeof item.measured !== "number") continue; // already flagged by metric rules
+    if (typeof item.measured !== "number") {
+      // T21 hardening (advisory finding 1): a declared hardware budget implies a
+      // report requirement. Evidence that omits the metric entirely FAILS the
+      // profile gate with a typed violation — it can never silently vacate the
+      // declared budget (the T21 verifier demonstrated fps_avg omitted with healthy
+      // percentiles evaluating pass:true). Classified structural/deterministic:
+      // whether the evidence reports the value is provable in ANY environment.
+      checks.push({
+        code: "PERF_METRIC_UNREPORTED",
+        pass: false,
+        detail: `profile '${profile.id}' declares ${item.budget} (${item.compare} ${item.limit}) but the evidence reports no ${item.label} value; ` +
+          "a declared hardware budget implies a report requirement and cannot be vacated by omitting the measurement",
+        budget_class: "structural",
+      });
+      continue;
+    }
     const pass = item.compare === "max" ? item.measured <= item.limit : item.measured >= item.limit;
     const binding =
       profile.evidence_class === "hardware-target"
@@ -265,6 +292,10 @@ export function evaluatePerformanceEvidence(
     if (!pass) violations.push(violation(item.budget, item.limit, item.measured));
   }
 
+  // Failure-class flags are computed AFTER every check is pushed: the unreported-
+  // declared-metric checks (PERF_METRIC_UNREPORTED) are structural-class but arise
+  // from the hardware budget loop, so structural_failed must observe them too.
+  const structuralFailed = checks.some((c) => c.budget_class === "structural" && !c.pass);
   const hardwareChecks = checks.filter((c) => c.budget_class === "hardware-sensitive" && c.code !== "PERF_NON_TARGET_RENDERER");
   const hardwareFailed = hardwareChecks.some((c) => !c.pass);
 

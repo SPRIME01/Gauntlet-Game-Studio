@@ -18,6 +18,15 @@
  *      target `target` profile -> blocked (hardware_target_unavailable, never
  *      settled/passed) while structural budgets stay enforceable; the same evidence
  *      under the relative-baseline test-budget profile settles, explicitly labeled.
+ *   E. T21-HARDENING (confirmation advisory 1): performance-fixture-no-fps reports
+ *      HEALTHY percentiles but omits fps_avg entirely — the exact T21-verifier
+ *      vacating shape -> the profile gate now FAILS with PERF_METRIC_UNREPORTED
+ *      (declared budgets imply report requirements), never silently passes.
+ *
+ * T21-HARDENING (confirmation advisory 2): the harness captures Chrome
+ * `performance.memory` (usedJSHeapSize/jsHeapSizeLimit) through the page-evaluation
+ * seam; leg A asserts the JS-heap memory fields are present in the captured
+ * performance evidence.
  *
  * Exit codes: 0 = all preregistered legs behaved as specified; 1 = hard failure;
  * 2 = scoped environmental blockage (browser proof impossible here; documented,
@@ -31,6 +40,7 @@ import {
   PERFORMANCE_REGRESS_SCENARIO_ID,
   PERFORMANCE_AVG_ONLY_SCENARIO_ID,
   PERFORMANCE_SWIFTSHADER_SCENARIO_ID,
+  PERFORMANCE_NO_FPS_SCENARIO_ID,
   buildFixtureScenario,
   runScenario,
   type ChannelEvidence,
@@ -139,10 +149,23 @@ async function runGateLegs(): Promise<void> {
   if (okObserved.status !== "observed") block(`leg A observation failed: ${JSON.stringify(okObserved.blockage)}`);
   const okPerf = perfOf(okObserved.channels);
   if (!okPerf.present) fail("leg A: performance evidence reported present:false");
+  // T21-HARDENING (advisory finding 2): JS-heap memory capture must be wired. Real
+  // Chrome exposes performance.memory; the captured evidence carries the memory
+  // fields. Presence is asserted here (values are host-dependent, not deterministic).
+  if (typeof okPerf.metrics.memory_used_mb !== "number" || !(okPerf.metrics.memory_used_mb > 0)) {
+    fail(
+      "leg A: memory_used_mb missing from captured performance evidence — Chrome " +
+        "performance.memory capture is not wired through the page-evaluation seam"
+    );
+  }
+  if (typeof okPerf.metrics.memory_heap_limit_mb !== "number") {
+    fail("leg A: memory_heap_limit_mb missing from captured performance evidence");
+  }
   console.log(
     `LEG A observed run ${okObserved.run!.id}; metrics: draw_calls=${okPerf.metrics.draw_calls} ` +
       `p95=${okPerf.metrics.frame_time_ms?.p95}ms p99=${okPerf.metrics.frame_time_ms?.p99}ms ` +
-      `fps=${okPerf.metrics.fps_avg} renderer=${okPerf.renderer_class}`
+      `fps=${okPerf.metrics.fps_avg} renderer=${okPerf.renderer_class} ` +
+      `memory_used_mb=${okPerf.metrics.memory_used_mb!.toFixed(1)} memory_heap_limit_mb=${okPerf.metrics.memory_heap_limit_mb!.toFixed(0)}`
   );
   const okSettlement = settleFor(okExpectation, okObserved, profile("test-budget"));
   if (okSettlement.decision !== "settled") {
@@ -247,6 +270,41 @@ async function runGateLegs(): Promise<void> {
   }
   console.log(
     "RELATIVE BASELINE PASS: test-budget profile (structural+relative-baseline) settles the same software-rendered evidence, explicitly NOT a hardware claim"
+  );
+
+  // ---- Leg E: T21-HARDENING end-to-end (fps_avg omitted entirely — the vacating shape) ----
+  const noFpsExpectation = loadExpectation(PERFORMANCE_NO_FPS_SCENARIO_ID);
+  const noFpsObserved = await runScenario(
+    runOpts(PERFORMANCE_NO_FPS_SCENARIO_ID, [...noFpsExpectation.requirement_ids], "test-budget")
+  );
+  if (noFpsObserved.status !== "observed") block(`leg E observation failed: ${JSON.stringify(noFpsObserved.blockage)}`);
+  const noFpsPerf = perfOf(noFpsObserved.channels);
+  if (noFpsPerf.metrics.fps_avg !== undefined) {
+    fail("leg E precondition broken: no-fps fixture must NOT report fps_avg");
+  }
+  console.log(
+    `LEG E metrics: fps_avg UNREPORTED, percentiles p95=${noFpsPerf.metrics.frame_time_ms?.p95}ms ` +
+      `p99=${noFpsPerf.metrics.frame_time_ms?.p99}ms (healthy) — the exact T21-verifier vacating shape`
+  );
+  const noFpsSettlement = settleFor(noFpsExpectation, noFpsObserved, profile("test-budget"));
+  if (noFpsSettlement.decision !== "failed") {
+    fail(
+      `T21-HARDENING BIT FAILED: omitting fps_avg under a declared min_fps_avg budget evaluated as ` +
+        `'${noFpsSettlement.decision}', must be 'failed' — a declared hardware budget implies a ` +
+        "report requirement and can never be vacated by omission"
+    );
+  }
+  const noFpsFailedCodes = noFpsSettlement.channel_verdicts
+    .find((v) => v.channel === "performance")!
+    .checks.filter((c) => !c.pass)
+    .map((c) => c.code);
+  if (!noFpsFailedCodes.includes("PERF_METRIC_UNREPORTED")) {
+    fail(`T21-HARDENING: vacating scenario did not fail with PERF_METRIC_UNREPORTED (codes: ${noFpsFailedCodes.join(", ")})`);
+  }
+  store.appendSettlement(noFpsObserved.run!.id, noFpsSettlement.record!);
+  console.log(
+    "T21-HARDENING PASS: fps_avg omitted with healthy percentiles under test-budget -> failed with PERF_METRIC_UNREPORTED " +
+      "(declared budgets imply report requirements; the prior silent pass cannot recur)"
   );
 
   console.log("SUCCESS: all T21 performance proof legs behaved as preregistered.");

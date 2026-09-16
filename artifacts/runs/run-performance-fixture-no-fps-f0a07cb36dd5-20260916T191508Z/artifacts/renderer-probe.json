@@ -1,0 +1,10 @@
+{
+  "present": true,
+  "identity": {
+    "unmasked_renderer": "ANGLE (Deterministic Fixture GL, HardwareClass)",
+    "vendor": "gauntlet-fixture"
+  },
+  "capabilities": {
+    "max_texture_size": 2048
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "channel": "performance",
+  "quality_profile": "test-budget",
+  "present": true,
+  "metrics": {
+    "fps_avg": 60,
+    "draw_calls": 18,
+    "triangles": 420,
+    "textures": 3,
+    "resources": 7,
+    "readiness_ms": 120,
+    "memory_used_mb": 1.625981330871582,
+    "memory_heap_limit_mb": 4067.25,
+    "console_errors": 0
+  },
+  "unreported": [
+    "frame_time_ms.p50",
+    "frame_time_ms.p95",
+    "frame_time_ms.p99"
+  ],
+  "renderer_class": "hardware",
+  "read_via": [
+    "renderer.stats()",
+    "renderer.probe()"
+  ]
+}

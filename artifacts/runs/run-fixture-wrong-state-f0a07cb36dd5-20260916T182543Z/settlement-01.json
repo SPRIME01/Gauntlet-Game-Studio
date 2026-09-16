@@ -1,0 +1,18 @@
+{
+  "id": "settlement-fixture-wrong-state-run-fixture-wrong-state-f0a07cb36dd5-20260916T182543Z",
+  "requirement_ids": [
+    "REQ-GOAL-004",
+    "REQ-VERIFY-001",
+    "REQ-VERIFY-002",
+    "REQ-GAUNTLET-003",
+    "REQ-GAUNTLET-006"
+  ],
+  "decision": "failed",
+  "evidence_manifest_ids": [
+    "run-fixture-wrong-state-f0a07cb36dd5-20260916T182543Z-manifest-01"
+  ],
+  "reason": "verification failed — state/SEMANTIC_POSITION_MISMATCH: entity 'player' authoritative position [0, 0, 0] violates expected [3, 0, 0] (deltas 3, 0, 0 > tolerance 0.000001) [contradiction: pixels_pass_state_fail: rendered captures satisfy visual constraints while the authoritative semantic state violates the frozen expectation; pixels cannot override a semantic contradiction] (classified: represented_but_deficient); failed evidence is preserved append-only",
+  "settled_at": "2026-09-16T18:25:43Z",
+  "blockage_class": "represented_but_deficient",
+  "next_affordance": "apply a bounded, evidence-producing correction; preserve the failed evidence"
+}

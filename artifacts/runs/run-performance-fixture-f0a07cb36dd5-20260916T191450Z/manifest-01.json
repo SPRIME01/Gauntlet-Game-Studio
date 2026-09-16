@@ -1,0 +1,65 @@
+{
+  "id": "run-performance-fixture-f0a07cb36dd5-20260916T191450Z-manifest-01",
+  "run_id": "run-performance-fixture-f0a07cb36dd5-20260916T191450Z",
+  "project_revision": "f0a07cb36dd5c3c8fce39742c2c5ed2d2aba856f",
+  "requirement_ids": [
+    "REQ-VERIFY-003",
+    "REQ-PERF-001",
+    "REQ-PERF-002",
+    "REQ-PERF-003",
+    "REQ-PERF-004",
+    "REQ-GAUNTLET-003"
+  ],
+  "artifacts": [
+    {
+      "id": "artifact-artifacts/state-snapshot.json",
+      "path": "artifacts/state-snapshot.json",
+      "sha256": "c613d74d27164f66fc9d4da03628dc000936a1cf0f63cfa4cafea2d430b2f561",
+      "role": "state-snapshot",
+      "mime_type": "application/json",
+      "size_bytes": 1105
+    },
+    {
+      "id": "artifact-artifacts/screenshot-main.png",
+      "path": "artifacts/screenshot-main.png",
+      "sha256": "b0728f1c91d3bab45670515879a17d07e17a34f93b5d4fb6e585fc012ffb0249",
+      "role": "rendered-capture",
+      "mime_type": "image/png",
+      "size_bytes": 6296
+    },
+    {
+      "id": "artifact-artifacts/telemetry.json",
+      "path": "artifacts/telemetry.json",
+      "sha256": "a604ede384fe393ccbabaffaf96de0155b318d4949a6bfe678afca727039dc49",
+      "role": "telemetry",
+      "mime_type": "application/json",
+      "size_bytes": 92
+    },
+    {
+      "id": "artifact-artifacts/network.json",
+      "path": "artifacts/network.json",
+      "sha256": "669d461618e158f2030dd0cc1ba87d24546203e92b552ed013bf8fb0fa5b9fa6",
+      "role": "network",
+      "mime_type": "application/json",
+      "size_bytes": 258
+    },
+    {
+      "id": "artifact-artifacts/performance-metrics.json",
+      "path": "artifacts/performance-metrics.json",
+      "sha256": "a4780701b50d4c15ccbe7969917f971d52ebd07833c6ddb23d2a16ea6672ba44",
+      "role": "performance-metrics",
+      "mime_type": "application/json",
+      "size_bytes": 585
+    },
+    {
+      "id": "artifact-artifacts/renderer-probe.json",
+      "path": "artifacts/renderer-probe.json",
+      "sha256": "42f37a287dd9e86dcab76d75c9d6a2c9ee68d87aef425fafdbd46e0e1d1eded4",
+      "role": "renderer-identity",
+      "mime_type": "application/json",
+      "size_bytes": 206
+    }
+  ],
+  "result": "pass",
+  "created_at": "2026-09-16T19:14:50Z"
+}

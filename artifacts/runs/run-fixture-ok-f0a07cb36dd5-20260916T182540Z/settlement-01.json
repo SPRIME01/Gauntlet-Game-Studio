@@ -1,0 +1,17 @@
+{
+  "id": "settlement-fixture-ok-run-fixture-ok-f0a07cb36dd5-20260916T182540Z",
+  "requirement_ids": [
+    "REQ-GOAL-004",
+    "REQ-OUT-003",
+    "REQ-BIND-010",
+    "REQ-VERIFY-001",
+    "REQ-VERIFY-002",
+    "REQ-GAUNTLET-003"
+  ],
+  "decision": "settled",
+  "evidence_manifest_ids": [
+    "run-fixture-ok-f0a07cb36dd5-20260916T182540Z-manifest-01"
+  ],
+  "reason": "settled on fresh correlated evidence for revision f0a07cb36dd5c3c8fce39742c2c5ed2d2aba856f (run run-fixture-ok-f0a07cb36dd5-20260916T182540Z; state: 4/4 checks pass, pixels: 2/2 checks pass, telemetry: 3/3 checks pass, network: 2/2 checks pass)",
+  "settled_at": "2026-09-16T18:25:40Z"
+}

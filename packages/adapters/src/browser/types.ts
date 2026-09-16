@@ -117,6 +117,21 @@ export interface PerformanceMetrics {
   resources?: number;
   readiness_ms?: number;
   console_errors?: number;
+  /**
+   * JS heap memory in use, in MB (T21 hardening): Chrome `performance.memory.usedJSHeapSize`
+   * via the harness page-evaluation seam, or the stable renderer stats seam where a
+   * title reports its own measurement. Evaluated against a declared
+   * `hardware_budgets.max_memory_mb`.
+   */
+  memory_used_mb?: number;
+  /** Chrome `performance.memory.jsHeapSizeLimit` in MB, when the browser exposes it. */
+  memory_heap_limit_mb?: number;
+}
+
+/** JS-heap memory observation (bytes, as exposed by Chrome `performance.memory`). */
+export interface JsHeapMemoryBytes {
+  usedJSHeapSize?: unknown;
+  jsHeapSizeLimit?: unknown;
 }
 
 /**

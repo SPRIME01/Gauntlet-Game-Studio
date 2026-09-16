@@ -1,0 +1,14 @@
+{
+  "channel": "network",
+  "responses": [
+    {
+      "url": "http://127.0.0.1:42315/?scenario=performance-fixture",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "surface_read": {
+    "present": false,
+    "reason": "fixture: network not wired"
+  }
+}

@@ -46,6 +46,10 @@ function healthyEvidence(profile: string, rendererClass: "hardware" | "software"
       resources: 7,
       readiness_ms: 120,
       console_errors: 0,
+      // T21 hardening: memory is now captured and gated by max_memory_mb
+      // (declared by the `target` profile). Healthy evidence reports it.
+      memory_used_mb: 48,
+      memory_heap_limit_mb: 4096,
     },
     unreported: [],
     renderer_class: rendererClass,
