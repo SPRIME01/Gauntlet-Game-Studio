@@ -13,27 +13,33 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T16
+  last_settled_task: T19
   in_flight_task: null
-  workable_task: T19
+  workable_task: T20
   ready_tasks:
-    - T14
-    - T15
-    - T17
     - T18
-    - T19
+    - T20
   blocked_tasks:
-    T20: [T19]
-    T21: [T19, T20]
-    T22: [T14, T15, T17, T18, T20, T21]
+    T21: [T20]
+    T22: [T18, T20, T21]
     T23: [T22]
     T24: [T23]
     T25: [T24]
   plan_blocked: false
   plan_blocker: null
 
+environment_blockers:
+  T18:
+    blocker: blender_unavailable
+    detail: >-
+      T18 requires the Blender executable to produce the service-drone retarget/bake derivative
+      (REQ-BLENDER-*). Blender is not installed on this host (which version 1). The task's own design
+      makes missing Blender a scoped regeneration/proof blockage while deterministic CI stays green;
+      execution resumes when Blender is available or a donor host produces the derivative through the
+      dcc.blender.process route. T22/T23/T24/T25 remain gated behind it.
+
 active:
-  task: T19
+  task: T20
   phase: ready
   blocker: null
 
@@ -128,6 +134,30 @@ latest_evidence:
     commit: b2a3074
     gate: PASS (bun run studio -- capabilities lint --json, bun test packages/studio/test/skill-overlays 7/7)
     teeth: PASS (attack 1 director discovery variants rejected FORBIDDEN_UPSTREAM_AUTHORITY by live CLI gate, attack 2 credential-only generator preference rejected QUARANTINED_SKILL/CREDENTIAL_PREFERENCE_REJECTED)
+  T19:
+    report: artifacts/plan/T19/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: 4f3192f
+    gate: PASS (bun test packages/runtime/test/observability.test.ts 12/12, bun run test:production-observability)
+    teeth: PASS (attack 1 DOM-only/provider-coupled surfaces fail contract validation while stable Koota-correlated reads pass, attack 2 injected production mutation APIs fail the production surface inspector)
+  T17:
+    report: artifacts/plan/T17/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: 5402b33
+    gate: PASS (bun test packages/runtime/test/audio-headless.test.ts 6/6, bun run test:audio-browser)
+    teeth: PASS (attack 1 un-gestured unlock stays locked/suspended with real Chrome and no autoplay bypass, attack 2 headless kernel runs green with no DOM/AudioContext)
+  T14:
+    report: artifacts/plan/T14/summary.md
+    confirmation: independent CONFIRM
+    commit: f3d8e6e
+    gate: PASS (studio capability prepare + verify-result asset.reconstruct.reference-image, bun test packages/studio/test/capabilities 27/27)
+    teeth: PASS (attack 1 missing reference blocks typed without text-to-3D fallback, attack 2 verify-result passes with stripped credentials and poisoned fetch, attack 3 forged second three installation fails MULTIPLE_THREE_INSTALLATIONS)
+  T15:
+    report: artifacts/plan/T15/summary.md
+    confirmation: builder_with_teeth CONFIRM
+    commit: f3d8e6e
+    gate: PASS (studio capability prepare + verify-result world.environment.compose, bun test packages/studio/test/capabilities 3dviz suite 13/13)
+    teeth: PASS (attack 1 reconstruction intent through world-composition route redirects to asset.reconstruct at 3 layers, attack 2 3dviz terrain/navmesh authority claims rejected by normalization and integration gate)
 
 observations:
   - status: OBSERVED
@@ -237,17 +267,28 @@ observations:
       behind explicit enablement; capabilities lint enforces the full discoverable surface. Peer confirmation:
       CONFIRM.
     evidence: artifacts/plan/T16/summary.md
+  - status: OBSERVED
+    statement: >-
+      Tasks T14/T15/T17/T19 settled in one parallel wave: img2threejs reference-reconstruction handoff with
+      deterministic offline result verification (independent CONFIRM); 3dviz world-composition handoff preserving
+      canonical terrain/nav authority (builder_with_teeth CONFIRM); Quarks VFX + Tone AudioBackend + DOM HUD with
+      real-gesture browser proof and headless purity (independent_adversarial CONFIRM); versioned observability
+      bridge with production mutation lockout (independent_adversarial CONFIRM).
+    evidence: artifacts/plan/T14/summary.md, artifacts/plan/T15/summary.md, artifacts/plan/T17/summary.md, artifacts/plan/T19/summary.md
 
 next_action:
-  task: T19
+  task: T20
   action: >-
-    Implement T19 per the plan definition (unblocked by T08/T10/T11/T12 settlements; on the critical path):
-    1. Freeze preregistration for T19.
-    2. Implement the task scope within packages/runtime per the plan steps.
-    3. Run declared gates and teeth; record evidence in artifacts/plan/T19/.
-    4. Obtain the declared confirmation mode before settlement.
+    Implement browser proof harness, immutable evidence, and Gauntlet settlement bridge (T20):
+    1. Freeze P3 preregistration for T20.
+    2. Implement Playwright scenario harness against the T19 observability contract; ObservationRun/EvidenceManifest
+       storage under artifacts/runs/<run-id>/; Gauntlet expectation comparison with blocked/failed/incomplete
+       classifications; contradiction logic across state/pixels/telemetry/network.
+    3. Expose studio observe, studio verify, and studio evidence check structured commands.
+    4. Run declared gates and teeth; obtain independent_adversarial confirmation before settlement.
   reason: >-
-    T12/T13/T16 settled cleanly; T19 is unblocked and on the critical path toward T20/T21/T22.
+    T14/T15/T17/T19 settled; T20 is unblocked (T03, T05, T19) and gates T21 and T22. T18 is ready but
+    environment-blocked on Blender availability (see environment_blockers).
 
 handoff:
   settled_summary:
@@ -267,7 +308,11 @@ handoff:
     - "T12: Implemented authoritative multiplayer foundations (Bun WebSocket baseline, transport abstraction, sequenced validated commands, replication/reconciliation, interest filtering, network diagnostics); single-player proven network-free; independent adversarial confirmation CONFIRM (commit 31f8d1f)."
     - "T13: Implemented Asset Registry with provenance/acceptance gates, glTF-Transform compiler (WebP baseline, KTX2 toktx-gated), Poly Haven CC0 intake, and asset verify CLI; peer confirmation CONFIRM (commit 72cfb6f)."
     - "T16: Integrated threejs-game-skills specialists via studio-owned overlay with director exclusion and generator quarantine enforced at the lint gate; peer confirmation CONFIRM (commit b2a3074)."
-  unresolved_summary: []
+    - "T19: Versioned __GAUNTLET_STUDIO_OBS__ v1 observability bridge; production mode structurally free of privileged mutation with a biting inspector; independent adversarial confirmation CONFIRM (commit 4f3192f)."
+    - "T17: Quarks VFX projection, Tone AudioBackend with real user-gesture unlock proven via raw-CDP attack leg, NullAudioBackend headless purity, DOM HUD; independent adversarial confirmation CONFIRM (commit 5402b33)."
+    - "T14+T15: img2threejs reference-reconstruction handoff (independent CONFIRM) and 3dviz world-composition handoff (builder_with_teeth) with deterministic offline result verification, single-three guards, and Blackwater fixtures (commit f3d8e6e)."
+  unresolved_summary:
+    - "T18 is ready but environment-blocked: Blender is not installed on this host, so the service-drone retarget/bake derivative cannot be produced through dcc.blender.process. Deterministic CI remains green; T22+ stay gated behind T18."
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
     - "Never mark a task settled on builder say-so; P3 tasks require frozen preregistration and independent confirmation."
