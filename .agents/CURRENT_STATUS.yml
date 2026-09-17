@@ -13,18 +13,17 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T24
+  last_settled_task: T25
   in_flight_task: null
-  workable_task: T25
-  ready_tasks:
-    - T25
+  workable_task: null
+  ready_tasks: []
   blocked_tasks: {}
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T25
-  phase: ready
+  task: null
+  phase: plan_settled
   blocker: null
 
 latest_evidence:
@@ -148,6 +147,12 @@ latest_evidence:
     commit: 480fc69
     gate: PASS (bun run test:proof-harness 22/22 + Chrome legs, bun run studio -- evidence check-fixtures --json)
     teeth: PASS (attack 1 byte-identical screenshot with wrong Koota state settles failed with pixels_pass_state_fail contradiction, attack 2 foreign-revision manifest rejected via identity-based staleness and immutability, attack 3 injected Playwright-unavailable yields typed blocked never passed)
+  T25:
+    report: artifacts/plan/T25/summary.md
+    confirmation: independent_adversarial CONFIRM (whole-studio, 16/16 groups)
+    commit: 0746d99
+    gate: PASS (check-traceability zero unmapped, just ci, studio verify --suite all 9/9 settled)
+    teeth: PASS (attack 1 unmapped-requirement variant names exact IDs and fails, attack 2 historical-run substitution rejected at store and settlement layers)
   T21:
     report: artifacts/plan/T21/summary.md
     confirmation: independent_adversarial CONFIRM
@@ -160,6 +165,18 @@ latest_evidence:
     commit: ed71af4
     gate: PASS (bun run --cwd examples/blackwater-relay build, ... test:e2e 6/6 SETTLED, studio verify --suite single-player 6/6 settled)
     teeth: PASS (attack 1 transport APIs sabotaged yet all six scenarios settle with zero network, attack 2 blender-absent/.tmp-ignored rebuild stays green on committed derivatives, attack 3 corrupt-gate and beacon-divergence fixtures settle failed via semantic evidence with pixels/telemetry passing)
+  T23:
+    report: artifacts/plan/T23/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: bf5743a
+    gate: PASS (bun run test:blackwater-multiplayer 3/3 SETTLED, studio verify --suite multiplayer 3/3, single-player regression green)
+    teeth: PASS (attack 1 hostile-client battery typed-rejected with Koota truth byte-identical, attack 2 bounded recovery under ~9x impairment with diagnostics exposing impairment, attack 3 SIGKILL disconnect yields explicit states and no client authority takeover)
+  T24:
+    report: artifacts/plan/T24/summary.md
+    confirmation: independent_adversarial CONFIRM
+    commit: 7307668
+    gate: PASS (conformance:recovery 22/1-delegated, conformance:security 6/0, conformance:clean-checkout 13/0)
+    teeth: PASS (attack 1 donor-absent fresh clone fully green, attack 2 credentials-free deterministic conformance with zero regeneration, attack 3 traversal/forged-input rejected before privileged side effects)
   T18:
     report: artifacts/plan/T18/summary.md
     confirmation: independent CONFIRM
@@ -295,19 +312,11 @@ observations:
     evidence: artifacts/plan/T18/summary.md, artifacts/plan/T21/hardening-round1.md
 
 next_action:
-  task: T25
-  action: >-
-    Run final traceability, clean reproduction, and whole-studio independent confirmation (T25):
-    1. Freeze the T25 preregistration; mechanically parse the frozen spec requirement IDs and plan mappings
-       (zero unmapped, zero unknown).
-    2. Fresh clean reproduction: install/check/test/build/doctor from clean checkout with .tmp/donor absent;
-       Blackwater single-player and multiplayer suites; validate all referenced EvidenceManifests; final evidence
-       check/settlement index with failed/correction evidence preserved.
-    3. Bind just ci; support --suite all; run the declared gates and teeth.
-    4. Give an independent verifier the frozen spec, invariants, implementation, fresh evidence, and exact
-       confirmation questions for all high-risk groups; update handoff only after verdicts pass.
-    reason: >-
-    T23 settled cleanly; T24 is the only ready task, gating T25.
+  task: null
+  action: none — plan settled.
+  reason: >-
+    T25 settled with the whole-studio independent adversarial confirmation (CONFIRM, 16/16 high-risk groups);
+    all 26 tasks of the plan are settled; zero unmapped requirements; handoff complete.
 
 handoff:
   settled_summary:
@@ -335,10 +344,9 @@ handoff:
     - "T18: Blender 5.2.2 LTS DCC escalation via deterministic --background + bpy; service-drone GLB reproduces byte-identically, flows through normalization + Asset Registry; normal build Blender-free with typed scoped blockage; independent confirmation CONFIRM (commit 03c0a61). Hardening round 1 resolved both T21-confirmation prerequisites for T22 (commit 04ee2f3)."
     - "T22: Blackwater Relay single-player vertical slice assembled and settled: six frozen scenarios, one canonical heightfield, one scheduler step owner, network-free proof, semantic-vs-pixel corruption teeth; independent adversarial confirmation CONFIRM (commit ed71af4)."
     - "T23: Authoritative multiplayer settled: two browser clients + headless server on the same simulation contracts; hostile-client battery, bounded ~9x impairment recovery, SIGKILL disconnect/reconnect; independent adversarial confirmation CONFIRM (commit bf5743a)."
-    - "T24: Recovery/security/donor matrix executed (14 VAR + 8 RECOV, append-only corrections preserved); fresh-clone clean checkout with donor never present; security boundaries bite; independent adversarial confirmation CONFIRM."
-  unresolved_summary:
-    - "Only T25 remains (final traceability + whole-studio confirmation). Note: plan gate text bun --cwd <dir> run <script> no-ops under bun 1.4; the working order bun run --cwd <dir> <script> is documented in artifacts/plan/T22/summary.md."
-    - "T22 hardening prerequisites recorded in artifacts/plan/T21/confirmation.md: wire memory budget capture (max_memory_mb declared but unmeasured) and make declared hardware budgets imply report-requirements before target-hardware settlement."
+    - "T24: Recovery/security/donor matrix executed (14 VAR + 8 RECOV, append-only corrections preserved); fresh-clone clean checkout with donor never present; security boundaries bite; independent adversarial confirmation CONFIRM (commit 7307668; hygiene + correction rounds recorded)."
+    - "T25: Whole-studio settlement: traceability 193 IDs zero unmapped, clean donor-free reproduction, 9/9 reference scenarios, evidence index validated, security self-match correction preserved; whole-studio independent adversarial confirmation CONFIRM 16/16 high-risk groups."
+  unresolved_summary: []
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
     - "Never mark a task settled on builder say-so; P3 tasks require frozen preregistration and independent confirmation."
