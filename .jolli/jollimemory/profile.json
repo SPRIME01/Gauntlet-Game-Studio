@@ -1,5 +1,12 @@
 {
 	"userDisabled": false,
-	"manuallyDisabled": false,
-	"cutoverAttemptedAtMs": 1789491465402
+	"manuallyDisabled": true,
+	"cutoverAttemptedAtMs": 1789513095008,
+	"cutoverFence": {
+		"reason": "cutover to sqlite",
+		"at": "2026-09-15T22:58:15.022Z",
+		"tips": {
+			"/home/sprime01/projects/gauntlet-game-studio": "5fd62dd10264927a12ce716191abbc5dcedba990"
+		}
+	}
 }
