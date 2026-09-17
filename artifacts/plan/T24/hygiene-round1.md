@@ -16,3 +16,14 @@ minor non-blocking findings before settlement commit. No acceptance weakened.
 Fresh verification after edits: bun run conformance:security (exit 0),
 bun test packages/adapters (green), just check / just test / just lint /
 just validate-agent-artifacts (all exit 0). See hygiene-gate.txt.
+
+## Correction round 2 (post whole-studio confirmation finding)
+Once scripts/conformance-security.ts was committed (7307668), the secret scanner
+self-matched the verbatim canary literal inside its own SECRET_BASELINE
+declaration (fail-closed; conformance:security exited 1 at HEAD — failure
+preserved in security-correction2-failure.txt). Correction: a self-declaration
+baseline entry whose exactContent equals the scanner's own trimmed source line
+(the comparator trims). Preserved evidence chain:
+security-correction2-failure.txt → security-correction2-gate.txt (green).
+No acceptance weakened: unexpected hits still fail; the T03 canary
+classification is unchanged.

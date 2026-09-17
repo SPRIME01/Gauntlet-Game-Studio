@@ -1,0 +1,2989 @@
+{
+  "generated": "2026-09-17T00:54:54.289Z",
+  "project": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay",
+  "current_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+  "runs_total": 195,
+  "runs_by_revision": {
+    "33188d92efb8aaddcbef675f6c954598bdc03535": 66,
+    "cc8e21660c23721c5b5b3b0bb144c07ca9d05497": 90,
+    "dea0673c8f9031e0df278ccd79e053794c093c87": 30,
+    "1c8284028e11df31e6e629efb189149246b63c28": 9
+  },
+  "settlement_decisions": {
+    "settled": 192,
+    "failed": 2
+  },
+  "current_revision_runs": [
+    "run-active-play-dea0673c8f90-20260917T002331Z",
+    "run-active-play-dea0673c8f90-20260917T003321Z",
+    "run-active-play-dea0673c8f90-20260917T004358Z",
+    "run-beacon-activation-dea0673c8f90-20260917T002339Z",
+    "run-beacon-activation-dea0673c8f90-20260917T003327Z",
+    "run-beacon-activation-dea0673c8f90-20260917T004405Z",
+    "run-boot-dea0673c8f90-20260917T002329Z",
+    "run-boot-dea0673c8f90-20260917T003318Z",
+    "run-boot-dea0673c8f90-20260917T004356Z",
+    "run-interest-filtering-dea0673c8f90-20260917T002325Z",
+    "run-interest-filtering-dea0673c8f90-20260917T003314Z",
+    "run-interest-filtering-dea0673c8f90-20260917T004351Z",
+    "run-interest-filtering-dea0673c8f90-20260917T004840Z",
+    "run-multiplayer-latency-dea0673c8f90-20260917T002327Z",
+    "run-multiplayer-latency-dea0673c8f90-20260917T003316Z",
+    "run-multiplayer-latency-dea0673c8f90-20260917T004353Z",
+    "run-multiplayer-latency-dea0673c8f90-20260917T004841Z",
+    "run-multiplayer-sync-dea0673c8f90-20260917T002322Z",
+    "run-multiplayer-sync-dea0673c8f90-20260917T003311Z",
+    "run-multiplayer-sync-dea0673c8f90-20260917T004348Z",
+    "run-multiplayer-sync-dea0673c8f90-20260917T004838Z",
+    "run-patrol-obstacle-dea0673c8f90-20260917T002337Z",
+    "run-patrol-obstacle-dea0673c8f90-20260917T003325Z",
+    "run-patrol-obstacle-dea0673c8f90-20260917T004403Z",
+    "run-performance-flythrough-dea0673c8f90-20260917T002341Z",
+    "run-performance-flythrough-dea0673c8f90-20260917T003329Z",
+    "run-performance-flythrough-dea0673c8f90-20260917T004407Z",
+    "run-transceiver-interaction-dea0673c8f90-20260917T002335Z",
+    "run-transceiver-interaction-dea0673c8f90-20260917T003323Z",
+    "run-transceiver-interaction-dea0673c8f90-20260917T004400Z"
+  ],
+  "current_all_fresh": true,
+  "foreign_all_stale_rejected": true,
+  "failed_correction_evidence_preserved": [
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T203800Z",
+      "revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "decisions": [
+        "failed"
+      ]
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T203834Z",
+      "revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "decisions": [
+        "failed"
+      ]
+    }
+  ],
+  "hard_failures": 0,
+  "entries": [
+    {
+      "run_id": "run-active-play-33188d92efb8-20260916T224049Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-33188d92efb8-20260916T224049Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-33188d92efb8-20260916T224246Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-33188d92efb8-20260916T224246Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-33188d92efb8-20260916T224605Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-33188d92efb8-20260916T224605Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-33188d92efb8-20260916T224631Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-33188d92efb8-20260916T224631Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-33188d92efb8-20260916T225509Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-33188d92efb8-20260916T225509Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-33188d92efb8-20260916T225542Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-33188d92efb8-20260916T225542Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T203756Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T203756Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T203831Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T203831Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T203913Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T203913Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T204101Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T204101Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T204449Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T204449Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T204528Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T204528Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T204617Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T204617Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T210130Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T210130Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T210152Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T210152Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T210425Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T210425Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T210751Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T210751Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T210805Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T210805Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T211137Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T211137Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T211155Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T211155Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-cc8e21660c23-20260916T213656Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-cc8e21660c23-20260916T213656Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-dea0673c8f90-20260917T002331Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-dea0673c8f90-20260917T002331Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-dea0673c8f90-20260917T003321Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-dea0673c8f90-20260917T003321Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-active-play-dea0673c8f90-20260917T004358Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-active-play-run-active-play-dea0673c8f90-20260917T004358Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-33188d92efb8-20260916T224055Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-33188d92efb8-20260916T224055Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-33188d92efb8-20260916T224252Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-33188d92efb8-20260916T224252Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-33188d92efb8-20260916T224611Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-33188d92efb8-20260916T224611Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-33188d92efb8-20260916T224638Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-33188d92efb8-20260916T224638Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-33188d92efb8-20260916T225515Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-33188d92efb8-20260916T225515Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-33188d92efb8-20260916T225548Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-33188d92efb8-20260916T225548Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T203802Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T203802Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T203836Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T203836Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T203918Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T203918Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T204108Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T204108Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T204455Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T204455Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T204534Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T204534Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T204622Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T204622Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T210135Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T210135Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T210158Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T210158Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T210430Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T210430Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T210757Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T210757Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T210813Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T210813Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T211142Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T211142Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T211202Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T211202Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-cc8e21660c23-20260916T213701Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-cc8e21660c23-20260916T213701Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-dea0673c8f90-20260917T002339Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-dea0673c8f90-20260917T002339Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-dea0673c8f90-20260917T003327Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-dea0673c8f90-20260917T003327Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-beacon-activation-dea0673c8f90-20260917T004405Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-beacon-activation-run-beacon-activation-dea0673c8f90-20260917T004405Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-33188d92efb8-20260916T224047Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-33188d92efb8-20260916T224047Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-33188d92efb8-20260916T224244Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-33188d92efb8-20260916T224244Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-33188d92efb8-20260916T224603Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-33188d92efb8-20260916T224603Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-33188d92efb8-20260916T224629Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-33188d92efb8-20260916T224629Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-33188d92efb8-20260916T225507Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-33188d92efb8-20260916T225507Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-33188d92efb8-20260916T225539Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-33188d92efb8-20260916T225539Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T203754Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T203754Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T203829Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T203829Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T203911Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T203911Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T204056Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T204056Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T204446Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T204446Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T204526Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T204526Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T204615Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T204615Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T210125Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T210125Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T210148Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T210148Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T210423Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T210423Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T210750Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T210750Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T210802Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T210802Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T211135Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T211135Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T211153Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T211153Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-cc8e21660c23-20260916T213654Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-cc8e21660c23-20260916T213654Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-dea0673c8f90-20260917T002329Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-dea0673c8f90-20260917T002329Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-dea0673c8f90-20260917T003318Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-dea0673c8f90-20260917T003318Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-boot-dea0673c8f90-20260917T004356Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-boot-run-boot-dea0673c8f90-20260917T004356Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-interest-filtering-1c8284028e11-20260916T233816Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-1c8284028e11-20260916T233816Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-1c8284028e11-20260916T234043Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-1c8284028e11-20260916T234043Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-1c8284028e11-20260916T235703Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-1c8284028e11-20260916T235703Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T223907Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T223907Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T223932Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T223932Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T223948Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T223948Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T224531Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T224531Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T224544Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T224544Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T224944Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T224944Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T225319Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T225319Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T225342Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T225342Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T225422Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T225422Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-33188d92efb8-20260916T225446Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-33188d92efb8-20260916T225446Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-dea0673c8f90-20260917T002325Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-dea0673c8f90-20260917T002325Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-dea0673c8f90-20260917T003314Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-dea0673c8f90-20260917T003314Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-dea0673c8f90-20260917T004351Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-dea0673c8f90-20260917T004351Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-interest-filtering-dea0673c8f90-20260917T004840Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-interest-filtering-run-interest-filtering-dea0673c8f90-20260917T004840Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 11
+    },
+    {
+      "run_id": "run-multiplayer-latency-1c8284028e11-20260916T233817Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-1c8284028e11-20260916T233817Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-1c8284028e11-20260916T234045Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-1c8284028e11-20260916T234045Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-1c8284028e11-20260916T235705Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-1c8284028e11-20260916T235705Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T223908Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T223908Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T223934Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T223934Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T223949Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T223949Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T224533Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T224533Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T224547Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T224547Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T224946Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T224946Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T225321Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T225321Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T225344Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T225344Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T225427Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T225427Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-33188d92efb8-20260916T225448Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-33188d92efb8-20260916T225448Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-dea0673c8f90-20260917T002327Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-dea0673c8f90-20260917T002327Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-dea0673c8f90-20260917T003316Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-dea0673c8f90-20260917T003316Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-dea0673c8f90-20260917T004353Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-dea0673c8f90-20260917T004353Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-latency-dea0673c8f90-20260917T004841Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-latency-run-multiplayer-latency-dea0673c8f90-20260917T004841Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 9
+    },
+    {
+      "run_id": "run-multiplayer-sync-1c8284028e11-20260916T233813Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-1c8284028e11-20260916T233813Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-1c8284028e11-20260916T234041Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-1c8284028e11-20260916T234041Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-1c8284028e11-20260916T235700Z",
+      "project_revision": "1c8284028e11df31e6e629efb189149246b63c28",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-1c8284028e11-20260916T235700Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T223904Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T223904Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T223930Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T223930Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T223945Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T223945Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T224529Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T224529Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T224542Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T224542Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T224942Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T224942Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T225317Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T225317Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T225339Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T225339Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T225421Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [],
+      "artifacts_verified": 1
+    },
+    {
+      "run_id": "run-multiplayer-sync-33188d92efb8-20260916T225443Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-33188d92efb8-20260916T225443Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-dea0673c8f90-20260917T002322Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-dea0673c8f90-20260917T002322Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-dea0673c8f90-20260917T003311Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-dea0673c8f90-20260917T003311Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-dea0673c8f90-20260917T004348Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-dea0673c8f90-20260917T004348Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-multiplayer-sync-dea0673c8f90-20260917T004838Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-multiplayer-sync-run-multiplayer-sync-dea0673c8f90-20260917T004838Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 10
+    },
+    {
+      "run_id": "run-patrol-obstacle-33188d92efb8-20260916T224053Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-33188d92efb8-20260916T224053Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-33188d92efb8-20260916T224250Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-33188d92efb8-20260916T224250Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-33188d92efb8-20260916T224609Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-33188d92efb8-20260916T224609Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-33188d92efb8-20260916T224636Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-33188d92efb8-20260916T224636Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-33188d92efb8-20260916T225513Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-33188d92efb8-20260916T225513Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-33188d92efb8-20260916T225546Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-33188d92efb8-20260916T225546Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T203800Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T203800Z",
+          "decision": "failed"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T203834Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T203834Z",
+          "decision": "failed"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T203916Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T203916Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T204106Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T204106Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T204453Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T204453Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T204532Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T204532Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T204620Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T204620Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T210134Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T210134Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T210157Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T210157Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T210429Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T210429Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T210755Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T210755Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T210809Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T210809Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T211140Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T211140Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T211159Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T211159Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-cc8e21660c23-20260916T213700Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-cc8e21660c23-20260916T213700Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-dea0673c8f90-20260917T002337Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-dea0673c8f90-20260917T002337Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-dea0673c8f90-20260917T003325Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-dea0673c8f90-20260917T003325Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-patrol-obstacle-dea0673c8f90-20260917T004403Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-patrol-obstacle-run-patrol-obstacle-dea0673c8f90-20260917T004403Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-33188d92efb8-20260916T224057Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-33188d92efb8-20260916T224057Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-33188d92efb8-20260916T224254Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-33188d92efb8-20260916T224254Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-33188d92efb8-20260916T224612Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-33188d92efb8-20260916T224612Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-33188d92efb8-20260916T224640Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-33188d92efb8-20260916T224640Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-33188d92efb8-20260916T225517Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-33188d92efb8-20260916T225517Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-33188d92efb8-20260916T225550Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-33188d92efb8-20260916T225550Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T203804Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T203804Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T203838Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T203838Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T203920Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T203920Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T204110Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T204110Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T204457Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T204457Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T204536Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T204536Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T204624Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T204624Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T210137Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T210137Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T210202Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T210202Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T210432Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T210432Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T210758Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T210758Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T210815Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T210815Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T211144Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T211144Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T211204Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T211204Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-cc8e21660c23-20260916T213703Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-cc8e21660c23-20260916T213703Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-dea0673c8f90-20260917T002341Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-dea0673c8f90-20260917T002341Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-dea0673c8f90-20260917T003329Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-dea0673c8f90-20260917T003329Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-performance-flythrough-dea0673c8f90-20260917T004407Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-performance-flythrough-run-performance-flythrough-dea0673c8f90-20260917T004407Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-33188d92efb8-20260916T224051Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-33188d92efb8-20260916T224051Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-33188d92efb8-20260916T224248Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-33188d92efb8-20260916T224248Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-33188d92efb8-20260916T224607Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-33188d92efb8-20260916T224607Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-33188d92efb8-20260916T224633Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-33188d92efb8-20260916T224633Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-33188d92efb8-20260916T225511Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-33188d92efb8-20260916T225511Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-33188d92efb8-20260916T225544Z",
+      "project_revision": "33188d92efb8aaddcbef675f6c954598bdc03535",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-33188d92efb8-20260916T225544Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T203758Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T203758Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T203832Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T203832Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T203915Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T203915Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T204103Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T204103Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T204451Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T204451Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T204530Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T204530Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T204619Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T204619Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T210132Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T210132Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T210154Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T210154Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T210427Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T210427Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T210753Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T210753Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T210807Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T210807Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T211138Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T211138Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T211157Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T211157Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-cc8e21660c23-20260916T213658Z",
+      "project_revision": "cc8e21660c23721c5b5b3b0bb144c07ca9d05497",
+      "freshness": "foreign",
+      "fresh_validated": false,
+      "stale_rejected": true,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-cc8e21660c23-20260916T213658Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-dea0673c8f90-20260917T002335Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-dea0673c8f90-20260917T002335Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-dea0673c8f90-20260917T003323Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-dea0673c8f90-20260917T003323Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    },
+    {
+      "run_id": "run-transceiver-interaction-dea0673c8f90-20260917T004400Z",
+      "project_revision": "dea0673c8f9031e0df278ccd79e053794c093c87",
+      "freshness": "current",
+      "fresh_validated": true,
+      "stale_rejected": false,
+      "manifests": 1,
+      "settlements": [
+        {
+          "id": "settlement-bw-transceiver-interaction-run-transceiver-interaction-dea0673c8f90-20260917T004400Z",
+          "decision": "settled"
+        }
+      ],
+      "artifacts_verified": 6
+    }
+  ]
+}

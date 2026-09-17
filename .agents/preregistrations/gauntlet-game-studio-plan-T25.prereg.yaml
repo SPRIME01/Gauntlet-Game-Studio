@@ -1,0 +1,95 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T25
+title: Run final traceability, clean reproduction, and whole-studio independent confirmation
+proof_level: P3
+timestamp: "2026-09-17T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T25-001
+    statement: >-
+      The implementation conforms to the frozen normative spec at the evidence
+      level actually claimed, with zero unmapped REQUIRED requirements and no
+      hidden dependency on donor source, model generation, Blender for normal
+      builds, or builder assertion. Concretely: (a) the mechanical traceability
+      gate `python3 scripts/check-traceability.py .agents/plans/
+      gauntlet-game-studio.plan.yaml .agents/specs/gauntlet-game-studio.spec.yaml`
+      exits 0 on the real plan and spec with zero unmapped and zero unknown IDs
+      across all classes (REQ, VAR, RECOV, CLAIM); (b) the aggregate gate
+      `just ci` — composing ONLY the existing repository-native gates (validate-
+      agent-artifacts, check, test, lint) plus studio doctor — exits 0 fresh at
+      the current revision; (c) `bun run studio -- verify --project
+      examples/blackwater-relay --suite all --json` exits 0 with every game-
+      declared suite (single-player + multiplayer) settled through fresh
+      ObservationRun + EvidenceManifest + SettlementRecord per scenario; (d) a
+      fresh clean reproduction from a git clone of committed HEAD (never inside
+      repo .tmp/, donor genuinely absent throughout) with frozen-lockfile
+      install passes the committed gate set, studio doctor, and the reference
+      game build + deterministic verification; (e) the final evidence
+      check/settlement index over the game's committed evidence validates every
+      referenced EvidenceManifest (schema, run/revision correlation, artifact
+      hashes) and failed/correction evidence remains preserved append-only; (f)
+      both declared falsifiers bite exactly as specified when executed against
+      disposable copies (traceability reports the exact unmapped requirement and
+      fails; the identity-based freshness gate rejects foreign-revision evidence
+      for final conformance).
+
+falsifiers:
+  - id: TEETH-T25-001
+    attack: Remove one requirement mapping from a temporary plan copy.
+    expected: >-
+      The traceability gate reports the exact unmapped requirement and fails.
+      Executed on a disposable copy of the plan under /tmp (the real plan is
+      never mutated); the gate is invoked with the temporary plan path and the
+      real spec path, must name the removed requirement ID in its failure output
+      as UNMAPPED, and must exit non-zero. The real-plan gate invocation remains
+      exit 0 before and after the attack.
+  - id: TEETH-T25-002
+    attack: Replace fresh final evidence with historical passing run IDs from
+      another revision.
+    expected: >-
+      The evidence freshness gate rejects final conformance. Executed on a
+      disposable copy of the game evidence store: a historically PASSING
+      EvidenceManifest bound to a foreign project revision (from the game's
+      committed append-only history) is substituted for fresh current-revision
+      evidence and submitted to the T20 identity-based freshness validation
+      (EvidenceStore.validateFreshness / settleObserved) at the current
+      revision; the gate MUST throw EvidenceStaleError / decide incomplete with
+      blockage class evidence_stale and MUST NOT read as settled or passed.
+      Fresh current-revision evidence continues to validate fresh before and
+      after the attack.
+
+known_confounds:
+  - Stale evidence or a different project revision.
+  - Unavailable optional provider/tool being mistaken for core capability
+    failure.
+
+confirmation_condition: >-
+  The declared task gates and teeth pass using fresh evidence for the current
+  revision, and the task's declared confirmation mode (independent_adversarial)
+  is satisfied.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Verify from fresh evidence at the current revision, not builder narrative:
+    (1) the traceability gate exits 0 on the real plan+spec with zero unmapped
+    and zero unknown IDs and demonstrably bites (TEETH-T25-001 names the exact
+    removed requirement and fails on a disposable copy only); (2) `just ci`
+    composes existing gates without creating a competing parallel protocol and
+    passes fresh; (3) the --suite all gate settles every game-declared scenario
+    fresh at the current revision with per-scenario ObservationRun/
+    EvidenceManifest/SettlementRecord and stable exit codes, and the
+    clean-reproduction scope (browser legs in the main checkout, deterministic
+    legs in the clone) is recorded honestly rather than overstated; (4) the
+    evidence index validates every referenced manifest and preserves
+    failed/correction evidence append-only, and TEETH-T25-002's foreign-revision
+    substitution is rejected by identity, never by filename or assertion;
+    (5) high-risk requirement groups each have a settled task, a fresh
+    confirmation mode, and concrete evidence pointers per the final-report
+    draft — with any environment-scoped limitation recorded as fog rather than
+    claimed as proof; (6) no git commits, no .agents/CURRENT_STATUS.yml edits,
+    no new npm dependencies, no imports from .tmp/donor, and no self-confirmation
+    by the builder.

@@ -1,0 +1,49 @@
+=== T25 TEETH / FALSIFICATION EVIDENCE (preregistered in .agents/preregistrations/gauntlet-game-studio-plan-T25.prereg.yaml) ===
+Fresh at HEAD dea0673c8f9031e0df278ccd79e053794c093c87, 2026-09-17T00:34:24Z. Executed on disposable copies; the real plan and the real evidence store were never mutated.
+
+------------------------------------------------------------------------------------------
+TEETH-T25-001  attack: Remove one requirement mapping from a temporary plan copy.
+               expected: Traceability gate reports the exact unmapped requirement and fails.
+------------------------------------------------------------------------------------------
+Setup: disposable copy /tmp/t25-teeth1/.agents/plans/gauntlet-game-studio.plan.yaml created from the
+real plan (preregistrations mirrored so the ONLY injected defect is the mapping removal);
+traceability.requirement_to_tasks entry REQ-TERRAIN-001 -> [T10] removed via YAML round-trip.
+Attack invocation: python3 scripts/check-traceability.py /tmp/t25-teeth1/.agents/plans/gauntlet-game-studio.plan.yaml .agents/specs/gauntlet-game-studio.spec.yaml
+
+Attack output (relevant lines):
+  FAIL: Unmapped REQ-* requirements (1): ['REQ-TERRAIN-001']
+  FAIL: ONE OR MORE CHECKS FAILED.
+ATTACK EXIT=1 (captured)
+
+Named the exact unmapped requirement: FAIL: Unmapped REQ-* requirements (1): ['REQ-TERRAIN-001'] -> gate fails. BITES.
+Note: two incidental 'invalid root specs/plans path' FAILs also appear on the copy — yaml.safe_dump escaped the
+plan's tree-diagram block scalar (\u251C sequences) on the disposable copy only; unrelated to the attack, and the
+declared expectation (exact unmapped requirement named + non-zero exit) is satisfied.
+
+Control: the same gate on the REAL plan immediately after the attack -> EXIT=0
+(ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED; git status clean for .agents/plans/ and .agents/specs/)
+
+------------------------------------------------------------------------------------------
+TEETH-T25-002  attack: Replace fresh final evidence with historical passing run IDs from
+               another revision. expected: Evidence freshness gate rejects final conformance.
+------------------------------------------------------------------------------------------
+Attack: disposable copy of the game evidence store under os.tmpdir() (real store untouched); historical PASSING
+run run-boot-cc8e21660c23-20260916T213654Z (revision cc8e21660c23..., original settlement: settled) substituted
+as final conformance evidence at the current revision dea0673c8f90...; T20 identity-based machinery exercised.
+Attack invocation: bun run ./scripts/t25-tooth-stale-evidence.ts
+
+  === T25 TEETH-T25-002: stale historical evidence substituted for fresh final evidence ===
+  current revision : dea0673c8f9031e0df278ccd79e053794c093c87
+  attack evidence  : run-boot-cc8e21660c23-20260916T213654Z (revision cc8e21660c23721c5b5b3b0bb144c07ca9d05497, historical settlement: settled)
+  control evidence : run-boot-dea0673c8f90-20260917T003318Z (revision dea0673c8f9031e0df278ccd79e053794c093c87)
+  [PASS] (a) EvidenceStaleError: evidence manifest 'run-boot-cc8e21660c23-20260916T213654Z-manifest-01' belongs to project revision 'cc8e21660c23721c5b5b3b0bb144c07ca9d05497', not the current revision 'dea0673c8f9031e0df278ccd79e053794c093c87'; stale evidence cannot settle a requirement
+  [PASS] (b) settleExpectation -> decision=incomplete blockage=evidence_stale record=incomplete
+         reason: stale evidence rejected: observation run 'run-boot-cc8e21660c23-20260916T213654Z' belongs to revision 'cc8e21660c23721c5b5b3b0bb144c07ca9d05497', not the current revision 'dea0673c8f9031e0df278ccd79e053794c093c87'; freshness comes from run/revision identity, not filenames
+  [PASS] (c) fresh manifest run-boot-dea0673c8f90-20260917T003318Z-manifest-01 validates fresh at the current revision
+  TEETH-T25-002 OK: freshness gate rejected final conformance from historical evidence
+ATTACK SCRIPT EXIT=0 (0 = all three declared assertions held)
+
+Outcome: (a) store layer throws EvidenceStaleError naming both revisions; (b) settlement decides incomplete/
+evidence_stale with record=incomplete (never settled) — the freshness gate fires BEFORE channel evaluation, so no
+channel evidence could have changed the verdict; (c) fresh current-revision manifest still validates fresh in the
+same disposable store — the gate is identity-based, not broken. BITES.

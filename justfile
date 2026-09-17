@@ -27,3 +27,12 @@ test:
 lint:
     just validate-agent-artifacts
     python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+
+# G-CI: Aggregate alias composing the existing repository-native gates.
+# No competing parallel protocol: binds only the settled gates below.
+ci:
+    just check
+    just test
+    just lint
+    just validate-agent-artifacts
+    just doctor

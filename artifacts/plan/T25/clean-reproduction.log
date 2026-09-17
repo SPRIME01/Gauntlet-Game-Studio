@@ -1,0 +1,32 @@
+$ bun run ./scripts/conformance-clean-checkout.ts
+=== T24 conformance:clean-checkout (run t24-clean-20260917T002546709Z) ===
+model credentials stripped from all child env: OPENAI_API_KEY, ANTHROPIC_API_KEY, HUGGINGFACE_API_KEY, HF_TOKEN, REPLICATE_API_TOKEN, GOOGLE_AI_API_KEY, STABILITY_API_KEY, MESHY_API_KEY, TRIPO_API_KEY
+[PASS] LEG-0: fresh clone of committed HEAD outside the repository
+    observed: clone created at /tmp/gauntlet-t24-clean-1789604746711 (removed after the gate; kept only on failure)
+[PASS] LEG-1: TEETH-T24-001 — .tmp/donor deleted entirely in the clean checkout
+    observed: donor absent from clone: true; after explicit rm -rf: true
+[PASS] LEG-2: bun install --frozen-lockfile (TEETH-T24-002 env)
+    observed: exit 0
+[PASS] LEG-3: just validate-agent-artifacts (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-3: just check (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-3: just test (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-3: just lint (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-4: studio doctor (clean checkout)
+    observed: exit 0, status success
+[PASS] LEG-5: donor independence scans in the checkout (path absent + scans green)
+    observed: donor:audit exit 0 (absent-donor path: true); donor:dependency-scan exit 0
+[PASS] LEG-6a: reference game build (clean checkout)
+    observed: exit 0
+[PASS] LEG-6b: reference game deterministic scenario verification (headless path)
+    observed: 9 pass / 0 fail, exit 0
+[PASS] LEG-6c: browser-leg scope note (recorded, never silent)
+    observed: browser legs: not-run-inside-checkout (scope choice recorded); covered fresh in conformance:recovery
+[PASS] LEG-7: final donor-absence assertion
+    observed: donor absent
+
+=== clean-checkout summary: 13 PASS / 0 FAIL ===
+CLEAN_CHECKOUT_OK

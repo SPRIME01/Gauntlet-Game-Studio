@@ -148,6 +148,13 @@ const SECRET_BASELINE: Array<{ file: string; pattern: string; exactContent: stri
     reason:
       "T03 TEETH canary: fake literal proving loadStudioConfig REJECTS literal secrets without echoing; not a credential",
   },
+  {
+    file: "scripts/conformance-security.ts",
+    pattern: "openai-style-key",
+    exactContent: "exactContent: 'const leakingSecret = \"sk-live-super-secret-key-12345\";',",
+    reason:
+      "Self-declaration: this scanner's own baseline must quote the canary literal to match it exactly; not a credential",
+  },
 ];
 
 function scanSecrets(): { ok: boolean; observed: string; detail: string } {

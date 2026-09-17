@@ -361,6 +361,34 @@ def validate(plan_path: str, spec_path: str) -> bool:
 
     ok("All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.")
 
+    # 7b. P3 preregistration artifacts must exist on disk and be frozen
+    # (final-validation strengthening: a declared-but-never-frozen prereg must
+    # not pass plan-wide final traceability; T25).
+    # Plan path convention: <repo>/.agents/plans/<plan>.yaml, so the repository
+    # root is three levels up from the plan file.
+    plan_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(plan_path))))
+    for tid, tdata in tasks.items():
+        if tdata.get("proof_level") != "P3":
+            continue
+        art = (tdata.get("preregistration") or {}).get("artifact")
+        if not art:
+            continue
+        art_path = art if os.path.isabs(art) else os.path.join(plan_root, art)
+        if not os.path.exists(art_path):
+            err(f"P3 task {tid} preregistration artifact missing on disk: {art}")
+            all_passed = False
+            continue
+        try:
+            with open(art_path, "r", encoding="utf-8") as f:
+                pre = yaml.safe_load(f) or {}
+            if str(pre.get("status", "")).lower() != "frozen":
+                err(f"P3 task {tid} preregistration artifact is not frozen: {art} (status '{pre.get('status')}')")
+                all_passed = False
+        except Exception as e:
+            err(f"P3 task {tid} preregistration artifact failed to parse: {art}: {e}")
+            all_passed = False
+    ok("All P3 preregistration artifacts exist on disk and are frozen.")
+
     # 8. Path conventions
     for line_idx, line in enumerate(plan_raw.splitlines(), 1):
         stripped = line.strip()

@@ -415,6 +415,65 @@ async function runGameSuiteVerify(projectRoot: string, suiteName: string): Promi
 }
 
 /**
+ * T25 `--suite all`: runs EVERY game-declared suite in `<project>/.agents/suites/`
+ * (each `*.yaml` whose parsed `suite` name does not start with `teeth-`; `teeth-*`
+ * files are preregistered falsification fixtures, not conformance suites) through
+ * the unchanged per-suite machinery above — fresh ObservationRun + EvidenceManifest
+ * + SettlementRecord per scenario. The aggregate settles only when every declared
+ * suite settles; exit-code semantics stay 0=settled 1=failed 2=blocked/incomplete.
+ */
+async function runGameSuiteAll(projectRoot: string): Promise<StudioResult> {
+  const suitesDir = path.join(projectRoot, ".agents", "suites");
+  if (!fs.existsSync(suitesDir)) {
+    throw new Error(`project has no suites directory '${suitesDir}'`);
+  }
+  const suiteNames = fs
+    .readdirSync(suitesDir)
+    .filter((f) => f.endsWith(".yaml") && !f.startsWith("teeth-"))
+    .map((f) => f.replace(/\.yaml$/, ""))
+    .sort();
+  if (suiteNames.length === 0) {
+    throw new Error(`project declares no game suites in '${suitesDir}'`);
+  }
+  const suites: Array<SuiteVerifyPayload & { studio_status: StudioResult["status"] }> = [];
+  for (const suiteName of suiteNames) {
+    const result = await runGameSuiteVerify(projectRoot, suiteName);
+    suites.push({ ...(result.result as SuiteVerifyPayload), studio_status: result.status });
+  }
+  const totals = suites.reduce(
+    (acc, s) => ({
+      settled: acc.settled + s.totals.settled,
+      failed: acc.failed + s.totals.failed,
+      blocked: acc.blocked + s.totals.blocked,
+      incomplete: acc.incomplete + s.totals.incomplete,
+    }),
+    { settled: 0, failed: 0, blocked: 0, incomplete: 0 }
+  );
+  const scenarioCount = suites.reduce((n, s) => n + s.scenarios.length, 0);
+  const allSettled = totals.settled === scenarioCount && scenarioCount > 0;
+  const anyFailed = totals.failed > 0;
+  const status: StudioResult["status"] = allSettled ? "success" : anyFailed ? "failed" : "blocked";
+  return {
+    status,
+    operation: "studio.verify-suite-all",
+    result: {
+      suite: "all",
+      suites: suiteNames,
+      project: projectRoot,
+      project_revision: suites[0]?.project_revision,
+      results: suites,
+      totals,
+      all_settled: allSettled,
+    },
+    diagnostics: {
+      fresh_observation: true,
+      settlement_append_only: true,
+      exit_code_semantics: "0=settled 1=failed 2=blocked/incomplete",
+    },
+  };
+}
+
+/**
  * The project root for a file under `.studio/requests|results` is the directory
  * directly containing `.studio`; otherwise fall back to the process cwd (T14).
  */
@@ -496,6 +555,9 @@ Commands:
   verify --scenario <id>       Performance verification under a game-project-declared quality
     --profile <id>             profile (declared BEFORE use as a gate; numeric budgets live in the
                                game project)  [T21]
+  verify --project <dir>       Run a game project's committed named-scenario suite (fresh evidence
+    --suite <name|all>         per scenario); 'all' runs every game-declared suite (teeth-* fixtures
+                               excluded)  [T22/T25]
   evidence check-fixtures      Validate committed evidence fixtures: schemas, run/manifest correlation,
                                artifact hashes, and negative controls (must-reject)  [T20]
   evidence <other-action>      Other evidence actions (typed placeholders until settled)
@@ -1238,13 +1300,30 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       if (suiteFlag) {
         try {
           if (!projectFlag) {
-            throw new Error("usage: studio verify --suite <name> requires --project <game-project-dir>");
+            throw new Error("usage: studio verify --suite <name|all> requires --project <game-project-dir>");
           }
           const projectRoot = path.resolve(process.cwd(), projectFlag);
-          const result = await runGameSuiteVerify(projectRoot, suiteFlag);
-          const payload = result.result as SuiteVerifyPayload;
+          // T25: `--suite all` runs every game-declared suite (teeth-* falsification
+          // fixtures excluded) with fresh evidence per scenario; same exit semantics.
+          const result =
+            suiteFlag === "all"
+              ? await runGameSuiteAll(projectRoot)
+              : await runGameSuiteVerify(projectRoot, suiteFlag);
+          const payload = result.result as SuiteVerifyPayload & {
+            suites?: string[];
+            results?: SuiteVerifyPayload[];
+          };
           if (isJson) console.log(JSON.stringify(result, null, 2));
-          else {
+          else if (suiteFlag === "all") {
+            const total = payload.totals.settled + payload.totals.failed + payload.totals.blocked + payload.totals.incomplete;
+            console.log(`Suites [${(payload.suites ?? []).join(", ")}] @ ${projectRoot}: ${payload.totals.settled}/${total} settled`);
+            for (const s of payload.results ?? []) {
+              console.log(`  suite '${s.suite}':`);
+              for (const sc of s.scenarios) {
+                console.log(`    ${sc.scenario}: ${sc.decision.toUpperCase()}${sc.reason ? ` — ${sc.reason}` : ""}`);
+              }
+            }
+          } else {
             const total = payload.totals.settled + payload.totals.failed + payload.totals.blocked + payload.totals.incomplete;
             console.log(`Suite '${suiteFlag}' @ ${projectRoot}: ${payload.totals.settled}/${total} settled`);
             for (const s of payload.scenarios) {
@@ -1256,7 +1335,7 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
           const msg = err instanceof Error ? err.message : String(err);
           const res: StudioResult = {
             status: "failed",
-            operation: "studio.verify-suite",
+            operation: suiteFlag === "all" ? "studio.verify-suite-all" : "studio.verify-suite",
             diagnostics: { error: msg },
           };
           if (isJson) console.log(JSON.stringify(res, null, 2));
