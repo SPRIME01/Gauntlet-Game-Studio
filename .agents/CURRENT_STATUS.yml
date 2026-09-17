@@ -13,18 +13,17 @@ metadata:
     rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
 
 execution:
-  last_settled_task: T23
+  last_settled_task: T24
   in_flight_task: null
-  workable_task: T24
+  workable_task: T25
   ready_tasks:
-    - T24
-  blocked_tasks:
-    T25: [T24]
+    - T25
+  blocked_tasks: {}
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T24
+  task: T25
   phase: ready
   blocker: null
 
@@ -296,17 +295,18 @@ observations:
     evidence: artifacts/plan/T18/summary.md, artifacts/plan/T21/hardening-round1.md
 
 next_action:
-  task: T24
+  task: T25
   action: >-
-    Execute the adversarial recovery, security, donor-independence, and environment-removal matrix (T24):
-    1. Freeze P3 preregistration for T24.
-    2. Fresh clean checkout/worktree without .tmp/donor/: install/check/test/build/reference-game deterministic
-       verification; credentials-free deterministic CI; Blender-absent normal build plus scoped regeneration blockage.
-    3. Inject delayed/failed WASM init, unavailable browser proof, provider unavailability, unsafe assets, budget
-       failure, network disconnect, audio locked; execute VAR-001..014 and RECOV-001..008 applicable cases.
-    4. Security checks: secret leakage, path traversal, untrusted client commands, donor imports/identity,
-       production observability mutation. Bind conformance:recovery / conformance:security / conformance:clean-checkout gates.
-  reason: >-
+    Run final traceability, clean reproduction, and whole-studio independent confirmation (T25):
+    1. Freeze the T25 preregistration; mechanically parse the frozen spec requirement IDs and plan mappings
+       (zero unmapped, zero unknown).
+    2. Fresh clean reproduction: install/check/test/build/doctor from clean checkout with .tmp/donor absent;
+       Blackwater single-player and multiplayer suites; validate all referenced EvidenceManifests; final evidence
+       check/settlement index with failed/correction evidence preserved.
+    3. Bind just ci; support --suite all; run the declared gates and teeth.
+    4. Give an independent verifier the frozen spec, invariants, implementation, fresh evidence, and exact
+       confirmation questions for all high-risk groups; update handoff only after verdicts pass.
+    reason: >-
     T23 settled cleanly; T24 is the only ready task, gating T25.
 
 handoff:
@@ -334,9 +334,10 @@ handoff:
     - "T21: Quality profiles and performance settlement; structural vs hardware-sensitive budget separation, software-renderer guard, byte-identical-pixels regression teeth; independent adversarial confirmation CONFIRM (commit 7916bfe)."
     - "T18: Blender 5.2.2 LTS DCC escalation via deterministic --background + bpy; service-drone GLB reproduces byte-identically, flows through normalization + Asset Registry; normal build Blender-free with typed scoped blockage; independent confirmation CONFIRM (commit 03c0a61). Hardening round 1 resolved both T21-confirmation prerequisites for T22 (commit 04ee2f3)."
     - "T22: Blackwater Relay single-player vertical slice assembled and settled: six frozen scenarios, one canonical heightfield, one scheduler step owner, network-free proof, semantic-vs-pixel corruption teeth; independent adversarial confirmation CONFIRM (commit ed71af4)."
-    - "T23: Authoritative multiplayer settled: two browser clients + headless server on the same simulation contracts; hostile-client battery, bounded ~9x impairment recovery, SIGKILL disconnect/reconnect; independent adversarial confirmation CONFIRM."
+    - "T23: Authoritative multiplayer settled: two browser clients + headless server on the same simulation contracts; hostile-client battery, bounded ~9x impairment recovery, SIGKILL disconnect/reconnect; independent adversarial confirmation CONFIRM (commit bf5743a)."
+    - "T24: Recovery/security/donor matrix executed (14 VAR + 8 RECOV, append-only corrections preserved); fresh-clone clean checkout with donor never present; security boundaries bite; independent adversarial confirmation CONFIRM."
   unresolved_summary:
-    - "Remaining chain: T24 -> T25, each P3 with independent_adversarial confirmation. Note: plan gate text bun --cwd <dir> run <script> no-ops under bun 1.4; the working order bun run --cwd <dir> <script> is documented in artifacts/plan/T22/summary.md."
+    - "Only T25 remains (final traceability + whole-studio confirmation). Note: plan gate text bun --cwd <dir> run <script> no-ops under bun 1.4; the working order bun run --cwd <dir> <script> is documented in artifacts/plan/T22/summary.md."
     - "T22 hardening prerequisites recorded in artifacts/plan/T21/confirmation.md: wire memory budget capture (max_memory_mb declared but unmeasured) and make declared hardware budgets imply report-requirements before target-hardware settlement."
   warnings:
     - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
