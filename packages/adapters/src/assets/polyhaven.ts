@@ -117,6 +117,9 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  */
 export function safeIntakePath(projectRoot: string, ...segments: string[]): string {
   const base = path.resolve(projectRoot, "assets", "sources", "polyhaven");
+  if (segments.some((s) => s.includes("\0"))) {
+    throw new PolyHavenPathError(`Intake path contains null bytes: ${segments.join("/")}`);
+  }
   const resolved = path.resolve(base, ...segments);
   const rel = path.relative(base, resolved);
   if (rel.startsWith("..") || path.isAbsolute(rel)) {

@@ -25,7 +25,10 @@
     "test:audio-browser": "bun run ./packages/adapters/test/audio-browser/run.ts",
     "test:proof-harness": "bun test packages/studio/test/proof && bun run ./packages/studio/test/proof/run-browser-proof.ts",
     "test:performance-fixtures": "bun test packages/studio/test/performance && bun run ./packages/studio/test/performance/run-performance-proof.ts",
-    "test:blender-absent-build": "bun run ./packages/adapters/test/blender/blender-absent-build.ts"
+    "test:blender-absent-build": "bun run ./packages/adapters/test/blender/blender-absent-build.ts",
+    "conformance:recovery": "bun run ./scripts/conformance-recovery.ts",
+    "conformance:security": "bun run ./scripts/conformance-security.ts",
+    "conformance:clean-checkout": "bun run ./scripts/conformance-clean-checkout.ts"
   },
   "packageManager": "bun@1.4.0",
   "engines": {

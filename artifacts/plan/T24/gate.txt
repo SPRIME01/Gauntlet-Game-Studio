@@ -1,0 +1,228 @@
+################################################################################
+# T24 GATE EVIDENCE — artifacts/plan/T24/gate.txt
+# Task: Execute adversarial recovery, security, donor-independence, and
+#       environment-removal matrix. All commands run fresh on 2026-09-16.
+# Revision basis: committed HEAD 1c8284028e11df31e6e629efb189149246b63c28
+# (+ uncommitted additive T24 files: scripts/conformance-*.ts, root package.json
+#  gate bindings, preregistration, and artifacts/plan/T24/ evidence — nothing
+#  else differs from HEAD; game/runtime/studio code identical to HEAD).
+# Preregistration (frozen BEFORE evidence evaluation):
+#   .agents/preregistrations/gauntlet-game-studio-plan-T24.prereg.yaml
+################################################################################
+
+================================================================================
+=== GATE: bun run conformance:recovery  (FINAL RUN — 22 PASS / 0 FAIL / 1 DELEGATED)
+=== Round 1 (VAR-005 probe import error) FAILED and is preserved in
+=== artifacts/plan/T24/recovery-cases.jsonl (append-only).
+================================================================================
+$ bun run ./scripts/conformance-recovery.ts
+=== T24 conformance:recovery (run t24-recovery-20260916T234013388Z) ===
+model credentials stripped from all child env: OPENAI_API_KEY, ANTHROPIC_API_KEY, HUGGINGFACE_API_KEY, HF_TOKEN, REPLICATE_API_TOKEN, GOOGLE_AI_API_KEY, STABILITY_API_KEY, MESHY_API_KEY, TRIPO_API_KEY
+[PASS] RECOV-005 (RECOV-005,failure_model:readiness_failure)
+    action:   Register required physics/navigation subsystems; hold one in booting, then fail it (delayed/failed Rapier+Recast init).
+    expected: Runtime readiness does not report ready; startScenario fails (RuntimeNotReadyError) while booting and after failure; awaitReady rejects (SubsystemBootError) rather than racing WASM.
+    observed: bun test packages/runtime/test/readiness.test.ts exit 0: 4 pass / 0 fail
+[PASS] RECOV-001 (RECOV-001,failure_model:evidence_failure)
+    action:   Request faithful reconstruction with the reference image removed (TEETH-T14-001).
+    expected: Typed blocked (REFERENCE_REQUIRED) asking for an allowed reference; never silently reinterpreted as generic text-to-3D (route_preserved, degraded_to_generic_text_to_3d false).
+    observed: bun test packages/studio/test/capabilities/teeth.test.ts exit 0: 4 pass / 0 fail
+[PASS] RECOV-002 (RECOV-002,failure_model:integration_failure)
+    action:   Forge a second distinct Three.js installation and run the compatibility guard (TEETH-T14-003).
+    expected: Preflight fails with MULTIPLE_THREE_INSTALLATIONS; the runtime never resolves multiple hidden Three.js instances.
+    observed: bun test packages/studio/test/capabilities/teeth.test.ts exit 0: 4 pass / 0 fail
+[PASS] RECOV-004 (RECOV-004,REQ-SAFE-002)
+    action:   Inject Playwright-unavailable into the proof harness and settlement path (TEETH-T20-003 simulation seam).
+    expected: Typed PLAYWRIGHT_UNAVAILABLE blockage recorded; settlement decision blocked (exit semantics 2=blocked can never read as passed); static inspection is not substituted.
+    observed: bun test packages/studio/test/proof exit 0: 22 pass / 0 fail
+[PASS] stale-evidence-rejected (failure_model:evidence_failure,T20-immutability)
+    action:   Re-validate committed evidence fixtures including the stale-revision negative control that MUST reject.
+    expected: Foreign-revision manifest rejected via identity-based staleness; schemas/correlation/hashes verified; check exits 0 only because the negative control rejects as declared.
+    observed: exit 0 (expected 0); all 1 output assertions matched
+[PASS] RECOV-003 (RECOV-003,failure_model:provenance_failure)
+    action:   Evaluate an asset exceeding its declared runtime budget and an asset with unknown/unacceptable license (TEETH-T13-001/002); verify all accepted committed assets.
+    expected: Over-budget asset stays unaccepted while correction is bounded (explicit waiver yields degraded, never silent acceptance); unknown provenance blocks production acceptance; committed accepted assets verify green.
+    observed: bun test packages/studio/test/assets exit 0: 42 pass / 0 fail; asset verify --all: exit 0 (expected 0); all 1 output assertions matched
+[PASS] RECOV-008 (RECOV-008,REQ-DONOR-002)
+    action:   Feed donor GameObject/BaseWorld/Actor-style semantic payloads to the Gauntlet semantic authority (assertValidSemanticData) and run the donor audit.
+    expected: Only transplanted mechanisms survive; conflicting donor entity/world architecture is rejected rather than preserved for convenience; attribution/provenance intact.
+    observed: bun test packages/runtime/test/donor-isolation.test.ts exit 0: 5 pass / 0 fail; donor:audit: exit 0 (expected 0); all 1 output assertions matched
+[PASS] VAR-005 (VAR-005,REQ-ROUTE-005,REQ-ROUTE-006)
+    action:   Route audio.procedural with (a) declared fallback provider preferred, (b) an undeclared provider name preferred, (c) no preference; run the headless audio backend fallback (Tone unavailable headless → Null backend).
+    expected: Fallback selection explicitly recorded from the DECLARED provider list only (never the unlisted name); same normalized capability contract; headless null fallback recorded and counted, no silent degradation.
+    observed: router recorded selections {"declared":["audio.tone","audio.null"],"fallback_pref":"audio.null","unlisted_pref_ignored":"audio.tone"}; bun test packages/runtime/test/audio-headless.test.ts exit 0: 6 pass / 0 fail
+[PASS] VAR-001 (VAR-001,REQ-ROUTE-004)
+    action:   Run the reference-image reconstruction capability suite (routing to img2threejs, reference provenance capture, settle-after-evidence).
+    expected: Routes to agent-skill.img2threejs, preserves reference-only provenance, integrates through the authoritative Three.js owner, settles only after evidence passes.
+    observed: bun test packages/studio/test/capabilities/img2threejs.test.ts exit 0: 10 pass / 0 fail
+[PASS] VAR-002 (VAR-002)
+    action:   Run the 3dviz world-composition suite (scene routed to 3dviz, terrain authority preserved) and the Recast navigation suite (traversal consequences verified).
+    expected: Scene composition routes to 3dviz; terrain stays canonical; navigation verified through Recast projections with traversal/runtime consequence checks.
+    observed: bun test packages/studio/test/capabilities/3dviz-world-compose.test.ts exit 0: 13 pass / 0 fail; bun test packages/runtime/test/navigation.test.ts exit 0: 6 pass / 0 fail
+[PASS] VAR-009 (VAR-009)
+    action:   Project the asymmetric terrain heightfield fixture to Three.js, Rapier, and Recast; inject deliberate transpose/axis/scale defects.
+    expected: Sampled world positions agree across projections; every deliberate defect is detected.
+    observed: bun test packages/runtime/test/terrain-parity.test.ts exit 0: 5 pass / 0 fail
+[PASS] VAR-003 (VAR-003,REQ-ASSET-003)
+    action:   Intake a known Poly Haven CC0 asset through the sourcing adapter and hand it to the acceptance registry.
+    expected: Asset is sourced/reused with full provenance capture (never image reconstruction or opaque generation), normalized, and checked against budgets.
+    observed: bun test packages/studio/test/assets/polyhaven.test.ts exit 0: 5 pass / 0 fail
+[PASS] VAR-004 (VAR-004,REQ-BLENDER-001)
+    action:   Run the dcc.blender.process escalation suite (escalation rationale, derived runtime asset through the accepted handoff).
+    expected: Escalation rationale recorded; derived asset returned through the accepted handoff; game semantics never owned by Blender.
+    observed: bun test packages/studio/test/capabilities/blender-process.test.ts exit 0: 5 pass / 0 fail
+[PASS] VAR-008 (VAR-008,TEETH-T14-002)
+    action:   Run the full deterministic verification of the accepted committed agent-skill output in a subprocess with all 9 model-credential env vars deleted.
+    expected: Verification succeeds solely from committed artifact/runtime evidence (13 checks); CI does not attempt regeneration; model_invocation none, network_access none.
+    observed: exit 0 (expected 0); all 1 output assertions matched
+[PASS] VAR-010 (VAR-010,REQ-RUNTIME-009)
+    action:   Run the game with networking disabled end-to-end (teeth:network-disabled) and the network-free single-player suite.
+    expected: No server/transport constructed or required; all non-network behavior remains valid; network surface reports not_registered.
+    observed: teeth:network-disabled exit 0; bun test packages/runtime/test/network/single-player.test.ts exit 0: 2 pass / 0 fail
+[PASS] RECOV-006 (RECOV-006,REQ-BLENDER-006,REQ-BLENDER-007)
+    action:   Strip every blender executable from PATH and run legs A-D: game tests, game build, typed BLENDER_UNAVAILABLE regeneration blockage + offline verification of the committed derivative, donor isolation.
+    expected: Committed accepted Blender-derived assets remain usable; normal build/test green; only live Blender regeneration/proof is blocked, typed and scoped.
+    observed: exit 0 (expected 0); all 1 output assertions matched
+[PASS] VAR-006 (VAR-006,REQ-GAUNTLET-004)
+    action:   Verify the contradictory fixture: pixels visually correct (byte-identical to the ok variant) while the authoritative semantic state is intentionally wrong.
+    expected: Pixel channel passes, semantic channel fails, decision failed with pixels_pass_state_fail contradiction; requirement remains unsettled (exit 1).
+    observed: exit 1 (expected 1); all 2 output assertions matched
+[PASS] VAR-007 (VAR-007,REQ-PERF-004)
+    action:   Verify the deliberate frame-performance/draw-call regression fixture under the declared test-budget profile.
+    expected: Telemetry/performance channel fails with budget_error and performance_contradiction; state+pixels success cannot settle the requirement (exit 1).
+    observed: exit 1 (expected 1); all 2 output assertions matched
+[PASS] VAR-014 (VAR-014,REQ-AUDIO-001,REQ-AUDIO-002,REQ-SAFE-007)
+    action:   Start real Chrome audio locked; first attack unlock WITHOUT a gesture over raw CDP, then unlock inside a real trusted click.
+    expected: Un-gestured unlock stays explicitly locked/suspended (no autoplay-policy bypass); real gesture transitions audio to ready; headless pure-logic tests remain browser-audio independent and unavailable audio never crashes unrelated game logic.
+    observed: test:audio-browser exit 0; bun test packages/runtime/test/audio-headless.test.ts exit 0: 6 pass / 0 fail
+[PASS] VAR-011 (VAR-011,REQ-NET-008)
+    action:   Connect two local browser clients to the authoritative headless server under nominal latency and run sequenced commands.
+    expected: Sequenced commands produce authoritative Koota consequence; clients reconcile the authoritative projection without client authority; multiplayer-sync scenario settles.
+    observed: exit 0 (expected 0); all 3 output assertions matched
+[PASS] VAR-012 (VAR-012,REQ-NET-006)
+    action:   Repeat the sync window under configured latency/jitter impairment (multiplayer-latency scenario).
+    expected: Connection/command telemetry exposes the impairment and bounded reconciliation preserves declared game invariants; scenario settles.
+    observed: exit 0 (expected 0); all 3 output assertions matched
+[PASS] RECOV-007 (RECOV-007,REQ-NET-009,REQ-SAFE-006)
+    action:   Disconnect the authoritative transport mid-scenario (suite disconnect phase) and run the raw falsification teeth (forged state, reorder under impairment, server-side drop + bounded reconnect).
+    expected: Disconnect becomes an explicit observable state with bounded recovery; semantic authority remains server/Koota-owned; the client never becomes silent semantic authority.
+    observed: teeth:multiplayer exit 0; multiplayer-sync disconnect phase settled in suite (suite exit 0)
+[DELEGATED] VAR-013 (VAR-013,REQ-DONOR-004,REQ-SAFE-005)
+    action:   Build/test/verify the committed repository with .tmp/donor deleted entirely (executed by the conformance:clean-checkout gate: fresh /tmp clone where donor never exists + explicit rm -rf + full committed gate set green).
+    expected: No build/runtime/test/proof path depends on donor files or donor identity.
+    observed: DELEGATED to conformance:clean-checkout (fresh clean checkout without .tmp/; see artifacts/plan/T24/clean-checkout.jsonl and gate evidence)
+
+=== recovery matrix summary: 22 PASS / 0 FAIL / 1 DELEGATED ===
+RECOVERY_MATRIX_OK
+GATE_EXIT: 0
+
+
+================================================================================
+=== GATE: bun run conformance:security  (FINAL RUN — 6 PASS / 0 FAIL)
+=== Round 1 (2 detector-scope findings, classified against recorded baseline;
+=== no real secret and no branding leak) preserved in
+=== artifacts/plan/T24/security-cases.jsonl (append-only).
+================================================================================
+$ bun run ./scripts/conformance-security.ts
+=== T24 conformance:security (run t24-security-20260916T234919610Z) ===
+[PASS] SEC-01-secret-leakage (REQ-SEC-001,secret_handling)
+    action:   Scan every git-tracked text file (committed source, config, docs, and plan evidence) with credential-shaped literal patterns; run studio doctor (config secret-hygiene enforcement).
+    expected: No secrets/credentials in committed source or evidence artifacts; configuration parses under secret-hygiene rules; doctor succeeds.
+    observed: scanned 1059 tracked text files with 9 credential patterns; 1 hits: 1 classified against the declared baseline, 0 unexpected; doctor exit 0 success (secret hygiene rules pass)
+    detail:   BASELINE apps/studio-cli/src/cli.test.ts:49 [openai-style-key] BASELINE: T03 TEETH canary: fake literal proving loadStudioConfig REJECTS literal secrets without echoing; not a credential
+[PASS] SEC-02-path-traversal (REQ-SEC-002,REQ-SAFE-003,TEETH-T24-003)
+    action:   Probe the settled T13 intake surface with relative escapes, deep escapes, absolute targets, unsafe file types, and extension-less payloads; prove the target directory stays pristine.
+    expected: Every traversal/unsafe input throws the typed UNSAFE_FILE rejection BEFORE extraction/execution; zero bytes are written to privileged paths; the valid intake stays inside the intended base.
+    observed: relative-escape=REJECTED_UNSAFE_FILE; deep-escape=REJECTED_UNSAFE_FILE; absolute-target=REJECTED_UNSAFE_FILE; unsafe-file-type=REJECTED_UNSAFE_FILE; unsafe-no-ext=REJECTED_UNSAFE_FILE; valid-intake=INSIDE_BASE; privileged side effects: none (target dir pristine, zero bytes written)
+[PASS] SEC-03-untrusted-commands (REQ-SEC-007,TEETH-T24-003,REQ-NET-009)
+    action:   Reproduce the T12 hostile-command suite (forged authoritative state, unowned entity moves, client_id forgery, replayed/malformed/oversized messages) and the T23 raw-WebSocket falsification teeth with counted rejections.
+    expected: Server-side validation precedes every authoritative mutation; forged commands are rejected with counted rejections; the authoritative Koota snapshot is byte-identical across the attack window.
+    observed: authority suite exit 0: 9 pass / 0 fail; teeth:multiplayer exit 0 (counted rejections: forged_rejected=4, commands_rejected=4)
+[PASS] SEC-04-donor-identity (REQ-DONOR-005,REQ-DONOR-006,REQ-SEC-006)
+    action:   Run donor:audit (MIT attribution + provenance + forbidden donor symbols), donor:dependency-scan (forbidden imports/dependencies/path mappings + runtime branding), and a public-surface branding sweep.
+    expected: Donor identity appears only in provenance/attribution surfaces; zero donor imports or path mappings from first-party source; MIT notice preserved.
+    observed: donor:audit exit 0 (0 errors); donor:dependency-scan exit 0; branding sweep: scanned 167 public-surface files (provenance/attribution/test surfaces allowlisted); 0 donor-branding hits, 3 boundary-enforcement references (deny-list class, recorded)
+    detail:   ENFORCEMENT packages/studio/src/doctor.ts:82 [enforcement] if (pkgContent.includes(".tmp/donor") || pkgContent.includes("mavon")) {; ENFORCEMENT packages/studio/src/config.ts:99 [enforcement] if (obj.includes(".tmp/donor") || obj.includes(".tmp/donor/mavon")) {; ENFORCEMENT packages/contracts/src/schemas.ts:41 [enforcement] * STRICT: Provider-specific fields (like mavonGameObject, needleComponent, etc.) are strictly forbidden.
+[PASS] SEC-05-production-observability (REQ-SEC-005,REQ-OBS-005)
+    action:   Inspect the mounted production observability surface with the T19 inspector, including both simulated regressions (dev control namespace exposed; injected mutation API).
+    expected: Production surface carries zero privileged mutation APIs while reads stay available; the detector demonstrably fails both regressions.
+    observed: exit 0, inspector succeeded (surface clean, regressions detected)
+[PASS] SEC-06-browser-credential-hygiene (REQ-SEC-001)
+    action:   Scan browser-facing source (game src, runtime src, browser adapter, game template) for process.env reads, import.meta.env, and credential-literal identifiers.
+    expected: Zero credential access in anything that reaches a browser bundle; credentials resolve server/agent-side only.
+    observed: scanned 73 browser-facing source files in 4 dirs; 0 credential-access hits
+
+=== security matrix summary: 6 PASS / 0 FAIL ===
+SECURITY_MATRIX_OK
+GATE_EXIT: 0
+
+
+================================================================================
+=== GATE: bun run conformance:clean-checkout  (FIRST ROUND — 13 PASS / 0 FAIL)
+================================================================================
+$ bun run ./scripts/conformance-clean-checkout.ts
+=== T24 conformance:clean-checkout (run t24-clean-20260916T234519941Z) ===
+model credentials stripped from all child env: OPENAI_API_KEY, ANTHROPIC_API_KEY, HUGGINGFACE_API_KEY, HF_TOKEN, REPLICATE_API_TOKEN, GOOGLE_AI_API_KEY, STABILITY_API_KEY, MESHY_API_KEY, TRIPO_API_KEY
+[PASS] LEG-0: fresh clone of committed HEAD outside the repository
+    observed: clone created at /tmp/gauntlet-t24-clean-1789602319942 (removed after the gate; kept only on failure)
+[PASS] LEG-1: TEETH-T24-001 — .tmp/donor deleted entirely in the clean checkout
+    observed: donor absent from clone: true; after explicit rm -rf: true
+[PASS] LEG-2: bun install --frozen-lockfile (TEETH-T24-002 env)
+    observed: exit 0
+[PASS] LEG-3: just validate-agent-artifacts (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-3: just check (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-3: just test (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-3: just lint (in the clean checkout)
+    observed: exit 0
+[PASS] LEG-4: studio doctor (clean checkout)
+    observed: exit 0, status success
+[PASS] LEG-5: donor independence scans in the checkout (path absent + scans green)
+    observed: donor:audit exit 0 (absent-donor path: true); donor:dependency-scan exit 0
+[PASS] LEG-6a: reference game build (clean checkout)
+    observed: exit 0
+[PASS] LEG-6b: reference game deterministic scenario verification (headless path)
+    observed: 9 pass / 0 fail, exit 0
+[PASS] LEG-6c: browser-leg scope note (recorded, never silent)
+    observed: browser legs: not-run-inside-checkout (scope choice recorded); covered fresh in conformance:recovery
+[PASS] LEG-7: final donor-absence assertion
+    observed: donor absent
+
+=== clean-checkout summary: 13 PASS / 0 FAIL ===
+CLEAN_CHECKOUT_OK
+GATE_EXIT: 0
+
+
+================================================================================
+=== GLOBAL GATES (fresh)
+================================================================================
+--- just check ---
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun x tsc --noEmit
+EXIT: 0
+
+--- just test ---
+
+ 339 pass
+ 0 fail
+ 2315 expect() calls
+Ran 339 tests across 46 files. [8.31s]
+EXIT: 0
+
+--- just lint ---
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"
+EXIT: 0
+
+--- just validate-agent-artifacts ---
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+EXIT: 0

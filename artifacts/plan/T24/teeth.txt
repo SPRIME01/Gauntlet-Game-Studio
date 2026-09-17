@@ -1,0 +1,95 @@
+================================================================================
+# T24 TEETH / FALSIFICATION EVIDENCE — artifacts/plan/T24/teeth.txt
+# Preregistered in .agents/preregistrations/gauntlet-game-studio-plan-T24.prereg.yaml
+# (frozen BEFORE any evidence evaluation). All evidence below is from the fresh
+# gate runs captured in artifacts/plan/T24/gate.txt (final rounds) and the
+# append-only per-case records:
+#   artifacts/plan/T24/recovery-cases.jsonl
+#   artifacts/plan/T24/security-cases.jsonl
+#   artifacts/plan/T24/clean-checkout.jsonl
+################################################################################
+
+--------------------------------------------------------------------------------
+TEETH-T24-001  attack: Delete `.tmp/donor/` entirely in the clean checkout.
+expected:      All committed build/test/runtime/proof paths remain green.
+verdict:       PASS (stronger form: donor never existed in the checkout)
+--------------------------------------------------------------------------------
+Executed by conformance:clean-checkout LEG-0/1/3/4/5/6/7
+(clean-checkout.jsonl run t24-clean-20260916T234519941Z, 13 PASS / 0 FAIL):
+
+  LEG-0  fresh `git clone --no-hardlinks` of committed HEAD into
+         /tmp/gauntlet-t24-clean-1789602319942 (outside the repository, never
+         under repo .tmp/). A clone of tracked state cannot contain the
+         gitignored .tmp/donor — absence-from-clone is strictly stronger than
+         delete-then-run. Donor genuinely did not exist at any point.
+  LEG-1  donor absent from clone: true; after explicit `rm -rf .tmp/donor`: true
+         (the declared deletion attack executed explicitly, idempotent).
+  LEG-3  in the donor-absent checkout, credential-stripped:
+         just validate-agent-artifacts exit 0
+         just check                        exit 0
+         just test                         exit 0
+         just lint                         exit 0
+  LEG-4  studio doctor --json: exit 0, status success
+  LEG-5  donor:audit exit 0 (absent-donor path: true — MIT attribution verified
+         WITHOUT the donor present); donor:dependency-scan exit 0
+  LEG-6a examples/blackwater-relay build: exit 0
+  LEG-6b deterministic headless scenario verification: 9 pass / 0 fail
+  LEG-7  final donor-absence assertion: donor absent
+
+In the main checkout the same independence was re-proven fresh by
+RECOV-006 (test:blender-absent-build legs A-D, donor isolation leg green),
+RECOV-008 (donor-isolation tests 5/5 + donor:audit) and SEC-04
+(donor:audit/donor:dependency-scan/branding sweep). VAR-013 verdict: PASS.
+
+--------------------------------------------------------------------------------
+TEETH-T24-002  attack: Remove model credentials and network model access.
+expected:      Required deterministic conformance remains executable.
+verdict:       PASS
+--------------------------------------------------------------------------------
+Every child process of all three T24 gates runs with all nine model-credential
+environment variables deleted (OPENAI_API_KEY, ANTHROPIC_API_KEY,
+HUGGINGFACE_API_KEY, HF_TOKEN, REPLICATE_API_TOKEN, GOOGLE_AI_API_KEY,
+STABILITY_API_KEY, MESHY_API_KEY, TRIPO_API_KEY). The full committed gate set
+(passed under this env in the clean checkout, LEG-2/3) plus:
+
+  VAR-008 (recovery gate, PASS): `bun run studio -- capability verify-result
+         asset.reconstruct.reference-image examples/blackwater-relay/.studio/
+         results/transceiver.yaml --json` in a credential-stripped subprocess —
+         exit 0, status success; the 13-check deterministic pipeline verifies the
+         accepted committed agent-skill output SOLELY from committed artifact and
+         runtime evidence (model_invocation none, network_access none); no
+         regeneration was attempted anywhere in the matrix.
+
+--------------------------------------------------------------------------------
+TEETH-T24-003  attack: Supply path-traversal archive or forged network command.
+expected:      Input is rejected before privileged/authoritative side effects.
+verdict:       PASS
+--------------------------------------------------------------------------------
+Path traversal (SEC-02, security gate, PASS; direct probes of the settled T13
+intake surface `safeIntakePath`, pristine temp target):
+  relative-escape  (../../secrets/exfil.gltf)     -> REJECTED_UNSAFE_FILE
+  deep-escape      (a/b/../../../../../etc/...)   -> REJECTED_UNSAFE_FILE
+  absolute-target  (/etc/passwd)                  -> REJECTED_UNSAFE_FILE
+  unsafe-file-type (payload.sh)                   -> REJECTED_UNSAFE_FILE
+  unsafe-no-ext    (payload)                      -> REJECTED_UNSAFE_FILE
+  valid-intake     (crate/model.gltf)             -> INSIDE_BASE
+  privileged side effects: none — target directory pristine, zero bytes written
+  (rejection happens before any extraction/execution).
+
+Forged network commands (SEC-03, security gate, PASS):
+  T12 authority suite fresh: 9 pass / 0 fail (forged authoritative state
+  rejected with Koota state unchanged; validation precedes mutation; unowned
+  entity moves, client_id forgery, replayed/malformed/oversized messages all
+  rejected server-side).
+  T23 raw-WebSocket teeth fresh (`teeth:multiplayer`): exit 0 with counted
+  rejections forged_rejected=4, commands_rejected=4 (kind_not_permitted /
+  entity_not_owned / client_id_forgery / replication spoof); the authoritative
+  Koota snapshot of all forge-target entities is byte-identical across the
+  attack window.
+
+################################################################################
+
+TEETH SUMMARY: 3/3 PASS — no acceptance criterion was weakened; the two first-round
+detector findings were detector-scope classifications recorded against the declared
+baseline (see summary.md "Corrections made during this round"), not requirement
+changes.

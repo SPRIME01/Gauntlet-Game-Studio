@@ -1,0 +1,101 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T24
+title: Execute adversarial recovery, security, donor-independence, and environment-removal matrix
+proof_level: P3
+timestamp: "2026-09-16T23:25:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T24-001
+    statement: >-
+      The system fails visibly and safely at its declared boundaries, and normal
+      committed build/test/proof paths do not rely on donor source or optional
+      production tools. Concretely: (a) a fresh clean checkout (git clone into /tmp,
+      NOT inside .tmp/) in which .tmp/donor genuinely does not exist installs from
+      the lockfile and passes just check / test / lint / validate-agent-artifacts,
+      studio doctor, donor absence scans, and Blackwater Relay build plus
+      deterministic (headless) scenario verification — with model credentials
+      stripped from the environment (REQ-DONOR-004, REQ-SAFE-005, VAR-008,
+      VAR-013); (b) every VAR-001..VAR-014 and RECOV-001..RECOV-008 case applicable
+      to this environment is executed fresh with its declared trigger and observed
+      behavior recorded per case (structured record: case id, spec id, action,
+      expected, observed, verdict), with each existing settled gate invoked fresh
+      rather than duplicated; (c) the declared recovery behaviors hold: delayed or
+      failed Rapier/Recast init keeps the readiness barrier from reporting ready and
+      fails/awaits explicitly with no WASM race (RECOV-005); required browser proof
+      unavailable yields a typed blocked result that can never read as passed
+      (RECOV-004); provider fallback is explicitly recorded on the same normalized
+      capability contract with no silent degradation (VAR-005); unknown/unsafe
+      assets and path-traversal archive paths are rejected before any privileged
+      side effect (REQ-SEC-002, REQ-SAFE-003); asset budget failure leaves the
+      asset unaccepted and fails settlement (RECOV-003, VAR-007); network
+      disconnect mid-scenario is an explicit observable state with bounded
+      recovery and server/Koota authority intact (RECOV-007, VAR-011, VAR-012);
+      audio locked/unavailable degrades only audio-dependent behavior without
+      crashing headless simulation (VAR-014, REQ-AUDIO-001/002, REQ-SAFE-007);
+      stale evidence is rejected by identity-based freshness and immutability
+      (T20); accepted agent-skill outputs verify deterministically with credentials
+      removed and no regeneration attempted (VAR-008, TEETH-T14-002); Blender
+      absence keeps the normal build green with only scoped typed regeneration
+      blockage (RECOV-006, REQ-BLENDER-006/007); donor semantic architecture
+      conflicting with Koota authority is rejected, not preserved (RECOV-008);
+      (d) security conformance holds: no secrets/credentials in committed source
+      or evidence, donor imports/branding confined to provenance surfaces,
+      untrusted client commands rejected server-side before mutation with counted
+      rejections, and the production observability surface carries no privileged
+      mutation APIs (REQ-SEC-001/002/003/005, REQ-DONOR-005).
+
+falsifiers:
+  - id: TEETH-T24-001
+    attack: Delete `.tmp/donor/` entirely in the clean checkout.
+    expected: All committed build/test/runtime/proof paths remain green. The clean
+      checkout is cloned into /tmp from committed HEAD so .tmp/donor never exists
+      there (a strictly stronger state than delete-then-run); the gate additionally
+      executes an explicit `rm -rf .tmp/donor` (idempotent) and re-asserts donor
+      path absence plus green donor:audit / donor:dependency-scan / branding scans
+      alongside the full committed gate set (just check, just test, just lint,
+      just validate-agent-artifacts, studio doctor, Blackwater build + deterministic
+      headless scenario verification). Any dependence of a committed path on donor
+      files or donor identity fails the gate.
+  - id: TEETH-T24-002
+    attack: Remove model credentials and network model access.
+    expected: Required deterministic conformance remains executable. Every
+      subprocess of the clean-checkout gate runs with all declared model-credential
+      environment variables (OPENAI_API_KEY, ANTHROPIC_API_KEY, HUGGINGFACE_API_KEY,
+      HF_TOKEN, REPLICATE_API_TOKEN, GOOGLE_AI_API_KEY, STABILITY_API_KEY,
+      MESHY_API_KEY, TRIPO_API_KEY) deleted; the full deterministic gate set and the
+      credential-free verify-result of the accepted committed agent-skill output
+      (VAR-008) succeed with no regeneration attempted anywhere (model_invocation
+      none, network_access none in the verification record).
+  - id: TEETH-T24-003
+    attack: Supply path-traversal archive or forged network command.
+    expected: Input is rejected before privileged/authoritative side effects.
+      Path-traversal intake segments (`../` escapes, absolute paths, unsafe file
+      types) throw the typed UNSAFE_FILE rejection from the settled T13 surface
+      before any byte is written (asserted with a pristine target directory), and
+      forged network commands (client-authored state kinds, unowned entity moves,
+      forged client identities, replayed sequences, malformed/oversized raw
+      messages) are rejected server-side with counted rejections while the
+      authoritative Koota snapshot is byte-identical across the attack window
+      (T12 authority suite + T23 raw-WebSocket teeth, fresh).
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Verify from fresh evidence at the current revision, not builder narrative:
+    (1) the clean-checkout gate genuinely cloned committed HEAD into /tmp with
+    .tmp/donor absent throughout and every committed gate green under
+    credential-stripped env; (2) the recovery matrix records a fresh observed
+    verdict per applicable VAR/RECOV case against the spec's declared trigger and
+    expected behavior — including that failing-looking cases (typed blocked,
+    budget settlement failure, stale rejection, disconnect states) are honest
+    declared behaviors, not regressions; (3) the security gate's detectors
+    demonstrably bite (path traversal rejected before writes, forged commands
+    rejected with counted rejections and unchanged authoritative state, secret
+    and branding scans scan real surfaces); (4) any case not executed is justified
+    against the spec's conditions rather than silently dropped; (5) failing cases
+    were corrected, never weakened, with both rounds preserved; (6) no new npm
+    dependencies, no git commits, no .agents/CURRENT_STATUS.yml edits, no imports
+    from .tmp/donor, and no privileged debug mutation in production surfaces.

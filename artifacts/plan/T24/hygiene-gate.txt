@@ -1,0 +1,14 @@
+=== hygiene round 1 gate rerun — 2026-09-17T00:11:19Z ===
+
+=== security matrix summary: 6 PASS / 0 FAIL ===
+SECURITY_MATRIX_OK
+ 25 pass
+ 0 fail
+ 95 expect() calls
+Ran 25 tests across 4 files. [5.94s]
+check PASS
+ 0 fail
+ 2315 expect() calls
+Ran 339 tests across 46 files. [11.03s]
+lint PASS
+artifacts PASS
