@@ -1,0 +1,107 @@
+{
+  "status": "success",
+  "operation": "studio.verify-suite-all",
+  "result": {
+    "suite": "all",
+    "suites": [
+      "multiplayer",
+      "single-player"
+    ],
+    "project": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay",
+    "project_revision": "c849732406d305ff12886b732625e765103c23f4",
+    "results": [
+      {
+        "suite": "multiplayer",
+        "project": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay",
+        "project_revision": "c849732406d305ff12886b732625e765103c23f4",
+        "game_spec": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/.agents/specs/game.spec.yaml",
+        "evidence_store": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs",
+        "scenarios": [
+          {
+            "scenario": "multiplayer-sync",
+            "decision": "settled",
+            "reason": "settled on fresh correlated evidence for revision c849732406d305ff12886b732625e765103c23f4 (run run-multiplayer-sync-c849732406d3-20260924T041223Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 7/7 checks pass)",
+            "requirement_ids": [
+              "REQ-NET-001",
+              "REQ-NET-003",
+              "REQ-NET-004",
+              "REQ-NET-008",
+              "REQ-NET-009",
+              "REQ-SAFE-006",
+              "REQ-SEC-007"
+            ],
+            "run_id": "run-multiplayer-sync-c849732406d3-20260924T041223Z",
+            "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-sync-c849732406d3-20260924T041223Z",
+            "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-sync-c849732406d3-20260924T041223Z/settlement-01.json",
+            "channel_verdicts": [
+              {
+                "channel": "state",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks": []
+              },
+              {
+                "channel": "telemetry",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks": []
+              },
+              {
+                "channel": "network",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks": []
+              }
+            ]
+          },
+          {
+            "scenario": "interest-filtering",
+            "decision": "settled",
+            "reason": "settled on fresh correlated evidence for revision c849732406d305ff12886b732625e765103c23f4 (run run-interest-filtering-c849732406d3-20260924T041240Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 7/7 checks pass)",
+            "requirement_ids": [
+              "REQ-NET-005",
+              "REQ-NET-008"
+            ],
+            "run_id": "run-interest-filtering-c849732406d3-20260924T041240Z",
+            "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-interest-filtering-c849732406d3-20260924T041240Z",
+            "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-interest-filtering-c849732406d3-20260924T041240Z/settlement-01.json",
+            "channel_verdicts": [
+              {
+                "channel": "state",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks": []
+              },
+              {
+                "channel": "telemetry",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks": []
+              },
+              {
+                "channel": "network",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks": []
+              }
+            ]
+          },
+          {
+            "scenario": "multiplayer-latency",
+            "decision": "settled",
+            "reason": "settled on fresh correlated evidence for revision c849732406d305ff12886b732625e765103c23f4 (run run-multiplayer-latency-c849732406d3-20260924T041245Z; state: 2/2 checks pass, telemetry: 3/3 checks pass, network: 9/9 checks pass)",
+            "requirement_ids": [
+              "REQ-NET-002",
+              "REQ-NET-004",
+              "REQ-NET-006",
+              "REQ-NET-008"
+            ],
+            "run_id": "run-multiplayer-latency-c849732406d3-20260924T041245Z",
+            "run_dir": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-latency-c849732406d3-20260924T041245Z",
+            "settlement_path": "/home/sprime01/projects/gauntlet-game-studio/examples/blackwater-relay/artifacts/runs/run-multiplayer-latency-c849732406d3-20260924T041245Z/settlement-01.json",
+            "channel_verdicts": [
+              {
+                "channel": "state",
+                "evaluated": true,
+                "pass": true,
+                "failed_checks":

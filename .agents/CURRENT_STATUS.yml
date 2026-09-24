@@ -3,17 +3,20 @@ schema_version: "1.0"
 
 metadata:
   plan_id: gauntlet-game-studio-plan
-  plan_version: "0.2.0"
+  plan_version: "0.4.0"
   spec_id: gauntlet-game-studio
-  spec_version: "0.2.0"
+  spec_version: "0.4.0"
   initialized: true
-  last_updated: "2026-09-15"
+  last_updated: "2026-09-24"
   updated_by: >-
-    Operator and agent: approved and frozen normative spec (SHA-256: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e),
-    rebound and approved settlement plan, resolved multi-class traceability and DAG critical path. T00 unblocked and ready.
+    Operator and agent: operator-authorized formal amendment to spec v0.4.0 (SHA-256: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8,
+    prior v0.3.0: b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39, frozen v0.2.0: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e)
+    introducing the recipe layer (REQ-RECIPE-001..014); settlement plan rebound with tasks T27/T28; T00-T26 remain
+    settled on original evidence. Traceability gate passes 171/171 REQ. T27 and T28 settled on 2026-09-24:
+    recipe contracts/studio module/CLI + canonical recipes/E2E/UX benchmark/blackwater regression green.
 
 execution:
-  last_settled_task: T25
+  last_settled_task: T28
   in_flight_task: null
   workable_task: null
   ready_tasks: []
@@ -23,7 +26,7 @@ execution:
 
 active:
   task: null
-  phase: plan_settled
+  phase: recipe_layer_settled
   blocker: null
 
 latest_evidence:
@@ -177,12 +180,29 @@ latest_evidence:
     commit: 7307668
     gate: PASS (conformance:recovery 22/1-delegated, conformance:security 6/0, conformance:clean-checkout 13/0)
     teeth: PASS (attack 1 donor-absent fresh clone fully green, attack 2 credentials-free deterministic conformance with zero regeneration, attack 3 traversal/forged-input rejected before privileged side effects)
+  T26:
+    report: artifacts/plan/T26/
+    confirmation: independent_adversarial CONFIRM (artifacts/plan/T26/confirmation.md)
+    gate: "check-traceability 157/157 REQ on amended artifacts; just check/test/lint exit 0 (370 tests); capabilities lint 0 issues; source:verify, third-party:verify, check-topology pass; focused asset.resolve suites 34/34 with preregistered failing-first evidence"
+    teeth: "PASS (attack 1 acquired asset without per-asset license evidence typed-rejected PROVIDER_LICENSE_EVIDENCE_MISSING before intake; attack 2 no provider match yields recorded CREATE_FALLBACK_REQUIRED decision, no fabricated asset; attack 3 provider match forces acquire over create with match fall-through)"
   T18:
     report: artifacts/plan/T18/summary.md
     confirmation: independent CONFIRM
     commit: 03c0a61
     gate: PASS (studio capability verify-result dcc.blender.process 11/11 offline, bun run test:blender-absent-build legs A-D)
     teeth: PASS (attack 1 blender stripped from PATH keeps build/test green with committed derivative and typed scoped regeneration blockage, attack 2 quest/NPC semantic metadata rejected at intake/verify-result/Koota guard; GLB regeneration reproduces byte-identically under Blender 5.2.2 LTS)
+  T27:
+    report: artifacts/plan/T27/summary.md
+    confirmation: independent_adversarial CONFIRM (artifacts/plan/T27/confirmation.md)
+    commit: uncommitted (working tree retains recipe-layer changes atop HEAD c849732)
+    gate: "recipe+contracts+cli suites 88/88 then full workspace 411/0; traceability 171/171 EXIT:0; recipes/describe CLI EXIT:0; source:verify, third-party:verify, check-topology pass; just ci EXIT:0 (t27-ci-final.txt)"
+    teeth: "PASS (attack 1 provider-binding plan rejected ROUTING_AUTHORITY_VIOLATION with 0 route calls and no .studio mutation; attack 2 non-asset.resolve asset affordance typed ASSET_POLICY_VIOLATION before route; attack 3 re-apply steps satisfied append-only no duplicates; attack 4 blocked dependency structured_failure never bare recipe-failed)"
+  T28:
+    report: artifacts/plan/T28/summary.md
+    confirmation: independent_adversarial CONFIRM (artifacts/plan/T28/confirmation.md)
+    commit: uncommitted (same working tree as T27)
+    gate: "recipes E2E 24/0; UX benchmark artifacts/plan/T28/ux-benchmark.json PASS (28 vs 47 decisions, 13 capabilities composed internally); cold-agent recipe plan EXIT:0 mutation:false; blackwater-relay verify --suite all EXIT:0 all_settled settled=9 failed=0 fresh_observation; just ci + full bun test 411/0"
+    teeth: "PASS (attack 1 parser-only evidence insufficient until apply E2E writes provenance; attack 2 cold-agent reaches RecipePlan from public CLI only; attack 3 no second evidence format — validateRecipeApplyProvenance under gauntlet.recipe.apply)"
 
 observations:
   - status: OBSERVED
@@ -311,43 +331,33 @@ observations:
       round 1 with no weakening of original acceptance.
     evidence: artifacts/plan/T18/summary.md, artifacts/plan/T21/hardening-round1.md
 
+  - status: OBSERVED
+    statement: >-
+      Tasks T27/T28 settled on 2026-09-24: recipe layer (REQ-RECIPE-001..014) implemented above the capability
+      system — contracts, packages/studio/src/recipes (catalog/registry/compiler/apply), CLI recipes/recipe surface,
+      six canonical outcome-named recipes, cold-agent plan path with mutation:false, UX benchmark under
+      artifacts/plan/T28/ux-benchmark.json, append-only provenance via shared contracts, and blackwater-relay
+      verify --suite all green (9/9 settled). Full workspace 411/0; just ci EXIT:0; traceability 171/171.
+      Independent adversarial confirmation recorded under artifacts/plan/T27/confirmation.md and T28/confirmation.md.
+    evidence: artifacts/plan/T27/summary.md, artifacts/plan/T28/summary.md, artifacts/plan/T28/ux-benchmark.json
+
+corrections:
+  CORR-2026-09-17:
+    report: .agents/plans/gauntlet-warfare-prerequisite-correction.plan.yaml
+    confirmation: independent_adversarial CONFIRM (post-fix review)
+    gate: PASS (54 focused tests across CLI/router/3dviz/img2threejs; source + third-party verification; capability lint)
+    teeth: PASS (metadata-only 3dviz handoff rejected; malformed source inputs make no writes; exclusive source creation rejects retained target)
+    preserved_contradiction: >-
+      The Codename: Gauntlet Warfare scaffold was created before CORR-04 settled, contrary to this correction plan's sequencing non-goal.
+      The scaffold is preserved because it is user-requested and non-destructive; no gameplay implementation or performance claim was made before settlement.
+    warning: SwiftShader software-renderer evidence remains non-target and cannot settle the requested hardware 60 FPS claim.
+
 next_action:
   task: null
-  action: none — plan settled.
+  action: "Operator NPC turnaround convergence v2 (2026-09-19, operator-directed bounded pass): parametric factory rebuild against the operator-supplied AAA turnaround sheet - silhouette profile agreement front 0.861 / back 0.862 / left 0.795 (v5 baseline 0.674/0.645/0.683), vision-judge composite 0.64 vs 0.75 target with ALL hard minimums clear and structure clean; draw-call optimization 87->40 standalone draws (pixel-identical merge); Blender import re-verified (1 armature / 11 bones / 40 meshes / 15596 tris); 12k-tri cap superseded by operator amendment, new cap 25000 measured 15596, asset verify --all 10/10 gates pass (operator-npc honestly degraded). Known follow-ups: (1) residual fidelity gap dimensions recorded in correction-history-v2.json (torso gear readout density, athletic taper, joint-sphere prominence, material micro-variation, profile arm channel); (2) THREE_RESOLUTION_GUARD environment blocker: game standalone install + monorepo bun isolated store both hold three@0.170.0 - studio-level topology decision needed; (3) live-combat-loop integration deferred as next bounded step (per-instance draw analysis)."
   reason: >-
-    T25 settled with the whole-studio independent adversarial confirmation (CONFIRM, 16/16 high-risk groups);
-    all 26 tasks of the plan are settled; zero unmapped requirements; handoff complete.
+    T25/T26 studio settlement unchanged. This pass settled the asset itself per the
+    operator brief; live-loop integration explicitly deferred. Evidence under
+    codename-gauntlet-warfare/.img2threejs/npc-operator/ (correction-history-v2.json,
+    render/v26-optimized/, review-sheets/, blender-verify-v26.json, verify-result-v2.json).
 
-handoff:
-  settled_summary:
-    - "SPEC-FREEZE & PLAN-REBIND: Spec approved (SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e), plan approved, multi-class traceability and DAG critical path verified."
-    - "T00: Frozen source bound and settlement infrastructure bootstrapped with justfile gates, decision log, and teeth falsification checks verified (commit 24f7e5b)."
-    - "T01: Established lean Bun 1.4 monorepo topology and source boundaries; check-topology verified package discipline and donor isolation (commit 9dd5a03)."
-    - "T02: Implemented provider-neutral studio contracts and schemas in packages/contracts; verified teeth checks and 25 automated tests (commit 193f171)."
-    - "T03: Implemented semantic studio CLI and doctor diagnostics; verified secret hygiene and donor isolation with 39 workspace tests (commit 483e283)."
-    - "T04: Implemented capability registry, routing, skill metadata linter, and AgentHandoff semantics; verified teeth checks and 48 workspace tests (commit 8dacb42)."
-    - "T05: Implemented independent game template, createGameProject, studio create CLI, and examples/blackwater-relay scaffold; verified teeth checks and 56 workspace tests (commit 5f76132)."
-    - "T06: Bound third-party skills/libraries, overlay policy (forbidding threejs-game-director), attribution classes, and single Three.js dependency; verified teeth checks and 60 workspace tests (commit 2b39419)."
-    - "T07: Implemented first-party runtime lifecycle, readiness barrier, simulation scheduler, and headless split; verified teeth checks and 67 workspace tests (commit fe35a9c)."
-    - "T08: Implemented Koota semantic authority, projection correlation, Three.js render projection manager, and asset affordance filter; verified teeth checks and 76 workspace tests (commit 212ec65)."
-    - "T10: Integrated Rapier physics adapter and canonical mathematical TerrainHeightfield projections; verified teeth checks and 87 workspace tests."
-    - "T11: Integrated Recast navigation adapter with deterministic path/crowd queries and three-mesh-bvh spatial acceleration with fallback parity."
-    - "T09: Mined Mavon donor mechanisms (BandwidthTracker, LatencySimulator) into white-labeled packages/runtime/src/diagnostics with MIT attribution in third_party/mavon-engine/; enforced donor isolation via donor:audit/donor:dependency-scan gates and donor-absent proof; independent confirmation CONFIRM."
-    - "T12: Implemented authoritative multiplayer foundations (Bun WebSocket baseline, transport abstraction, sequenced validated commands, replication/reconciliation, interest filtering, network diagnostics); single-player proven network-free; independent adversarial confirmation CONFIRM (commit 31f8d1f)."
-    - "T13: Implemented Asset Registry with provenance/acceptance gates, glTF-Transform compiler (WebP baseline, KTX2 toktx-gated), Poly Haven CC0 intake, and asset verify CLI; peer confirmation CONFIRM (commit 72cfb6f)."
-    - "T16: Integrated threejs-game-skills specialists via studio-owned overlay with director exclusion and generator quarantine enforced at the lint gate; peer confirmation CONFIRM (commit b2a3074)."
-    - "T19: Versioned __GAUNTLET_STUDIO_OBS__ v1 observability bridge; production mode structurally free of privileged mutation with a biting inspector; independent adversarial confirmation CONFIRM (commit 4f3192f)."
-    - "T17: Quarks VFX projection, Tone AudioBackend with real user-gesture unlock proven via raw-CDP attack leg, NullAudioBackend headless purity, DOM HUD; independent adversarial confirmation CONFIRM (commit 5402b33)."
-    - "T14+T15: img2threejs reference-reconstruction handoff (independent CONFIRM) and 3dviz world-composition handoff (builder_with_teeth) with deterministic offline result verification, single-three guards, and Blackwater fixtures (commit f3d8e6e)."
-    - "T20: Playwright proof harness over the versioned observability contract, immutable run-scoped evidence store, and Gauntlet settlement bridge where pixels cannot override semantic contradiction; independent adversarial confirmation CONFIRM (commit 480fc69)."
-    - "T21: Quality profiles and performance settlement; structural vs hardware-sensitive budget separation, software-renderer guard, byte-identical-pixels regression teeth; independent adversarial confirmation CONFIRM (commit 7916bfe)."
-    - "T18: Blender 5.2.2 LTS DCC escalation via deterministic --background + bpy; service-drone GLB reproduces byte-identically, flows through normalization + Asset Registry; normal build Blender-free with typed scoped blockage; independent confirmation CONFIRM (commit 03c0a61). Hardening round 1 resolved both T21-confirmation prerequisites for T22 (commit 04ee2f3)."
-    - "T22: Blackwater Relay single-player vertical slice assembled and settled: six frozen scenarios, one canonical heightfield, one scheduler step owner, network-free proof, semantic-vs-pixel corruption teeth; independent adversarial confirmation CONFIRM (commit ed71af4)."
-    - "T23: Authoritative multiplayer settled: two browser clients + headless server on the same simulation contracts; hostile-client battery, bounded ~9x impairment recovery, SIGKILL disconnect/reconnect; independent adversarial confirmation CONFIRM (commit bf5743a)."
-    - "T24: Recovery/security/donor matrix executed (14 VAR + 8 RECOV, append-only corrections preserved); fresh-clone clean checkout with donor never present; security boundaries bite; independent adversarial confirmation CONFIRM (commit 7307668; hygiene + correction rounds recorded)."
-    - "T25: Whole-studio settlement: traceability 193 IDs zero unmapped, clean donor-free reproduction, 9/9 reference scenarios, evidence index validated, security self-match correction preserved; whole-studio independent adversarial confirmation CONFIRM 16/16 high-risk groups."
-  unresolved_summary: []
-  warnings:
-    - "Never edit .agents/specs/gauntlet-game-studio.spec.yaml without triggering formal spec amendment and plan rebinding."
-    - "Never mark a task settled on builder say-so; P3 tasks require frozen preregistration and independent confirmation."
-    - "Clean-checkout build/test/proof must pass with .tmp/donor/ absent."

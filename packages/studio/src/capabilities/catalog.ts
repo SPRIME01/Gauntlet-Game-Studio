@@ -138,6 +138,24 @@ export const CAPABILITY_CATALOG: CapabilityDescriptor[] = [
     providers: ["asset.polyhaven"],
   },
   {
+    id: "asset.resolve",
+    summary: "First-class routing policy resolving each required asset through the ordered policy search/acquire, then adapt, then create. Searches the project registry and registered external providers, acquires through asset.source into the AssetRegistry with per-asset provenance, and records every decision append-only. Creation is a recorded fallback via existing capability routes, never an automatic generation step.",
+    use_when: [
+      "a production asset is required and no accepted project asset is declared",
+      "deciding between acquiring an existing CC0 asset and authoring one",
+      "an existing project asset needs adaptation before creation is considered",
+    ],
+    do_not_use_when: [
+      "the request is a specific depicted reference reconstruction (use asset.reconstruct.reference-image)",
+      "the asset id and provider are already decided and only raw intake is needed (use asset.source)",
+      "topology, UVs or baking require DCC escalation (use asset.dcc_escalate)",
+    ],
+    inputs: ["requested_id", "role", "keywords"],
+    outputs: ["ResolutionRecord", "AssetRecord"],
+    verification: ["append_only_decision_record", "per_asset_license_evidence", "policy_order_enforced"],
+    providers: ["asset.polyhaven"],
+  },
+  {
     id: "asset.optimize",
     summary: "glTF-Transform offline pipeline for mesh pruning, LOD generation, and WebP/KTX2 texture compression. Optimizes production assets to meet target triangle, draw call, and memory budgets.",
     use_when: [

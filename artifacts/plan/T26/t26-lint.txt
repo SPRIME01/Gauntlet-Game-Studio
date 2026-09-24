@@ -1,0 +1,33 @@
+just validate-agent-artifacts
+python3 scripts/check-traceability.py
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 198 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 157 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 198)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39
+OK:   Plan status is 'approved'.
+OK:   All 157 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   All P3 preregistration artifacts exist on disk and are frozen.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+python3 -c "import py_compile; py_compile.compile('scripts/check-traceability.py', doraise=True); py_compile.compile('scripts/check-topology.py', doraise=True)"

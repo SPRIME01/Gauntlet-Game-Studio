@@ -1,0 +1,113 @@
+schema: agent.correction_plan
+schema_version: "1.0"
+
+metadata:
+  id: recipe-layer-amendment
+  status: approved
+  created: "2026-09-23"
+  governing_spec: .agents/specs/gauntlet-game-studio.spec.yaml
+  governing_plan: .agents/plans/gauntlet-game-studio.plan.yaml
+  amendment_version: "0.4.0"
+  scope: "Introduce a thin recipe layer above the capability layer (intent → recipe → capabilities → runtime), amending
+    the frozen normative specification under explicit operator authorization and rebinding the settlement plan as a
+    post-baseline improvement without reopening T00–T26 evidence."
+
+discovery:
+  classification:
+    - capability_gap: no first-class surface expresses game-development outcomes; callers must manually compose
+      low-level capabilities and know engine/provider nouns.
+    - ux_gap: discovery, dry-run, apply, partial-state reasoning, and provenance for outcome-level work are not
+      exposed through the CLI.
+    - precedent: capability registry/router, asset.resolve ordered policy, EvidenceStore, and Gauntlet settlement
+      are settled and remain the sole execution/authority paths; skill overlay already forbids a competing director.
+  preserved_evidence:
+    - .agents/reports/recipe-layer.discovery.md
+    - .agents/reports/recipe-layer.spec-delta.proposal.md
+  authorization:
+    operator: >-
+      2026-09-23, explicit recipe-layer request: 'I want the next refinement to be a recipe layer above the existing
+      capability layer... Create the appropriate scoped spec/plan under .agents/ following the existing project
+      conventions... Treat the recipe layer as a new post-baseline improvement... Continue autonomously through the
+      resulting plan unless an existing stop_and_ask_when condition is reached.'
+  governing_requirements:
+    - REQ-GOAL-001
+    - REQ-GOAL-003
+    - REQ-ROUTE-001
+    - REQ-ROUTE-005
+    - REQ-ROUTE-006
+    - REQ-ASSET-008
+    - REQ-ASSET-011
+    - REQ-CLI-001
+    - REQ-CLI-002
+    - REQ-OBS-001
+    - REQ-GAUNTLET-002
+
+claims:
+  - id: AMR-CLAIM-001
+    statement: >-
+      Recipes sit above and compile into the existing capability system (intent → recipe → capabilities → runtime);
+      they never create a parallel router, provider dispatcher, evidence format, or semantic authority.
+    proof_level: P2
+  - id: AMR-CLAIM-002
+    statement: >-
+      A cold caller can discover the canonical recipes, inspect required vs default inputs, generate an inspectable
+      dry-run RecipePlan, apply through existing capabilities, and read actionable structured failures and append-only
+      provenance using only the public CLI surface.
+    proof_level: P2
+  - id: AMR-CLAIM-003
+    statement: >-
+      Recipe apply is idempotent w.r.t. already-satisfied affordances, asset steps flow through asset.resolve
+      search/acquire → adapt → create, and acceptance is verified only through existing observe/verify/Gauntlet
+      channels with linked evidence.
+    proof_level: P2
+
+execution_graph:
+  - id: AMR-01
+    title: Preregister amendment and failing recipe-surface tests
+    depends_on: []
+    gate:
+      - amendment plan approved by operator intent and recorded in the decision log.
+      - failing tests prove no recipe registry/CLI/RecipeDescriptor schema exists before implementation.
+  - id: AMR-02
+    title: Amend specification to v0.4.0 and rebind settlement plan
+    depends_on: [AMR-01]
+    gate:
+      - spec carries REQ-RECIPE-001..014 under core_behavior_requirements.recipe_composition with operator
+        authorization recorded in metadata.amendment_0_4_0.
+      - plan rebound to the amended spec SHA-256 with settlement tasks T27/T28 and 100% REQ traceability.
+      - python3 scripts/check-traceability.py passes with the amended artifacts.
+  - id: AMR-03
+    title: Implement recipe contracts, studio recipe module, and CLI surface
+    depends_on: [AMR-02]
+    gate:
+      - RecipeDescriptor/RecipePlan/provenance schemas are strict Zod contracts reused by studio and CLI.
+      - compiler produces an affordance DAG RecipePlan; apply invokes routeCapability and asset.resolve only.
+      - CLI exposes recipes + recipe describe|plan|apply with --json StudioResult conventions.
+  - id: AMR-04
+    title: E2E tests, adversarial teeth, UX benchmark, and confirmation
+    depends_on: [AMR-03]
+    gate:
+      - discovery, description, default resolution, dry-run, apply, partial/already-satisfied, provider
+        substitution, blocked dependency, actionable recovery, and provenance linkage tests pass.
+      - at least one adversarial test proves recipes cannot bypass authority/provenance/verification boundaries.
+      - at least one cold-agent-style test reaches an outcome from the public surface only.
+      - UX benchmark reports user decisions, commands, exposed concepts, and internal capabilities composed.
+      - just ci, capability lint, topology, source/third-party verification pass; independent adversarial
+        confirmation recorded.
+
+non_goals:
+  - Do not alter any previously settled task, gate, tooth, or provider-specific proof; T00–T26 evidence and frozen
+    games remain untouched.
+  - Do not introduce a second capability router, evidence format, ECS representation, workflow framework, or
+    per-recipe package.
+  - Do not hardcode specific asset providers, Blender, or generation into normal recipes; asset.resolve policy stands.
+  - Do not redesign settled runtime authority (Koota/Three/Rapier/Recast) or expand the canonical set beyond the
+    small proving vocabulary in this amendment.
+
+outcome:
+  settled: ""
+  confirmation: ""
+  gates: []
+  notes: >-
+    Settlement recorded by T27/T28 evidence in the rebound settlement plan; this plan records the amendment
+    authorization and scope.

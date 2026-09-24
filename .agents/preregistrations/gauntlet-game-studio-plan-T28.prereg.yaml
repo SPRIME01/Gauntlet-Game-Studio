@@ -1,0 +1,62 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T28
+title: Settle recipe E2E outcomes, cold-agent UX benchmark, and adversarial confirmation
+proof_level: P2
+timestamp: "2026-09-24T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T28-001
+    settles:
+      - REQ-RECIPE-012
+      - REQ-RECIPE-013
+      - REQ-RECIPE-014
+    statement: >-
+      The canonical six-recipe set (world.third-person, enemy.patrol, interaction,
+      interaction.pickup, interaction.door-key, checkpoint) is discoverable from
+      the public CLI alone, compiles to an inspectable plan without reading recipe
+      engine source, applies through existing capabilities with observe/verify
+      linkage, and yields measured lower user-facing complexity than manual
+      capability composition. Recipe acceptance never invents a second evidence
+      format or bypasses Gauntlet settlement.
+
+falsifiers:
+  - id: TEETH-T28-001
+    attack: Attempt to settle a recipe acceptance claim using only a happy-path parser test.
+    expected: >-
+      Gate requires E2E apply through existing capabilities plus
+      observe/verify/Gauntlet linkage; parser-only evidence is insufficient.
+  - id: TEETH-T28-002
+    attack: >-
+      Start from only `studio recipes` / `recipe describe` and attempt
+      enemy.patrol dry-run without reading recipe-engine source.
+    expected: >-
+      Cold-agent path reaches an inspectable RecipePlan (exit 0, mutation:false)
+      using only public CLI help/describe output.
+  - id: TEETH-T28-003
+    attack: Introduce a second evidence format or bypass Gauntlet for recipe acceptance.
+    expected: >-
+      Verification rejects non-conformant evidence; REQ-RECIPE-014 fails; recipe
+      provenance remains append-only under the existing EvidenceStore channels.
+
+known_confounds:
+  - Stale evidence or a different project revision.
+  - Measuring UX with engine-source knowledge that a cold agent would not have.
+  - Parser-only green tests mistaken for end-to-end settlement.
+
+confirmation_condition: >-
+  The declared task gates and teeth pass using fresh evidence for the current
+  revision, and the task's declared confirmation mode (independent_adversarial)
+  is satisfied.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Verify from fresh evidence at the current revision, not builder narrative:
+    (1) canonical recipe E2E suites pass; (2) UX benchmark artifact under
+    artifacts/plan/T28/ records per-recipe decisions/commands/concepts/capabilities;
+    (3) cold-agent dry-run succeeds from public CLI only; (4) just ci and
+    blackwater-relay --suite all remain green; (5) no second evidence format was
+    introduced for recipe acceptance.

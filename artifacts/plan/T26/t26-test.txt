@@ -1,0 +1,1553 @@
+just validate-agent-artifacts
+python3 scripts/check-traceability.py
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 198 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 157 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 198)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39
+OK:   Plan status is 'approved'.
+OK:   All 157 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   All P3 preregistration artifacts exist on disk and are frozen.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+python3 scripts/check-topology.py
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+bun test
+bun test v1.4.0 (34cbb9a40)
+
+codename-gauntlet-warfare/tests/assets.test.ts:
+(pass) every runtime asset exists and matches its recorded source hash [1.72ms]
+(pass) runtime weapon retains its sockets and measured geometry budget [13.93ms]
+(pass) material batching preserves weapon bounds, triangles and socket positions [14.83ms]
+
+codename-gauntlet-warfare/tests/combat.test.ts:
+(pass) misses consume ammunition without awarding hits; cover prevents damage [5.21ms]
+(pass) confirmed hits kill once, semi fire requires release, reload is timed [1.39ms]
+(pass) sprint-to-fire delay and terminal timeout gate shooting [1.91ms]
+(pass) both confirmed kills win and terminal state cannot award additional shots [0.52ms]
+(pass) exposed player dies from enemy fire and a new round restores all combat state [5.95ms]
+
+codename-gauntlet-warfare/tests/spatial.test.ts:
+(pass) real Rapier occlusion and Recast paths use arena geometry [89.84ms]
+(pass) Rapier hits resolve to Koota enemies and restart synchronizes their positions [25.12ms]
+(pass) sandbag cover blocks below its canonical top and clears rays above it [18.55ms]
+
+apps/studio-cli/src/cli.test.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Studio Doctor > runs doctor diagnostics and passes all baseline checks in workspace root [1.85ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Studio Doctor > returns a normalized StudioResult for doctor [0.24ms]
+{
+  "status": "success",
+  "operation": "studio.doctor",
+  "result": {
+    "status": "success",
+    "checks": [
+      {
+        "name": "bun_version",
+        "status": "pass",
+        "details": "Bun v1.4.0 satisfies baseline (>= 1.4.0)"
+      },
+      {
+        "name": "donor_isolation_gitignore",
+        "status": "pass",
+        "details": ".tmp/ is properly gitignored in .gitignore"
+      },
+      {
+        "name": "donor_dependency_check",
+        "status": "pass",
+        "details": "Zero donor dependencies detected in root package manifest"
+      },
+      {
+        "name": "configuration_integrity",
+        "status": "pass",
+        "details": "Configuration parsed cleanly and adheres to secret hygiene rules"
+      },
+      {
+        "name": "workspace_packages",
+        "status": "pass",
+        "details": "All 5 required workspace packages present (packages/contracts, packages/studio, packages/runtime, packages/adapters, apps/studio-cli)"
+      }
+    ],
+    "environment": {
+      "bun_version": "1.4.0",
+      "platform": "linux",
+      "arch": "x64",
+      "cwd": "/home/sprime01/projects/gauntlet-game-studio"
+    }
+  },
+  "diagnostics": {
+    "total_checks": 5,
+    "passed_checks": 5,
+    "failed_checks": 0,
+    "environment": {
+      "bun_version": "1.4.0",
+      "platform": "linux",
+      "arch": "x64",
+      "cwd": "/home/sprime01/projects/gauntlet-game-studio"
+    }
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Studio Doctor > executes CLI doctor command with exit code 0 [4.00ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Configuration System & Secret Hygiene (Teeth Attack 1) > loads valid default configuration when gauntlet.config.json is absent [0.08ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Configuration System & Secret Hygiene (Teeth Attack 1) > accepts environment-referenced secrets starting with $ [0.40ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Configuration System & Secret Hygiene (Teeth Attack 1) > REJECTS literal secrets in configuration without echoing the secret value (Teeth Check) [0.15ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Configuration System & Secret Hygiene (Teeth Attack 1) > REJECTS malformed or invalid configuration fields [0.56ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Donor Isolation Enforcement (Teeth Attack 2) > REJECTS donor paths referenced in configuration (Teeth Check) [0.12ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Donor Isolation Enforcement (Teeth Attack 2) > fails doctor if .tmp/ is missing from .gitignore [0.57ms]
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Donor Isolation Enforcement (Teeth Attack 2) > fails doctor if donor is added as a dependency in package.json [0.25ms]
+{
+  "status": "success",
+  "operation": "studio.config",
+  "result": {
+    "project_id": "default-project",
+    "title": "Gauntlet Game",
+    "version": "0.1.0",
+    "runtime": {
+      "engine": "three",
+      "rapier": true,
+      "recast": true,
+      "bvh": true,
+      "multiplayer": "none"
+    },
+    "budgets": {
+      "max_draw_calls": 150,
+      "max_triangles": 200000,
+      "target_fps": 60
+    },
+    "providers": {},
+    "secrets": {}
+  },
+  "diagnostics": {
+    "source": "gauntlet.config.json or defaults"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > config command returns 0 and masks secrets [0.11ms]
+{
+  "status": "success",
+  "operation": "studio.create",
+  "result": {
+    "project_name": "cli-test-game",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/cli-test-game",
+    "files": [
+      "artifacts/evidence/.gitkeep",
+      "tsconfig.json",
+      "package.json",
+      "references/.gitkeep",
+      "src/index.ts",
+      "assets/manifest.json",
+      "AGENTS.md",
+      "studio.lock.yaml",
+      "tests/game.test.ts",
+      ".agents/specs/game.spec.yaml",
+      ".agents/CURRENT_STATUS.yml"
+    ]
+  },
+  "diagnostics": {
+    "project_name": "cli-test-game",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/cli-test-game",
+    "files_count": 11
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > create command returns 0 with structured result [0.75ms]
+{
+  "status": "success",
+  "operation": "studio.capabilities",
+  "result": [
+    {
+      "id": "world.composition",
+      "summary": "Scene and world composition, architecture, vegetation, lighting, atmosphere, and environment construction via 3dviz. Composes environments from approved assets and procedural placement.",
+      "use_when": [
+        "scene composition",
+        "environment design",
+        "lighting setup",
+        "atmosphere",
+        "world layout",
+        "architecture",
+        "vegetation placement"
+      ],
+      "do_not_use_when": [
+        "reconstructing a single depicted object or character from reference image",
+        "procedural terrain heightfield calculation",
+        "navmesh generation"
+      ],
+      "inputs": [
+        "world_brief",
+        "environment_theme",
+        "layout_spec"
+      ],
+      "outputs": [
+        "scene_graph_spec",
+        "world_manifest"
+      ],
+      "verification": [
+        "visual_capture",
+        "draw_call_telemetry"
+      ],
+      "providers": [
+        "agent-skill.3dviz"
+      ]
+    },
+    {
+      "id": "asset.reconstruct",
+      "summary": "Reconstruct a specific depicted object or character into procedural Three.js from suitable reference imagery. Produces high-fidelity object geometry honoring reference silhouette and budgets.",
+      "use_when": [
+        "reconstructing a depicted object from reference image",
+        "character model from reference photo",
+        "field transceiver from concept art",
+        "specific vehicle from drawing"
+      ],
+      "do_not_use_when": [
+        "generic text-to-3D without reference image",
+        "scene composition",
+        "world environment layout",
+        "procedural terrain"
+      ],
+      "inputs": [
+        "reference_image_uri",
+        "target_role",
+        "poly_budget"
+      ],
+      "outputs": [
+        "procedural_three_code",
+        "glb_derivative"
+      ],
+      "verification": [
+        "reference_similarity",
+        "poly_budget_check"
+      ],
+      "providers": [
+        "agent-skill.img2threejs"
+      ],
+      "requires_user_reference": true
+    },
+    {
+      "id": "world.terrain",
+      "summary": "Deterministic mathematical procedural elevation generation producing canonical TerrainHeightfield height arrays. Generates multi-octave island topography with deterministic seed control.",
+      "use_when": [
+        "procedural terrain generation",
+        "heightfield elevation",
+        "island topography",
+        "elevation grid"
+      ],
+      "do_not_use_when": [
+        "importing static pre-modeled scenic meshes",
+        "environment composition",
+        "reconstructing objects"
+      ],
+      "inputs": [
+        "seed",
+        "grid_dimensions",
+        "world_bounds",
+        "octaves"
+      ],
+      "outputs": [
+        "TerrainHeightfield"
+      ],
+      "verification": [
+        "height_range_check",
+        "deterministic_seed_check"
+      ],
+      "providers": [
+        "procedural_generator"
+      ]
+    },
+    {
+      "id": "world.physics",
+      "summary": "Direct Rapier 3D simulation step owner; creates colliders and dynamic bodies as execution projections. Manages physical simulation stepping without leaking authority into gameplay state.",
+      "use_when": [
+        "rigid body physics",
+        "collision detection",
+        "character controller physics",
+        "raycast queries against physics world"
+      ],
+      "do_not_use_when": [
+        "authoritative gameplay state",
+        "pure visual animations"
+      ],
+      "inputs": [
+        "physics_world_config",
+        "colliders_spec"
+      ],
+      "outputs": [
+        "physics_step_owner"
+      ],
+      "verification": [
+        "collision_event_log",
+        "step_timing_telemetry"
+      ],
+      "providers": [
+        "physics.rapier"
+      ]
+    },
+    {
+      "id": "world.navigation",
+      "summary": "Recast navmesh generation, crowd simulation, and deterministic pathfinding over accepted world geometry. Calculates collision-aware routes and agent steering for ground entities.",
+      "use_when": [
+        "AI pathfinding",
+        "navmesh generation",
+        "crowd navigation",
+        "patrol route planning"
+      ],
+      "do_not_use_when": [
+        "free-flight aerial navigation",
+        "direct player movement without collision"
+      ],
+      "inputs": [
+        "world_geometry_source",
+        "agent_radius",
+        "agent_height"
+      ],
+      "outputs": [
+        "navmesh_data",
+        "path_query_handle"
+      ],
+      "verification": [
+        "path_traversal_test"
+      ],
+      "providers": [
+        "navigation.recast"
+      ]
+    },
+    {
+      "id": "world.spatial",
+      "summary": "Accelerated Three.js raycasts and spatial bounds queries using three-mesh-bvh. Provides accelerated line-of-sight and spatial acceleration structures for runtime geometry.",
+      "use_when": [
+        "accelerated raycasting",
+        "line-of-sight checks",
+        "spatial queries against meshes"
+      ],
+      "do_not_use_when": [
+        "authoritative game state",
+        "physics simulation stepping"
+      ],
+      "inputs": [
+        "target_mesh"
+      ],
+      "outputs": [
+        "bvh_acceleration_structure"
+      ],
+      "verification": [
+        "raycast_benchmark"
+      ],
+      "providers": [
+        "spatial.three-mesh-bvh"
+      ]
+    },
+    {
+      "id": "asset.source",
+      "summary": "CC0, HDRI, and licensed PBR material and asset intake with provenance tracking. Ingests textures, environment skyboxes, and model assets with strict licensing verification.",
+      "use_when": [
+        "intake of CC0 textures",
+        "HDRI skybox sourcing",
+        "licensed PBR assets"
+      ],
+      "do_not_use_when": [
+        "generating new AI meshes",
+        "reference image reconstruction"
+      ],
+      "inputs": [
+        "source_url",
+        "license_type"
+      ],
+      "outputs": [
+        "AssetRecord",
+        "cached_texture_set"
+      ],
+      "verification": [
+        "license_verification",
+        "checksum_verification"
+      ],
+      "providers": [
+        "asset.polyhaven"
+      ]
+    },
+    {
+      "id": "asset.resolve",
+      "summary": "First-class routing policy resolving each required asset through the ordered policy search/acquire, then adapt, then create. Searches the project registry and registered external providers, acquires through asset.source into the AssetRegistry with per-asset provenance, and records every decision append-only. Creation is a recorded fallback via existing capability routes, never an automatic generation step.",
+      "use_when": [
+        "a production asset is required and no accepted project asset is declared",
+        "deciding between acquiring an existing CC0 asset and authoring one",
+        "an existing project asset needs adaptation before creation is considered"
+      ],
+      "do_not_use_when": [
+        "the request is a specific depicted reference reconstruction (use asset.reconstruct.reference-image)",
+        "the asset id and provider are already decided and only raw intake is needed (use asset.source)",
+        "topology, UVs or baking require DCC escalation (use asset.dcc_escalate)"
+      ],
+      "inputs": [
+        "requested_id",
+        "role",
+        "keywords"
+      ],
+      "outputs": [
+        "ResolutionRecord",
+        "AssetRecord"
+      ],
+      "verification": [
+        "append_only_decision_record",
+        "per_asset_license_evidence",
+        "policy_order_enforced"
+      ],
+      "providers": [
+        "asset.polyhaven"
+      ]
+    },
+    {
+      "id": "asset.optimize",
+      "summary": "glTF-Transform offline pipeline for mesh pruning, LOD generation, and WebP/KTX2 texture compression. Optimizes production assets to meet target triangle, draw call, and memory budgets.",
+      "use_when": [
+        "glTF optimization",
+        "texture compression to WebP",
+        "geometry pruning",
+        "LOD generation"
+      ],
+      "do_not_use_when": [
+        "runtime scene rendering",
+        "procedural generation"
+      ],
+      "inputs": [
+        "raw_gltf_path",
+        "compression_profile"
+      ],
+      "outputs": [
+        "optimized_glb_path",
+        "budget_report"
+      ],
+      "verification": [
+        "gltf_validator",
+        "file_size_check"
+      ],
+      "providers": [
+        "asset.gltf-transform"
+      ]
+    },
+    {
+      "id": "asset.dcc_escalate",
+      "summary": "Blender DCC escalation for topology cleanup, UV unwrap, complex rigging, and texture baking. Used when procedural generation cannot satisfy difficult topology or skinning constraints.",
+      "use_when": [
+        "topology cleanup",
+        "complex character skinning",
+        "difficult UV unwrap",
+        "texture baking"
+      ],
+      "do_not_use_when": [
+        "default game scene authoring",
+        "authoritative game state"
+      ],
+      "inputs": [
+        "source_blend_path",
+        "export_script"
+      ],
+      "outputs": [
+        "committed_glb_derivative"
+      ],
+      "verification": [
+        "mesh_manifold_check"
+      ],
+      "providers": [
+        "dcc.blender"
+      ]
+    },
+    {
+      "id": "dcc.blender.process",
+      "summary": "Isolated Blender DCC escalation and regeneration (deterministic blender --background --factory-startup scripts) for work lighter routes cannot satisfy, e.g. cross-rig animation retargeting and bake. Accepted GLB/glTF derivatives commit through the Asset Registry; normal builds, tests, runtime, and CI consume them WITHOUT Blender. Absent Blender is a scoped regeneration blockage only.",
+      "use_when": [
+        "cross-rig animation retargeting and keyframe bake",
+        "regenerating a committed blender-derived asset from its source definition",
+        "difficult rigging or skinning work beyond procedural routes"
+      ],
+      "do_not_use_when": [
+        "default scene/world authoring (Blender is never the default authoring environment)",
+        "authoritative gameplay state or quest/NPC semantics",
+        "reconstructing a specific depicted object from reference imagery",
+        "ordinary asset normalization (use asset.optimize)"
+      ],
+      "inputs": [
+        "source_definition",
+        "escalation_rationale",
+        "output_glb_path",
+        "bake_report_path",
+        "budget_limits"
+      ],
+      "outputs": [
+        "committed_glb_derivative",
+        "asset_record",
+        "bake_report"
+      ],
+      "verification": [
+        "deterministic_result_verification",
+        "glb_validity_check",
+        "provenance_check",
+        "regeneration_metadata_check",
+        "dcc_metadata_authority_check"
+      ],
+      "providers": [
+        "dcc.blender"
+      ],
+      "cost_class": "expensive"
+    },
+    {
+      "id": "vfx.particles",
+      "summary": "Inspectable particle systems and visual effects using three.quarks. Creates localized particle emitters, smoke, sparks, and glow effects as execution projections over the scene graph.",
+      "use_when": [
+        "beacon glow",
+        "spark effects",
+        "engine exhaust",
+        "smoke and dust particles"
+      ],
+      "do_not_use_when": [
+        "solid world geometry",
+        "gameplay collision colliders"
+      ],
+      "inputs": [
+        "particle_emitter_config"
+      ],
+      "outputs": [
+        "quarks_system"
+      ],
+      "verification": [
+        "particle_count_budget"
+      ],
+      "providers": [
+        "vfx.quarks"
+      ]
+    },
+    {
+      "id": "audio.procedural",
+      "summary": "Browser procedural and sample audio backend implementing AudioBackend via Tone.js with NullAudioBackend in headless environments. Drives spatial audio effects and procedural engine sounds.",
+      "use_when": [
+        "engine sound",
+        "ambient island wind",
+        "beacon activation audio",
+        "UI sound effects"
+      ],
+      "do_not_use_when": [
+        "visual rendering",
+        "gameplay state authority"
+      ],
+      "inputs": [
+        "audio_event_spec"
+      ],
+      "outputs": [
+        "audio_handle"
+      ],
+      "verification": [
+        "gesture_unlock_test",
+        "headless_silence_test"
+      ],
+      "providers": [
+        "audio.tone",
+        "audio.null"
+      ]
+    },
+    {
+      "id": "network.multiplayer",
+      "summary": "Multiplayer replication and transport with Bun WebSockets baseline and optional WebRTC datagrams. Provides authoritative server tick synchronization and entity state replication.",
+      "use_when": [
+        "multiplayer client-server synchronization",
+        "authoritative server tick",
+        "state replication"
+      ],
+      "do_not_use_when": [
+        "single-player local state",
+        "offline tests"
+      ],
+      "inputs": [
+        "transport_config",
+        "entity_replication_schema"
+      ],
+      "outputs": [
+        "network_session_handle"
+      ],
+      "verification": [
+        "packet_loss_simulation",
+        "reconciliation_test"
+      ],
+      "providers": [
+        "network.websocket",
+        "network.geckos"
+      ]
+    },
+    {
+      "id": "verify.browser",
+      "summary": "Deterministic browser proof scenarios and telemetry capture using Playwright, with agent-browser for exploratory inspection. Captures authoritative state, pixels, and performance telemetry.",
+      "use_when": [
+        "deterministic browser end-to-end proof",
+        "pixel capture verification",
+        "scenario regression"
+      ],
+      "do_not_use_when": [
+        "exploratory browser debugging without assertions"
+      ],
+      "inputs": [
+        "scenario_spec",
+        "target_url"
+      ],
+      "outputs": [
+        "ObservationRun",
+        "EvidenceManifest"
+      ],
+      "verification": [
+        "playwright_trace_validation"
+      ],
+      "providers": [
+        "browser.playwright",
+        "browser.agent-browser"
+      ]
+    },
+    {
+      "id": "world.environment.compose",
+      "summary": "Agent-skill world/environment composition handoff (3dviz-pro-max): composes architecture, vegetation, lighting, and atmosphere as world kits, sockets, colliders, and scatter metadata integrating with canonical terrain and runtime navigation. Verification is deterministic; composition never owns terrain elevation, navmesh, or specific-object reconstruction.",
+      "use_when": [
+        "scene/world composition",
+        "environment construction",
+        "architecture placement",
+        "vegetation scatter",
+        "lighting and atmosphere"
+      ],
+      "do_not_use_when": [
+        "reconstructing a specific depicted object or character from reference imagery",
+        "terrain elevation authority or heightfield generation",
+        "navigation authority or navmesh data production"
+      ],
+      "inputs": [
+        "world_brief",
+        "terrain_heightfield_ref",
+        "kit_asset_ids"
+      ],
+      "outputs": [
+        "world_kit_placements",
+        "socket_bindings",
+        "collider_specs",
+        "scatter_metadata",
+        "lighting_atmosphere_spec"
+      ],
+      "verification": [
+        "deterministic_result_verification",
+        "authority_boundary_check",
+        "asset_provenance_reference_check"
+      ],
+      "providers": [
+        "agent-skill.3dviz"
+      ]
+    },
+    {
+      "id": "asset.reconstruct.reference-image",
+      "summary": "Reference-image reconstruction of one specific depicted object or character into a procedural Three.js module via the pinned img2threejs agent skill. Requires suitable authorized reference imagery before routing; the accepted handoff output is verified deterministically (imports, provenance, reference evidence, affordances, budgets) against the single standard Three.js dependency.",
+      "use_when": [
+        "reconstructing a specific depicted object with suitable reference imagery",
+        "reconstructing a specific depicted character from reference photo or concept art",
+        "reference-backed prop or vehicle reconstruction with authorized image"
+      ],
+      "do_not_use_when": [
+        "generic text-to-3D generation without a suitable reference image",
+        "scene composition or world environment layout",
+        "procedural terrain heightfield generation",
+        "navmesh generation"
+      ],
+      "inputs": [
+        "reference_image_uris",
+        "target_role",
+        "budget_limits",
+        "min_reference_similarity"
+      ],
+      "outputs": [
+        "procedural_three_module",
+        "asset_record",
+        "verification_evidence"
+      ],
+      "verification": [
+        "deterministic_result_verification",
+        "reference_comparison_evidence",
+        "budget_check"
+      ],
+      "providers": [
+        "agent-skill.img2threejs"
+      ],
+      "requires_user_reference": true,
+      "cost_class": "metered"
+    }
+  ],
+  "diagnostics": {
+    "total": 17
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > placeholder commands return 0 with status 'blocked' (plan DAG alignment) [0.12ms]
+{
+  "status": "success",
+  "operation": "studio.asset.verify",
+  "result": {
+    "operation": "asset.verify_all",
+    "manifest_path": "/home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project/assets/manifest.json",
+    "status": "success",
+    "totals": {
+      "total": 3,
+      "accepted": 1,
+      "degraded": 1,
+      "pending": 1,
+      "rejected": 0,
+      "blocked": 0,
+      "not_acceptable": 0
+    },
+    "assets": [
+      {
+        "asset_id": "blackwater-barrel",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "All 1 declared budget limit(s) satisfied by measurements"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "WebP baseline achieved"
+          }
+        ],
+        "blockers": [],
+        "origin": "cc0",
+        "role": "prop_barrel",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "skybox-atlas",
+        "acceptance_state": "degraded",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "waived",
+            "detail": "Budget gate waived by explicit policy waiver ('measured_draw_calls'=12 > 'max_draw_calls'=8)"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "cc0",
+        "role": "environment_sky",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "grid-floor-procedural",
+        "acceptance_state": "pending",
+        "production_acceptable": false,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "procedural",
+        "role": "ground_plane",
+        "clean_pending": true
+      }
+    ]
+  },
+  "diagnostics": {
+    "project_root": "/home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project",
+    "manifest_path": "/home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project/assets/manifest.json",
+    "total": 3,
+    "not_acceptable": 0
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > asset verify --all --json verifies the fixture registry with exit 0 (T13) [2.92ms]
+{
+  "status": "blocked",
+  "operation": "studio.asset.verify",
+  "diagnostics": {
+    "code": "MANIFEST_MISSING",
+    "error": "No asset registry found at /tmp/no-manifest-5vkg55/assets/manifest.json"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > asset verify --all on an explicit project without a manifest blocks with exit 2 [0.21ms]
+{
+  "status": "blocked",
+  "operation": "studio.asset.compile",
+  "diagnostics": {
+    "message": "Asset action 'compile' is governed by future task settlement in the active plan DAG.",
+    "unlocked_in": "T14/T15/T18"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > unsettled asset actions remain typed placeholders with exit 0 [0.04ms]
+{
+  "status": "success",
+  "operation": "studio.asset.source",
+  "result": {
+    "asset_record": {
+      "id": "polyhaven-barrel",
+      "role": "prop",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "retrieved_at": "2026-09-19T01:42:50.649Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {},
+      "acceptance_state": "pending"
+    },
+    "files": [
+      {
+        "path": "assets/sources/polyhaven/barrel/barrel.glb",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "bytes": 8
+      }
+    ]
+  },
+  "diagnostics": {
+    "provider": "polyhaven",
+    "project_root": "/tmp/cli-asset-source-OULmx8",
+    "manifest_path": "/tmp/cli-asset-source-OULmx8/assets/manifest.json",
+    "acceptance_state": "pending",
+    "provenance_violations": []
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > sources a Poly Haven asset through the adapter and records its pending provenance [1.12ms]
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "UNSUPPORTED_PROVIDER",
+    "error": "asset source supports only the registered provider 'polyhaven'"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > rejects an unsupported asset source provider before writing files [0.11ms]
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "ASSET_ID_INVALID",
+    "error": "asset source requires a normalized Poly Haven asset id"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "ROLE_REQUIRED",
+    "error": "asset source requires --role <role>"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > rejects malformed ids and missing roles before network access or project writes [0.30ms]
+{
+  "status": "success",
+  "operation": "studio.asset.source",
+  "result": {
+    "asset_record": {
+      "id": "polyhaven-barrel",
+      "role": "prop",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "retrieved_at": "2026-09-19T01:42:50.650Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {},
+      "acceptance_state": "pending"
+    },
+    "files": [
+      {
+        "path": "assets/sources/polyhaven/barrel/barrel.glb",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "bytes": 8
+      }
+    ]
+  },
+  "diagnostics": {
+    "provider": "polyhaven",
+    "project_root": "/tmp/cli-asset-duplicate-7fPodp",
+    "manifest_path": "/tmp/cli-asset-duplicate-7fPodp/assets/manifest.json",
+    "acceptance_state": "pending",
+    "provenance_violations": []
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "ASSET_ALREADY_REGISTERED",
+    "error": "Asset 'polyhaven-barrel' is already registered; source intake will not overwrite retained bytes"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > rejects duplicate source intake before it can overwrite retained bytes [0.47ms]
+{
+  "status": "failed",
+  "operation": "studio",
+  "diagnostics": {
+    "error": "Unknown command: nonexistent_command"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > CLI Command Protocol & Machine-Readable Output > unknown command returns 1 with error diagnostic [0.04ms]
+{
+  "status": "failed",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "REQUESTED_ID_INVALID",
+    "error": "asset resolve requires a normalized requested id"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "ROLE_REQUIRED",
+    "error": "asset resolve requires --role <role>"
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Asset Resolve Routing (T26: search/acquire -> adapt -> create) > rejects malformed ids and missing roles before any search or project write [0.15ms]
+{
+  "status": "success",
+  "operation": "studio.asset.resolve",
+  "result": {
+    "route": "acquire",
+    "requested_id": "barrel",
+    "provider": "polyhaven",
+    "asset_id": "barrel",
+    "asset_record": {
+      "id": "polyhaven-barrel",
+      "role": "prop",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+        "retrieved_at": "2026-09-19T01:42:50.652Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {},
+      "acceptance_state": "pending"
+    },
+    "decision_file": "/tmp/cli-resolve-acquire-oQgpKx/.studio/resolutions/barrel.2026-09-19T01-42-50-652Z.json",
+    "steps": [
+      {
+        "step": "search",
+        "target": "project-registry",
+        "outcome": "no-match",
+        "detail": "no project asset matches the requested id"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'barrel' (Wooden Barrel)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "acquired",
+        "detail": "acquired 'barrel' into the registry as a 'pending' record with license 'CC0'"
+      }
+    ],
+    "decision": {
+      "route": "acquire",
+      "reason": "provider match acquired through asset.source intake as a 'pending' record; acceptance is a separate registry decision",
+      "provider": "polyhaven",
+      "asset_id": "barrel",
+      "license": "CC0"
+    }
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Asset Resolve Routing (T26: search/acquire -> adapt -> create) > acquires a provider match through the asset.source intake as a pending record with a decision record [1.52ms]
+{
+  "status": "blocked",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "PROVIDERS_UNAVAILABLE",
+    "error": "every registered provider was unavailable; resolve cannot conclude"
+  },
+  "result": {
+    "route": "unresolved",
+    "requested_id": "does-not-exist",
+    "decision_file": "/tmp/cli-resolve-fallback-Hrx3yi/.studio/resolutions/does-not-exist.2026-09-19T01-42-50-652Z.json",
+    "steps": [
+      {
+        "step": "search",
+        "target": "project-registry",
+        "outcome": "no-match",
+        "detail": "no project asset matches the requested id"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "unavailable",
+        "detail": "REMOTE_ERROR: Poly Haven assets request failed with HTTP 404"
+      },
+      {
+        "step": "search",
+        "target": "providers",
+        "outcome": "unavailable",
+        "detail": "every registered provider was unavailable; absence of a match cannot be concluded"
+      }
+    ],
+    "decision": {
+      "route": "create-fallback",
+      "reason": "blocked: providers unavailable; the search step could not be completed"
+    }
+  }
+}
+(pass) Studio CLI, Configuration & Doctor Diagnostic Suite > Asset Resolve Routing (T26: search/acquire -> adapt -> create) > no provider match yields typed CREATE_FALLBACK_REQUIRED with a recorded decision and no fabricated asset [0.27ms]
+
+examples/blackwater-relay/tests/scenarios-headless.test.ts:
+(pass) Blackwater Relay headless scenario progression (T22, child-process isolated) > completes all headless scenario checks [928.78ms]
+
+examples/blackwater-relay/tests/world.test.ts:
+(pass) Blackwater Relay canonical terrain parity (T22, REQ-TERRAIN-001/002/003) > generates the canonical heightfield declared by the 3dviz composition reference [0.04ms]
+(pass) Blackwater Relay canonical terrain parity (T22, REQ-TERRAIN-001/002/003) > samples known canonical points (transposition/inversion detection per REQ-TERRAIN-003) [0.17ms]
+(pass) Blackwater Relay canonical terrain parity (T22, REQ-TERRAIN-001/002/003) > sockets every composed kit strictly through the canonical sampler (composition never owns elevation) [0.10ms]
+
+examples/blackwater-relay/tests/service-drone.test.ts:
+(pass) Service-drone committed Blender derivative > consumes the committed GLB derivative without any Blender presence [0.26ms]
+(pass) Service-drone committed Blender derivative > carries the accepted hover_cycle clip and rig affordances [0.05ms]
+(pass) Service-drone committed Blender derivative > matches the accepted AssetRecord in the manifest [0.13ms]
+(pass) Service-drone committed Blender derivative > carries no gameplay semantics in DCC-side metadata affordances [0.15ms]
+
+examples/blackwater-relay/tests/game.test.ts:
+(pass) Generated Game Conformance > initializes game instance independently [0.06ms]
+
+packages/studio/src/generator.test.ts:
+(pass) Independent Game Project Template & Scaffold Suite (T05) > creates a well-formed independent game project from template (REQ-OUT-001, REQ-REPO-002) [4.85ms]
+(pass) Independent Game Project Template & Scaffold Suite (T05) > executes tests successfully inside generated project [7.04ms]
+(pass) Independent Game Project Template & Scaffold Suite (T05) > TEETH-T05-001: Remains independently buildable when moved outside the studio monorepo (Teeth Check) [13.20ms]
+(pass) Independent Game Project Template & Scaffold Suite (T05) > TEETH-T05-002: Zero private relative-path dependencies into studio monorepo (Teeth Check) [0.13ms]
+(pass) Independent Game Project Template & Scaffold Suite (T05) > verifies examples/blackwater-relay conforms to the same contract (REQ-REPO-003) [1152.65ms]
+
+packages/contracts/src/index.test.ts:
+(pass) @gauntlet/contracts baseline > exports a valid semver version [0.03ms]
+
+packages/contracts/src/schemas.test.ts:
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityDescriptor > validates a well-formed capability descriptor [0.29ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityDescriptor > rejects capability descriptor with invalid ID pattern or missing triggers [0.59ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > accepts valid provider-neutral capability request [1.07ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS provider authority leaks: mavonGameObject in root request (Teeth Check) [0.22ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS provider authority leaks: needleComponent in root request (Teeth Check) [0.13ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityRequest & Provider Isolation (Teeth Attack 1) > REJECTS capability request missing acceptance criteria [0.05ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityResult > validates well-formed capability result [1.23ms]
+(pass) Studio Contracts & Schemas Validation Suite > CapabilityResult > rejects capability result with extra unquarantined provider roots [0.12ms]
+(pass) Studio Contracts & Schemas Validation Suite > AgentHandoff > validates agent handoff contract [0.72ms]
+(pass) Studio Contracts & Schemas Validation Suite > AssetRecord & Provenance > validates asset record with full provenance [0.22ms]
+(pass) Studio Contracts & Schemas Validation Suite > AssetRecord & Provenance > rejects asset record with invalid ID naming convention [0.13ms]
+(pass) Studio Contracts & Schemas Validation Suite > TerrainHeightfield > validates heightfield with array heights [0.12ms]
+(pass) Studio Contracts & Schemas Validation Suite > TerrainHeightfield > validates heightfield with Float32Array heights [0.15ms]
+(pass) Studio Contracts & Schemas Validation Suite > TerrainHeightfield > rejects invalid dimensions or negative sizes [0.12ms]
+(pass) Studio Contracts & Schemas Validation Suite > RuntimeReadiness > accepts ready state when all required subsystems are ready [0.64ms]
+(pass) Studio Contracts & Schemas Validation Suite > RuntimeReadiness > REJECTS ready state when a required subsystem is still booting or failed [0.15ms]
+(pass) Studio Contracts & Schemas Validation Suite > NetworkEnvelope > validates client command envelope with non-negative sequence [0.59ms]
+(pass) Studio Contracts & Schemas Validation Suite > NetworkEnvelope > rejects negative sequence numbers [0.09ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > validates complete ObservationRun [0.58ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > validates complete EvidenceManifest bound to run and revision [0.98ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > REJECTS EvidenceManifest without project_revision or run_id (Teeth Check) [0.20ms]
+(pass) Studio Contracts & Schemas Validation Suite > ObservationRun & EvidenceManifest (Teeth Attack 2) > REJECTS EvidenceManifest with empty artifacts list (Teeth Check) [0.06ms]
+(pass) Studio Contracts & Schemas Validation Suite > SettlementRecord > validates settlement decision citing evidence manifests [0.82ms]
+(pass) Studio Contracts & Schemas Validation Suite > SettlementRecord > rejects settlement record without evidence manifest citations [0.09ms]
+
+packages/adapters/test/vfx-quarks.test.ts:
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > is fully headless: defines, spawns, and steps quarks effects with no DOM/WebGL/AudioContext [6.36ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > deterministic stepping: identical configs produce identical particle-count traces [5.01ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > is an execution projection: direct emitter mutation never back-propagates into Koota [4.73ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > destroy/recreate discipline: destroying the projection leaves the authoritative entity intact [1.32ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > unknown effect ids are suppressed and counted, never thrown (REQ-SAFE-007 discipline) [0.44ms]
+(pass) three.quarks VFX effect projection (T17 - REQ-BIND-009) > effect lifecycle decays deterministically: short bursts fully expire under fixed steps [5.45ms]
+
+packages/runtime/test/scheduler.test.ts:
+(pass) Simulation Scheduler & Headless Split Suite (T07) > advances simulation with fixed delta-time ticks [0.30ms]
+(pass) Simulation Scheduler & Headless Split Suite (T07) > TEETH-T07-002: Rejects multiple schedulers and duplicate step owners (Teeth Check) [0.18ms]
+(pass) Simulation Scheduler & Headless Split Suite (T07) > TEETH-T07-003: Headless server runs DOM-free and detects simulated DOM/canvas leaks (Teeth Check) [0.66ms]
+
+packages/runtime/test/observability.test.ts:
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > mounts the explicitly versioned __GAUNTLET_STUDIO_OBS__ v1 contract with stable readiness reads (REQ-OBS-001, REQ-OBS-002) [0.73ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > reads semantic state through stable Koota-backed methods, correlated to the authoritative world (REQ-OBS-004) [0.10ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > TEETH-T19-001: transient DOM/provider-only access fails the contract — the stable observability method is missing (REQ-OBS-004) [1.12ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > provides pause/resume and bounded fixed-step control through the privileged namespace (REQ-OBS-002) [0.36ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > provides seed control with game-owned reseed notification (REQ-OBS-002) [0.07ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > provides controlled scenario reset hooks while Koota stays authoritative (REQ-OBS-002) [0.36ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > provides named camera/view access (REQ-OBS-002) [0.10ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > exposes a bounded error log buffer, renderer probe/stats, and capture-only preserveDrawingBuffer config (REQ-OBS-002) [1.66ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > exposes physics and navigation inspection reads (REQ-OBS-003) [2.04ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > integrates network readiness/disconnect/latency diagnostics as read-only surface data (REQ-OBS-002, T12 reuse) [2.61ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > TEETH-T19-002: production mode installs NO privileged mutation hooks and the inspection fails simulated regressions (REQ-OUT-004, REQ-OBS-005, REQ-SEC-005) [1.05ms]
+(pass) Observability Bridge & Production Gating Suite (T19 - REQ-OUT-004, REQ-OBS-001..005, REQ-SEC-005) > the observability bridge never becomes a second semantic authority [0.32ms]
+
+packages/runtime/test/terrain-parity.test.ts:
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > generates deterministic canonical TerrainHeightfield without Three.js or DOM dependencies [0.58ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > verifies render, physics, and mathematical query projections agree at sampled world points [3.08ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > verifies asymmetric known fixture detects correct spatial peak placement [0.58ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > TEETH-T10-001: Transpose height array before Rapier projection fails asymmetric test (Teeth Check) [0.18ms]
+(pass) Terrain Parity & Cross-Projection Parity Suite (T10 - REQ-TERRAIN-001..004) > TEETH-T10-002: Invert axis or alter extents in render projection causes parity failure (Teeth Check) [0.64ms]
+
+packages/runtime/test/navigation.test.ts:
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > integrates with SubsystemBarrier to signal readiness [1.47ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > generates NavMesh from canonical terrain navigation geometry [22.89ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > computes deterministic paths across traversable terrain [10.09ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > identifies walkable vs unwalkable coordinates [10.33ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > manages crowd agent projections correlated with authoritative entity IDs [8.78ms]
+(pass) RecastNavigationAdapter (T11 / REQ-BIND-003) > TEETH-T11-001: detects stale traversal state when a corridor is blocked without navmesh update [10.96ms]
+
+packages/runtime/test/physics.test.ts:
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > initializes Rapier world with configured gravity [0.25ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > integrates cleanly with SubsystemBarrier [0.74ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > steps physics simulation forward with single step owner [1.33ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > TEETH-T10-003: Attempt duplicate Rapier step within same tick throws SinglePhysicsStepInvariantError (Teeth Check) [0.26ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > performs raycast against colliders accurately [0.79ms]
+(pass) Rapier Physics Adapter & Single Step Ownership Suite (T10 - REQ-BIND-015, REQ-RUNTIME-006) > extracts debug render buffers without mutating simulation truth [0.43ms]
+
+packages/runtime/test/audio-headless.test.ts:
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > imports and constructs NullAudioBackend with zero DOM, zero AudioContext, zero Tone.js [0.09ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > NullAudioBackend unlock/suspend lifecycle and counted no-op playback [1.58ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > TEETH-T17-002: headless simulation runs with no DOM and no AudioContext using the null backend [1.84ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > TEETH-T17-002 (structural): packages/runtime has zero Tone.js/AudioContext dependencies anywhere in source [2.02ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > core semantics carry no provider audio objects across the boundary (Koota purity) [0.63ms]
+(pass) AudioBackend boundary under headless conditions (T17 - REQ-BIND-012, REQ-AUDIO-002) > unavailable/misbehaving audio degrades without touching unrelated game logic (REQ-SAFE-007) [0.60ms]
+
+packages/runtime/test/projections.test.ts:
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > maintains stable IDs correlating entities across render, physics, navigation, and audio projections [0.31ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > TEETH-T08-002: Delete a render projection while the Koota entity remains alive (Teeth Check) [0.65ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > TEETH-T08-003: Asset affordance isolation prevents raw asset metadata from polluting game semantics (Teeth Check) [0.29ms]
+(pass) Runtime Projection Correlation & Affordance Isolation Suite (T08 - REQ-RUNTIME-002, REQ-RUNTIME-003) > cleans up multi-projection registry on entity despawn without residual handles [0.11ms]
+
+packages/runtime/test/donor-isolation.test.ts:
+(pass) Donor Mechanism Mining & Isolation Suite (T09 - REQ-DONOR-001..007) > Transplanted Diagnostics > tracks per-peer and aggregate bandwidth usage accurately [0.23ms]
+(pass) Donor Mechanism Mining & Isolation Suite (T09 - REQ-DONOR-001..007) > Transplanted Diagnostics > simulates deterministic latency and packet loss [0.16ms]
+(pass) Donor Mechanism Mining & Isolation Suite (T09 - REQ-DONOR-001..007) > Teeth Checks > TEETH-T09-001: Rejects donor GameObject/BaseWorld semantic authority in favor of Koota state [0.21ms]
+(pass) Donor Mechanism Mining & Isolation Suite (T09 - REQ-DONOR-001..007) > Teeth Checks > TEETH-T09-002: Detects and rejects forbidden donor imports and branding patterns [0.12ms]
+(pass) Donor Mechanism Mining & Isolation Suite (T09 - REQ-DONOR-001..007) > Teeth Checks > TEETH-T09-003: Verifies first-party runtime operates independently of .tmp/donor/ [0.03ms]
+
+packages/runtime/test/readiness.test.ts:
+(pass) Runtime Readiness & Subsystem Barriers Suite (T07) > initializes subsystem barrier in created state [0.07ms]
+(pass) Runtime Readiness & Subsystem Barriers Suite (T07) > transitions to ready when all required subsystems mark ready [0.12ms]
+(pass) Runtime Readiness & Subsystem Barriers Suite (T07) > TEETH-T07-001: Rejects scenario start while subsystems are still booting or failed (Teeth Check) [0.36ms]
+(pass) Runtime Readiness & Subsystem Barriers Suite (T07) > allows optional subsystems to remain unready without blocking readiness [0.07ms]
+
+packages/runtime/test/spatial.test.ts:
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > initializes with zero queries and empty diagnostics [0.03ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > builds and binds MeshBVH to geometry [0.22ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > performs accelerated raycast against indexed mesh [0.38ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > detects line of sight obstruction [0.44ms]
+(pass) SpatialQueryAccelerator (T11 / REQ-BIND-004) > TEETH-T11-002: verifies strict fallback parity when BVH acceleration is disabled or bypassed [5.10ms]
+
+packages/runtime/test/authority.test.ts:
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > spawns entities with authoritative Koota traits and queries them [0.35ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > takes and restores pure semantic snapshots with zero provider classes [0.41ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > assertNoProviderObjectsInState detects and rejects provider classes leaking into state [0.19ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > TEETH-T08-001: Mutate Three.js Object3D directly without updating Koota (Teeth Check) [0.46ms]
+(pass) Koota State Authority & Semantic Isolation Suite (T08 - REQ-GOAL-003, REQ-BIND-002, REQ-RUNTIME-001) > headless simulation advances identically without any Three.js objects attached (Headless Parity) [0.22ms]
+
+packages/runtime/test/ui-hud.test.ts:
+(pass) DOM/CSS HUD conventions headless safety (T17) > HudModel is pure data and import-safe with no DOM [0.21ms]
+(pass) DOM/CSS HUD conventions headless safety (T17) > DomHudRenderer refuses to construct without a DOM instead of crashing the server path [0.13ms]
+(pass) DOM/CSS HUD conventions headless safety (T17) > HUD stylesheet conventions are first-party CSS text with stable class names [0.08ms]
+
+templates/game/tests/game.test.ts:
+(pass) Generated Game Conformance > initializes game instance independently [0.09ms]
+
+packages/studio/src/skills/overlay.test.ts:
+(pass) Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06) > validates the committed overlay policy adheres to studio authority (REQ-SOURCE-005) [0.34ms]
+(pass) Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06) > TEETH-T06-001: REJECTS threejs-game-director as an orchestration skill (Teeth Check) [0.17ms]
+(pass) Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06) > validates third-party attribution manifest covers all 5 required classes (REQ-SOURCE-006) [0.18ms]
+(pass) Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06) > pins executable img2threejs and 3dviz-pro-max skill sources with matching provenance [0.44ms]
+(pass) Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06) > TEETH-T06-002: REJECTS unnecessary vendoring of standard runtime libraries (Teeth Check) [2.54ms]
+(pass) Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06) > verifies single standard Three.js resolution across package consumers [0.23ms]
+
+packages/studio/src/router/router.test.ts:
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Capability Registry > contains all normative studio capabilities (baseline 13, plus later plan additions) [0.06ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Capability Router & Disambiguation (Teeth Attack 1) > routes depicted object reconstruction from reference image to img2threejs (Teeth Check) [0.39ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Capability Router & Disambiguation (Teeth Attack 1) > routes scene and world composition to 3dviz (Teeth Check) [0.10ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Capability Router & Disambiguation (Teeth Attack 1) > REJECTS ambiguous intent when it violates negative affordances (Teeth Check) [0.17ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Skill Metadata Linter (Teeth Attack 2) > validates all built-in catalog skills against description and affordance contracts [0.20ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Skill Metadata Linter (Teeth Attack 2) > REJECTS skill with description > 1024 characters (Teeth Check) [0.05ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > Skill Metadata Linter (Teeth Attack 2) > REJECTS skill missing negative affordances (Teeth Check) [0.03ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > AgentHandoff Lifecycle & Premature Settlement (Teeth Attack 3) > settles cleanly when accepted artifacts are provided [0.15ms]
+(pass) Capability Registry, Routing, Skill Metadata & AgentHandoff Suite > AgentHandoff Lifecycle & Premature Settlement (Teeth Attack 3) > REJECTS premature settlement without accepted artifacts (Teeth Check) [0.06ms]
+
+packages/studio/test/skill-overlays/overlay-routing.test.ts:
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > loads and validates the committed overlay policy with the canonical specialist set [0.13ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > binds exactly the five specialists to real studio capability contracts with confined disclosure pointers [0.38ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > progressively discloses: routing surface is separated from on-demand disclosure content [0.26ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > passes routing collision lint for the committed catalog and keeps the director undiscoverable [1.44ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > detects uncoordinated routing collisions between specialist descriptions and studio capabilities [1.06ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > TEETH-T16-001: upstream director discoverable alongside game-studio-director fails skill/routing lint [0.98ms]
+(pass) Studio-Owned Specialist Overlay Routing (T16, REQ-BIND-007) > TEETH-T16-002: generic generator as preferred provider merely because credentials exist is rejected [0.51ms]
+
+packages/studio/test/capabilities/3dviz-world-compose.test.ts:
+(pass) world.environment.compose capability binding (T15, REQ-BIND-005) > registers the capability with the agent-skill.3dviz provider and explicit negative affordances [0.05ms]
+(pass) world.environment.compose capability binding (T15, REQ-BIND-005) > prepares a world-composition request into a studio-directed 3dviz AgentHandoff [0.14ms]
+(pass) TEETH-T15-001: reconstructing one specific depicted transceiver through the world-composition route > routing rejects the reconstruction intent and redirects to reference reconstruction [0.12ms]
+(pass) TEETH-T15-001: reconstructing one specific depicted transceiver through the world-composition route > intent-based routing redirects a transceiver reconstruction request to the reference-reconstruction capability [0.08ms]
+(pass) TEETH-T15-001: reconstructing one specific depicted transceiver through the world-composition route > normalization rejects reconstruction-flavored composition output [0.31ms]
+(pass) TEETH-T15-001: reconstructing one specific depicted transceiver through the world-composition route > the integration gate fails a result document whose composition claims a reconstruction route [2.38ms]
+(pass) TEETH-T15-002: 3dviz-created terrain mesh bypassing TerrainHeightfield for physics/navigation > normalization rejects a competing 3dviz terrain-mesh terrain authority [0.38ms]
+(pass) TEETH-T15-002: 3dviz-created terrain mesh bypassing TerrainHeightfield for physics/navigation > normalization rejects embedded elevation and navmesh payloads outright [0.37ms]
+(pass) TEETH-T15-002: 3dviz-created terrain mesh bypassing TerrainHeightfield for physics/navigation > sockets claiming a non-canonical height source are rejected [0.08ms]
+(pass) TEETH-T15-002: 3dviz-created terrain mesh bypassing TerrainHeightfield for physics/navigation > the integration gate rejects the committed-style document when a 3dviz terrain mesh bypasses TerrainHeightfield [0.81ms]
+(pass) TEETH-T15-002: 3dviz-created terrain mesh bypassing TerrainHeightfield for physics/navigation > the integration gate rejects a doctored document that embeds navmesh authority [0.55ms]
+(pass) deterministic verification of the committed Blackwater Relay world fixture (T15 gate) > rejects a metadata file in place of the pinned 3dviz executable instructions [0.35ms]
+(pass) deterministic verification of the committed Blackwater Relay world fixture (T15 gate) > verifies the committed accepted world-composition result with zero model credentials [0.87ms]
+(pass) deterministic verification of the committed Blackwater Relay world fixture (T15 gate) > binds the committed request, handoff, and result into one consistent lifecycle [0.49ms]
+
+packages/studio/test/capabilities/blender-process.test.ts:
+(pass) dcc.blender.process capability surface > is registered with a contracts-valid descriptor bound to dcc.blender [0.03ms]
+(pass) dcc.blender.process capability surface > prepares ready against the committed request when preflight allows [243.96ms]
+(pass) dcc.blender.process capability surface > blocks preparation with PROVIDER_MISMATCH on a foreign provider [0.36ms]
+(pass) dcc.blender.process capability surface > blocks preparation when the escalation rationale is missing (REQ-BLENDER-002) [0.16ms]
+(pass) dcc.blender.process capability surface > blocks with typed scoped BLENDER_UNAVAILABLE when blender is absent (REQ-BLENDER-007) [0.26ms]
+
+packages/studio/test/capabilities/teeth.test.ts:
+{
+  "status": "blocked",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "asset.reconstruct.reference-image",
+    "provider": "agent-skill.img2threejs",
+    "code": "REFERENCE_REQUIRED",
+    "message": "The reference-image reconstruction route requires suitable reference imagery before routing. Supply a user-provided image (preferred), or a project-owned/authorized or clearly licensed/public-domain reference. The request cannot silently become generic text-to-3D.",
+    "details": [],
+    "allowed_next_steps": [
+      "supply a user-provided suitable reference image (preferred, REQ-ASSET-001)",
+      "select a project-owned/authorized or clearly licensed/public-domain reference (REQ-ASSET-002)"
+    ],
+    "route_preserved": "asset.reconstruct.reference-image",
+    "degraded_to_generic_text_to_3d": false
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+{
+  "status": "blocked",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "asset.reconstruct.reference-image",
+    "provider": "agent-skill.img2threejs",
+    "code": "REFERENCE_REQUIRED",
+    "message": "Referenced imagery failed validation (missing or unreadable). Supply a suitable user-provided, project-owned/authorized, or clearly licensed/public-domain reference image; the request cannot silently become generic text-to-3D.",
+    "details": [
+      "reference 'field-transceiver-ref' does not exist at references/field-transceiver/removed.png"
+    ],
+    "allowed_next_steps": [
+      "supply a user-provided suitable reference image (preferred, REQ-ASSET-001)",
+      "select a project-owned/authorized or clearly licensed/public-domain reference (REQ-ASSET-002)"
+    ],
+    "route_preserved": "asset.reconstruct.reference-image",
+    "degraded_to_generic_text_to_3d": false
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+(pass) T14 teeth > TEETH-T14-001: removing the reference blocks preparation and asks for an allowed reference (never generic text-to-3D) [1.47ms]
+(pass) T14 teeth > TEETH-T14-002: verification passes with model credentials removed and network poisoned, without regenerating output [13.45ms]
+(pass) T14 teeth > TEETH-T14-002 (CLI surface): studio capability verify-result succeeds in a credential-stripped subprocess [285.53ms]
+(pass) T14 teeth > TEETH-T14-003: a second Three.js installation fails the compatibility guard [2.19ms]
+
+packages/studio/test/capabilities/img2threejs.test.ts:
+(pass) T14: asset.reconstruct.reference-image capability binding (REQ-BIND-006) > registers the capability in the catalog with precise boundaries [0.08ms]
+(pass) T14: asset.reconstruct.reference-image capability binding (REQ-BIND-006) > binds exclusively to the pinned img2threejs vendor skill content [0.07ms]
+(pass) T14: AgentHandoff normalization with validated reference imagery > normalizes the committed request into a handoff pinned to vendor skill content [0.47ms]
+(pass) T14: AgentHandoff normalization with validated reference imagery > routes the request as an agent-skill handoff, never a deterministic route [0.17ms]
+(pass) T14: deterministic offline verification of the committed accepted output > re-derives every claim from disk and passes without model or network [6.01ms]
+(pass) T14: deterministic offline verification of the committed accepted output > instantiates the module against the single pinned three installation [1.85ms]
+(pass) T14: reference-comparison evidence primitives > decodes the committed grayscale PNG and extracts the expected silhouette grid [0.47ms]
+(pass) T14: reference-comparison evidence primitives > scores identical grids at 1 and disjoint grids at 0 [0.03ms]
+(pass) T14: reference-comparison evidence primitives > normalizes semver ranges when pinning [0.03ms]
+(pass) T14: reference-comparison evidence primitives > front-projects geometry samples into a top-down occupancy grid [0.11ms]
+
+packages/studio/test/assets/teeth.test.ts:
+(pass) T13 Teeth: no production acceptance without provenance and budget gates > TEETH-T13-001: importing an asset with unknown/unacceptable license state blocks production acceptance [0.49ms]
+(pass) T13 Teeth: no production acceptance without provenance and budget gates > TEETH-T13-002: an over-budget asset cannot be marked accepted solely because it looks correct [0.50ms]
+
+packages/studio/test/assets/resolve.test.ts:
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > routes provider matches through acquire with per-asset license evidence and an append-only decision [0.54ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > acquire falls through to the next provider match when one candidate cannot be acquired [0.31ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > decisions are append-only: repeated resolutions create additional records and never overwrite [0.79ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > acquired assets without per-asset license evidence are typed-rejected before intake [0.33ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > declared license requirements that the acquired evidence fails are typed-rejected before intake [0.17ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > no provider match yields a recorded create-fallback decision and never a fabricated asset [0.17ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > all providers unavailable is typed blocked, not a create fallback [0.17ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > an accepted project record routes reuse without touching providers [0.22ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > a pending project record with no provider match routes adapt-required before create [0.23ms]
+(pass) asset.resolve routing policy (REQ-ASSET-008..012) > rejects malformed requests before any search or decision write [0.17ms]
+
+packages/studio/test/assets/polyhaven.test.ts:
+(pass) Poly Haven CC0 source adapter (T13, REQ-ASSET-003, REQ-ASSET-005, REQ-SAFE-002, REQ-SEC-002) > intakes an asset with full CC0 provenance capture and writes it into the project tree [0.35ms]
+(pass) Poly Haven CC0 source adapter (T13, REQ-ASSET-003, REQ-ASSET-005, REQ-SAFE-002, REQ-SEC-002) > degrades to a typed blocked result when the network is unavailable (REQ-SAFE-002) [0.15ms]
+(pass) Poly Haven CC0 source adapter (T13, REQ-ASSET-003, REQ-ASSET-005, REQ-SAFE-002, REQ-SEC-002) > blocks scoped for missing assets and remote errors [0.09ms]
+(pass) Poly Haven CC0 source adapter (T13, REQ-ASSET-003, REQ-ASSET-005, REQ-SAFE-002, REQ-SEC-002) > rejects traversal paths and unsafe file types before any write (REQ-SEC-002) [0.15ms]
+(pass) Poly Haven CC0 source adapter (T13, REQ-ASSET-003, REQ-ASSET-005, REQ-SAFE-002, REQ-SEC-002) > never clobbers retained source bytes when an intake races an existing target [0.23ms]
+(pass) Poly Haven CC0 source adapter (T13, REQ-ASSET-003, REQ-ASSET-005, REQ-SAFE-002, REQ-SEC-002) > hands the produced record to the registry where acceptance gates decide [0.33ms]
+
+packages/studio/test/assets/registry.test.ts:
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > accepts a fully provenanced CC0 intake into pending state with an intake event [0.14ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > requires uri/license/hash for external cc0 and licensed origins [0.05ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > requires user assets to carry the supplied reference and distinguishable authorization [0.03ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > records generated/blender/procedural assets as derived with route + hash evidence [0.07ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > blocks unknown and unacceptable license states at intake instead of dropping or accepting them [0.40ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > validates sha256 hash format strictly [0.13ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > recognizes only allow-listed licenses per origin [0.04ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > refuses intake into an accepted state with invalid provenance [0.08ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Provenance/license/source-hash intake per origin class (REQ-ASSET-003, REQ-SEC-004) > rejects duplicate ids and contract-invalid records [0.65ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > accepts a fully compliant asset and records the accept event [0.17ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > requires collider policy for roles that need it [0.11ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > requires LOD policy for roles that need it [0.03ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > rejects an over-budget asset and an unmeasured budget limit [0.22ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > accepts assets within measured budget [0.06ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > blocks KTX2-required assets without toktx preflight evidence and accepts with it [0.13ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Acceptance state machine and project gates (REQ-OUT-002, REQ-ASSET-006) > requires portable baseline WebP when the profile demands it [0.05ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Reference-only imagery stays a distinct provenance class (REQ-ASSET-004) > registers references separately and never allows their production acceptance [0.12ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Reference-only imagery stays a distinct provenance class (REQ-ASSET-004) > keeps the reference list distinct from records [0.04ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Append-only rejection/supersession history (REQ-ASSET-007) > preserves the full accept->supersede->replace chain reconstructably [0.15ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Append-only rejection/supersession history (REQ-ASSET-007) > refuses a successor that failed provenance intake [0.07ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Append-only rejection/supersession history (REQ-ASSET-007) > appends history monotonically with no truncation surface [0.08ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Release/asset checks (verifyAll) > passes clean pending + accepted assets and totals accurately [0.10ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Release/asset checks (verifyAll) > fails when any asset is blocked, rejected, or breaks current gates [0.12ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Release/asset checks (verifyAll) > counts explicit-waiver degraded assets as production-acceptable but visible [0.15ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Release/asset checks (verifyAll) > does not extend waivers to non-budget gate failures [0.10ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Storage: atomic save/load and corruption safety (REQ-SAFE-001) > round-trips manifest + history + references through save/load [0.35ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Storage: atomic save/load and corruption safety (REQ-SAFE-001) > loads template-style manifests with records only [0.20ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Storage: atomic save/load and corruption safety (REQ-SAFE-001) > refuses to save before load and detects corrupt manifests [0.19ms]
+(pass) Asset Registry, Provenance Gates & Acceptance History (T13) > Storage: atomic save/load and corruption safety (REQ-SAFE-001) > leaves no temp file behind after atomic save [0.13ms]
+
+packages/studio/test/assets/gltf-pipeline.test.ts:
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > plans WebP as the portable baseline and KTX2 as toktx-dependent [0.06ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > reports a typed BLOCKED result when a KTX2 profile runs without toktx and never downgrades [4.81ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > runs the WebP baseline pipeline end-to-end on a real glTF document [9.95ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > blocks a declared texture format when no encoder is provided instead of copying through [0.86ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > preflight reflects real toktx availability without throwing [174.43ms]
+(pass) glTF-Transform normalization/optimization adapter (T13, REQ-BIND-008, REQ-ASSET-006) > binds compiler results to registry acceptance: KTX2-required profiles with achieved WebP are blocked [0.53ms]
+
+packages/studio/test/performance/hardening.test.ts:
+(pass) TEETH-T22-H1: the exact T21-verifier vacating scenario now fails (advisory finding 1) > evaluation layer: fps_avg omitted with healthy percentiles FAILS under test-budget (never pass:true) [0.38ms]
+(pass) TEETH-T22-H1: the exact T21-verifier vacating scenario now fails (advisory finding 1) > settlement layer: the vacating evidence settles FAILED through the T20 bridge, never settled [3.52ms]
+(pass) TEETH-T22-H1: the exact T21-verifier vacating scenario now fails (advisory finding 1) > fully-reported healthy evidence still settles under test-budget (no over-blocking) [0.29ms]
+(pass) TEETH-T22-H1: the exact T21-verifier vacating scenario now fails (advisory finding 1) > unreported readiness_ms under a declared max_load_ms fails the same way (rule is uniform) [0.12ms]
+(pass) TEETH-T22-H2: memory budgets are wired end to end (advisory finding 2, evaluation layer) > memory above the declared max_memory_mb fails with a typed budget_error violation [0.16ms]
+(pass) TEETH-T22-H2: memory budgets are wired end to end (advisory finding 2, evaluation layer) > settlement layer: memory-budget exceedance settles FAILED with budget_error against the profile [0.30ms]
+(pass) TEETH-T22-H2: memory budgets are wired end to end (advisory finding 2, evaluation layer) > memory within the declared budget passes [0.05ms]
+(pass) TEETH-T22-H2: memory budgets are wired end to end (advisory finding 2, evaluation layer) > memory exactly AT the declared budget passes (<= boundary) [0.04ms]
+(pass) TEETH-T22-H2: memory budgets are wired end to end (advisory finding 2, evaluation layer) > memory entirely unreported while max_memory_mb is declared fails PERF_METRIC_UNREPORTED (never silently passes) [0.10ms]
+(pass) TEETH-T22-H2: memory budgets are wired end to end (advisory finding 2, evaluation layer) > profiles that declare no max_memory_mb emit no memory check at all (test-budget) [0.05ms]
+(pass) Chrome performance.memory capture normalization (deterministic, browser-free) > converts raw JS-heap bytes to MB [0.07ms]
+(pass) Chrome performance.memory capture normalization (deterministic, browser-free) > returns null for absent/invalid readings and tolerates a missing limit [0.04ms]
+(pass) Chrome performance.memory capture normalization (deterministic, browser-free) > capture: Chrome page-seam memory flows into the evidence when stats omit it [0.23ms]
+(pass) Chrome performance.memory capture normalization (deterministic, browser-free) > capture: stable-seam stats memory takes precedence over the page-seam reading [0.03ms]
+(pass) Chrome performance.memory capture normalization (deterministic, browser-free) > capture: no memory source records memory_used_mb in unreported (never fabricated) [0.06ms]
+(pass) Chrome performance.memory capture normalization (deterministic, browser-free) > capture: present:false surfaces list memory among unreported metrics [0.02ms]
+
+packages/studio/test/performance/quality.test.ts:
+(pass) Quality profiles are declared before use as gates (REQ-PERF-002, REQ-CONFIG-005) > loads the Blackwater reference-game profiles with game-owned numbers [0.30ms]
+(pass) Quality profiles are declared before use as gates (REQ-PERF-002, REQ-CONFIG-005) > binds a declared profile to its id for gate use [0.26ms]
+(pass) Quality profiles are declared before use as gates (REQ-PERF-002, REQ-CONFIG-005) > rejects UNDECLARED profiles as gates (typed failure, never an implicit pass) [0.43ms]
+(pass) Quality profiles are declared before use as gates (REQ-PERF-002, REQ-CONFIG-005) > rejects a game spec without declared profiles [0.13ms]
+(pass) Deterministic frame-time distribution (never average-only) > computes nearest-rank p50/p95/p99 deterministically [0.29ms]
+(pass) Deterministic frame-time distribution (never average-only) > keeps only finite non-negative samples and returns null when none remain [0.04ms]
+(pass) Deterministic frame-time distribution (never average-only) > uses nearest-rank percentile semantics [0.01ms]
+(pass) Software-renderer guard classification (REQ-PERF-003) > classifies SwiftShader/llvmpipe-class identities as software (non-target) [0.03ms]
+(pass) Software-renderer guard classification (REQ-PERF-003) > classifies hardware identities as hardware and absent identities as unknown [0.02ms]
+(pass) Structural budgets are enforced browser-free with typed budget_error (REQ-PERF-003/004) > passes healthy evidence against the declared test-budget structural budgets [0.11ms]
+(pass) Structural budgets are enforced browser-free with typed budget_error (REQ-PERF-003/004) > fails draw-call/triangle regressions as budget_error, never warnings [0.12ms]
+(pass) Structural budgets are enforced browser-free with typed budget_error (REQ-PERF-003/004) > fails scene budgets when the T13 Asset Registry has non-acceptable assets [0.04ms]
+(pass) Structural budgets are enforced browser-free with typed budget_error (REQ-PERF-003/004) > enforces declared asset-byte budgets against registry totals [0.10ms]
+(pass) Structural budgets are enforced browser-free with typed budget_error (REQ-PERF-003/004) > treats an unmeasurable surface honestly (present:false never passes) [0.03ms]
+(pass) Declared metric rules reject average-only reporting (TEETH-T21-002 evaluation layer) > fails when declared percentiles are not reported even with a healthy average [0.08ms]
+(pass) Declared metric rules reject average-only reporting (TEETH-T21-002 evaluation layer) > passes when the full declared distribution is reported within budgets [0.03ms]
+(pass) Performance capture through the T19 stable seams (observation only) > maps stable renderer.stats()/probe() reads into performance evidence [0.10ms]
+(pass) Performance capture through the T19 stable seams (observation only) > records present:false when the surface cannot report stats (never fabricated) [0.02ms]
+(pass) Performance capture through the T19 stable seams (observation only) > marks SwiftShader-class probe identities as software at capture time [0.02ms]
+
+packages/studio/test/performance/performance-settlement.test.ts:
+(pass) Healthy performance settles under the declared test-budget profile > settles a fresh, correlated, in-budget performance observation [0.23ms]
+(pass) TEETH-T21-001: frame-time/draw-call regression with unchanged pixels and semantics > fails performance verification and the requirement stays unsettled [0.02ms]
+(pass) TEETH-T21-001: frame-time/draw-call regression with unchanged pixels and semantics > records budget_error against the declared profile (never warnings-only) [0.04ms]
+(pass) TEETH-T21-001: frame-time/draw-call regression with unchanged pixels and semantics > records the performance contradiction: pixels/state pass, budget violated [0.05ms]
+(pass) TEETH-T21-001: frame-time/draw-call regression with unchanged pixels and semantics > the failed settlement record persists append-only through the T20 store [0.81ms]
+(pass) TEETH-T21-002: average-only reporting while declared percentiles are missing > fails the profile gate according to the declared metric rules [0.05ms]
+(pass) Software-renderer guard: non-target evidence can never settle hardware targets (REQ-PERF-003) > blocks a hardware-target profile on SwiftShader-class evidence (never settled, never failed-as-budget) [0.21ms]
+(pass) Software-renderer guard: non-target evidence can never settle hardware targets (REQ-PERF-003) > unknown renderer class cannot satisfy a hardware-target binding either [0.07ms]
+(pass) Software-renderer guard: non-target evidence can never settle hardware targets (REQ-PERF-003) > structural violations under software rendering still FAIL (valid evidence everywhere) [0.57ms]
+(pass) Software-renderer guard: non-target evidence can never settle hardware targets (REQ-PERF-003) > relative-baseline CI profiles stay valid under software rendering (explicitly labeled, never hardware claims) [0.10ms]
+(pass) Undeclared/unresolved profiles can never gate acceptance > fails performance verification when no declared profile was resolved [0.39ms]
+(pass) Undeclared/unresolved profiles can never gate acceptance > reports incomplete (never passed) when the performance channel was simply not captured [0.16ms]
+
+packages/studio/test/proof/evidence.test.ts:
+(pass) EvidenceStore immutability and append-only preservation (T20, REQ-GAUNTLET-006) > refuses to rewrite an existing run directory (immutable once written) [0.13ms]
+(pass) EvidenceStore immutability and append-only preservation (T20, REQ-GAUNTLET-006) > preserves failed/contradictory evidence append-only: manifest ids are never overwritten [1.10ms]
+(pass) EvidenceStore immutability and append-only preservation (T20, REQ-GAUNTLET-006) > appendSettlement never overwrites an existing settlement decision [0.16ms]
+(pass) Freshness and correlation from run/revision identity (TEETH-T20-002) > rejects a passing EvidenceManifest from another project revision [0.15ms]
+(pass) Freshness and correlation from run/revision identity (TEETH-T20-002) > rejects manifests uncorrelated with their run (run_id or revision) [0.29ms]
+(pass) Freshness and correlation from run/revision identity (TEETH-T20-002) > detects artifact tampering by re-verifying manifest hashes [0.36ms]
+(pass) Project revision resolution for freshness identity > prefers an explicit revision and fails typed when unresolvable [2.15ms]
+(pass) Committed evidence fixtures (studio evidence check-fixtures) > validates every committed fixture, including negative controls that must reject [2.04ms]
+
+packages/studio/test/proof/settlement.test.ts:
+(pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > fails settlement and records the pixels-vs-state contradiction [0.42ms]
+(pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > never lets an observation-level pass manifest become a settled requirement [0.08ms]
+(pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > classifies a missing entity as insufficiently represented (REQ-GAUNTLET-004) [0.06ms]
+(pass) TEETH-T20-001: correct pixels + incorrect Koota state fail overall verification > settles only when state, pixels, telemetry, and network all agree [0.10ms]
+(pass) TEETH-T20-002: evidence from another project revision cannot settle > returns incomplete with evidence_stale for a foreign-revision manifest [0.11ms]
+(pass) TEETH-T20-002: evidence from another project revision cannot settle > rejects a current-revision run cited with a foreign-revision manifest [0.04ms]
+(pass) TEETH-T20-002: evidence from another project revision cannot settle > rejects manifests uncorrelated with the run [0.04ms]
+(pass) TEETH-T20-002: evidence from another project revision cannot settle > an expectation bound to an older revision cannot settle on current evidence [0.09ms]
+(pass) TEETH-T20-003: missing browser proof blocks and never passes > blocks a pixels claim when the browser proof could not run [0.04ms]
+(pass) TEETH-T20-003: missing browser proof blocks and never passes > blocks on a typed blocked observation manifest even with availability claimed [0.03ms]
+(pass) TEETH-T20-003: missing browser proof blocks and never passes > reports incomplete (never passed) when a required channel was simply not captured [0.06ms]
+(pass) TEETH-T20-003: missing browser proof blocks and never passes > cannot settle at all without any evidence manifest [0.03ms]
+(pass) Confirmation gate and evidence identity > a missing required confirmation prevents settled status [0.15ms]
+(pass) Confirmation gate and evidence identity > carries the declared environment identity (no autoplay bypass) in run drafts [0.02ms]
+
+packages/adapters/test/blender/blender-adapter.test.ts:
+(pass) blender preflight > discovers blender and records the version verbatim [0.09ms]
+(pass) blender preflight > reports typed scoped unavailability when blender is absent [0.04ms]
+(pass) blender preflight > refuses an unparseable DCC build [0.04ms]
+(pass) blender preflight > parses both --version and banner probe line shapes [0.01ms]
+(pass) escalation rationale (REQ-BLENDER-002) > accepts a rationale that records rejected lighter routes [0.02ms]
+(pass) escalation rationale (REQ-BLENDER-002) > blocks a request without a rationale or without rejected routes [0.02ms]
+(pass) DCC metadata authority boundary (REQ-BLENDER-005) > accepts structural provenance metadata [0.11ms]
+(pass) DCC metadata authority boundary (REQ-BLENDER-005) > rejects quest/NPC gameplay semantics with findings [0.12ms]
+(pass) deterministic invocation contract > builds the exact background argv [0.02ms]
+(pass) deterministic invocation contract > captures exit codes from a trivial deterministic subprocess [1.63ms]
+(pass) source definition intake > rejects an invalid definition structurally [0.09ms]
+(pass) source definition intake > rejects gameplay semantics before any Blender run [0.30ms]
+
+packages/adapters/test/blender/blender-pipeline.test.ts:
+(pass) dcc.blender.process real chain (Blender 5.2.2 LTS) > retargets, bakes, and normalizes the service drone end to end [4148.04ms]
+(pass) dcc.blender.process real chain (Blender 5.2.2 LTS) > blocks with typed BLENDER_UNAVAILABLE when Blender is absent [0.36ms]
+(pass) dcc.blender.process real chain (Blender 5.2.2 LTS) > committed source definition stays valid [0.06ms]
+
+packages/adapters/test/blender/blender-authority.test.ts:
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > layer 1: poisoned dcc_metadata in the source definition blocks before Blender [0.44ms]
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > layer 2: a committed result with poisoned bake-report metadata fails AUTHORITY_BOUNDARY offline [2.32ms]
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > layer 3: runtime Koota authority stays intact alongside the derivative [34.76ms]
+(pass) TEETH-T18-002: DCC metadata never carries gameplay semantics > rejection (not silent filtering) is the contract [0.14ms]
+
+packages/runtime/test/network/reconciliation.test.ts:
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > TEETH-T12-002: reordered/delayed commands through the latency simulator keep sequence/ack/reconciliation bounded and diagnostics expose the impairment [122.56ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > client pending window is bounded under a silent server (no unbounded memory) [2.64ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > packet loss recovers with explicit bounded sequence skips, never a wedged session [22.10ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > ping/RTT diagnostics measure the command round trip (client-initiated) [0.42ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > interest/relevance filtering: clients receive only nearby entities (REQ-NET-005) [0.58ms]
+(pass) Sequencing, acknowledgement, reconciliation under impairment (T12 - REQ-NET-004, REQ-NET-005, REQ-NET-006, REQ-SAFE-006) > reconciliation applies server truth over local prediction and replays only unacked commands [0.34ms]
+
+packages/runtime/test/network/protocol.test.ts:
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > round-trips a contract-valid envelope through encode/decode [0.10ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > reuses the authoritative @gauntlet/contracts NetworkEnvelope schema [0.08ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > rejects malformed JSON, empty messages, and oversized messages explicitly [0.16ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > rejects contract schema violations (strict envelope shape) [0.45ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > validates command payloads against the closed kind whitelist (server-side) [0.11ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > builds bounded, well-typed server envelopes [0.05ms]
+(pass) Network protocol & envelope validation (T12 - REQ-NET-003, REQ-NET-007, REQ-SEC-007) > throws when encoding an envelope beyond the wire size limit [0.25ms]
+
+packages/runtime/test/network/single-player.test.ts:
+(pass) Single-player network-freedom (T12 - REQ-NET-001, REQ-BIND-013, TEETH-T12-003) > TEETH-T12-003: a single-player scenario starts and behaves normally with network dependencies unavailable [0.44ms]
+(pass) Single-player network-freedom (T12 - REQ-NET-001, REQ-BIND-013, TEETH-T12-003) > single-player world snapshot/restore round-trips without any network representation [0.15ms]
+
+packages/runtime/test/network/transport.test.ts:
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > exposes explicit material characteristics for the WebSocket-class baseline [0.20ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > REJECTS delivery options the transport does not support (no silent semantic downgrade) [0.12ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > surfaces explicit connection states including disconnect (in-memory) [0.09ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > LatencyImpairedTransport reports honest characteristics and observable impairment [0.14ms]
+(pass) Transport abstraction & material characteristics (T12 - REQ-BIND-013, REQ-NET-002, REQ-NET-009) > Bun native WebSocket transport carries a real loopback message with zero new dependencies [108.73ms]
+
+packages/runtime/test/network/authority.test.ts:
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > TEETH-T12-001: forged client state is rejected and authoritative Koota state does not change [1.28ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > server-side validation precedes semantic mutation: invalid command payloads never touch Koota [0.45ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > a client may only move its OWN player entity (ownership enforcement) [0.40ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > duplicate/replayed sequences are dropped and never re-processed [0.32ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > client_id forgery is rejected [0.19ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > malformed and oversized raw messages are counted and rejected without crashing the session [0.76ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > welcome spawns the player in Koota; disconnect and timeout are explicit states with explicit despawn [60.88ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > server diagnostics expose bandwidth, commands, replication, and transport identity [0.59ms]
+(pass) Authoritative server validation & Koota authority (T12 - REQ-SEC-007, REQ-NET-001, REQ-NET-003, REQ-NET-004, REQ-SAFE-006) > the server is never a scheduler: exactly one active server registry for single-player proofs [0.04ms]
+
+ 370 pass
+ 0 fail
+ 2469 expect() calls
+Ran 370 tests across 50 files. [8.41s]

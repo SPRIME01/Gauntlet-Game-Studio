@@ -1,0 +1,8 @@
+### third-party:verify
+$ bun run ./scripts/verify-third-party.ts
+=== Gauntlet Studio Third-Party Attribution & Overlay Verifier (REQ-SOURCE-005, REQ-SOURCE-006) ===
+OK: Overlay policy verified (threejs-game-director strictly forbidden).
+OK: All 5 attribution classes present in vendor/attribution.json.
+OK: THIRD_PARTY_NOTICES.md verified.
+SUCCESS: All third-party attribution and overlay policies verified.
+EXIT:0

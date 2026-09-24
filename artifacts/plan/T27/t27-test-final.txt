@@ -1,0 +1,36 @@
+=== recipe suites T27 ===
+    ],
+    "route_preserved": "asset.reconstruct.reference-image",
+    "degraded_to_generic_text_to_3d": false
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+
+ 272 pass
+ 0 fail
+ 1216 expect() calls
+Ran 272 tests across 23 files. [41.37s]
+=== recipes e2e T28 ===
+bun test v1.4.0 (34cbb9a40)
+
+ 5 pass
+ 0 fail
+ 47 expect() calls
+Ran 5 tests across 1 file. [495.00ms]
+=== full suite ===
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+
+ 411 pass
+ 0 fail
+ 2699 expect() calls
+Ran 411 tests across 52 files. [43.84s]

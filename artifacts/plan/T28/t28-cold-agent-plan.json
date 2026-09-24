@@ -1,0 +1,146 @@
+{
+  "status": "success",
+  "operation": "studio.recipe.plan",
+  "result": {
+    "schema": "gauntlet.recipe.plan",
+    "schema_version": "1.0",
+    "recipe_id": "enemy.patrol",
+    "recipe_version": "1.0.0",
+    "choices": {
+      "enemy_kind": "drone",
+      "patrol_area": "circular-loop-8m",
+      "on_detect": "alert-pursue"
+    },
+    "affordance_graph": {
+      "nodes": [
+        "resolved_enemy_asset",
+        "semantic_enemy_entity",
+        "enemy_render_projection",
+        "enemy_physics_projection",
+        "navigation_agent",
+        "patrol_behavior",
+        "detection_behavior",
+        "patrol_scenario"
+      ],
+      "edges": [
+        {
+          "from": "resolved_enemy_asset",
+          "to": "enemy_render_projection"
+        },
+        {
+          "from": "semantic_enemy_entity",
+          "to": "enemy_render_projection"
+        },
+        {
+          "from": "semantic_enemy_entity",
+          "to": "enemy_physics_projection"
+        },
+        {
+          "from": "semantic_enemy_entity",
+          "to": "patrol_behavior"
+        },
+        {
+          "from": "navigation_agent",
+          "to": "patrol_behavior"
+        },
+        {
+          "from": "patrol_behavior",
+          "to": "detection_behavior"
+        },
+        {
+          "from": "patrol_behavior",
+          "to": "patrol_scenario"
+        }
+      ]
+    },
+    "steps": [
+      {
+        "id": "resolved-enemy-asset",
+        "kind": "capability",
+        "affordance": "resolved_enemy_asset",
+        "summary": "Invoke capability asset.resolve to establish 'resolved_enemy_asset'",
+        "capability_id": "asset.resolve",
+        "depends_on": [],
+        "status": "needs_creation"
+      },
+      {
+        "id": "semantic-enemy-entity",
+        "kind": "project",
+        "affordance": "semantic_enemy_entity",
+        "summary": "Establish project affordance 'semantic_enemy_entity' (semantic_enemy_entity)",
+        "depends_on": [],
+        "status": "needs_creation"
+      },
+      {
+        "id": "enemy-render-projection",
+        "kind": "project",
+        "affordance": "enemy_render_projection",
+        "summary": "Establish project affordance 'enemy_render_projection' (enemy_render_projection)",
+        "depends_on": [
+          "resolved-enemy-asset",
+          "semantic-enemy-entity"
+        ],
+        "status": "needs_creation"
+      },
+      {
+        "id": "enemy-physics-projection",
+        "kind": "capability",
+        "affordance": "enemy_physics_projection",
+        "summary": "Invoke capability world.physics to establish 'enemy_physics_projection'",
+        "capability_id": "world.physics",
+        "depends_on": [
+          "semantic-enemy-entity"
+        ],
+        "status": "needs_creation"
+      },
+      {
+        "id": "navigation-agent",
+        "kind": "capability",
+        "affordance": "navigation_agent",
+        "summary": "Invoke capability world.navigation to establish 'navigation_agent'",
+        "capability_id": "world.navigation",
+        "depends_on": [],
+        "status": "needs_creation"
+      },
+      {
+        "id": "patrol-behavior",
+        "kind": "project",
+        "affordance": "patrol_behavior",
+        "summary": "Establish project affordance 'patrol_behavior' (patrol_behavior)",
+        "depends_on": [
+          "semantic-enemy-entity",
+          "navigation-agent"
+        ],
+        "status": "needs_creation"
+      },
+      {
+        "id": "detection-behavior",
+        "kind": "project",
+        "affordance": "detection_behavior",
+        "summary": "Establish project affordance 'detection_behavior' (detection_behavior)",
+        "depends_on": [
+          "patrol-behavior"
+        ],
+        "status": "needs_creation"
+      },
+      {
+        "id": "patrol-scenario",
+        "kind": "verify",
+        "affordance": "patrol_scenario",
+        "summary": "Verify acceptance affordance 'patrol_scenario' through existing observe/verify channels",
+        "depends_on": [
+          "patrol-behavior"
+        ],
+        "status": "pending"
+      }
+    ],
+    "created_at": "2026-09-24T04:13:02.619Z"
+  },
+  "diagnostics": {
+    "recipe_id": "enemy.patrol",
+    "steps": 8,
+    "affordances": 8,
+    "project_root": "/home/sprime01/projects/gauntlet-game-studio",
+    "mutation": false
+  }
+}

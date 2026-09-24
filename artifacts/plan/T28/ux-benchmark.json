@@ -1,0 +1,392 @@
+{
+  "schema": "gauntlet.ux_benchmark",
+  "schema_version": "1.0",
+  "task": "T28",
+  "method": {
+    "recipe_path": "Cold-agent public CLI: recipes \u2192 recipe describe \u2192 recipe plan \u2192 recipe apply. Decisions counted as: recipe selection + material input choices (defaults accepted when omitted) + plan + apply.",
+    "manual_baseline": "Without recipes: discover capabilities, author a CapabilityRequest per composed capability with intent/acceptance/inputs, invent project mutations and evidence linkage. Decisions counted from the same recipe plan\u2019s capability/project/verify steps \u2014 the work still required, but exposed as engine-level composition.",
+    "note": "Manual baseline is derived from the same affordance plan so both paths measure identical composition work; only exposure and decision surface differ. Not a timing study."
+  },
+  "recipes": [
+    {
+      "recipe_id": "world.third-person",
+      "summary": "Create a small third-person game/world with a controllable player, ground naviga",
+      "material_inputs": [
+        "world_theme"
+      ],
+      "defaulted_inputs": [
+        "player_speed"
+      ],
+      "plan_steps": 7,
+      "capability_steps": 4,
+      "project_steps": 3,
+      "verify_steps": 0,
+      "capabilities_composed": [
+        "world.composition",
+        "world.navigation",
+        "world.physics",
+        "world.terrain"
+      ],
+      "recipe_path": {
+        "user_decisions": 4,
+        "cli_commands": [
+          "recipes",
+          "recipe describe",
+          "recipe plan",
+          "recipe apply"
+        ],
+        "exposed_concepts": [
+          "recipe_id",
+          "world_theme"
+        ],
+        "internal_capabilities_composed": 4
+      },
+      "manual_capability_path_baseline": {
+        "user_decisions": 9,
+        "cli_commands": [
+          "capabilities",
+          "capability prepare world.composition",
+          "capability prepare world.navigation",
+          "capability prepare world.physics",
+          "capability prepare world.terrain",
+          "(author project mutations manually)",
+          "(link evidence manually)"
+        ],
+        "exposed_concepts": [
+          "capability_id",
+          "provider",
+          "routeCapability",
+          "CapabilityRequest",
+          "affordance",
+          "AssetRecord",
+          "EvidenceStore",
+          "SettlementRecord",
+          "observe",
+          "verify",
+          "capability:world.composition",
+          "capability:world.navigation",
+          "capability:world.physics",
+          "capability:world.terrain"
+        ],
+        "internal_capabilities_composed": 4
+      },
+      "delta": {
+        "decisions_saved": 5,
+        "concepts_hidden": 12
+      }
+    },
+    {
+      "recipe_id": "enemy.patrol",
+      "summary": "Add a patrolling enemy that moves along a path, detects the player, and reacts \u2014",
+      "material_inputs": [
+        "enemy_kind",
+        "patrol_area",
+        "on_detect"
+      ],
+      "defaulted_inputs": [
+        "style_hint"
+      ],
+      "plan_steps": 8,
+      "capability_steps": 3,
+      "project_steps": 4,
+      "verify_steps": 1,
+      "capabilities_composed": [
+        "asset.resolve",
+        "world.navigation",
+        "world.physics"
+      ],
+      "recipe_path": {
+        "user_decisions": 6,
+        "cli_commands": [
+          "recipes",
+          "recipe describe",
+          "recipe plan",
+          "recipe apply"
+        ],
+        "exposed_concepts": [
+          "recipe_id",
+          "enemy_kind",
+          "patrol_area",
+          "on_detect"
+        ],
+        "internal_capabilities_composed": 3
+      },
+      "manual_capability_path_baseline": {
+        "user_decisions": 10,
+        "cli_commands": [
+          "capabilities",
+          "capability prepare asset.resolve",
+          "capability prepare world.navigation",
+          "capability prepare world.physics",
+          "(author project mutations manually)",
+          "(link evidence manually)"
+        ],
+        "exposed_concepts": [
+          "capability_id",
+          "provider",
+          "routeCapability",
+          "CapabilityRequest",
+          "affordance",
+          "AssetRecord",
+          "EvidenceStore",
+          "SettlementRecord",
+          "observe",
+          "verify",
+          "capability:asset.resolve",
+          "capability:world.navigation",
+          "capability:world.physics"
+        ],
+        "internal_capabilities_composed": 3
+      },
+      "delta": {
+        "decisions_saved": 4,
+        "concepts_hidden": 9
+      }
+    },
+    {
+      "recipe_id": "interaction",
+      "summary": "Add a generic interactable object the player can activate, with focus feedback a",
+      "material_inputs": [
+        "interaction_prompt",
+        "one_shot"
+      ],
+      "defaulted_inputs": [],
+      "plan_steps": 4,
+      "capability_steps": 2,
+      "project_steps": 2,
+      "verify_steps": 0,
+      "capabilities_composed": [
+        "asset.resolve",
+        "world.spatial"
+      ],
+      "recipe_path": {
+        "user_decisions": 5,
+        "cli_commands": [
+          "recipes",
+          "recipe describe",
+          "recipe plan",
+          "recipe apply"
+        ],
+        "exposed_concepts": [
+          "recipe_id",
+          "interaction_prompt",
+          "one_shot"
+        ],
+        "internal_capabilities_composed": 2
+      },
+      "manual_capability_path_baseline": {
+        "user_decisions": 6,
+        "cli_commands": [
+          "capabilities",
+          "capability prepare asset.resolve",
+          "capability prepare world.spatial",
+          "(author project mutations manually)",
+          "(link evidence manually)"
+        ],
+        "exposed_concepts": [
+          "capability_id",
+          "provider",
+          "routeCapability",
+          "CapabilityRequest",
+          "affordance",
+          "AssetRecord",
+          "EvidenceStore",
+          "SettlementRecord",
+          "observe",
+          "verify",
+          "capability:asset.resolve",
+          "capability:world.spatial"
+        ],
+        "internal_capabilities_composed": 2
+      },
+      "delta": {
+        "decisions_saved": 1,
+        "concepts_hidden": 9
+      }
+    },
+    {
+      "recipe_id": "interaction.pickup",
+      "summary": "Add a pickup the player collects, updating inventory/progress state with provena",
+      "material_inputs": [
+        "item_name",
+        "grant"
+      ],
+      "defaulted_inputs": [],
+      "plan_steps": 5,
+      "capability_steps": 1,
+      "project_steps": 4,
+      "verify_steps": 0,
+      "capabilities_composed": [
+        "asset.resolve"
+      ],
+      "recipe_path": {
+        "user_decisions": 5,
+        "cli_commands": [
+          "recipes",
+          "recipe describe",
+          "recipe plan",
+          "recipe apply"
+        ],
+        "exposed_concepts": [
+          "recipe_id",
+          "item_name",
+          "grant"
+        ],
+        "internal_capabilities_composed": 1
+      },
+      "manual_capability_path_baseline": {
+        "user_decisions": 7,
+        "cli_commands": [
+          "capabilities",
+          "capability prepare asset.resolve",
+          "(author project mutations manually)",
+          "(link evidence manually)"
+        ],
+        "exposed_concepts": [
+          "capability_id",
+          "provider",
+          "routeCapability",
+          "CapabilityRequest",
+          "affordance",
+          "AssetRecord",
+          "EvidenceStore",
+          "SettlementRecord",
+          "observe",
+          "verify",
+          "capability:asset.resolve"
+        ],
+        "internal_capabilities_composed": 1
+      },
+      "delta": {
+        "decisions_saved": 2,
+        "concepts_hidden": 8
+      }
+    },
+    {
+      "recipe_id": "interaction.door-key",
+      "summary": "Add a locked door and matching key: acquiring the key enables opening the door t",
+      "material_inputs": [
+        "lock_style"
+      ],
+      "defaulted_inputs": [],
+      "plan_steps": 7,
+      "capability_steps": 2,
+      "project_steps": 5,
+      "verify_steps": 0,
+      "capabilities_composed": [
+        "asset.resolve"
+      ],
+      "recipe_path": {
+        "user_decisions": 4,
+        "cli_commands": [
+          "recipes",
+          "recipe describe",
+          "recipe plan",
+          "recipe apply"
+        ],
+        "exposed_concepts": [
+          "recipe_id",
+          "lock_style"
+        ],
+        "internal_capabilities_composed": 1
+      },
+      "manual_capability_path_baseline": {
+        "user_decisions": 8,
+        "cli_commands": [
+          "capabilities",
+          "capability prepare asset.resolve",
+          "(author project mutations manually)",
+          "(link evidence manually)"
+        ],
+        "exposed_concepts": [
+          "capability_id",
+          "provider",
+          "routeCapability",
+          "CapabilityRequest",
+          "affordance",
+          "AssetRecord",
+          "EvidenceStore",
+          "SettlementRecord",
+          "observe",
+          "verify",
+          "capability:asset.resolve"
+        ],
+        "internal_capabilities_composed": 1
+      },
+      "delta": {
+        "decisions_saved": 4,
+        "concepts_hidden": 9
+      }
+    },
+    {
+      "recipe_id": "checkpoint",
+      "summary": "Add a checkpoint that records progress and restores the player when they respawn",
+      "material_inputs": [],
+      "defaulted_inputs": [
+        "restore_on_respawn"
+      ],
+      "plan_steps": 5,
+      "capability_steps": 2,
+      "project_steps": 3,
+      "verify_steps": 0,
+      "capabilities_composed": [
+        "asset.resolve",
+        "world.spatial"
+      ],
+      "recipe_path": {
+        "user_decisions": 4,
+        "cli_commands": [
+          "recipes",
+          "recipe describe",
+          "recipe plan",
+          "recipe apply"
+        ],
+        "exposed_concepts": [
+          "recipe_id"
+        ],
+        "internal_capabilities_composed": 2
+      },
+      "manual_capability_path_baseline": {
+        "user_decisions": 7,
+        "cli_commands": [
+          "capabilities",
+          "capability prepare asset.resolve",
+          "capability prepare world.spatial",
+          "(author project mutations manually)",
+          "(link evidence manually)"
+        ],
+        "exposed_concepts": [
+          "capability_id",
+          "provider",
+          "routeCapability",
+          "CapabilityRequest",
+          "affordance",
+          "AssetRecord",
+          "EvidenceStore",
+          "SettlementRecord",
+          "observe",
+          "verify",
+          "capability:asset.resolve",
+          "capability:world.spatial"
+        ],
+        "internal_capabilities_composed": 2
+      },
+      "delta": {
+        "decisions_saved": 3,
+        "concepts_hidden": 11
+      }
+    }
+  ],
+  "totals": {
+    "recipe_user_decisions": 28,
+    "manual_user_decisions": 47,
+    "decisions_saved": 19,
+    "recipe_exposed_concepts_avg": 2.5,
+    "manual_exposed_concepts_avg": 12.17,
+    "capabilities_composed_total": 13
+  },
+  "acceptance": {
+    "REQ-RECIPE-013": "Recipe path exposes outcome-level concepts only; internal capability count remains >0 showing composition still happens below.",
+    "result": "PASS"
+  }
+}

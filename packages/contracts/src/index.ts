@@ -61,3 +61,15 @@ export function validateSettlementRecord(data: unknown) {
 export function validateStudioResult(data: unknown) {
   return S.StudioResultSchema.parse(data);
 }
+
+export function validateRecipeDescriptor(data: unknown) {
+  return S.RecipeDescriptorSchema.parse(data);
+}
+
+export function validateRecipePlan(data: unknown) {
+  return S.RecipePlanSchema.parse(data);
+}
+
+export function validateRecipeApplyProvenance(data: unknown) {
+  return S.RecipeApplyProvenanceSchema.parse(data);
+}

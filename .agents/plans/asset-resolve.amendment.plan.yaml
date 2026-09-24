@@ -1,0 +1,79 @@
+schema: agent.correction_plan
+schema_version: "1.0"
+
+metadata:
+  id: asset-resolve-capability-amendment
+  status: approved
+  created: "2026-09-19"
+  governing_spec: .agents/specs/gauntlet-game-studio.spec.yaml
+  governing_plan: .agents/plans/gauntlet-game-studio.plan.yaml
+  amendment_version: "0.3.0"
+  scope: "Introduce asset.resolve as a first-class capability with the ordered routing policy search/acquire → adapt → create, amending the frozen normative specification under explicit operator authorization and rebinding the settlement plan."
+
+discovery:
+  classification:
+    - capability_gap: no normative step requires searching for an existing acceptable asset before generating one; routing effectively begins at creation.
+    - provider_gap: free/open CC0 libraries (Kenney, KayKit, Poly Haven, Quaternius) can serve as additional asset-source providers behind the existing provider-neutral intake contract.
+    - precedent: asset.source is settled (CORR-2026-09-17) through the Poly Haven adapter and AssetRegistry with typed outcomes and per-asset provenance.
+  preserved_evidence:
+    - .agents/reports/asset-resolve-find-adapt-create.discovery.md
+    - .agents/reports/asset-resolve.spec-delta.proposal.md
+  authorization:
+    operator: "2026-09-19, explicit: 'i do want it as a first class capability.'"
+  governing_requirements:
+    - REQ-ASSET-003
+    - REQ-ASSET-005
+    - REQ-ASSET-006
+    - REQ-ASSET-007
+    - REQ-ROUTE-006
+
+claims:
+  - id: AMR-CLAIM-001
+    statement: asset.resolve resolves each required production asset through the ordered policy search/acquire → adapt → create; creation is a fallback decision recorded when no suitable existing asset can be acquired or adapted, never an automatic generation.
+    proof_level: P2
+  - id: AMR-CLAIM-002
+    statement: Every acquired asset flows through the existing AssetRegistry intake with per-asset provenance (URI, author, license, retrieval metadata, source hash) and pending acceptance; provider-level license assumptions are rejected as per-asset evidence.
+    proof_level: P2
+  - id: AMR-CLAIM-003
+    statement: Resolution decisions are recorded append-only (exclusive creation, never overwritten) and providers remain replaceable adapters below the stable studio contract with asset.source as the acquisition primitive.
+    proof_level: P2
+
+execution_graph:
+  - id: AMR-01
+    title: Preregister amendment and failing resolver tests
+    depends_on: []
+    gate:
+      - amendment plan approved by operator and recorded in the decision log.
+      - failing tests prove no asset.resolve routing exists (CLI rejects, resolver module absent).
+  - id: AMR-02
+    title: Amend specification to v0.3.0 and rebind settlement plan
+    depends_on: [AMR-01]
+    gate:
+      - spec carries REQ-ASSET-008..012 under a normative group with operator authorization recorded.
+      - plan rebound to the amended spec SHA-256 with settlement task T26 and 100% REQ traceability.
+      - python3 scripts/check-traceability.py passes with the amended artifacts.
+  - id: AMR-03
+    title: Implement resolver, provider registry, and CLI route
+    depends_on: [AMR-02]
+    gate:
+      - resolver enforces ordered policy with typed outcomes; acquisition flows through the existing asset.source intake and AssetRegistry as pending records.
+      - resolution decisions are written append-only by exclusive creation.
+      - provider registry accepts replaceable adapters; missing per-asset license evidence is typed-rejected.
+  - id: AMR-04
+    title: Gates, teeth, and confirmation
+    depends_on: [AMR-03]
+    gate:
+      - focused resolver/CLI tests pass including falsification checks (license-evidence rejection; no-match yields recorded create-fallback decision, never a fabricated asset; provider match forces acquire over create).
+      - capability lint, topology check, source/third-party verification pass.
+      - fresh independent adversarial confirmation is recorded.
+
+non_goals:
+  - Do not alter any previously settled task, gate, tooth, or provider-specific proof; settled games and evidence remain untouched.
+  - Do not make any specific library (Kenney, KayKit, or other) authoritative or normative; additional libraries are future adapters over asset.source.
+  - Do not implement automatic generation inside the resolver; creation stays with the existing capability routes (procedural, reference reconstruction, DCC).
+
+outcome:
+  settled: ""
+  confirmation: ""
+  gates: []
+  notes: "Settlement recorded by T26 evidence in the rebound settlement plan; this plan records the amendment authorization and scope."

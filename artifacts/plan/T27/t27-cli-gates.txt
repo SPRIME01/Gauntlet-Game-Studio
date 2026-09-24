@@ -1,0 +1,330 @@
+=== bun run studio -- recipes --json ===
+$ bun run ./apps/studio-cli/src/index.ts recipes --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.recipes",
+  "result": [
+    {
+      "id": "world.third-person",
+      "version": "1.0.0",
+      "summary": "Create a small third-person game/world with a controllable player, ground navigation, and a runnable baseline.",
+      "use_when": [
+        "create a third-person game",
+        "start a third-person world",
+        "new third-person prototype"
+      ],
+      "do_not_use_when": [
+        "first-person or top-down only experience",
+        "multiplayer-only spawn without a local third-person baseline"
+      ],
+      "material_inputs": [
+        "world_theme"
+      ],
+      "affordances": [
+        "canonical_terrain",
+        "environment_composition",
+        "player_entity",
+        "player_render_projection",
+        "player_physics_projection",
+        "navigation_mesh",
+        "runnable_scene"
+      ],
+      "capability_requirements": [
+        "world.terrain",
+        "world.composition",
+        "world.physics",
+        "world.navigation"
+      ]
+    },
+    {
+      "id": "enemy.patrol",
+      "version": "1.0.0",
+      "summary": "Add a patrolling enemy that moves along a path, detects the player, and reacts — composed from existing capabilities.",
+      "use_when": [
+        "add a patrolling enemy",
+        "enemy that patrols",
+        "patrol guard or drone"
+      ],
+      "do_not_use_when": [
+        "multi-phase boss fight",
+        "purely decorative prop with no detection"
+      ],
+      "material_inputs": [
+        "enemy_kind",
+        "patrol_area",
+        "on_detect"
+      ],
+      "affordances": [
+        "resolved_enemy_asset",
+        "semantic_enemy_entity",
+        "enemy_render_projection",
+        "enemy_physics_projection",
+        "navigation_agent",
+        "patrol_behavior",
+        "detection_behavior",
+        "patrol_scenario"
+      ],
+      "capability_requirements": [
+        "asset.resolve",
+        "world.physics",
+        "world.navigation",
+        "vfx.particles",
+        "audio.procedural"
+      ]
+    },
+    {
+      "id": "interaction",
+      "version": "1.0.0",
+      "summary": "Add a generic interactable object the player can activate, with focus feedback and a typed interaction result.",
+      "use_when": [
+        "add an interactable",
+        "press-to-use object",
+        "activatable object"
+      ],
+      "do_not_use_when": [
+        "pickup that is consumed",
+        "locked door requiring a key item"
+      ],
+      "material_inputs": [
+        "interaction_prompt",
+        "one_shot"
+      ],
+      "affordances": [
+        "resolved_interactable_asset",
+        "semantic_interactable_entity",
+        "interaction_focus",
+        "interaction_action"
+      ],
+      "capability_requirements": [
+        "asset.resolve",
+        "world.spatial"
+      ]
+    },
+    {
+      "id": "interaction.pickup",
+      "version": "1.0.0",
+      "summary": "Add a pickup the player collects, updating inventory/progress state with provenance-safe asset resolution.",
+      "use_when": [
+        "add a pickup",
+        "collectible item",
+        "item the player grabs"
+      ],
+      "do_not_use_when": [
+        "permanent world switch",
+        "key that unlocks a specific door (use interaction.door-key)"
+      ],
+      "material_inputs": [
+        "item_name",
+        "grant"
+      ],
+      "affordances": [
+        "resolved_pickup_asset",
+        "semantic_pickup_entity",
+        "pickup_render_projection",
+        "collect_action",
+        "inventory_or_progress_update"
+      ],
+      "capability_requirements": [
+        "asset.resolve"
+      ]
+    },
+    {
+      "id": "interaction.door-key",
+      "version": "1.0.0",
+      "summary": "Add a locked door and matching key: acquiring the key enables opening the door through affordance dependencies.",
+      "use_when": [
+        "add a locked door and key",
+        "keycard door",
+        "door that needs an item"
+      ],
+      "do_not_use_when": [
+        "door with no key item",
+        "puzzle lock with multi-step combination"
+      ],
+      "material_inputs": [
+        "lock_style"
+      ],
+      "affordances": [
+        "resolved_door_asset",
+        "resolved_key_asset",
+        "semantic_door_entity",
+        "semantic_key_entity",
+        "key_collect",
+        "door_unlock_gate",
+        "door_open_action"
+      ],
+      "capability_requirements": [
+        "asset.resolve",
+        "world.spatial"
+      ]
+    },
+    {
+      "id": "checkpoint",
+      "version": "1.0.0",
+      "summary": "Add a checkpoint that records progress and restores the player when they respawn.",
+      "use_when": [
+        "add a checkpoint",
+        "save progress point",
+        "respawn anchor"
+      ],
+      "do_not_use_when": [
+        "full save system with slots",
+        "multiplayer sync checkpoint"
+      ],
+      "material_inputs": [],
+      "affordances": [
+        "resolved_checkpoint_asset",
+        "semantic_checkpoint_entity",
+        "checkpoint_trigger",
+        "progress_snapshot",
+        "respawn_restore"
+      ],
+      "capability_requirements": [
+        "asset.resolve",
+        "world.spatial"
+      ]
+    }
+  ],
+  "diagnostics": {
+    "total": 6
+  }
+}
+EXIT:0
+=== bun run studio -- recipe describe enemy.patrol --json ===
+$ bun run ./apps/studio-cli/src/index.ts recipe describe enemy.patrol --json
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.recipe.describe",
+  "result": {
+    "id": "enemy.patrol",
+    "version": "1.0.0",
+    "summary": "Add a patrolling enemy that moves along a path, detects the player, and reacts — composed from existing capabilities.",
+    "use_when": [
+      "add a patrolling enemy",
+      "enemy that patrols",
+      "patrol guard or drone"
+    ],
+    "do_not_use_when": [
+      "multi-phase boss fight",
+      "purely decorative prop with no detection"
+    ],
+    "inputs": [
+      {
+        "key": "enemy_kind",
+        "label": "Enemy kind",
+        "required": false,
+        "material": true,
+        "type": "enum",
+        "summary": "Conceptual enemy archetype affecting defaults only",
+        "enum_values": [
+          "drone",
+          "guard"
+        ],
+        "default": "drone"
+      },
+      {
+        "key": "patrol_area",
+        "label": "Patrol area intent",
+        "required": false,
+        "material": true,
+        "type": "string",
+        "summary": "Human description of the patrol region or loop",
+        "default": "circular-loop-8m"
+      },
+      {
+        "key": "on_detect",
+        "label": "On player detect",
+        "required": false,
+        "material": true,
+        "type": "enum",
+        "summary": "Reaction when the enemy detects the player",
+        "enum_values": [
+          "alert-pursue",
+          "alert-hold"
+        ],
+        "default": "alert-pursue"
+      },
+      {
+        "key": "style_hint",
+        "label": "Optional visual style",
+        "required": false,
+        "material": false,
+        "type": "string",
+        "summary": "Optional style constraint; default follows world theme",
+        "default": ""
+      }
+    ],
+    "affordances": [
+      "resolved_enemy_asset",
+      "semantic_enemy_entity",
+      "enemy_render_projection",
+      "enemy_physics_projection",
+      "navigation_agent",
+      "patrol_behavior",
+      "detection_behavior",
+      "patrol_scenario"
+    ],
+    "affordance_dependencies": [
+      {
+        "requires": "resolved_enemy_asset",
+        "required_by": "enemy_render_projection"
+      },
+      {
+        "requires": "semantic_enemy_entity",
+        "required_by": "enemy_render_projection"
+      },
+      {
+        "requires": "semantic_enemy_entity",
+        "required_by": "enemy_physics_projection"
+      },
+      {
+        "requires": "semantic_enemy_entity",
+        "required_by": "patrol_behavior"
+      },
+      {
+        "requires": "navigation_agent",
+        "required_by": "patrol_behavior"
+      },
+      {
+        "requires": "patrol_behavior",
+        "required_by": "detection_behavior"
+      },
+      {
+        "requires": "patrol_behavior",
+        "required_by": "patrol_scenario"
+      }
+    ],
+    "capability_requirements": [
+      "asset.resolve",
+      "world.physics",
+      "world.navigation",
+      "vfx.particles",
+      "audio.procedural"
+    ],
+    "constraints": [
+      "authoritative enemy state lives in Koota, not the render mesh",
+      "navigation uses Recast over accepted world geometry",
+      "asset resolution uses asset.resolve ordered policy"
+    ],
+    "escalation": {
+      "stop_and_ask_when": [
+        "patrol area cannot be inferred and no default is safe"
+      ],
+      "escalate_when": [
+        "enemy requires a custom rig beyond default content routes"
+      ]
+    },
+    "acceptance": [
+      "patrol scenario observes enemy translation in authoritative state",
+      "detection transitions are observable in state",
+      "render and physics projections track authoritative entity"
+    ]
+  },
+  "diagnostics": {
+    "recipe_id": "enemy.patrol",
+    "version": "1.0.0"
+  }
+}
+EXIT:0

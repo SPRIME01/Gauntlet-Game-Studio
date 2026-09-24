@@ -4,7 +4,7 @@ metadata:
   id: gauntlet-game-studio
   title: Gauntlet Game Studio Normative Specification
   status: approved
-  version: 0.2.0
+  version: 0.4.0
   created: '2026-09-15'
   scope: Agentic development studio for polished browser-native 3D games built on a first-party Gauntlet Runtime using standard
     Three.js, Koota, Rapier, Recast, and related narrow libraries, with capability-routed content production, optional authoritative
@@ -34,6 +34,26 @@ metadata:
     portable baseline glTF texture format with KTX2 as an optional path requiring toktx preflight; strengthens browser-proof
     environment probing and capture-only preserveDrawingBuffer; separates deterministic structural CI budgets from hardware-sensitive
     target budgets; and incorporates adversarial analysis and governance corrections.
+  amendment_0_3_0:
+    role: Formal normative amendment authorized by the operator on 2026-09-19 ('i do want it as a first class
+      capability'). Introduces first-class asset.resolve routing with the ordered policy search/acquire → adapt →
+      create; generation is the fallback only when no suitable existing asset can be acquired or adapted. Providers
+      remain replaceable adapters; per-asset provenance evidence is mandatory; the settlement plan was rebound to
+      this revision.
+    authorization_record: .agents/decisions/game-studio.jsonl (SPEC_AMENDMENT 0.3.0)
+    change_plan: .agents/plans/asset-resolve.amendment.plan.yaml
+    prior_revision_sha256: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+  amendment_0_4_0:
+    role: >-
+      Formal normative amendment authorized by the operator on 2026-09-23 (recipe-layer request: "I want the next
+      refinement to be a recipe layer above the existing capability layer... Treat the recipe layer as a new
+      post-baseline improvement"). Introduces REQ-RECIPE-001..014 under core_behavior_requirements.recipe_composition:
+      intent to recipe to capabilities to runtime compiled exclusively through the existing capability registry/router,
+      asset.resolve, evidence, and Gauntlet settlement; recipes never become a second semantic authority or
+      implementation path. Settlement plan rebound to this revision with tasks T27/T28; T00-T26 evidence is preserved.
+    authorization_record: .agents/decisions/game-studio.jsonl (SPEC_AMENDMENT 0.4.0)
+    change_plan: .agents/plans/recipe-layer.amendment.plan.yaml
+    prior_revision_sha256: b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39
 sources:
   normative_artifact:
     role: This file is the approved normative desired-state authority.
@@ -869,6 +889,86 @@ core_domain_model:
     rules:
     - Settlement MUST be based on evidence, not provider completion.
     - A missing required confirmation MUST prevent settled status.
+  - name: RecipeDescriptor
+    purpose: Describe one outcome-oriented recipe that compiles into existing capabilities without becoming a second
+      authority or router.
+    used_by:
+    - Recipe Registry and Compiler
+    - Studio CLI recipe discovery/plan/apply
+    - Cold-agent and UX surfaces
+    required_fields:
+    - name: id
+      type: string
+      meaning: Stable dotted recipe ID using outcome vocabulary (e.g. enemy.patrol, interaction.door-key).
+    - name: version
+      type: string
+      meaning: Recipe revision for provenance and plan stability.
+    - name: summary
+      type: string
+      meaning: Concise novice-facing description of the outcome.
+    - name: use_when
+      type: array[string]
+      meaning: Positive triggers for choosing this recipe.
+    - name: do_not_use_when
+      type: array[string]
+      meaning: Negative affordances separating adjacent recipes and escalation boundaries.
+    - name: inputs
+      type: array
+      meaning: Required and optional inputs with defaults and meaningful choices only.
+    - name: affordances
+      type: array[string]
+      meaning: Outcome-level affordances the recipe produces.
+    - name: affordance_dependencies
+      type: array
+      meaning: Enablement edges between affordances (not arbitrary linear order).
+    - name: capability_requirements
+      type: array[string]
+      meaning: Capability IDs the compiled plan may invoke through the existing router.
+    - name: constraints
+      type: array[string]
+      meaning: Invariants the recipe must preserve (authority, provenance, budgets).
+    - name: escalation
+      type: object
+      meaning: Stop/ask and escalation conditions for genuinely required decisions.
+    - name: acceptance
+      type: array[string]
+      meaning: Acceptance conditions verified only through observe/verify/Gauntlet channels.
+    optional_fields:
+    - expert_inspection
+    rules:
+    - Recipe definitions MUST be primarily declarative; arbitrary application logic MUST NOT live in recipe configuration.
+    - Recipe IDs MUST NOT encode provider, engine, or capability implementation nouns as the user-facing abstraction.
+    - Recipes MUST compile into the existing capability registry/router; they MUST NOT introduce a parallel path.
+  - name: RecipePlan
+    purpose: Record the inspectable dry-run expansion and apply progress of one recipe for a resolved set of choices.
+    used_by:
+    - Recipe Compiler (dry-run)
+    - Recipe apply executor
+    - CLI recipe plan/apply and provenance
+    required_fields:
+    - name: recipe_id
+      type: string
+      meaning: Recipe descriptor identity.
+    - name: recipe_version
+      type: string
+      meaning: Recipe descriptor version at plan time.
+    - name: choices
+      type: object
+      meaning: Resolved choices including applied defaults.
+    - name: affordance_graph
+      type: object
+      meaning: Affordance dependency DAG produced by compilation.
+    - name: steps
+      type: array
+      meaning: Ordered typed steps (capability | project | verify) with depends_on and status.
+    optional_fields:
+    - provenance_ref
+    - evidence_manifest_ids
+    rules:
+    - Step status MUST distinguish satisfied | needs_creation | needs_modification | blocked | skipped.
+    - Capability-kind steps MUST execute only via the existing capability registry/router.
+    - Verify-kind steps MUST use existing observe/verify/Gauntlet channels and evidence manifests.
+    - Apply provenance MUST be append-only and MUST NOT overwrite prior attempts.
   identifiers_and_normalization:
     primary_id_rule: Persistent IDs MUST be stable, lower-case where human-authored, and namespace-qualified when collisions
       are plausible.
@@ -1162,6 +1262,64 @@ core_behavior_requirements:
   - id: REQ-ROUTE-006
     text: Fallbacks MUST preserve the requested capability semantics or surface a degraded/blocked result; they MUST NOT
       silently change the job.
+  recipe_composition:
+  - id: REQ-RECIPE-001
+    text: The studio MUST expose a recipe layer above capabilities so callers can express game-development outcomes as
+      intent → recipe → capabilities → runtime. Recipes MUST compile into the existing capability system; a parallel
+      implementation path MUST NOT exist.
+  - id: REQ-RECIPE-002
+    text: Each recipe MUST be described by a machine-readable, primarily declarative RecipeDescriptor covering
+      identity/version, human-oriented summary, use_when, do_not_use_when, required and optional inputs with defaults,
+      affordances produced, affordance dependencies, capability requirements, constraints, escalation/stop conditions,
+      and acceptance conditions, reusing existing contract naming where it already fits.
+  - id: REQ-RECIPE-003
+    text: Recipe execution MUST invoke capabilities exclusively through the existing capability registry/router
+      (routeCapability or its settled equivalent). A second router, orchestration authority, or provider dispatcher
+      MUST NOT be introduced.
+  - id: REQ-RECIPE-004
+    text: Recipes MUST NOT become semantic authority. Koota remains authoritative game state; Three.js rendering; Rapier
+      physics; Recast navigation; providers replaceable; AssetRecords provenance authority; Gauntlet settlement
+      authority. Recipes describe only desired outcome, required affordances, dependencies between affordances,
+      defaults, meaningful user choices, and acceptance conditions.
+  - id: REQ-RECIPE-005
+    text: "The studio MUST support dry-run planning: resolving a recipe plus resolved choices into an inspectable
+      RecipePlan (affordance dependency DAG and ordered steps with status satisfied | needs_creation |
+      needs_modification | blocked | skipped) before mutation."
+  - id: REQ-RECIPE-006
+    text: Recipe names and exposed inputs MUST use outcome vocabulary meaningful to a novice game creator. Only choices
+      that materially affect the result SHOULD be exposed; all other configuration MUST receive strong defaults.
+      Implementation detail MAY appear in expert inspection but MUST NOT define the user-facing abstraction.
+  - id: REQ-RECIPE-007
+    text: Recipe steps that require 3D assets MUST flow through the existing asset.resolve ordered policy
+      (search/acquire → adapt → create). Recipes MUST NOT hardcode a specific provider unless the recipe exists
+      specifically to prove that provider.
+  - id: REQ-RECIPE-008
+    text: Recipe apply MUST reason about already-satisfied affordances, partial completion, retries, resumability, and
+      duplicate application; it MUST NOT blindly recreate resources that already satisfy the recipe.
+  - id: REQ-RECIPE-009
+    text: "Recipe failure results MUST be structured and actionable: failed affordance, causal capability, evidence
+      reference, retryability, available safe recovery actions, whether another provider can satisfy the same
+      affordance, and whether user input is required. A bare recipe-failed string is non-conformant."
+  - id: REQ-RECIPE-010
+    text: Applying a recipe MUST record an append-only structured provenance record linking recipe id/version →
+      resolved choices/defaults → capabilities invoked → providers selected → artifacts produced →
+      verification/evidence → result, available to humans as a concise summary and to agents/Gauntlet in full.
+  - id: REQ-RECIPE-011
+    text: The semantic CLI MUST expose recipe discovery and operation consistent with existing conventions
+      (equivalents of `studio recipes`, `studio recipe describe|plan|apply`) with stable --json / StudioResult
+      behavior. Redundant make/add semantics MUST NOT be created if an existing command already provides the surface.
+  - id: REQ-RECIPE-012
+    text: The studio MUST ship a small canonical recipe set (roughly 5–8) that proves the abstraction across
+      composition patterns — at minimum a third-person world base, patrolling enemy, interactable, pickup, door/key
+      dependency, and checkpoint; dialogue or multiplayer player only when they exercise meaningfully different
+      substrate.
+  - id: REQ-RECIPE-013
+    text: A cold coding agent MUST be able to discover recipes, understand use/do-not-use, inspect required versus
+      default inputs, generate a dry-run plan, apply, inspect evidence, and recover from failure using only the
+      public recipe/CLI discovery surface — without reading the recipe-engine implementation source.
+  - id: REQ-RECIPE-014
+    text: Recipe acceptance MUST be verified through the existing observe / verify / Gauntlet channels and evidence
+      manifests. Recipe apply MUST NOT introduce a second evidence format or bypass settlement.
   skill_metadata:
   - id: REQ-SKILL-001
     text: Studio-owned skill descriptions MUST fit the description-length contract in REQ-CONFIG-006 and MUST optimize for
@@ -1254,6 +1412,27 @@ core_behavior_requirements:
       KTX2 and toktx is unavailable, the requirement MUST report blocked rather than silently downgrading.
   - id: REQ-ASSET-007
     text: The asset registry MUST preserve rejected and superseded production routes rather than rewriting history.
+  asset_resolution_routing:
+  - id: REQ-ASSET-008
+    text: The studio MUST expose asset.resolve as a first-class capability that resolves each required production asset
+      through the ordered policy search/acquire, then adapt, then create. Creation routes (procedural authoring,
+      reference reconstruction, DCC escalation) are fallbacks used only when the recorded search and adapt steps cannot
+      yield a suitable asset under the declared acceptance criteria.
+  - id: REQ-ASSET-009
+    text: Every asset.resolve decision MUST record which policy step succeeded and why later steps were unnecessary or
+      failed, and MUST record it append-only before production reliance on the resolved asset.
+  - id: REQ-ASSET-010
+    text: Every acquired asset MUST pass the existing AssetRecord intake with per-asset provenance (source URI, author,
+      license, retrieval metadata, and source hash) plus the applicable normalization and verification gates.
+      Provider-level or library-level license assumptions MUST NOT be accepted as per-asset evidence.
+  - id: REQ-ASSET-011
+    text: Resolution providers MUST remain replaceable adapters below stable studio contracts; no provider MAY become
+      routing authority, and asset.source MUST remain the acquisition primitive for external intake. Adding a library
+      (for example Kenney, KayKit, Quaternius) MUST be implementable as a new adapter without changing the resolution
+      contract.
+  - id: REQ-ASSET-012
+    text: Adaptation of an acquired asset MUST preserve upstream license obligations, record the derivative relationship,
+      and MUST NOT weaken or bypass the acceptance gates that made adaptation necessary.
   blender_escalation:
   - id: REQ-BLENDER-001
     text: Blender MUST be treated as an escalation capability, not the default world/game authoring environment.
@@ -2067,6 +2246,14 @@ conformance_traceability:
     - REQ-GAUNTLET-003
     - REQ-GAUNTLET-006
     confirmation: adversarial
+  - group: Asset resolution routing (search/acquire → adapt → create)
+    requirements:
+    - REQ-ASSET-008
+    - REQ-ASSET-009
+    - REQ-ASSET-010
+    - REQ-ASSET-011
+    - REQ-ASSET-012
+    confirmation: adversarial
   - group: Asset provenance and production acceptance
     requirements:
     - REQ-ASSET-003
@@ -2135,4 +2322,21 @@ conformance_traceability:
     - REQ-BLENDER-006
     - REQ-BLENDER-007
     confirmation: independent
+  - group: Recipe composition and authority preservation
+    requirements:
+    - REQ-RECIPE-001
+    - REQ-RECIPE-002
+    - REQ-RECIPE-003
+    - REQ-RECIPE-004
+    - REQ-RECIPE-005
+    - REQ-RECIPE-006
+    - REQ-RECIPE-007
+    - REQ-RECIPE-008
+    - REQ-RECIPE-009
+    - REQ-RECIPE-010
+    - REQ-RECIPE-011
+    - REQ-RECIPE-012
+    - REQ-RECIPE-013
+    - REQ-RECIPE-014
+    confirmation: adversarial
   plan_projection_rule: "The plan projection MUST preserve semantic distinctions between identifier classes: every REQUIRED normative requirement (REQ-*) MUST map to at least one implementation plan task; every required variation case (VAR-*) and recovery case (RECOV-*) MUST map to settlement tasks; every claim/hypothesis (CLAIM-*) MUST map to its establishing/falsifying task and evidence. Non-goals (NONGOAL-*) establish explicit project boundaries and are not tasks. A requirement or case without a plan task or settled evidence remains open."

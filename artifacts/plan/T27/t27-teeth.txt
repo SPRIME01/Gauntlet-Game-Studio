@@ -1,0 +1,9 @@
+=== TEETH-T27-001/001b/002-asset/003/004/004b via recipe suite ===
+bun test v1.4.0 (34cbb9a40)
+
+ 7 pass
+ 12 filtered out
+ 0 fail
+ 44 expect() calls
+Ran 7 tests across 1 file. [1230.00ms]
+EXIT:0

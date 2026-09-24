@@ -1,0 +1,7 @@
+### source:verify
+$ bun run ./scripts/verify-source.ts
+=== Gauntlet Studio Source Integration Verifier (REQ-SOURCE-001, REQ-SOURCE-005) ===
+OK: Source attribution lint passed (no unnecessary vendoring).
+OK: Authoritative single Three.js dependency verified (^0.170.0).
+SUCCESS: All source integration constraints verified.
+EXIT:0

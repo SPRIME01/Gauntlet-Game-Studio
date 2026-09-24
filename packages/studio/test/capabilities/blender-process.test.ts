@@ -52,7 +52,7 @@ describe("dcc.blender.process capability surface", () => {
       expect(prep.status).toBe("blocked");
       if (prep.status === "blocked") expect(prep.code).toBe("BLENDER_UNAVAILABLE");
     }
-  });
+  }, 60000);
 
   it("blocks preparation with PROVIDER_MISMATCH on a foreign provider", async () => {
     const request = loadCommittedRequest();

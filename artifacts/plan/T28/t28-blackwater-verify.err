@@ -1,0 +1,1 @@
+$ bun run ./apps/studio-cli/src/index.ts verify --project examples/blackwater-relay --suite all --json

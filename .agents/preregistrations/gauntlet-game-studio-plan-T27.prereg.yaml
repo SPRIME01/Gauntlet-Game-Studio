@@ -1,0 +1,80 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T27
+title: Implement recipe contracts, studio recipe module, and CLI over the amended v0.4.0 spec
+proof_level: P2
+timestamp: "2026-09-24T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T27-001
+    settles:
+      - REQ-RECIPE-001
+      - REQ-RECIPE-002
+      - REQ-RECIPE-003
+      - REQ-RECIPE-004
+      - REQ-RECIPE-005
+      - REQ-RECIPE-006
+      - REQ-RECIPE-007
+      - REQ-RECIPE-008
+      - REQ-RECIPE-009
+      - REQ-RECIPE-010
+      - REQ-RECIPE-011
+    statement: >-
+      Outcome intents compile through a strict RecipeDescriptor/RecipePlan contract
+      and apply exclusively via the existing capability registry/router and
+      asset.resolve — dry-run plans do not mutate the project, re-apply is
+      idempotent for already-satisfied affordances, failures are structured and
+      actionable (never a bare recipe-failed string), and provenance is append-only
+      under the game project. No parallel dispatcher, provider side-channel, or
+      second authority is introduced.
+
+falsifiers:
+  - id: TEETH-T27-001
+    attack: >-
+      Present a recipe plan whose capability step carries a direct provider
+      binding (bypassing routeCapability).
+    expected: >-
+      Apply/compiler rejects with a routing-authority violation (strict schema
+      and explicit authority check); no route call and no provider invocation occur;
+      the project is not mutated.
+  - id: TEETH-T27-002
+    attack: >-
+      Apply a recipe whose asset affordance is bound to a non-asset.resolve
+      capability (skipping ordered asset policy).
+    expected: >-
+      Apply typed-rejects with an ASSET_POLICY_VIOLATION before any route call;
+      no project mutation; the failed affordance is named.
+  - id: TEETH-T27-003
+    attack: Re-apply a recipe when required affordances are already satisfied.
+    expected: >-
+      Steps report satisfied; no duplicate resources are created; provenance
+      appends a no-op apply record.
+  - id: TEETH-T27-004
+    attack: Force a blocked dependency during apply and return a bare failure string.
+    expected: >-
+      Result is a structured actionable failure (failed affordance, causal
+      capability, recovery hints); a bare recipe-failed string is non-conformant.
+
+known_confounds:
+  - Stale evidence or a different project revision.
+  - Unavailable optional provider/tool being mistaken for core capability failure.
+  - Injected test route callbacks mistaken for production provider side-channels.
+
+confirmation_condition: >-
+  The declared task gates and teeth pass using fresh evidence for the current
+  revision, and the task's declared confirmation mode (independent_adversarial)
+  is satisfied.
+
+independent_confirmation:
+  required: true
+  mode: independent_adversarial
+  focus: >-
+    Verify from fresh evidence at the current revision, not builder narrative:
+    (1) recipe suites pass under packages/contracts, packages/studio, and
+    apps/studio-cli; (2) TEETH-T27-001/002 reject before any route/project
+    mutation; TEETH-T27-003/004 observe satisfied-idempotence and structured
+    failures; (3) CLI recipes/recipe describe|plan|apply --json succeed with
+    StudioResult conventions; (4) traceability, source:verify, third-party:verify,
+    and topology gates pass; (5) no second authority or parallel path was
+    introduced relative to the amended v0.4.0 spec.

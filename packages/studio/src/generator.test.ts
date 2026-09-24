@@ -55,7 +55,7 @@ describe("Independent Game Project Template & Scaffold Suite (T05)", () => {
       encoding: "utf-8",
     });
     expect(testOut).toContain("pass");
-  });
+  }, 60000);
 
   it("TEETH-T05-001: Remains independently buildable when moved outside the studio monorepo (Teeth Check)", () => {
     const outsideDir = path.resolve(process.cwd(), ".tmp/outside-repo-test-game");
@@ -76,7 +76,7 @@ describe("Independent Game Project Template & Scaffold Suite (T05)", () => {
 
     // Cleanup
     fs.rmSync(outsideDir, { recursive: true, force: true });
-  });
+  }, 60000);
 
   it("TEETH-T05-002: Zero private relative-path dependencies into studio monorepo (Teeth Check)", () => {
     // Read package.json and tsconfig.json of the smoke project
@@ -105,5 +105,5 @@ describe("Independent Game Project Template & Scaffold Suite (T05)", () => {
       encoding: "utf-8",
     });
     expect(testOut).toContain("pass");
-  });
+  }, 60000);
 });

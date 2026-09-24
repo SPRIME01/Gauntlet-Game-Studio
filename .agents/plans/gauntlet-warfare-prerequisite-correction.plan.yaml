@@ -1,0 +1,89 @@
+schema: agent.correction_plan
+schema_version: "1.0"
+
+metadata:
+  id: gauntlet-warfare-prerequisite-correction
+  status: settled
+  created: "2026-09-17"
+  governing_spec: .agents/specs/gauntlet-game-studio.spec.yaml
+  governing_plan: .agents/plans/gauntlet-game-studio.plan.yaml
+  correction_round: CORR-2026-09-17
+  scope: "Restore falsified Studio provider provenance and asset-source CLI integration required before Codename: Gauntlet Warfare can scaffold."
+
+discovery:
+  classification:
+    - missing_prerequisite: vendor skill distributions contain metadata only while capability handoffs name them as executable instructions.
+    - implementation: asset.source is advertised and implemented by the Poly Haven adapter, but the Studio CLI returns a future-task placeholder.
+    - source_provenance: recorded gauntlet GitHub provider URLs return 404; img2threejs is recorded MIT/1.0.0 while the selected upstream release is Apache-2.0/v2.0.0.
+  preserved_evidence:
+    - /tmp/gauntlet-warfare-preflight.md
+    - "bun run studio -- asset source --json => blocked placeholder"
+    - "system Chrome renderer probe => SwiftShader software renderer"
+  governing_requirements:
+    - REQ-ROUTE-006
+    - REQ-SKILL-004
+    - REQ-SKILL-005
+    - REQ-SKILL-006
+    - REQ-ASSET-003
+    - REQ-ASSET-005
+    - REQ-ASSET-006
+    - REQ-ASSET-007
+
+claims:
+  - id: CORR-CLAIM-001
+    statement: Studio asset source invokes only the registered Poly Haven adapter, validates required CLI inputs, writes its pending AssetRecord through AssetRegistry, and exposes typed success/blocked/failed results without bypassing provenance or acceptance.
+    proof_level: P2
+  - id: CORR-CLAIM-002
+    statement: Vendored agent-skill content is pinned to reachable upstream revisions with correct licenses, provenance, executable instruction entrypoints, and no competing orchestration authority.
+    proof_level: P3
+  - id: CORR-CLAIM-003
+    statement: The correction preserves original failures and prior settlement evidence; it does not treat a software renderer as target-hardware 60 FPS evidence.
+    proof_level: P3
+
+execution_graph:
+  - id: CORR-01
+    title: Preregister tests and CLI contract
+    depends_on: []
+    gate:
+      - failing CLI integration test proves the placeholder cannot intake an asset.
+      - malformed provider, missing id, missing role, and path traversal are rejected without writes.
+  - id: CORR-02
+    title: Wire asset source to the existing Poly Haven adapter and AssetRegistry
+    depends_on: [CORR-01]
+    gate:
+      - focused adapter, registry, and CLI tests pass.
+      - accepted output is a pending record; asset acceptance remains a separate registry decision.
+  - id: CORR-03
+    title: Restore provider distributions and provenance
+    depends_on: [CORR-01]
+    gate:
+      - exact upstream revisions and licenses recorded.
+      - source attribution and capability lint pass.
+      - img2threejs and 3dviz handoffs resolve declared instruction paths.
+  - id: CORR-04
+    title: Correction confirmation
+    depends_on: [CORR-02, CORR-03]
+    gate:
+      - original placeholder reproduction now succeeds with deterministic fixture network data.
+      - negative controls still block unsafe intake and missing provider content.
+      - project-wide relevant tests and source/third-party gates pass.
+      - fresh adversarial confirmation is recorded.
+
+non_goals:
+  - Do not alter the frozen Studio normative specification or weaken existing acceptance criteria.
+  - Do not scaffold Codename: Gauntlet Warfare until this correction is settled and a zero-blocker game pre-flight is approved.
+  - Do not claim a hardware-target 60 FPS result from the SwiftShader environment.
+
+outcome:
+  settled: "2026-09-17"
+  confirmation: independent_adversarial CONFIRM (post-fix reviewer; 54 focused tests)
+  gates:
+    - asset source uses the registered Poly Haven adapter and AssetRegistry with typed outcomes.
+    - malformed ids and missing roles reject before network or project writes; retained source files use exclusive creation.
+    - img2threejs and 3dviz route to exact vendored SKILL.md entrypoints and reject metadata-only handoffs.
+    - source verification, third-party verification, and capability lint pass.
+  preserved_contradiction: >-
+    The requested game scaffold was created before this correction settled. This ordering failure is retained as evidence;
+    no gameplay mutation or hardware-performance claim occurred before correction confirmation.
+  remaining_blocker:
+    - SwiftShader browser rendering is valid for functional visual proof but cannot settle the requested target-hardware 60 FPS budget.

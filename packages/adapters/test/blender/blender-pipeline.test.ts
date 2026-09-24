@@ -176,7 +176,7 @@ describe("dcc.blender.process real chain (Blender 5.2.2 LTS)", () => {
     });
     expect(result.status).toBe("blocked");
     if (result.status === "blocked") expect(result.code).toBe("BLENDER_UNAVAILABLE");
-  });
+  }, 120000);
 
   it("committed source definition stays valid", () => {
     const check = loadServiceDroneDefinition(

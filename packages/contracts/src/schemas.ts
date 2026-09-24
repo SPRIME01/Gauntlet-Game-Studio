@@ -292,3 +292,162 @@ export const StudioResultSchema = z
     diagnostics: z.record(z.string(), z.unknown()).default({}),
   })
   .strict();
+
+/**
+ * RecipeInput: One declared recipe input (required or defaultable).
+ * `material: true` marks a choice that genuinely affects the outcome and may be
+ * exposed to the user; non-material inputs MUST receive strong defaults (REQ-RECIPE-006).
+ */
+export const RecipeInputSchema = z
+  .object({
+    key: z
+      .string()
+      .regex(/^[a-z][a-z0-9_]*$/, "Recipe input keys must be lower_snake_case"),
+    label: z.string().min(1).max(200),
+    required: z.boolean().default(false),
+    material: z.boolean().default(false),
+    type: z.enum(["string", "number", "boolean", "enum", "string[]"]),
+    summary: z.string().min(1).max(500),
+    default: z.unknown().optional(),
+    enum_values: z.array(z.string().min(1)).optional(),
+  })
+  .strict();
+
+/**
+ * RecipeAffordanceDependency: enablement edge between outcome-level affordances.
+ * Modeled as affordance dependency, not arbitrary linear order (REQ-RECIPE-002).
+ */
+export const RecipeAffordanceDependencySchema = z
+  .object({
+    requires: z.string().min(1),
+    required_by: z.string().min(1),
+  })
+  .strict();
+
+export const RecipeEscalationSchema = z
+  .object({
+    stop_and_ask_when: z.array(z.string().min(1)).default([]),
+    escalate_when: z.array(z.string().min(1)).default([]),
+  })
+  .strict();
+
+/**
+ * RecipeDescriptor: outcome-oriented semantic composition above capabilities.
+ * Primarily declarative; compiles into the existing capability registry/router (REQ-RECIPE-001..003).
+ */
+export const RecipeDescriptorSchema = z
+  .object({
+    id: z
+      .string()
+      .regex(
+        /^[a-z0-9]+(\.[a-z0-9_-]+)*$/,
+        "Recipe ID must use lower-case outcome vocabulary (e.g. enemy.patrol, checkpoint)"
+      ),
+    version: z.string().regex(/^\d+\.\d+\.\d+$/, "Recipe version must be semver"),
+    summary: z.string().min(10).max(1024),
+    use_when: z.array(z.string().min(1)).min(1),
+    do_not_use_when: z.array(z.string().min(1)).default([]),
+    inputs: z.array(RecipeInputSchema).default([]),
+    affordances: z.array(z.string().min(1)).min(1),
+    affordance_dependencies: z.array(RecipeAffordanceDependencySchema).default([]),
+    capability_requirements: z
+      .array(z.string().min(1))
+      .min(1, "A recipe must declare the capabilities it may invoke"),
+    constraints: z.array(z.string().min(1)).default([]),
+    escalation: RecipeEscalationSchema.default({ stop_and_ask_when: [], escalate_when: [] }),
+    acceptance: z.array(z.string().min(1)).min(1),
+    expert_inspection: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict();
+
+export const RecipePlanStepStatusSchema = z.enum([
+  "pending",
+  "satisfied",
+  "needs_creation",
+  "needs_modification",
+  "blocked",
+  "skipped",
+]);
+
+export const RecipePlanStepSchema = z
+  .object({
+    id: z.string().min(1),
+    kind: z.enum(["capability", "project", "verify"]),
+    affordance: z.string().min(1),
+    summary: z.string().min(1),
+    capability_id: z.string().min(1).optional(),
+    depends_on: z.array(z.string().min(1)).default([]),
+    status: RecipePlanStepStatusSchema.default("pending"),
+    reason: z.string().optional(),
+  })
+  .strict();
+
+export const RecipeAffordanceGraphSchema = z
+  .object({
+    nodes: z.array(z.string().min(1)).min(1),
+    edges: z
+      .array(z.object({ from: z.string().min(1), to: z.string().min(1) }).strict())
+      .default([]),
+  })
+  .strict();
+
+/**
+ * RecipePlan: inspectable dry-run expansion before mutation (REQ-RECIPE-005).
+ */
+export const RecipePlanSchema = z
+  .object({
+    schema: z.literal("gauntlet.recipe.plan"),
+    schema_version: z.literal("1.0"),
+    recipe_id: z.string().min(1),
+    recipe_version: z.string().min(1),
+    choices: z.record(z.string(), z.unknown()).default({}),
+    affordance_graph: RecipeAffordanceGraphSchema,
+    steps: z.array(RecipePlanStepSchema).min(1),
+    created_at: z.string().min(1),
+  })
+  .strict();
+
+export const RecipeApplyStepRecordSchema = z
+  .object({
+    step_id: z.string().min(1),
+    kind: z.enum(["capability", "project", "verify"]),
+    affordance: z.string().min(1),
+    outcome: z.enum([
+      "satisfied",
+      "succeeded",
+      "skipped",
+      "blocked",
+      "failed",
+      "needs_modification",
+    ]),
+    capability_id: z.string().optional(),
+    provider: z.string().optional(),
+    detail: z.string().min(1),
+    artifacts: z.array(ArtifactRefSchema).default([]),
+    evidence_manifest_ids: z.array(z.string().min(1)).default([]),
+  })
+  .strict();
+
+/**
+ * RecipeApplyProvenance: append-only structured record of one recipe application (REQ-RECIPE-009..010).
+ */
+export const RecipeApplyProvenanceSchema = z
+  .object({
+    schema: z.literal("gauntlet.recipe.apply"),
+    schema_version: z.literal("1.0"),
+    id: z.string().min(1),
+    recipe_id: z.string().min(1),
+    recipe_version: z.string().min(1),
+    choices: z.record(z.string(), z.unknown()).default({}),
+    steps: z.array(RecipeApplyStepRecordSchema).default([]),
+    result: z.enum(["success", "blocked", "failed", "degraded"]),
+    failed_affordance: z.string().optional(),
+    causal_capability: z.string().optional(),
+    evidence_manifest_ids: z.array(z.string().min(1)).default([]),
+    retryable: z.boolean().optional(),
+    recovery_actions: z.array(z.string().min(1)).default([]),
+    alternate_provider_available: z.boolean().optional(),
+    user_input_required: z.boolean().optional(),
+    recorded_at: z.string().min(1),
+  })
+  .strict();

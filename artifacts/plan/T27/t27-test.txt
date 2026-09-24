@@ -1,0 +1,1084 @@
+=== bun test packages/contracts packages/studio apps/studio-cli ===
+bun test v1.4.0 (34cbb9a40)
+
+apps/studio-cli/src/cli.test.ts:
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "success",
+  "operation": "studio.doctor",
+  "result": {
+    "status": "success",
+    "checks": [
+      {
+        "name": "bun_version",
+        "status": "pass",
+        "details": "Bun v1.4.0 satisfies baseline (>= 1.4.0)"
+      },
+      {
+        "name": "donor_isolation_gitignore",
+        "status": "pass",
+        "details": ".tmp/ is properly gitignored in .gitignore"
+      },
+      {
+        "name": "donor_dependency_check",
+        "status": "pass",
+        "details": "Zero donor dependencies detected in root package manifest"
+      },
+      {
+        "name": "configuration_integrity",
+        "status": "pass",
+        "details": "Configuration parsed cleanly and adheres to secret hygiene rules"
+      },
+      {
+        "name": "workspace_packages",
+        "status": "pass",
+        "details": "All 5 required workspace packages present (packages/contracts, packages/studio, packages/runtime, packages/adapters, apps/studio-cli)"
+      }
+    ],
+    "environment": {
+      "bun_version": "1.4.0",
+      "platform": "linux",
+      "arch": "x64",
+      "cwd": "/home/sprime01/projects/gauntlet-game-studio"
+    }
+  },
+  "diagnostics": {
+    "total_checks": 5,
+    "passed_checks": 5,
+    "failed_checks": 0,
+    "environment": {
+      "bun_version": "1.4.0",
+      "platform": "linux",
+      "arch": "x64",
+      "cwd": "/home/sprime01/projects/gauntlet-game-studio"
+    }
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.config",
+  "result": {
+    "project_id": "default-project",
+    "title": "Gauntlet Game",
+    "version": "0.1.0",
+    "runtime": {
+      "engine": "three",
+      "rapier": true,
+      "recast": true,
+      "bvh": true,
+      "multiplayer": "none"
+    },
+    "budgets": {
+      "max_draw_calls": 150,
+      "max_triangles": 200000,
+      "target_fps": 60
+    },
+    "providers": {},
+    "secrets": {}
+  },
+  "diagnostics": {
+    "source": "gauntlet.config.json or defaults"
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.create",
+  "result": {
+    "project_name": "cli-test-game",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/cli-test-game",
+    "files": [
+      "artifacts/evidence/.gitkeep",
+      "tsconfig.json",
+      "package.json",
+      "references/.gitkeep",
+      "src/index.ts",
+      "assets/manifest.json",
+      "AGENTS.md",
+      "studio.lock.yaml",
+      "tests/game.test.ts",
+      ".agents/specs/game.spec.yaml",
+      ".agents/CURRENT_STATUS.yml"
+    ]
+  },
+  "diagnostics": {
+    "project_name": "cli-test-game",
+    "path": "/home/sprime01/projects/gauntlet-game-studio/.tmp/cli-test-game",
+    "files_count": 11
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.capabilities",
+  "result": [
+    {
+      "id": "world.composition",
+      "summary": "Scene and world composition, architecture, vegetation, lighting, atmosphere, and environment construction via 3dviz. Composes environments from approved assets and procedural placement.",
+      "use_when": [
+        "scene composition",
+        "environment design",
+        "lighting setup",
+        "atmosphere",
+        "world layout",
+        "architecture",
+        "vegetation placement"
+      ],
+      "do_not_use_when": [
+        "reconstructing a single depicted object or character from reference image",
+        "procedural terrain heightfield calculation",
+        "navmesh generation"
+      ],
+      "inputs": [
+        "world_brief",
+        "environment_theme",
+        "layout_spec"
+      ],
+      "outputs": [
+        "scene_graph_spec",
+        "world_manifest"
+      ],
+      "verification": [
+        "visual_capture",
+        "draw_call_telemetry"
+      ],
+      "providers": [
+        "agent-skill.3dviz"
+      ]
+    },
+    {
+      "id": "asset.reconstruct",
+      "summary": "Reconstruct a specific depicted object or character into procedural Three.js from suitable reference imagery. Produces high-fidelity object geometry honoring reference silhouette and budgets.",
+      "use_when": [
+        "reconstructing a depicted object from reference image",
+        "character model from reference photo",
+        "field transceiver from concept art",
+        "specific vehicle from drawing"
+      ],
+      "do_not_use_when": [
+        "generic text-to-3D without reference image",
+        "scene composition",
+        "world environment layout",
+        "procedural terrain"
+      ],
+      "inputs": [
+        "reference_image_uri",
+        "target_role",
+        "poly_budget"
+      ],
+      "outputs": [
+        "procedural_three_code",
+        "glb_derivative"
+      ],
+      "verification": [
+        "reference_similarity",
+        "poly_budget_check"
+      ],
+      "providers": [
+        "agent-skill.img2threejs"
+      ],
+      "requires_user_reference": true
+    },
+    {
+      "id": "world.terrain",
+      "summary": "Deterministic mathematical procedural elevation generation producing canonical TerrainHeightfield height arrays. Generates multi-octave island topography with deterministic seed control.",
+      "use_when": [
+        "procedural terrain generation",
+        "heightfield elevation",
+        "island topography",
+        "elevation grid"
+      ],
+      "do_not_use_when": [
+        "importing static pre-modeled scenic meshes",
+        "environment composition",
+        "reconstructing objects"
+      ],
+      "inputs": [
+        "seed",
+        "grid_dimensions",
+        "world_bounds",
+        "octaves"
+      ],
+      "outputs": [
+        "TerrainHeightfield"
+      ],
+      "verification": [
+        "height_range_check",
+        "deterministic_seed_check"
+      ],
+      "providers": [
+        "procedural_generator"
+      ]
+    },
+    {
+      "id": "world.physics",
+      "summary": "Direct Rapier 3D simulation step owner; creates colliders and dynamic bodies as execution projections. Manages physical simulation stepping without leaking authority into gameplay state.",
+      "use_when": [
+        "rigid body physics",
+        "collision detection",
+        "character controller physics",
+        "raycast queries against physics world"
+      ],
+      "do_not_use_when": [
+        "authoritative gameplay state",
+        "pure visual animations"
+      ],
+      "inputs": [
+        "physics_world_config",
+        "colliders_spec"
+      ],
+      "outputs": [
+        "physics_step_owner"
+      ],
+      "verification": [
+        "collision_event_log",
+        "step_timing_telemetry"
+      ],
+      "providers": [
+        "physics.rapier"
+      ]
+    },
+    {
+      "id": "world.navigation",
+      "summary": "Recast navmesh generation, crowd simulation, and deterministic pathfinding over accepted world geometry. Calculates collision-aware routes and agent steering for ground entities.",
+      "use_when": [
+        "AI pathfinding",
+        "navmesh generation",
+        "crowd navigation",
+        "patrol route planning"
+      ],
+      "do_not_use_when": [
+        "free-flight aerial navigation",
+        "direct player movement without collision"
+      ],
+      "inputs": [
+        "world_geometry_source",
+        "agent_radius",
+        "agent_height"
+      ],
+      "outputs": [
+        "navmesh_data",
+        "path_query_handle"
+      ],
+      "verification": [
+        "path_traversal_test"
+      ],
+      "providers": [
+        "navigation.recast"
+      ]
+    },
+    {
+      "id": "world.spatial",
+      "summary": "Accelerated Three.js raycasts and spatial bounds queries using three-mesh-bvh. Provides accelerated line-of-sight and spatial acceleration structures for runtime geometry.",
+      "use_when": [
+        "accelerated raycasting",
+        "line-of-sight checks",
+        "spatial queries against meshes"
+      ],
+      "do_not_use_when": [
+        "authoritative game state",
+        "physics simulation stepping"
+      ],
+      "inputs": [
+        "target_mesh"
+      ],
+      "outputs": [
+        "bvh_acceleration_structure"
+      ],
+      "verification": [
+        "raycast_benchmark"
+      ],
+      "providers": [
+        "spatial.three-mesh-bvh"
+      ]
+    },
+    {
+      "id": "asset.source",
+      "summary": "CC0, HDRI, and licensed PBR material and asset intake with provenance tracking. Ingests textures, environment skyboxes, and model assets with strict licensing verification.",
+      "use_when": [
+        "intake of CC0 textures",
+        "HDRI skybox sourcing",
+        "licensed PBR assets"
+      ],
+      "do_not_use_when": [
+        "generating new AI meshes",
+        "reference image reconstruction"
+      ],
+      "inputs": [
+        "source_url",
+        "license_type"
+      ],
+      "outputs": [
+        "AssetRecord",
+        "cached_texture_set"
+      ],
+      "verification": [
+        "license_verification",
+        "checksum_verification"
+      ],
+      "providers": [
+        "asset.polyhaven"
+      ]
+    },
+    {
+      "id": "asset.resolve",
+      "summary": "First-class routing policy resolving each required asset through the ordered policy search/acquire, then adapt, then create. Searches the project registry and registered external providers, acquires through asset.source into the AssetRegistry with per-asset provenance, and records every decision append-only. Creation is a recorded fallback via existing capability routes, never an automatic generation step.",
+      "use_when": [
+        "a production asset is required and no accepted project asset is declared",
+        "deciding between acquiring an existing CC0 asset and authoring one",
+        "an existing project asset needs adaptation before creation is considered"
+      ],
+      "do_not_use_when": [
+        "the request is a specific depicted reference reconstruction (use asset.reconstruct.reference-image)",
+        "the asset id and provider are already decided and only raw intake is needed (use asset.source)",
+        "topology, UVs or baking require DCC escalation (use asset.dcc_escalate)"
+      ],
+      "inputs": [
+        "requested_id",
+        "role",
+        "keywords"
+      ],
+      "outputs": [
+        "ResolutionRecord",
+        "AssetRecord"
+      ],
+      "verification": [
+        "append_only_decision_record",
+        "per_asset_license_evidence",
+        "policy_order_enforced"
+      ],
+      "providers": [
+        "asset.polyhaven"
+      ]
+    },
+    {
+      "id": "asset.optimize",
+      "summary": "glTF-Transform offline pipeline for mesh pruning, LOD generation, and WebP/KTX2 texture compression. Optimizes production assets to meet target triangle, draw call, and memory budgets.",
+      "use_when": [
+        "glTF optimization",
+        "texture compression to WebP",
+        "geometry pruning",
+        "LOD generation"
+      ],
+      "do_not_use_when": [
+        "runtime scene rendering",
+        "procedural generation"
+      ],
+      "inputs": [
+        "raw_gltf_path",
+        "compression_profile"
+      ],
+      "outputs": [
+        "optimized_glb_path",
+        "budget_report"
+      ],
+      "verification": [
+        "gltf_validator",
+        "file_size_check"
+      ],
+      "providers": [
+        "asset.gltf-transform"
+      ]
+    },
+    {
+      "id": "asset.dcc_escalate",
+      "summary": "Blender DCC escalation for topology cleanup, UV unwrap, complex rigging, and texture baking. Used when procedural generation cannot satisfy difficult topology or skinning constraints.",
+      "use_when": [
+        "topology cleanup",
+        "complex character skinning",
+        "difficult UV unwrap",
+        "texture baking"
+      ],
+      "do_not_use_when": [
+        "default game scene authoring",
+        "authoritative game state"
+      ],
+      "inputs": [
+        "source_blend_path",
+        "export_script"
+      ],
+      "outputs": [
+        "committed_glb_derivative"
+      ],
+      "verification": [
+        "mesh_manifold_check"
+      ],
+      "providers": [
+        "dcc.blender"
+      ]
+    },
+    {
+      "id": "dcc.blender.process",
+      "summary": "Isolated Blender DCC escalation and regeneration (deterministic blender --background --factory-startup scripts) for work lighter routes cannot satisfy, e.g. cross-rig animation retargeting and bake. Accepted GLB/glTF derivatives commit through the Asset Registry; normal builds, tests, runtime, and CI consume them WITHOUT Blender. Absent Blender is a scoped regeneration blockage only.",
+      "use_when": [
+        "cross-rig animation retargeting and keyframe bake",
+        "regenerating a committed blender-derived asset from its source definition",
+        "difficult rigging or skinning work beyond procedural routes"
+      ],
+      "do_not_use_when": [
+        "default scene/world authoring (Blender is never the default authoring environment)",
+        "authoritative gameplay state or quest/NPC semantics",
+        "reconstructing a specific depicted object from reference imagery",
+        "ordinary asset normalization (use asset.optimize)"
+      ],
+      "inputs": [
+        "source_definition",
+        "escalation_rationale",
+        "output_glb_path",
+        "bake_report_path",
+        "budget_limits"
+      ],
+      "outputs": [
+        "committed_glb_derivative",
+        "asset_record",
+        "bake_report"
+      ],
+      "verification": [
+        "deterministic_result_verification",
+        "glb_validity_check",
+        "provenance_check",
+        "regeneration_metadata_check",
+        "dcc_metadata_authority_check"
+      ],
+      "providers": [
+        "dcc.blender"
+      ],
+      "cost_class": "expensive"
+    },
+    {
+      "id": "vfx.particles",
+      "summary": "Inspectable particle systems and visual effects using three.quarks. Creates localized particle emitters, smoke, sparks, and glow effects as execution projections over the scene graph.",
+      "use_when": [
+        "beacon glow",
+        "spark effects",
+        "engine exhaust",
+        "smoke and dust particles"
+      ],
+      "do_not_use_when": [
+        "solid world geometry",
+        "gameplay collision colliders"
+      ],
+      "inputs": [
+        "particle_emitter_config"
+      ],
+      "outputs": [
+        "quarks_system"
+      ],
+      "verification": [
+        "particle_count_budget"
+      ],
+      "providers": [
+        "vfx.quarks"
+      ]
+    },
+    {
+      "id": "audio.procedural",
+      "summary": "Browser procedural and sample audio backend implementing AudioBackend via Tone.js with NullAudioBackend in headless environments. Drives spatial audio effects and procedural engine sounds.",
+      "use_when": [
+        "engine sound",
+        "ambient island wind",
+        "beacon activation audio",
+        "UI sound effects"
+      ],
+      "do_not_use_when": [
+        "visual rendering",
+        "gameplay state authority"
+      ],
+      "inputs": [
+        "audio_event_spec"
+      ],
+      "outputs": [
+        "audio_handle"
+      ],
+      "verification": [
+        "gesture_unlock_test",
+        "headless_silence_test"
+      ],
+      "providers": [
+        "audio.tone",
+        "audio.null"
+      ]
+    },
+    {
+      "id": "network.multiplayer",
+      "summary": "Multiplayer replication and transport with Bun WebSockets baseline and optional WebRTC datagrams. Provides authoritative server tick synchronization and entity state replication.",
+      "use_when": [
+        "multiplayer client-server synchronization",
+        "authoritative server tick",
+        "state replication"
+      ],
+      "do_not_use_when": [
+        "single-player local state",
+        "offline tests"
+      ],
+      "inputs": [
+        "transport_config",
+        "entity_replication_schema"
+      ],
+      "outputs": [
+        "network_session_handle"
+      ],
+      "verification": [
+        "packet_loss_simulation",
+        "reconciliation_test"
+      ],
+      "providers": [
+        "network.websocket",
+        "network.geckos"
+      ]
+    },
+    {
+      "id": "verify.browser",
+      "summary": "Deterministic browser proof scenarios and telemetry capture using Playwright, with agent-browser for exploratory inspection. Captures authoritative state, pixels, and performance telemetry.",
+      "use_when": [
+        "deterministic browser end-to-end proof",
+        "pixel capture verification",
+        "scenario regression"
+      ],
+      "do_not_use_when": [
+        "exploratory browser debugging without assertions"
+      ],
+      "inputs": [
+        "scenario_spec",
+        "target_url"
+      ],
+      "outputs": [
+        "ObservationRun",
+        "EvidenceManifest"
+      ],
+      "verification": [
+        "playwright_trace_validation"
+      ],
+      "providers": [
+        "browser.playwright",
+        "browser.agent-browser"
+      ]
+    },
+    {
+      "id": "world.environment.compose",
+      "summary": "Agent-skill world/environment composition handoff (3dviz-pro-max): composes architecture, vegetation, lighting, and atmosphere as world kits, sockets, colliders, and scatter metadata integrating with canonical terrain and runtime navigation. Verification is deterministic; composition never owns terrain elevation, navmesh, or specific-object reconstruction.",
+      "use_when": [
+        "scene/world composition",
+        "environment construction",
+        "architecture placement",
+        "vegetation scatter",
+        "lighting and atmosphere"
+      ],
+      "do_not_use_when": [
+        "reconstructing a specific depicted object or character from reference imagery",
+        "terrain elevation authority or heightfield generation",
+        "navigation authority or navmesh data production"
+      ],
+      "inputs": [
+        "world_brief",
+        "terrain_heightfield_ref",
+        "kit_asset_ids"
+      ],
+      "outputs": [
+        "world_kit_placements",
+        "socket_bindings",
+        "collider_specs",
+        "scatter_metadata",
+        "lighting_atmosphere_spec"
+      ],
+      "verification": [
+        "deterministic_result_verification",
+        "authority_boundary_check",
+        "asset_provenance_reference_check"
+      ],
+      "providers": [
+        "agent-skill.3dviz"
+      ]
+    },
+    {
+      "id": "asset.reconstruct.reference-image",
+      "summary": "Reference-image reconstruction of one specific depicted object or character into a procedural Three.js module via the pinned img2threejs agent skill. Requires suitable authorized reference imagery before routing; the accepted handoff output is verified deterministically (imports, provenance, reference evidence, affordances, budgets) against the single standard Three.js dependency.",
+      "use_when": [
+        "reconstructing a specific depicted object with suitable reference imagery",
+        "reconstructing a specific depicted character from reference photo or concept art",
+        "reference-backed prop or vehicle reconstruction with authorized image"
+      ],
+      "do_not_use_when": [
+        "generic text-to-3D generation without a suitable reference image",
+        "scene composition or world environment layout",
+        "procedural terrain heightfield generation",
+        "navmesh generation"
+      ],
+      "inputs": [
+        "reference_image_uris",
+        "target_role",
+        "budget_limits",
+        "min_reference_similarity"
+      ],
+      "outputs": [
+        "procedural_three_module",
+        "asset_record",
+        "verification_evidence"
+      ],
+      "verification": [
+        "deterministic_result_verification",
+        "reference_comparison_evidence",
+        "budget_check"
+      ],
+      "providers": [
+        "agent-skill.img2threejs"
+      ],
+      "requires_user_reference": true,
+      "cost_class": "metered"
+    }
+  ],
+  "diagnostics": {
+    "total": 17
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.asset.verify",
+  "result": {
+    "operation": "asset.verify_all",
+    "manifest_path": "/home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project/assets/manifest.json",
+    "status": "success",
+    "totals": {
+      "total": 3,
+      "accepted": 1,
+      "degraded": 1,
+      "pending": 1,
+      "rejected": 0,
+      "blocked": 0,
+      "not_acceptable": 0
+    },
+    "assets": [
+      {
+        "asset_id": "blackwater-barrel",
+        "acceptance_state": "accepted",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "All 1 declared budget limit(s) satisfied by measurements"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "WebP baseline achieved"
+          }
+        ],
+        "blockers": [],
+        "origin": "cc0",
+        "role": "prop_barrel",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "skybox-atlas",
+        "acceptance_state": "degraded",
+        "production_acceptable": true,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "waived",
+            "detail": "Budget gate waived by explicit policy waiver ('measured_draw_calls'=12 > 'max_draw_calls'=8)"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "cc0",
+        "role": "environment_sky",
+        "clean_pending": false
+      },
+      {
+        "asset_id": "grid-floor-procedural",
+        "acceptance_state": "pending",
+        "production_acceptable": false,
+        "results": [
+          {
+            "gate": "provenance",
+            "status": "pass",
+            "detail": "Provenance, license, and source hash present and acceptable"
+          },
+          {
+            "gate": "collider_policy",
+            "status": "pass",
+            "detail": "Collider policy satisfied or not required"
+          },
+          {
+            "gate": "lod_policy",
+            "status": "pass",
+            "detail": "LOD policy satisfied or not required"
+          },
+          {
+            "gate": "budget",
+            "status": "pass",
+            "detail": "No runtime budgets declared for this asset"
+          },
+          {
+            "gate": "texture_format",
+            "status": "pass",
+            "detail": "No required texture format declared"
+          }
+        ],
+        "blockers": [],
+        "origin": "procedural",
+        "role": "ground_plane",
+        "clean_pending": true
+      }
+    ]
+  },
+  "diagnostics": {
+    "project_root": "/home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project",
+    "manifest_path": "/home/sprime01/projects/gauntlet-game-studio/packages/studio/test/assets/fixtures/fixture-project/assets/manifest.json",
+    "total": 3,
+    "not_acceptable": 0
+  }
+}
+{
+  "status": "blocked",
+  "operation": "studio.asset.verify",
+  "diagnostics": {
+    "code": "MANIFEST_MISSING",
+    "error": "No asset registry found at /tmp/no-manifest-X29hKP/assets/manifest.json"
+  }
+}
+{
+  "status": "blocked",
+  "operation": "studio.asset.compile",
+  "diagnostics": {
+    "message": "Asset action 'compile' is governed by future task settlement in the active plan DAG.",
+    "unlocked_in": "T14/T15/T18"
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.asset.source",
+  "result": {
+    "asset_record": {
+      "id": "polyhaven-barrel",
+      "role": "prop",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "retrieved_at": "2026-09-24T04:01:18.539Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {},
+      "acceptance_state": "pending"
+    },
+    "files": [
+      {
+        "path": "assets/sources/polyhaven/barrel/barrel.glb",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "bytes": 8
+      }
+    ]
+  },
+  "diagnostics": {
+    "provider": "polyhaven",
+    "project_root": "/tmp/cli-asset-source-9SxZ4d",
+    "manifest_path": "/tmp/cli-asset-source-9SxZ4d/assets/manifest.json",
+    "acceptance_state": "pending",
+    "provenance_violations": []
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "UNSUPPORTED_PROVIDER",
+    "error": "asset source supports only the registered provider 'polyhaven'"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "ASSET_ID_INVALID",
+    "error": "asset source requires a normalized Poly Haven asset id"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "ROLE_REQUIRED",
+    "error": "asset source requires --role <role>"
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.asset.source",
+  "result": {
+    "asset_record": {
+      "id": "polyhaven-barrel",
+      "role": "prop",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "retrieved_at": "2026-09-24T04:01:18.558Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {},
+      "acceptance_state": "pending"
+    },
+    "files": [
+      {
+        "path": "assets/sources/polyhaven/barrel/barrel.glb",
+        "sha256": "6cf36bf959122b8189ae56c25bdb37ea4aee85b58e22a0f2c02eb31806048217",
+        "bytes": 8
+      }
+    ]
+  },
+  "diagnostics": {
+    "provider": "polyhaven",
+    "project_root": "/tmp/cli-asset-duplicate-DkXeDb",
+    "manifest_path": "/tmp/cli-asset-duplicate-DkXeDb/assets/manifest.json",
+    "acceptance_state": "pending",
+    "provenance_violations": []
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.source",
+  "diagnostics": {
+    "code": "ASSET_ALREADY_REGISTERED",
+    "error": "Asset 'polyhaven-barrel' is already registered; source intake will not overwrite retained bytes"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio",
+  "diagnostics": {
+    "error": "Unknown command: nonexistent_command"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "REQUESTED_ID_INVALID",
+    "error": "asset resolve requires a normalized requested id"
+  }
+}
+{
+  "status": "failed",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "ROLE_REQUIRED",
+    "error": "asset resolve requires --role <role>"
+  }
+}
+{
+  "status": "success",
+  "operation": "studio.asset.resolve",
+  "result": {
+    "route": "acquire",
+    "requested_id": "barrel",
+    "provider": "polyhaven",
+    "asset_id": "barrel",
+    "asset_record": {
+      "id": "polyhaven-barrel",
+      "role": "prop",
+      "origin": "cc0",
+      "construction_route": "asset.source/asset.polyhaven",
+      "source_provenance": {
+        "uri": "https://polyhaven.com/a/barrel",
+        "license": "CC0",
+        "author": "Poly Haven",
+        "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a",
+        "retrieved_at": "2026-09-24T04:01:18.577Z"
+      },
+      "runtime_representation": "GLB/glTF",
+      "budget": {},
+      "acceptance_state": "pending"
+    },
+    "decision_file": "/tmp/cli-resolve-acquire-0iqZDm/.studio/resolutions/barrel.2026-09-24T04-01-18-578Z.json",
+    "steps": [
+      {
+        "step": "search",
+        "target": "project-registry",
+        "outcome": "no-match",
+        "detail": "no project asset matches the requested id"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'barrel' (Wooden Barrel)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "acquired",
+        "detail": "acquired 'barrel' into the registry as a 'pending' record with license 'CC0'"
+      }
+    ],
+    "decision": {
+      "route": "acquire",
+      "reason": "provider match acquired through asset.source intake as a 'pending' record; acceptance is a separate registry decision",
+      "provider": "polyhaven",
+      "asset_id": "barrel",
+      "license": "CC0"
+    }
+  }
+}
+{
+  "status": "blocked",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "PROVIDERS_UNAVAILABLE",
+    "error": "every registered provider was unavailable; resolve cannot conclude"
+  },
+  "result": {
+    "route": "unresolved",
+    "requested_id": "does-not-exist",
+    "decision_file": "/tmp/cli-resolve-fallback-Jbnast/.studio/resolutions/does-not-exist.2026-09-24T04-01-18-580Z.json",
+    "steps": [
+      {
+        "step": "search",
+        "target": "project-registry",
+        "outcome": "no-match",
+        "detail": "no project asset matches the requested id"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "unavailable",
+        "detail": "REMOTE_ERROR: Poly Haven assets request failed with HTTP 404"
+      },
+      {
+        "step": "search",
+        "target": "providers",
+        "outcome": "unavailable",
+        "detail": "every registered provider was unavailable; absence of a match cannot be concluded"
+      }
+    ],
+    "decision": {
+      "route": "create-fallback",
+      "reason": "blocked: providers unavailable; the search step could not be completed"
+    }
+  }
+}
+killed 1 dangling process
+
+packages/studio/test/capabilities/blender-process.test.ts:
+(fail) dcc.blender.process capability surface > prepares ready against the committed request when preflight allows [5007.26ms]
+  ^ this test timed out after 5000ms.
+
+packages/studio/test/capabilities/teeth.test.ts:
+{
+  "status": "blocked",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "asset.reconstruct.reference-image",
+    "provider": "agent-skill.img2threejs",
+    "code": "REFERENCE_REQUIRED",
+    "message": "The reference-image reconstruction route requires suitable reference imagery before routing. Supply a user-provided image (preferred), or a project-owned/authorized or clearly licensed/public-domain reference. The request cannot silently become generic text-to-3D.",
+    "details": [],
+    "allowed_next_steps": [
+      "supply a user-provided suitable reference image (preferred, REQ-ASSET-001)",
+      "select a project-owned/authorized or clearly licensed/public-domain reference (REQ-ASSET-002)"
+    ],
+    "route_preserved": "asset.reconstruct.reference-image",
+    "degraded_to_generic_text_to_3d": false
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+{
+  "status": "blocked",
+  "operation": "studio.capability.prepare",
+  "result": {
+    "capability_id": "asset.reconstruct.reference-image",
+    "provider": "agent-skill.img2threejs",
+    "code": "REFERENCE_REQUIRED",
+    "message": "Referenced imagery failed validation (missing or unreadable). Supply a suitable user-provided, project-owned/authorized, or clearly licensed/public-domain reference image; the request cannot silently become generic text-to-3D.",
+    "details": [
+      "reference 'field-transceiver-ref' does not exist at references/field-transceiver/removed.png"
+    ],
+    "allowed_next_steps": [
+      "supply a user-provided suitable reference image (preferred, REQ-ASSET-001)",
+      "select a project-owned/authorized or clearly licensed/public-domain reference (REQ-ASSET-002)"
+    ],
+    "route_preserved": "asset.reconstruct.reference-image",
+    "degraded_to_generic_text_to_3d": false
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+
+ 266 pass
+ 1 fail
+ 1166 expect() calls
+Ran 267 tests across 22 files. [14.12s]
+EXIT:1
+lic-domain reference image; the request cannot silently become generic text-to-3D.",
+    "details": [
+      "reference 'field-transceiver-ref' does not exist at references/field-transceiver/removed.png"
+    ],
+    "allowed_next_steps": [
+      "supply a user-provided suitable reference image (preferred, REQ-ASSET-001)",
+      "select a project-owned/authorized or clearly licensed/public-domain reference (REQ-ASSET-002)"
+    ],
+    "route_preserved": "asset.reconstruct.reference-image",
+    "degraded_to_generic_text_to_3d": false
+  },
+  "diagnostics": {
+    "blocked": true,
+    "code": "REFERENCE_REQUIRED",
+    "note": "Preparation blocks and asks for an allowed reference; the request never silently becomes generic text-to-3D."
+  }
+}
+
+ 265 pass
+ 2 fail
+ 1165 expect() calls
+Ran 267 tests across 22 files. [15.01s]
+EXIT:1

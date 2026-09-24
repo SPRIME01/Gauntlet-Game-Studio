@@ -1,0 +1,96 @@
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "failed",
+  "operation": "studio.asset.resolve",
+  "diagnostics": {
+    "code": "UNEXPECTED_PAYLOAD",
+    "error": "Poly Haven asset 'wine_barrel_01' exposes no downloadable GLB file"
+  },
+  "result": {
+    "requested_id": "barrel",
+    "decision_file": "/tmp/resolve-smoke/.studio/resolutions/barrel.2026-09-19T01-43-11-625Z.json",
+    "steps": [
+      {
+        "step": "search",
+        "target": "project-registry",
+        "outcome": "no-match",
+        "detail": "no project asset matches the requested id"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'Barrel_01' (Barrel_01)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "failed",
+        "detail": "UNEXPECTED_PAYLOAD: Poly Haven asset 'Barrel_01' exposes no downloadable GLB file"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'Barrel_02' (Barrel 02)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "failed",
+        "detail": "UNEXPECTED_PAYLOAD: Poly Haven asset 'Barrel_02' exposes no downloadable GLB file"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'barrel_03' (Barrel 03)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "failed",
+        "detail": "UNEXPECTED_PAYLOAD: Poly Haven asset 'barrel_03' exposes no downloadable GLB file"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'barrel_stove' (Barrel Stove)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "failed",
+        "detail": "UNEXPECTED_PAYLOAD: Poly Haven asset 'barrel_stove' exposes no downloadable GLB file"
+      },
+      {
+        "step": "search",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "matched",
+        "detail": "matched 'wine_barrel_01' (Wine Barrel 01)"
+      },
+      {
+        "step": "acquire",
+        "target": "provider:polyhaven",
+        "provider": "polyhaven",
+        "outcome": "failed",
+        "detail": "UNEXPECTED_PAYLOAD: Poly Haven asset 'wine_barrel_01' exposes no downloadable GLB file"
+      }
+    ],
+    "decision": {
+      "route": "acquire",
+      "reason": "all 5 provider matches failed acquisition (UNEXPECTED_PAYLOAD)",
+      "provider": "polyhaven"
+    }
+  }
+}

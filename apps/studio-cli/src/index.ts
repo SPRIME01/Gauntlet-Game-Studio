@@ -24,6 +24,12 @@ import {
   loadQualityProfiles,
   bindQualityProfile,
   QualityProfileError,
+  AssetResolver,
+  defaultRecipeRegistry,
+  compileRecipe,
+  applyRecipe,
+  RecipeCompileError,
+  type AssetSourceProvider,
   type AssetBudgetSummary,
   type FrozenExpectation,
   type SettlementOutcome,
@@ -55,6 +61,7 @@ import {
 import {
   buildFixtureScenario,
   runScenario,
+  PolyHavenAssetSource,
   type ChannelEvidence,
   type ScenarioRunResult,
 } from "@gauntlet/adapters";
@@ -539,6 +546,12 @@ Commands:
   config                       Inspect resolved configuration
   create <name>                Scaffold a new game project
   capabilities                 List registered studio capabilities
+  recipes                       List canonical outcome recipes (intent → recipe → capabilities)
+  recipe describe <id>          Show a recipe: use/when, inputs, defaults, affordances, acceptance
+  recipe plan <id> [k=v...]     Dry-run compile to an inspectable RecipePlan (no mutation)
+  recipe apply <id> [k=v...]    Apply a recipe through existing capabilities; writes append-only
+                               provenance under .studio/recipe-provenance.jsonl
+                               --project <dir> targets the game project root
   capability <prepare|accept|verify-result> [args]
                                Prepare, accept, or verify capability results.
                                File form (T15): capability prepare|verify-result <capability-id> <file.yaml>
@@ -722,6 +735,195 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         console.log("");
       }
       return 0;
+    }
+
+    case "recipes": {
+      const recipes = defaultRecipeRegistry.list();
+      const res: StudioResult = {
+        status: "success",
+        operation: "studio.recipes",
+        result: recipes.map((r) => ({
+          id: r.id,
+          version: r.version,
+          summary: r.summary,
+          use_when: r.use_when,
+          do_not_use_when: r.do_not_use_when,
+          material_inputs: r.inputs.filter((i) => i.material).map((i) => i.key),
+          affordances: r.affordances,
+          capability_requirements: r.capability_requirements,
+        })),
+        diagnostics: { total: recipes.length },
+      };
+      if (isJson) {
+        console.log(JSON.stringify(res, null, 2));
+      } else {
+        console.log(`\n=== Canonical Studio Recipes (${recipes.length}) ===`);
+        for (const r of recipes) {
+          console.log(` • ${r.id.padEnd(24)} v${r.version}`);
+          console.log(`   ${r.summary}`);
+        }
+        console.log("");
+      }
+      return 0;
+    }
+
+    case "recipe": {
+      const sub = filteredArgs[1];
+      const parseChoices = (args: string[]): Record<string, unknown> => {
+        const choices: Record<string, unknown> = {};
+        for (const arg of args) {
+          const eq = arg.indexOf("=");
+          if (eq <= 0 || arg.startsWith("--")) continue;
+          const key = arg.slice(0, eq);
+          const raw = arg.slice(eq + 1);
+          if (raw === "true") choices[key] = true;
+          else if (raw === "false") choices[key] = false;
+          else if (raw !== "" && !Number.isNaN(Number(raw)) && /^-?\d+(\.\d+)?$/.test(raw)) choices[key] = Number(raw);
+          else choices[key] = raw;
+        }
+        return choices;
+      };
+
+      const fail = (code: string, error: string, status: "failed" | "blocked" = "failed"): number => {
+        const res: StudioResult = {
+          status,
+          operation: `studio.recipe.${sub ?? "unknown"}`,
+          diagnostics: { code, error },
+        };
+        if (isJson) console.log(JSON.stringify(res, null, 2));
+        else console.error(error);
+        return status === "blocked" ? 2 : 1;
+      };
+
+      if (sub === "describe") {
+        const id = filteredArgs[2];
+        if (!id) return fail("RECIPE_ID_REQUIRED", "recipe describe requires a recipe id");
+        const recipe = defaultRecipeRegistry.get(id);
+        if (!recipe) return fail("RECIPE_NOT_FOUND", `Unknown recipe '${id}'`);
+        const res: StudioResult = {
+          status: "success",
+          operation: "studio.recipe.describe",
+          result: recipe,
+          diagnostics: { recipe_id: recipe.id, version: recipe.version },
+        };
+        if (isJson) {
+          console.log(JSON.stringify(res, null, 2));
+        } else {
+          console.log(`\n=== Recipe ${recipe.id} (v${recipe.version}) ===`);
+          console.log(recipe.summary);
+          console.log(`\nUse when:`);
+          for (const u of recipe.use_when) console.log(`  • ${u}`);
+          if (recipe.do_not_use_when.length) {
+            console.log(`Do not use when:`);
+            for (const u of recipe.do_not_use_when) console.log(`  • ${u}`);
+          }
+          console.log(`\nInputs (material choices first):`);
+          const inputs = [...recipe.inputs].sort((a, b) => Number(b.material) - Number(a.material));
+          if (!inputs.length) console.log(`  (none — strong defaults only)`);
+          for (const i of inputs) {
+            const tags = [i.required ? "required" : "optional", i.material ? "material" : "defaulted"].join(", ");
+            console.log(`  • ${i.key} (${i.type}, ${tags}) — ${i.summary}`);
+            if (i.default !== undefined && i.default !== "") console.log(`      default: ${JSON.stringify(i.default)}`);
+            if (i.enum_values) console.log(`      values: ${i.enum_values.join(" | ")}`);
+          }
+          console.log(`\nAffordances: ${recipe.affordances.join(", ")}`);
+          console.log(`Capability requirements: ${recipe.capability_requirements.join(", ")}`);
+          console.log(`Acceptance:`);
+          for (const a of recipe.acceptance) console.log(`  • ${a}`);
+          console.log("");
+        }
+        return 0;
+      }
+
+      if (sub === "plan" || sub === "apply") {
+        const id = filteredArgs[2];
+        if (!id) return fail("RECIPE_ID_REQUIRED", `recipe ${sub} requires a recipe id`);
+        const recipe = defaultRecipeRegistry.get(id);
+        if (!recipe) return fail("RECIPE_NOT_FOUND", `Unknown recipe '${id}'`);
+        const projectFlag = flagValue(filteredArgs, "--project");
+        const projectRoot = path.resolve(projectFlag ?? process.cwd());
+        const choices = parseChoices(filteredArgs.slice(3));
+
+        let plan;
+        try {
+          plan = compileRecipe(recipe, { choices });
+        } catch (err) {
+          if (err instanceof RecipeCompileError) {
+            return fail(err.code, err.message, err.code === "REQUIRED_INPUT_MISSING" ? "blocked" : "failed");
+          }
+          const msg = err instanceof Error ? err.message : String(err);
+          return fail("RECIPE_COMPILE_FAILED", msg);
+        }
+
+        if (sub === "plan") {
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.recipe.plan",
+            result: plan,
+            diagnostics: {
+              recipe_id: recipe.id,
+              steps: plan.steps.length,
+              affordances: plan.affordance_graph.nodes.length,
+              project_root: projectRoot,
+              mutation: false,
+            },
+          };
+          if (isJson) {
+            console.log(JSON.stringify(res, null, 2));
+          } else {
+            console.log(`\n=== Dry-run plan for ${recipe.id} (no mutation) ===`);
+            console.log(`Choices: ${JSON.stringify(plan.choices)}`);
+            console.log(`Affordance graph: ${plan.affordance_graph.nodes.length} nodes, ${plan.affordance_graph.edges.length} edges`);
+            for (const step of plan.steps) {
+              const deps = step.depends_on.length ? ` (after: ${step.depends_on.join(", ")})` : "";
+              console.log(` [${step.status.padEnd(16)}] ${step.kind.padEnd(9)} ${step.id}${deps}`);
+              console.log(`   ${step.summary}`);
+            }
+            console.log("");
+          }
+          return 0;
+        }
+
+        // apply
+        try {
+          const outcome = await applyRecipe(recipe, plan, { projectRoot });
+          const res: StudioResult = {
+            status: outcome.status === "success" ? "success" : outcome.status === "degraded" ? "degraded" : outcome.status,
+            operation: "studio.recipe.apply",
+            result: {
+              provenance: outcome.provenance,
+              provenance_path: outcome.provenancePath,
+              structured_failure: outcome.structured_failure,
+            },
+            diagnostics: {
+              recipe_id: recipe.id,
+              steps: outcome.provenance.steps.length,
+              result: outcome.status,
+              project_root: projectRoot,
+            },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else if (outcome.status === "success") {
+            console.log(`Applied recipe ${recipe.id}; provenance appended to ${outcome.provenancePath}`);
+          } else {
+            const sf = outcome.structured_failure;
+            console.error(
+              `Recipe ${recipe.id} ${outcome.status}: affordance=${sf?.failed_affordance ?? "unknown"} ` +
+                `capability=${sf?.causal_capability ?? "n/a"} retryable=${sf?.retryable ?? false} ` +
+                `user_input_required=${sf?.user_input_required ?? false}`
+            );
+            if (sf) for (const r of sf.recovery_actions) console.error(`  recovery: ${r}`);
+          }
+          if (outcome.status === "success") return 0;
+          if (outcome.status === "blocked") return 2;
+          return 1;
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err);
+          return fail("RECIPE_APPLY_FAILED", msg);
+        }
+      }
+
+      return fail("UNKNOWN_RECIPE_SUBCOMMAND", `Unknown recipe subcommand '${sub ?? ""}'. Use describe|plan|apply.`);
     }
 
     case "capability": {
@@ -1084,6 +1286,181 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
 
     case "asset": {
       const sub = filteredArgs[1];
+      if (sub === "source") {
+        const provider = filteredArgs[2];
+        const assetId = filteredArgs[3];
+        const role = flagValue(filteredArgs, "--role");
+        const projectFlag = flagValue(filteredArgs, "--project");
+        const projectRoot = path.resolve(projectFlag ?? process.cwd());
+
+        if (provider !== "polyhaven") {
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.asset.source",
+            diagnostics: { code: "UNSUPPORTED_PROVIDER", error: "asset source supports only the registered provider 'polyhaven'" },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(res.diagnostics.error);
+          return 1;
+        }
+        if (!assetId || !/^[a-z0-9][a-z0-9_-]*$/.test(assetId)) {
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.asset.source",
+            diagnostics: { code: "ASSET_ID_INVALID", error: "asset source requires a normalized Poly Haven asset id" },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(res.diagnostics.error);
+          return 1;
+        }
+        if (!role || role.trim().length === 0) {
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.asset.source",
+            diagnostics: { code: "ROLE_REQUIRED", error: "asset source requires --role <role>" },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(res.diagnostics.error);
+          return 1;
+        }
+
+        let registry: AssetRegistry;
+        try {
+          registry = new AssetRegistry(projectRoot);
+          registry.load();
+          const recordId = `polyhaven-${assetId}`;
+          if (registry.get(recordId) || registry.isReferenceOnly(recordId)) {
+            const res: StudioResult = {
+              status: "failed",
+              operation: "studio.asset.source",
+              diagnostics: { code: "ASSET_ALREADY_REGISTERED", error: `Asset '${recordId}' is already registered; source intake will not overwrite retained bytes` },
+            };
+            if (isJson) console.log(JSON.stringify(res, null, 2));
+            else console.error(res.diagnostics.error);
+            return 1;
+          }
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = { status: "failed", operation: "studio.asset.source", diagnostics: { code: "REGISTRY_UNAVAILABLE", error: msg } };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+
+        const intake = await new PolyHavenAssetSource().intakeAsset(assetId, { role, projectRoot });
+        if (intake.status === "blocked") {
+          const res: StudioResult = {
+            status: "blocked",
+            operation: "studio.asset.source",
+            diagnostics: { code: intake.code, error: intake.detail, provider, asset_id: assetId },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Blocked (${intake.code}): ${intake.detail}`);
+          return 2;
+        }
+        if (intake.status === "failed") {
+          const res: StudioResult = {
+            status: "failed",
+            operation: "studio.asset.source",
+            diagnostics: { code: intake.code, error: intake.detail, provider, asset_id: assetId },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error (${intake.code}): ${intake.detail}`);
+          return 1;
+        }
+
+        try {
+          const registered = registry.intake(intake.data.asset_record);
+          registry.save();
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.asset.source",
+            result: { asset_record: registered.record, files: intake.data.files },
+            diagnostics: {
+              provider,
+              project_root: projectRoot,
+              manifest_path: registry.manifestPath,
+              acceptance_state: registered.state,
+              provenance_violations: registered.provenance_violations,
+            },
+          };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.log(`Sourced ${registered.record.id} as ${registered.state}.`);
+          return 0;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const res: StudioResult = { status: "failed", operation: "studio.asset.source", diagnostics: { code: "REGISTRY_INTAKE_FAILED", error: msg } };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(`Error: ${msg}`);
+          return 1;
+        }
+      }
+
+      if (sub === "resolve") {
+        // T26 (REQ-ASSET-008..012): first-class asset.resolve routing.
+        // Policy: search/acquire, then adapt, then create; creation is only ever a
+        // recorded fallback decision, and acquisition flows through the settled
+        // asset.source intake (Poly Haven adapter) into the AssetRegistry as a
+        // pending record. Providers are replaceable adapters below this contract.
+        const requestedId = filteredArgs[2];
+        const role = flagValue(filteredArgs, "--role");
+        const keywordsFlag = flagValue(filteredArgs, "--keywords");
+        const requireLicense = flagValue(filteredArgs, "--require-license");
+        const maxTrianglesFlag = flagValue(filteredArgs, "--max-triangles");
+        const projectFlag = flagValue(filteredArgs, "--project");
+        const projectRoot = path.resolve(projectFlag ?? process.cwd());
+
+        const rejectRequest = (code: string, error: string): number => {
+          const res: StudioResult = { status: "failed", operation: "studio.asset.resolve", diagnostics: { code, error } };
+          if (isJson) console.log(JSON.stringify(res, null, 2));
+          else console.error(error);
+          return 1;
+        };
+        if (!requestedId || !/^[a-z0-9][a-z0-9_-]*$/.test(requestedId)) return rejectRequest("REQUESTED_ID_INVALID", "asset resolve requires a normalized requested id");
+        if (!role || role.trim().length === 0) return rejectRequest("ROLE_REQUIRED", "asset resolve requires --role <role>");
+        const keywords = (keywordsFlag ?? requestedId).split(",").map(k => k.trim()).filter(k => k.length > 0);
+        if (keywords.length === 0) return rejectRequest("KEYWORDS_REQUIRED", "asset resolve requires --keywords <a,b,c> or a usable requested id");
+
+        const polyhavenProvider: AssetSourceProvider = {
+          id: "polyhaven",
+          async search(kws, r) {
+            // Keyword search spans the whole catalog: a role hint only orders it.
+            const preferred: Array<"models" | "textures" | "hdris"> = /texture|material/i.test(r) ? ["textures", "models", "hdris"] : /hdri|skybox/i.test(r) ? ["hdris", "models", "textures"] : ["models", "textures", "hdris"];
+            const source = new PolyHavenAssetSource();
+            const needles = kws.map(k => k.toLowerCase());
+            const lists = await Promise.all(preferred.map(type => source.listAssets(type)));
+            const unavailable = lists.find(l => l.status !== "success");
+            if (unavailable && lists.every(l => l.status !== "success")) return { status: "unavailable", detail: `${unavailable.code}: ${unavailable.detail}` };
+            const matches = lists.flatMap(l => l.status === "success" ? l.data : [])
+              .filter(a => needles.some(n => a.id.toLowerCase().includes(n) || a.name.toLowerCase().includes(n)))
+              .slice(0, 5)
+              .map(a => ({ provider: "polyhaven", assetId: a.id, title: a.name, license: null, sourceUri: `https://polyhaven.com/a/${a.id}`, metadata: { polycount: a.polycount } }));
+            return { status: "success", matches };
+          },
+          async acquire(m, r, root) {
+            const intake = await new PolyHavenAssetSource().intakeAsset(m.assetId, { role: r, projectRoot: root });
+            if (intake.status === "success") return { status: "success", assetRecord: intake.data.asset_record as Record<string, unknown>, files: intake.data.files.map(f => f.path) };
+            return { status: intake.status, code: intake.code, detail: intake.detail };
+          },
+        };
+
+        const resolver = new AssetResolver({ providers: [polyhavenProvider] });
+        const outcome = await resolver.resolve({
+          requestedId,
+          role,
+          keywords,
+          projectRoot,
+          ...(requireLicense ? { requireLicense } : {}),
+          ...(maxTrianglesFlag ? { maxTriangles: Number(maxTrianglesFlag) } : {}),
+        });
+        if (isJson) console.log(JSON.stringify(outcome, null, 2));
+        else if (outcome.status === "success") console.log(`Resolved '${requestedId}' via ${outcome.result.route}${outcome.result.provider ? ` (${outcome.result.provider}/${outcome.result.asset_id})` : ""}. Decision: ${outcome.result.decision_file}`);
+        else console.error(`${outcome.status.toUpperCase()} (${outcome.diagnostics.code}): ${outcome.diagnostics.error}${outcome.status === "blocked" && "decision_file" in outcome.result ? ` | Decision: ${outcome.result.decision_file}` : ""}`);
+        if (outcome.status === "success") return 0;
+        if (outcome.status === "blocked") return 2;
+        return 1;
+      }
+
       if (sub === "verify") {
         // T13 (REQ-OUT-002, REQ-ASSET-006, REQ-ASSET-007, REQ-SAFE-003, REQ-SEC-004):
         // release/asset check over the project-local Asset Registry.

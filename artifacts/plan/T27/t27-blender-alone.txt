@@ -1,0 +1,25 @@
+bun test v1.4.0 (34cbb9a40)
+
+ 3 pass
+ 0 fail
+ 24 expect() calls
+Ran 3 tests across 1 file. [63.33s]
+scalationRationale: request.inputs.escalation_rationale,
+53 |         outputGlbPath: path.join(tempProject, "assets", "service-drone.glb"),
+54 |         bakeReportPath: path.join(tempProject, "assets", "dcc", "service-drone", "service-drone.bake-report.json"),
+55 |       });
+56 | 
+57 |       expect(result.status).toBe("success");
+                                 ^
+error: expect(received).toBe(expected)
+
+Expected: "success"
+Received: "failed"
+
+      at <anonymous> (/home/sprime01/projects/gauntlet-game-studio/packages/adapters/test/blender/blender-pipeline.test.ts:57:29)
+(fail) dcc.blender.process real chain (Blender 5.2.2 LTS) > retargets, bakes, and normalizes the service drone end to end [39851.95ms]
+
+ 2 pass
+ 1 fail
+ 4 expect() calls
+Ran 3 tests across 1 file. [55.18s]

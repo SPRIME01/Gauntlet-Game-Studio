@@ -1,0 +1,26 @@
+### traceability
+OK:   Specification YAML parsed successfully.
+OK:   Plan YAML parsed successfully.
+OK:   All 212 specification IDs are globally unique.
+INFO: Spec identifier breakdown: 171 REQ, 14 VAR, 8 RECOV, 10 CLAIM, 9 NONGOAL (Total: 212)
+OK:   Normative binding REQ-BIND-015 present in specification.
+OK:   No obsolete Needle or three.terrain bindings/requirements in specification.
+OK:   Specification status is 'approved'.
+OK:   Plan bound SHA-256 matches actual spec: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8
+OK:   Plan status is 'approved'.
+OK:   All 171 REQ-* requirements are mapped to tasks.
+OK:   All 14 VAR-* variation cases are mapped to tasks.
+OK:   All 8 RECOV-* recovery cases are mapped to tasks.
+OK:   All 10 CLAIM-* claims have evidence-task mappings.
+OK:   T24 explicitly settles all 14 VAR-* cases.
+OK:   T24 explicitly settles all 8 RECOV-* cases.
+OK:   Dependency graph is strictly acyclic.
+INFO: Computed DAG longest path length: 17 tasks, with 6 equal critical paths.
+OK:   Declared critical path matches computed longest path (length 17).
+OK:   All P3 tasks satisfy frozen preregistration and independent/adversarial confirmation rules.
+OK:   All P3 preregistration artifacts exist on disk and are frozen.
+OK:   Path conventions (.agents/specs/, .agents/plans/, .agents/CURRENT_STATUS.yml) verified.
+OK:   Baseline gates do not require Blender, toktx, or WebRTC/geckos.
+OK:   Donor-absent clean checkout is enforced as final conformance condition.
+OK:   ALL TRACEABILITY, INTEGRITY, AND SETTLEMENT CHECKS PASSED.
+EXIT:0

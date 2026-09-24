@@ -1,0 +1,27 @@
+$ bun run ./apps/studio-cli/src/index.ts verify --project examples/blackwater-relay --suite all
+ Particle system powered by three.quarks. https://quarks.art/
+Error: launch: Target page, context or browser has been closed
+Browser logs:
+
+╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+║ Looks like you launched a headed browser without having a XServer running.                     ║
+║ Set either 'headless: true' or use 'xvfb-run <your-playwright-app>' before running Playwright. ║
+║                                                                                                ║
+║ <3 Playwright Team                                                                             ║
+╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+Call log:
+[2m  - <launching> /usr/bin/google-chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --no-sandbox --no-default-browser-check --user-data-dir=/tmp/playwright_chromiumdev_profile-b8SAiQ --remote-debugging-pipe --no-startup-window[22m
+[2m  - <launched> pid=989819[22m
+[2m  - [pid=989819][err] [989819:989819:0924/001055.568845:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:257] Missing X server or $DISPLAY[22m
+[2m  - [pid=989819][err] [989819:989819:0924/001055.587155:ERROR:ui/aura/env.cc:246] The platform failed to initialize.  Exiting.[22m
+[2m  - [pid=989819] <gracefully close start>[22m
+[2m  - [pid=989819] <kill>[22m
+[2m  - [pid=989819] <will force kill>[22m
+[2m  - [pid=989819] exception while trying to kill process: SystemError: kill() failed: ESRCH: No such process[22m
+[2m  - [pid=989819] <process did exit: exitCode=1, signal=null>[22m
+[2m  - [pid=989819] starting temporary directories cleanup[22m
+[2m  - [pid=989819] finished temporary directories cleanup[22m
+[2m  - [pid=989819] <gracefully close end>[22m
+
+error: script "studio" exited with code 1
+EXIT:1

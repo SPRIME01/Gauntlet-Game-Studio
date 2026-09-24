@@ -4,22 +4,26 @@ metadata:
   id: gauntlet-game-studio-plan
   title: Gauntlet Game Studio Development Settlement Plan
   status: approved
-  version: 0.2.0
+  version: 0.4.0
   created: '2026-09-15'
-  purpose: Project the revised Gauntlet Game Studio normative specification into an executable settlement graph that 
-    builds a first-party Bun/Three.js/Koota/Rapier runtime, strategically mines Mavon only as disposable donor source, 
-    integrates specialist game-production capabilities, proves optional authoritative multiplayer, and settles the 
-    studio through Blackwater Relay plus fresh adversarial evidence.
+  purpose: Project the revised Gauntlet Game Studio normative specification into an executable settlement graph that
+    builds a first-party Bun/Three.js/Koota/Rapier runtime, strategically mines Mavon only as disposable donor source,
+    integrates specialist game-production capabilities, proves optional authoritative multiplayer, settles the
+    studio through Blackwater Relay plus fresh adversarial evidence, and settles the post-baseline recipe layer that
+    compiles outcome-level intents into the existing capability system.
 source:
   spec:
     intended_repository_path: .agents/specs/gauntlet-game-studio.spec.yaml
     artifact_name: gauntlet-game-studio.spec.yaml
     spec_id: gauntlet-game-studio
-    spec_version: 0.2.0
-    sha256: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e
+    spec_version: 0.4.0
+    sha256: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8
     authority: normative
-    freeze_note: The bound source specification is approved and frozen at metadata.status=approved with SHA-256 
-      595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e. T00 is ready for execution bootstrap.
+    freeze_note: The bound source specification is the v0.4.0 formal amendment (operator-authorized 2026-09-23 recipe-layer
+      request; prior v0.3.0 SHA-256 b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39; frozen v0.2.0
+      SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e) approved at metadata.status=approved
+      with SHA-256 b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8. T27/T28 execute the amended
+      recipe-layer requirements; T00-T26 remain settled on their original evidence.
   supporting_sources:
     - path: AGENTS.md
       role: Durable agent operating contract; governs execution behavior but does not override normative desired state.
@@ -112,6 +116,7 @@ implementation_shape:
       │   ├── studio/
       │   │   ├── capabilities/
       │   │   ├── router/
+      │   │   ├── recipes/
       │   │   ├── assets/
       │   │   ├── evidence/
       │   │   └── gauntlet/
@@ -443,6 +448,12 @@ dependency_graph:
         - T24
     -   - T24
         - T25
+    -   - T25
+        - T26
+    -   - T26
+        - T27
+    -   - T27
+        - T28
   critical_path:
     - T00
     - T01
@@ -604,6 +615,12 @@ initial_state:
       - T23
     T25: &id025
       - T24
+    T26:
+      - T25
+    T27:
+      - T26
+    T28:
+      - T27
 tasks:
   T00:
     title: Freeze governing source and bootstrap settlement infrastructure
@@ -2545,6 +2562,150 @@ tasks:
         - builder conclusion as authority; it may be available only as non-authoritative context after the verifier 
           forms an evidence-based judgment
       required_verdict: CONFIRM
+  T26:
+    title: Implement first-class asset.resolve routing (search/acquire, then adapt, then create) over the amended spec
+    initial_status: blocked
+    depends_on:
+      - T25
+    proof_level: P2
+    confirmation: independent_adversarial
+    settles:
+      - REQ-ASSET-008
+      - REQ-ASSET-009
+      - REQ-ASSET-010
+      - REQ-ASSET-011
+      - REQ-ASSET-012
+    confirms: []
+    changes: Adds the asset.resolve resolver, a replaceable provider registry over the settled asset.source intake,
+      append-only resolution decision records, and the studio asset resolve CLI route with typed outcomes. The
+      normative specification is amended to v0.3.0 under operator authorization and this plan is rebound to the
+      amended spec SHA-256.
+    proves: Required production assets resolve through the ordered policy with per-asset provenance and append-only
+      decisions; creation is a recorded fallback rather than an automatic route; providers remain replaceable
+      adapters and per-asset license evidence is mandatory.
+    steps:
+      - Preregister failing resolver and CLI tests proving no asset.resolve route exists before implementation.
+      - Amend the specification to v0.3.0, rebind this plan, and pass scripts/check-traceability.py on the amended
+        artifacts.
+      - Implement the resolver, provider registry, decision records, and CLI; acquisition flows through the existing
+        asset.source intake and AssetRegistry as pending records.
+      - Run focused tests with falsification checks and the repository-wide gates (capability lint, topology,
+        source and third-party verification).
+      - Obtain fresh independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/studio packages/adapters apps/studio-cli passes including the asset.resolve suites.
+      - python3 scripts/check-traceability.py .agents/plans/gauntlet-game-studio.plan.yaml 
+        .agents/specs/gauntlet-game-studio.spec.yaml passes with every REQ mapped on the amended artifacts.
+      - bun run studio -- capabilities lint --json passes with asset.resolve discoverable and bounded.
+      - bun run source:verify, bun run third-party:verify, and python3 scripts/check-topology.py pass.
+    teeth:
+      - attack: Present an acquired asset whose provider metadata lacks per-asset license evidence.
+        expected: Resolver typed-rejects intake with a license-evidence-missing outcome and records the failed step; no AssetRecord is written.
+      - attack: Resolve an id that no provider matches.
+        expected: Result is typed blocked with a recorded create-fallback decision; the resolver never fabricates or generates an asset.
+      - attack: Offer a provider match while suppressing the acquire path.
+        expected: Resolver still routes through provider acquisition (acquire over create) and records the decision append-only.
+    redesign_trigger: If the resolver cannot preserve the single acquisition primitive (asset.source) or per-asset
+      provenance without a contract change, reopen REQ-ASSET-011 through a new amendment rather than patching.
+    evidence: artifacts/plan/T26/
+  T27:
+    title: Implement recipe contracts, studio recipe module, and CLI over the amended v0.4.0 spec
+    initial_status: blocked
+    depends_on:
+      - T26
+    proof_level: P2
+    confirmation: independent_adversarial
+    settles:
+      - REQ-RECIPE-001
+      - REQ-RECIPE-002
+      - REQ-RECIPE-003
+      - REQ-RECIPE-004
+      - REQ-RECIPE-005
+      - REQ-RECIPE-006
+      - REQ-RECIPE-007
+      - REQ-RECIPE-008
+      - REQ-RECIPE-009
+      - REQ-RECIPE-010
+      - REQ-RECIPE-011
+    confirms: []
+    changes: Adds RecipeDescriptor/RecipePlan/provenance contracts, the packages/studio recipes registry, compiler,
+      apply executor, and the studio recipes/recipe CLI surface. The normative specification is amended to v0.4.0
+      under operator authorization and this plan is rebound to the amended spec SHA-256. Compilation and execution
+      reuse routeCapability, asset.resolve, EvidenceStore, and Gauntlet verification exclusively.
+    proves: Outcome-level intents compile into an inspectable affordance-DAG plan and apply through the existing
+      capability router with dry-run before mutation, structured actionable failures, already-satisfied reasoning,
+      append-only provenance, and no second authority or parallel implementation path.
+    steps:
+      - Preregister failing tests proving no RecipeDescriptor schema, recipes module, or recipe CLI exists.
+      - Amend the specification to v0.4.0, rebind this plan, and pass scripts/check-traceability.py on the amended
+        artifacts.
+      - Implement contracts (strict Zod), studio recipes (registry, catalog seed, compiler, apply), and CLI
+        recipes/recipe describe|plan|apply with --json StudioResult conventions.
+      - Run focused tests with falsification checks and repository-wide gates.
+      - Obtain independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/contracts packages/studio apps/studio-cli passes including the recipe suites.
+      - python3 scripts/check-traceability.py .agents/plans/gauntlet-game-studio.plan.yaml
+        .agents/specs/gauntlet-game-studio.spec.yaml passes with every REQ mapped on the amended artifacts.
+      - bun run studio -- recipes --json and bun run studio -- recipe describe enemy.patrol --json succeed.
+      - bun run source:verify, bun run third-party:verify, and python3 scripts/check-topology.py pass.
+    teeth:
+      - attack: Present a recipe plan whose capability step bypasses routeCapability with a direct provider call.
+        expected: Compiler/apply rejects the plan with a routing-authority violation; no provider is invoked.
+      - attack: Apply a recipe whose asset step skips asset.resolve ordered policy.
+        expected: Apply typed-rejects with an asset-policy violation and records the blocked affordance.
+      - attack: Re-apply a recipe when required affordances are already satisfied.
+        expected: Steps report satisfied; no duplicate resources are created; provenance records a no-op apply.
+      - attack: Force a blocked dependency during apply and return a bare failure string.
+        expected: >-
+          Result is structured actionable failure (failed affordance, causal capability, recovery hints);
+          bare recipe-failed is non-conformant.
+    redesign_trigger: If recipes cannot compile into routeCapability/asset.resolve without a contract change or a
+      second dispatcher, reopen REQ-RECIPE-003 through a new amendment rather than patching the apply path.
+    evidence: artifacts/plan/T27/
+  T28:
+    title: Settle recipe E2E outcomes, cold-agent UX benchmark, and adversarial confirmation
+    initial_status: blocked
+    depends_on:
+      - T27
+    proof_level: P2
+    confirmation: independent_adversarial
+    settles:
+      - REQ-RECIPE-012
+      - REQ-RECIPE-013
+      - REQ-RECIPE-014
+    confirms: []
+    changes: Ships the small canonical recipe set (third-person base, patrolling enemy, interactable, pickup,
+      door/key, checkpoint), end-to-end outcome tests including partial/already-satisfied and provider substitution,
+      the cold-agent public-surface test, the UX benchmark measurements, and evidence-linkage proof through
+      existing observe/verify/Gauntlet channels.
+    proves: The canonical vocabulary is discoverable and sufficient for representative outcomes; recipes cannot
+      bypass authority/provenance/verification boundaries; measured user-facing complexity is lower than manual
+      capability composition; acceptance and evidence remain Gauntlet-owned.
+    steps:
+      - Preregister failing E2E/cold-agent tests against the public CLI surface only.
+      - Implement canonical recipes and outcome-level E2E coverage (discovery through apply and verify linkage).
+      - Run adversarial bypass tests and the cold-agent scenario.
+      - Measure UX benchmark (decisions, commands, exposed concepts, internal capabilities composed).
+      - Run global gates and obtain independent adversarial confirmation.
+    gate:
+      - bun test packages/contracts packages/studio apps/studio-cli passes including canonical recipe E2E suites.
+      - UX benchmark artifact recorded under artifacts/plan/T28/ with per-recipe measurements.
+      - python3 scripts/check-traceability.py and just ci pass.
+      - bun run studio -- verify --project examples/blackwater-relay --suite all --json remains green (no settled
+        game regression).
+    teeth:
+      - attack: Attempt to settle a recipe acceptance claim using only a happy-path parser test.
+        expected: >-
+          Gate requires E2E apply through existing capabilities plus observe/verify/Gauntlet linkage;
+          parser-only evidence is insufficient.
+      - attack: Start from only `studio recipes` / `recipe describe` and attempt enemy.patrol dry-run.
+        expected: Cold-agent path reaches an inspectable RecipePlan without reading recipe-engine source.
+      - attack: Introduce a second evidence format or bypass Gauntlet for recipe acceptance.
+        expected: Verification rejects non-conformant evidence; REQ-RECIPE-014 fails.
+    redesign_trigger: If the canonical set cannot express the listed outcomes without encoding provider/engine nouns
+      or expanding into a workflow framework, reopen REQ-RECIPE-006/012 through a new amendment.
+    evidence: artifacts/plan/T28/
 final_acceptance:
   studio_and_repository:
     - A clean checkout under Bun 1.4 passes global gates and `studio doctor` with `.tmp/donor/` absent.
@@ -2563,11 +2724,13 @@ final_acceptance:
       succeeds without donor files.
     - Production assets have accepted AssetRecords and allowed provenance/license state.
   content_and_tools:
-    - img2threejs and 3dviz use explicit interactive AgentHandoffs while deterministic CI verifies committed accepted 
+    - img2threejs and 3dviz use explicit interactive AgentHandoffs while deterministic CI verifies committed accepted
       results with no model credentials.
     - Blender is isolated to regeneration/proof and normal build/runtime consumes committed accepted derivatives without
       Blender.
     - Audio obeys real browser gesture policy and headless logic does not require AudioContext.
+    - Recipe outcomes compile through the existing capability router/asset.resolve/evidence/Gauntlet path with no
+      second authority; canonical recipes remain a small outcome vocabulary with measured UX benchmark evidence.
   networking:
     - Single-player requires no server/transport.
     - Two local clients against the headless authoritative server pass nominal and impaired-latency scenarios, relevance
@@ -2612,14 +2775,42 @@ handoff_contract:
   settled_next_action_rule: The next executable action MUST be set to `none — plan settled` only after the final 
     required conformance/confirmation task succeeds.
 traceability:
-  spec_requirement_count: 152
-  mapped_requirement_count: 152
+  spec_requirement_count: 171
+  mapped_requirement_count: 171
   unmapped_requirements: []
   unknown_plan_requirement_ids: []
   requirement_to_tasks:
     REQ-BIND-015:
       - T07
       - T10
+    REQ-RECIPE-001:
+      - T27
+    REQ-RECIPE-002:
+      - T27
+    REQ-RECIPE-003:
+      - T27
+    REQ-RECIPE-004:
+      - T27
+    REQ-RECIPE-005:
+      - T27
+    REQ-RECIPE-006:
+      - T27
+    REQ-RECIPE-007:
+      - T27
+    REQ-RECIPE-008:
+      - T27
+    REQ-RECIPE-009:
+      - T27
+    REQ-RECIPE-010:
+      - T27
+    REQ-RECIPE-011:
+      - T27
+    REQ-RECIPE-012:
+      - T28
+    REQ-RECIPE-013:
+      - T28
+    REQ-RECIPE-014:
+      - T28
     REQ-ASSET-001:
       - T14
     REQ-ASSET-002:
@@ -2634,6 +2825,16 @@ traceability:
       - T13
     REQ-ASSET-007:
       - T13
+    REQ-ASSET-008:
+      - T26
+    REQ-ASSET-009:
+      - T26
+    REQ-ASSET-010:
+      - T26
+    REQ-ASSET-011:
+      - T26
+    REQ-ASSET-012:
+      - T26
     REQ-AUDIO-001:
       - T17
     REQ-AUDIO-002:

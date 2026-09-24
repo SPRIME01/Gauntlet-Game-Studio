@@ -1,0 +1,6 @@
+OK:   Root package.json parsed successfully.
+OK:   engines.bun specifies Bun 1.4 baseline.
+OK:   Workspace packages (5) match approved boundaries: ['apps/studio-cli', 'packages/adapters', 'packages/contracts', 'packages/runtime', 'packages/studio']
+OK:   .tmp/ is gitignored in .gitignore.
+OK:   ALL TOPOLOGY AND SOURCE BOUNDARY CHECKS PASSED.
+EXIT:0
