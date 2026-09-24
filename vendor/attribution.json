@@ -50,17 +50,21 @@
       {
         "id": "img2threejs",
         "vendor_path": "vendor/skills/img2threejs",
-        "upstream": "https://github.com/gauntlet/img2threejs",
-        "license": "MIT",
-        "capability": "asset.reconstruct",
+        "upstream": "https://github.com/img2threejs/img2threejs",
+        "revision": "a669e9a97cea4452b1c2310c5cca6aa0f6657c1f",
+        "license": "Apache-2.0",
+        "capability": "asset.reconstruct.reference-image",
+        "instructions_ref": "vendor/skills/img2threejs/SKILL.md",
         "purpose": "Specialist skill for reconstructing depicted objects from reference imagery"
       },
       {
         "id": "3dviz-pro-max",
         "vendor_path": "vendor/skills/3dviz-pro-max",
-        "upstream": "https://github.com/gauntlet/3dviz-pro-max",
+        "upstream": "https://github.com/viettranx/3dviz-pro-max",
+        "revision": "d077e0e68915c25be8e71d74684d3144fd1c2aca",
         "license": "MIT",
-        "capability": "world.composition",
+        "capability": "world.environment.compose",
+        "instructions_ref": "vendor/skills/3dviz-pro-max/SKILL.md",
         "purpose": "Specialist skill for world/scene composition and lighting layout"
       },
       {

@@ -12,6 +12,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import {
   ASSET_RECONSTRUCT_REFERENCE_IMAGE_CAPABILITY,
+  PINNED_SKILL_ENTRYPOINT_REF,
   PINNED_SKILL_METADATA_REF,
   decodePngGrayscale,
   gridIoU,
@@ -61,8 +62,16 @@ describe("T14: asset.reconstruct.reference-image capability binding (REQ-BIND-00
 
   it("binds exclusively to the pinned img2threejs vendor skill content", () => {
     const metadata = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, PINNED_SKILL_METADATA_REF), "utf-8"));
-    expect(metadata.id).toBe("img2threejs");
-    expect(metadata.role).toBe("agent_skill_source");
+    expect(metadata).toMatchObject({
+      id: "img2threejs",
+      role: "agent_skill_source",
+      version: "2.0.0",
+      license: "Apache-2.0",
+      revision: "a669e9a97cea4452b1c2310c5cca6aa0f6657c1f",
+      entrypoint: "SKILL.md",
+    });
+    expect(fs.existsSync(path.join(REPO_ROOT, PINNED_SKILL_ENTRYPOINT_REF))).toBe(true);
+    expect(fs.existsSync(path.join(REPO_ROOT, "vendor/skills/img2threejs/LICENSE"))).toBe(true);
   });
 });
 
@@ -77,7 +86,7 @@ describe("T14: AgentHandoff normalization with validated reference imagery", () 
     expect(prep.status).toBe("ready");
     if (prep.status !== "ready") return;
     expect(prep.handoff.skill_id).toBe("img2threejs");
-    expect(prep.handoff.instructions_ref).toBe(PINNED_SKILL_METADATA_REF);
+    expect(prep.handoff.instructions_ref).toBe(PINNED_SKILL_ENTRYPOINT_REF);
     expect(prep.handoff.request_id).toBe(request.id);
     expect(prep.handoff.acceptance.length).toBeGreaterThan(0);
     const ref = prep.references[0];

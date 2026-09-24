@@ -9,7 +9,7 @@
  * REQ-ASSET-002 project-owned/authorized next).
  *
  * The handoff points the current coding agent at the PINNED vendor skill
- * content (vendor/skills/img2threejs/metadata.json) and the validated
+ * content (vendor/skills/img2threejs/SKILL.md) and the validated
  * project/reference inputs. Creating the handoff never reports capability
  * success; settlement requires real accepted artifacts, and deterministic
  * verify-result re-derives the evidence offline (CI without model credentials).
@@ -26,6 +26,7 @@ export const IMG2THREEJS_SKILL_ID = "img2threejs";
 export const IMG2THREEJS_PROVIDER = `agent-skill.${IMG2THREEJS_SKILL_ID}`;
 export const ASSET_RECONSTRUCT_REFERENCE_IMAGE_CAPABILITY = "asset.reconstruct.reference-image";
 export const PINNED_SKILL_METADATA_REF = "vendor/skills/img2threejs/metadata.json";
+export const PINNED_SKILL_ENTRYPOINT_REF = "vendor/skills/img2threejs/SKILL.md";
 export const REFERENCE_IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
 const MAX_REFERENCE_BYTES = 32 * 1024 * 1024;
 
@@ -203,7 +204,7 @@ export function prepareReferenceImageReconstruction(
   }
 
   const metadataPath = path.join(options.repoRoot, PINNED_SKILL_METADATA_REF);
-  let pinnedSkill: { id: string; version: string; license: string; capability?: string };
+  let pinnedSkill: { id: string; version: string; license: string; capability?: string; entrypoint: string };
   try {
     const raw = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
     pinnedSkill = {
@@ -211,6 +212,7 @@ export function prepareReferenceImageReconstruction(
       version: String(raw.version ?? "unknown"),
       license: String(raw.license ?? "unknown"),
       capability: raw.capability !== undefined ? String(raw.capability) : undefined,
+      entrypoint: String(raw.entrypoint ?? ""),
     };
   } catch (err) {
     return {
@@ -222,13 +224,14 @@ export function prepareReferenceImageReconstruction(
       allowed_next_steps: [],
     };
   }
-  if (pinnedSkill.id !== IMG2THREEJS_SKILL_ID) {
+  const entrypointPath = path.join(options.repoRoot, PINNED_SKILL_ENTRYPOINT_REF);
+  if (pinnedSkill.id !== IMG2THREEJS_SKILL_ID || pinnedSkill.entrypoint !== "SKILL.md" || !fs.existsSync(entrypointPath)) {
     return {
       status: "blocked",
       capability_id: capability.id,
       provider,
       code: "SKILL_CONTENT_MISSING",
-      message: `Pinned skill content at ${PINNED_SKILL_METADATA_REF} declares id '${pinnedSkill.id}'; expected '${IMG2THREEJS_SKILL_ID}'.`,
+      message: `Pinned skill content requires ${PINNED_SKILL_METADATA_REF} to declare id '${IMG2THREEJS_SKILL_ID}' and entrypoint 'SKILL.md', with ${PINNED_SKILL_ENTRYPOINT_REF} present.`,
       allowed_next_steps: [],
     };
   }
@@ -243,7 +246,7 @@ export function prepareReferenceImageReconstruction(
   const handoff: AgentHandoff = {
     request_id: request.id,
     skill_id: IMG2THREEJS_SKILL_ID,
-    instructions_ref: PINNED_SKILL_METADATA_REF,
+    instructions_ref: PINNED_SKILL_ENTRYPOINT_REF,
     expected_outputs: expectedOutputs,
     acceptance: [...request.acceptance],
     reference_ids: request.reference_ids ?? referencesToIds(refs.references),
@@ -251,7 +254,7 @@ export function prepareReferenceImageReconstruction(
       capability_id: capability.id,
       provider,
       project_root: path.basename(options.projectRoot),
-      pinned_skill: { ...pinnedSkill, source_ref: PINNED_SKILL_METADATA_REF },
+      pinned_skill: { ...pinnedSkill, source_ref: PINNED_SKILL_METADATA_REF, instructions_ref: PINNED_SKILL_ENTRYPOINT_REF },
       references: refs.references,
       reference_policy: {
         reference_only: true,

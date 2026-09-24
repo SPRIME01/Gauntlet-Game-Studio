@@ -36,6 +36,20 @@ export interface RouteResolution {
   reason?: string;
 }
 
+/** Provider details are resolved only after capability routing. */
+const AGENT_SKILL_ENTRYPOINTS: Readonly<Record<string, string>> = {
+  "agent-skill.img2threejs": "vendor/skills/img2threejs/SKILL.md",
+  "agent-skill.3dviz": "vendor/skills/3dviz-pro-max/SKILL.md",
+};
+
+function instructionsRefForProvider(provider: string): string {
+  const instructionsRef = AGENT_SKILL_ENTRYPOINTS[provider];
+  if (!instructionsRef) {
+    throw new RoutingError(`Agent-skill provider '${provider}' has no registered executable instructions entrypoint.`);
+  }
+  return instructionsRef;
+}
+
 /**
  * Capability-first router. Identifies stable capability before loading provider details.
  */
@@ -126,7 +140,7 @@ export function routeCapability(
     handoff = {
       request_id: request.id,
       skill_id: selectedProvider.replace("agent-skill.", ""),
-      instructions_ref: `skills/${selectedProvider.replace("agent-skill.", "")}/SKILL.md`,
+      instructions_ref: instructionsRefForProvider(selectedProvider),
       expected_outputs: candidate.outputs,
       acceptance: request.acceptance,
       reference_ids: request.reference_ids,

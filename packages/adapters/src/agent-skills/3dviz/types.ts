@@ -14,6 +14,7 @@ export const WORLD_ENVIRONMENT_COMPOSE_CAPABILITY = "world.environment.compose";
 export const THREEVIZ_SKILL_ID = "3dviz";
 export const THREEVIZ_PROVIDER = "agent-skill.3dviz";
 export const WORLD_COMPOSITION_RESULT_SCHEMA = "gauntlet.world.composition.result";
+export const THREEVIZ_SKILL_ENTRYPOINT_REF = "vendor/skills/3dviz-pro-max/SKILL.md";
 
 /** The only accepted terrain stance for a composition output: reference, never supply. */
 export type TerrainAuthorityRef = {
@@ -162,4 +163,6 @@ export interface VerifyWorldCompositionOptions {
    * Defaults to three directory levels above the result file (<root>/.studio/results/<file>).
    */
   projectRoot?: string;
+  /** Studio repository root used to resolve the pinned vendor-skill instructions. */
+  repoRoot?: string;
 }

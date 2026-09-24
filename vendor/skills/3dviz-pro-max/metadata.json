@@ -1,8 +1,13 @@
 {
   "id": "3dviz-pro-max",
-  "version": "1.0.0",
+  "version": "main",
   "role": "agent_skill_source",
-  "capability": "world.composition",
-  "attribution": "Gauntlet Studio Upstream Agent Skill",
-  "license": "MIT"
+  "capability": "world.environment.compose",
+  "attribution": "viettranx/3dviz-pro-max",
+  "license": "MIT",
+  "upstream": "https://github.com/viettranx/3dviz-pro-max",
+  "revision": "d077e0e68915c25be8e71d74684d3144fd1c2aca",
+  "source_subpath": "skills/3dviz-pro-max",
+  "entrypoint": "SKILL.md",
+  "license_file": "LICENSE"
 }

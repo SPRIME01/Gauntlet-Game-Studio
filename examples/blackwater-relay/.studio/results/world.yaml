@@ -11,7 +11,7 @@ request_ref: .studio/requests/world.yaml
 handoff:
   request_id: req-blackwater-world-001
   skill_id: 3dviz
-  instructions_ref: vendor/skills/3dviz-pro-max/metadata.json
+  instructions_ref: vendor/skills/3dviz-pro-max/SKILL.md
   expected_outputs:
     - world_kit_placements
     - socket_bindings

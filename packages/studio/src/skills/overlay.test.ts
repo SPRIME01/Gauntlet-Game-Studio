@@ -51,6 +51,54 @@ describe("Third-Party Skills, Overlay Policy & Attribution Classes Suite (T06)",
     expect(manifest.classes.external_asset.length).toBeGreaterThanOrEqual(1);
   });
 
+  it("pins executable img2threejs and 3dviz-pro-max skill sources with matching provenance", () => {
+    const manifest: AttributionClassManifest & { classes: { agent_skill_source: Array<Record<string, unknown>> } } = JSON.parse(
+      fs.readFileSync(attributionPath, "utf-8")
+    );
+    const expected = [
+      {
+        id: "img2threejs",
+        vendorPath: "vendor/skills/img2threejs",
+        upstream: "https://github.com/img2threejs/img2threejs",
+        revision: "a669e9a97cea4452b1c2310c5cca6aa0f6657c1f",
+        license: "Apache-2.0",
+        capability: "asset.reconstruct.reference-image",
+      },
+      {
+        id: "3dviz-pro-max",
+        vendorPath: "vendor/skills/3dviz-pro-max",
+        upstream: "https://github.com/viettranx/3dviz-pro-max",
+        revision: "d077e0e68915c25be8e71d74684d3144fd1c2aca",
+        license: "MIT",
+        capability: "world.environment.compose",
+      },
+    ];
+
+    for (const source of expected) {
+      const metadataPath = path.resolve(__dirname, "../../../..", source.vendorPath, "metadata.json");
+      const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
+      const attribution = manifest.classes.agent_skill_source.find((entry) => entry.id === source.id);
+      expect(metadata).toMatchObject({
+        id: source.id,
+        upstream: source.upstream,
+        revision: source.revision,
+        license: source.license,
+        capability: source.capability,
+        entrypoint: "SKILL.md",
+      });
+      expect(attribution).toMatchObject({
+        id: source.id,
+        vendor_path: source.vendorPath,
+        upstream: source.upstream,
+        revision: source.revision,
+        license: source.license,
+        capability: source.capability,
+      });
+      expect(fs.existsSync(path.resolve(__dirname, "../../../..", source.vendorPath, "SKILL.md"))).toBe(true);
+      expect(fs.existsSync(path.resolve(__dirname, "../../../..", source.vendorPath, "LICENSE"))).toBe(true);
+    }
+  });
+
   it("TEETH-T06-002: REJECTS unnecessary vendoring of standard runtime libraries (Teeth Check)", () => {
     const manifest: AttributionClassManifest = JSON.parse(fs.readFileSync(attributionPath, "utf-8"));
 

@@ -10,6 +10,7 @@ import type {
 import {
   THREEVIZ_PROVIDER,
   THREEVIZ_SKILL_ID,
+  THREEVIZ_SKILL_ENTRYPOINT_REF,
   WORLD_COMPOSITION_RESULT_SCHEMA,
   WORLD_ENVIRONMENT_COMPOSE_CAPABILITY,
 } from "./types";
@@ -384,14 +385,14 @@ export function verifyWorldCompositionResultDocument(
     typeof handoff.request_id === "string" &&
     handoff.request_id.length > 0 &&
     handoff.skill_id === THREEVIZ_SKILL_ID &&
-    typeof handoff.instructions_ref === "string" &&
-    (handoff.instructions_ref.startsWith("skills/") || handoff.instructions_ref.startsWith("vendor/")) &&
+    handoff.instructions_ref === THREEVIZ_SKILL_ENTRYPOINT_REF &&
+    fs.existsSync(path.resolve(options.repoRoot ?? path.resolve(import.meta.dir, "../../../../../"), THREEVIZ_SKILL_ENTRYPOINT_REF)) &&
     Array.isArray(handoff.acceptance) &&
     handoff.acceptance.length > 0;
   record(
     "HANDOFF_LIFECYCLE_RECORDED",
     lifecycleOk,
-    "handoff must record request_id, skill_id '3dviz', a confined instructions_ref (skills/ or vendor/), and non-empty acceptance"
+    `handoff must record request_id, skill_id '3dviz', the executable pinned instructions '${THREEVIZ_SKILL_ENTRYPOINT_REF}', and non-empty acceptance`
   );
 
   // 3. CapabilityResult contracts envelope.

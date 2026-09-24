@@ -1,8 +1,12 @@
 {
   "id": "img2threejs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "role": "agent_skill_source",
-  "capability": "asset.reconstruct",
-  "attribution": "Gauntlet Studio Upstream Agent Skill",
-  "license": "MIT"
+  "capability": "asset.reconstruct.reference-image",
+  "attribution": "img2threejs/img2threejs v2.0.0",
+  "license": "Apache-2.0",
+  "upstream": "https://github.com/img2threejs/img2threejs",
+  "revision": "a669e9a97cea4452b1c2310c5cca6aa0f6657c1f",
+  "entrypoint": "SKILL.md",
+  "license_file": "LICENSE"
 }

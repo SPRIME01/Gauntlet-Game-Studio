@@ -107,8 +107,7 @@ describe("world.environment.compose capability binding (T15, REQ-BIND-005)", () 
     expect(resolution.is_agent_handoff).toBe(true);
     expect(resolution.handoff).toBeDefined();
     expect(resolution.handoff!.skill_id).toBe("3dviz");
-    expect(resolution.handoff!.instructions_ref.startsWith("vendor/") ||
-      resolution.handoff!.instructions_ref.startsWith("skills/")).toBe(true);
+    expect(resolution.handoff!.instructions_ref).toBe("vendor/skills/3dviz-pro-max/SKILL.md");
     expect(resolution.handoff!.expected_outputs).toContain("world_kit_placements");
   });
 });
@@ -141,6 +140,7 @@ describe("TEETH-T15-001: reconstructing one specific depicted transceiver throug
     expect(resolution.capability.id).toBe("asset.reconstruct");
     expect(resolution.is_agent_handoff).toBe(true);
     expect(resolution.handoff!.skill_id).toBe("img2threejs");
+    expect(resolution.handoff!.instructions_ref).toBe("vendor/skills/img2threejs/SKILL.md");
     expect(resolution.capability.requires_user_reference).toBe(true);
   });
 
@@ -249,6 +249,14 @@ describe("TEETH-T15-002: 3dviz-created terrain mesh bypassing TerrainHeightfield
 });
 
 describe("deterministic verification of the committed Blackwater Relay world fixture (T15 gate)", () => {
+  it("rejects a metadata file in place of the pinned 3dviz executable instructions", () => {
+    const doc = JSON.parse(JSON.stringify(Bun.YAML.parse(fs.readFileSync(COMMITTED_RESULT, "utf-8"))));
+    doc.handoff.instructions_ref = "vendor/skills/3dviz-pro-max/metadata.json";
+    const report = verifyWorldCompositionResultDocument(doc, { projectRoot: REPO_ROOT });
+    expect(report.valid).toBe(false);
+    expect(report.checks.find((check) => check.code === "HANDOFF_LIFECYCLE_RECORDED")?.pass).toBe(false);
+  });
+
   it("verifies the committed accepted world-composition result with zero model credentials", () => {
     const report = verifyWorldCompositionResultFile(COMMITTED_RESULT);
     expect(report.valid).toBe(true);
