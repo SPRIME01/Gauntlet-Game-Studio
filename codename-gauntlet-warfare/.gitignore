@@ -1,0 +1,10 @@
+# Build output (regenerable via `bun run build`)
+dist/
+
+# Browser-proof runs embed full Chrome profiles (Cookies / Login Data / Web Data
+# credential stores) — never commit. Settlement-grade evidence lives under
+# artifacts/plan/ (studio root) and .img2threejs/ (cited in CURRENT_STATUS).
+artifacts/
+
+# Temporary
+.tmp/

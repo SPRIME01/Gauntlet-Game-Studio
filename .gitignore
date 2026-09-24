@@ -9,3 +9,9 @@ node_modules/
 # Python bytecode
 __pycache__/
 *.py[cod]
+
+# Playwright/browser proof profiles — contain credential stores; never commit
+chrome-profile/
+
+# Tool-local editor state (synced from .gitignore by ZCode)
+.zcodeignore
