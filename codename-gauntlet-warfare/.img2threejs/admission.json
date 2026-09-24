@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "side",
+    "sourcePath": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+    "width": 3263,
+    "height": 1098,
+    "foregroundCoverage": 0.2957,
+    "largestComponentFraction": 1.0,
+    "pHash": 18424440448872584384,
+    "duplicateOfHash": null
+  }
+}

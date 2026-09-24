@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ESNext", "DOM"],
+    "types": ["bun"],
+    "strict": true,
+    "skipLibCheck": true,
+  },
+  "include": ["src/**/*", "tests/**/*", "scripts/**/*"]
+}

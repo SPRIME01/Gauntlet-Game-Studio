@@ -1,0 +1,37 @@
+{
+  "schema": "gauntlet.asset.resolution",
+  "schema_version": "1.0",
+  "requested_id": "dry_ground_01",
+  "role": "texture",
+  "keywords": [
+    "dry_ground_01"
+  ],
+  "recorded_at": "2026-09-19T03:04:38.377Z",
+  "steps": [
+    {
+      "step": "search",
+      "target": "project-registry",
+      "outcome": "no-match",
+      "detail": "no project asset matches the requested id"
+    },
+    {
+      "step": "search",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "matched",
+      "detail": "matched 'dry_ground_01' (Dry Ground 01)"
+    },
+    {
+      "step": "acquire",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "failed",
+      "detail": "UNEXPECTED_PAYLOAD: Poly Haven texture 'dry_ground_01' map 'diffuse' has no usable resolution entry"
+    }
+  ],
+  "decision": {
+    "route": "acquire",
+    "reason": "all 1 provider matches failed acquisition (UNEXPECTED_PAYLOAD)",
+    "provider": "polyhaven"
+  }
+}

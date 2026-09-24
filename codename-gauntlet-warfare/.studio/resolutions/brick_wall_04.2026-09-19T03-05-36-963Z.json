@@ -1,0 +1,39 @@
+{
+  "schema": "gauntlet.asset.resolution",
+  "schema_version": "1.0",
+  "requested_id": "brick_wall_04",
+  "role": "texture",
+  "keywords": [
+    "brick_wall_04"
+  ],
+  "recorded_at": "2026-09-19T03:05:36.963Z",
+  "steps": [
+    {
+      "step": "search",
+      "target": "project-registry",
+      "outcome": "no-match",
+      "detail": "no project asset matches the requested id"
+    },
+    {
+      "step": "search",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "matched",
+      "detail": "matched 'brick_wall_04' (Brick Wall 04)"
+    },
+    {
+      "step": "acquire",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "acquired",
+      "detail": "acquired 'brick_wall_04' into the registry as a 'pending' record with license 'CC0'"
+    }
+  ],
+  "decision": {
+    "route": "acquire",
+    "reason": "provider match acquired through asset.source intake as a 'pending' record; acceptance is a separate registry decision",
+    "provider": "polyhaven",
+    "asset_id": "brick_wall_04",
+    "license": "CC0"
+  }
+}

@@ -1,0 +1,22 @@
+id: req-gauntlet-compound-001
+project_id: codename-gauntlet-warfare
+capability_id: world.environment.compose
+intent: Compose an urban desert military compound with concrete blast barriers, sandbags, corrugated containers, ruined brick walls and tactical sightlines.
+acceptance:
+  - Colliders project the same arena dimensions as visible cover.
+  - Composition owns lighting and placement only; Koota owns gameplay and Recast derives navigation.
+  - Browser draw calls stay at most 150 and rendered triangles at most 180000.
+inputs:
+  world_brief: Late afternoon dusty urban compound, bleached concrete and warm brick, dark olive military equipment, cool shadows, readable enemy silhouettes.
+  terrain_heightfield_ref:
+    generator: flat
+    seed: 17
+    rows: 2
+    columns: 2
+    size_x: 38
+    size_z: 54
+  kit_asset_ids: [compound-kit]
+budget:
+  max_draw_calls: 150
+  max_triangles: 180000
+quality_profile: aaa-tactical-fps-vertical-slice

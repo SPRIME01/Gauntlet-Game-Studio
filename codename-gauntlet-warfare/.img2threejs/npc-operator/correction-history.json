@@ -1,0 +1,59 @@
+[
+ {
+  "iteration": 1,
+  "passId": "blockout",
+  "action": "refine-spec",
+  "fidelity": 0.62,
+  "tier1": {
+   "silhouetteIoU": 0.712,
+   "aspectRatioDelta": 0.267,
+   "scaleDelta": 0.176
+  },
+  "notes": "initial blockout: assembled rig-mappable operator; framing mismatched (portrait viewport)",
+  "defectTags": [
+   "silhouetteIoU-below-threshold"
+  ],
+  "fidelityHistory": [
+   0.62
+  ],
+  "reverted": false
+ },
+ {
+  "iteration": 2,
+  "passId": "blockout",
+  "action": "refine-spec",
+  "fidelity": 0.62,
+  "tier1": {
+   "silhouetteIoU": 0.7034,
+   "aspectRatioDelta": 0.091,
+   "scaleDelta": 0.0619
+  },
+  "notes": "square 1254 frame matched to photo geometry; masses slimmed (legs/boots/vest); scaleDelta cleared",
+  "defectTags": [
+   "silhouetteIoU-below-threshold"
+  ],
+  "fidelityHistory": [
+   0.62
+  ],
+  "reverted": false
+ },
+ {
+  "iteration": 3,
+  "passId": "blockout",
+  "action": "refine-spec",
+  "fidelity": 0.64,
+  "tier1": {
+   "silhouetteIoU": 0.592,
+   "aspectRatioDelta": 0.0708,
+   "scaleDelta": 0.0453
+  },
+  "notes": "posed A-pose chain fixed (joints splay), pelvis tucked, laces to boot front; aspectDelta near threshold; IoU oscillates 0.58-0.71 with framing while geometry converges - raw-overlay IoU vs photo includes floor shadow band and fabric mass the clean render lacks",
+  "defectTags": [
+   "silhouetteIoU-below-threshold"
+  ],
+  "fidelityHistory": [
+   0.64
+  ],
+  "reverted": false
+ }
+]

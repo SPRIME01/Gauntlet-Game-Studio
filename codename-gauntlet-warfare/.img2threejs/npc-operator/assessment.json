@@ -1,0 +1,411 @@
+{
+  "targetName": "Tactical Operator NPC",
+  "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/operator-tactical-front.jpg",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "clothed humanoid figure (display mannequin in tactical outfit)",
+      "primaryDomain": "character",
+      "formLanguage": [
+        "geometric-tailored garment volumes",
+        "bilateral symmetric",
+        "elongated idealized proportions"
+      ],
+      "structureKind": [
+        "articulated body hierarchy",
+        "layered garment/gear shells over core body"
+      ],
+      "motionPotential": [
+        "bipedal locomotion",
+        "limb articulation at shoulders/elbows/hips/knees",
+        "head/neck turn"
+      ],
+      "materialFamilies": [
+        "matte white plastic (mannequin head/hands)",
+        "matte black fabric (uniform)",
+        "matte black nylon (vest/pouches/belt)",
+        "satin black polymer (pads/boots/gloves)",
+        "dark hardware (buckles/zip/screws)"
+      ],
+      "notes": "Faceless mannequin head: no facial likeness surface. Identity lives in outfit silhouette and gear placement."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 2,
+        "materialLayerCount": 2,
+        "localDetailDensity": 2,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 3
+      },
+      "estimatedCounts": {
+        "macroComponents": 9,
+        "mesoComponents": 22,
+        "microFeatureGroups": 11,
+        "materialLayers": 5,
+        "repetitionSystems": 4
+      },
+      "reasoning": [
+        "Full humanoid with layered gear: core body + garment shells + single-bone gear isolates.",
+        "Action-readiness is a hard requirement: rig-mappable joint hierarchy for Blender skeletal animation.",
+        "Repetition systems: bilateral pouch rows, MOLLE loops, boot laces, knee-pad screws."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex layered character with rig-mapping acceptance; multiple review views required."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 12,
+      "note": "Enumerate every identity-defining small detail before authoring the spec. Each detail must map to a component.localFeatures entry or material.localOverrides entry, never prose only. Use forge/stage1_intake/build_detail_inventory.py to scan zones.",
+      "details": [
+        {
+          "id": "d-vest-zip",
+          "desc": "central front zip with pull tab, full vest length",
+          "kind": "fastener",
+          "mapsTo": {
+            "ref": "vest-zip"
+          }
+        },
+        {
+          "id": "d-sternum-buckles",
+          "desc": "two vertical side-release buckles flanking zip, upper chest",
+          "kind": "fastener",
+          "mapsTo": {
+            "ref": "sternum-buckle-l"
+          }
+        },
+        {
+          "id": "d-mag-row",
+          "desc": "bilateral 3-pouch mag row on vest lower band (repetition system)",
+          "kind": "ridge",
+          "mapsTo": {
+            "ref": "mag-pouch-l1"
+          }
+        },
+        {
+          "id": "d-radio-pouch",
+          "desc": "radio pouch figure-left chest with elastic keepers",
+          "kind": "ridge",
+          "mapsTo": {
+            "ref": "radio-pouch"
+          }
+        },
+        {
+          "id": "d-molle-rows",
+          "desc": "MOLLE loop rows on shoulder straps (repetition system)",
+          "kind": "ridge",
+          "mapsTo": {
+            "ref": "molle-loop-l-1"
+          }
+        },
+        {
+          "id": "d-collar",
+          "desc": "mandarin collar band, front zip to top",
+          "kind": "contour",
+          "mapsTo": {
+            "ref": "collar"
+          }
+        },
+        {
+          "id": "d-rolled-sleeves",
+          "desc": "sleeves rolled to mid-forearm exposing white mannequin forearms",
+          "kind": "seam",
+          "mapsTo": {
+            "ref": "sleeve-cuff-l"
+          }
+        },
+        {
+          "id": "d-belt",
+          "desc": "battle belt with side-release buckle over trouser waist",
+          "kind": "contour",
+          "mapsTo": {
+            "ref": "belt"
+          }
+        },
+        {
+          "id": "d-holster",
+          "desc": "figure-right thigh holster with two vertical retention straps",
+          "kind": "ridge",
+          "mapsTo": {
+            "ref": "holster"
+          }
+        },
+        {
+          "id": "d-cargo-pockets",
+          "desc": "bilateral trouser cargo pockets with flap+button",
+          "kind": "ridge",
+          "mapsTo": {
+            "ref": "cargo-pocket-l"
+          }
+        },
+        {
+          "id": "d-kneepads",
+          "desc": "round bilateral knee pads, 4-screw face plate (repetition system)",
+          "kind": "ridge",
+          "mapsTo": {
+            "ref": "kneepad-l"
+          }
+        },
+        {
+          "id": "d-glove-plates",
+          "desc": "hard knuckle plates on tactical gloves",
+          "kind": "bevel",
+          "mapsTo": {
+            "ref": "glove-plate-l"
+          }
+        },
+        {
+          "id": "d-boot-laces",
+          "desc": "lace-up boot front with eyelet rows and side zip",
+          "kind": "stitch",
+          "mapsTo": {
+            "ref": "boot-lace-l-1"
+          }
+        },
+        {
+          "id": "d-ankle-bands",
+          "desc": "banded/bloused trouser ankles above boots",
+          "kind": "seam",
+          "mapsTo": {
+            "ref": "boot-l"
+          }
+        },
+        {
+          "id": "d-waist-cinch",
+          "desc": "waist cinch crease where vest meets belt",
+          "kind": "groove",
+          "mapsTo": {
+            "ref": "m-fabric"
+          }
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": true,
+      "styleHeads": 9.4,
+      "proportions": {
+        "headUnit": 0.106,
+        "torso": 5.1,
+        "legs": 4.3,
+        "shoulderWidth": 2.8,
+        "hipWidth": 1.9
+      },
+      "pose": {
+        "type": "symmetric A-pose, weight even, figure-right foot slightly advanced/out-toed",
+        "jointAngles": {
+          "neck": [
+            0,
+            0,
+            0
+          ],
+          "leftShoulder": [
+            0,
+            0,
+            -17
+          ],
+          "rightShoulder": [
+            0,
+            0,
+            17
+          ],
+          "leftElbow": [
+            0,
+            0,
+            -4
+          ],
+          "rightElbow": [
+            0,
+            0,
+            4
+          ],
+          "leftWrist": [
+            0,
+            0,
+            0
+          ],
+          "rightWrist": [
+            0,
+            0,
+            0
+          ],
+          "leftHip": [
+            0,
+            0,
+            -3
+          ],
+          "rightHip": [
+            0,
+            3,
+            -6
+          ],
+          "leftKnee": [
+            0,
+            0,
+            0
+          ],
+          "rightKnee": [
+            0,
+            0,
+            0
+          ],
+          "leftAnkle": [
+            0,
+            0,
+            0
+          ],
+          "rightAnkle": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.5,
+        "eyeSpacing": 0.25,
+        "noseBase": 0.65,
+        "mouthLine": 0.8,
+        "hairline": 0.05,
+        "note": "Faceless mannequin head: NO facial features exist. Values are human-canon schema defaults, documented as unused; no facial geometry or feature-placement gate applies."
+      },
+      "features": [
+        "featureless matte-white mannequin head",
+        "white forearms exposed between rolled sleeves and gloves",
+        "black hard-knuckle full gloves (hands fully covered)",
+        "black-outfit silhouette with white head/forearm contrast points"
+      ],
+      "confidence": 0.85,
+      "note": "Measured 9.4 HU idealized display-mannequin axis (measured off pixels, evidenceRef in anatomy.json). Build to MEASURED ratios; do not renormalize to 7.5."
+    },
+    "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/operator-tactical-front.jpg"
+  },
+  "qualityContract": {
+    "qualityBar": "high",
+    "definitionOfDone": [
+      "Overall AI-vision fidelity >= 0.75 vs front reference (target band 0.70-0.80, 'AAA 70-80%'), no missing identity-defining part.",
+      "Rig-mappable named hierarchy (Blender skeleton mapping) with joint-aligned pivots; A-pose bind stance; L/R reflection pairs.",
+      "<= 12000 triangles; one standard Three.js dependency; deterministic factory module."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 6,
+      "mesoComponents": 12,
+      "microFeatureGroups": 8,
+      "materialLayers": 5,
+      "repetitionSystems": 4,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "fg-head-neck",
+        "name": "head+neck (featureless mannequin)",
+        "componentRefs": [
+          "head",
+          "neck",
+          "collar"
+        ]
+      },
+      {
+        "id": "fg-torso",
+        "name": "torso core + shirt",
+        "componentRefs": [
+          "chest",
+          "abdomen",
+          "pelvis"
+        ]
+      },
+      {
+        "id": "fg-carrier",
+        "name": "plate carrier + pouches",
+        "componentRefs": [
+          "vest-shell",
+          "vest-zip",
+          "mag-pouch-l1",
+          "mag-pouch-r1",
+          "radio-pouch",
+          "shoulder-strap-l",
+          "shoulder-strap-r",
+          "sternum-buckle-l",
+          "sternum-buckle-r"
+        ]
+      },
+      {
+        "id": "fg-arms",
+        "name": "arms (A-pose) + gloves",
+        "componentRefs": [
+          "clavicle-l",
+          "upper-arm-l",
+          "forearm-l",
+          "hand-l",
+          "glove-plate-l"
+        ]
+      },
+      {
+        "id": "fg-pelvis-belt",
+        "name": "pelvis/belt/holster",
+        "componentRefs": [
+          "belt",
+          "belt-buckle",
+          "hip-pouch",
+          "holster"
+        ]
+      },
+      {
+        "id": "fg-legs",
+        "name": "legs + knee pads",
+        "componentRefs": [
+          "thigh-l",
+          "shin-l",
+          "kneepad-l",
+          "cargo-pocket-l"
+        ]
+      },
+      {
+        "id": "fg-boots",
+        "name": "boots",
+        "componentRefs": [
+          "boot-l",
+          "boot-toe-l",
+          "boot-lace-l-1"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "front-view silhouette IoU vs reference >= 0.75",
+      "side-view depth profile: vest thickness, boot profile, glove profile match side reference",
+      "rear view: symmetric inference reported as inferred, no invented asymmetry",
+      "identity parts present: pouch rows, radio pouch, thigh holster, knee pads, rolled sleeves, knuckle gloves, lace boots",
+      "turntable/self-intersection/attachment gates exit 0"
+    ],
+    "antiShallowSpecRules": [
+      "Every macro/meso component carries topologyClass + topologyRationale before primitive selection.",
+      "Every detailInventory detail maps to a component.localFeatures or material.localOverrides entry.",
+      "Repetition systems are declared, not improvised per-instance.",
+      "Unknown/rear regions stay marked inferred with low confidence."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec.",
+  "localSpecSearch": {
+    "collection": "core_3d",
+    "query": "Tactical Operator NPC",
+    "index": {
+      "status": "hit",
+      "reason": "current",
+      "fingerprint": "62f2831e1d52eeb6dbb94a87c44fa25b1f4926626a7b1f8c2bcadc63e04e9471"
+    },
+    "matches": []
+  }
+}

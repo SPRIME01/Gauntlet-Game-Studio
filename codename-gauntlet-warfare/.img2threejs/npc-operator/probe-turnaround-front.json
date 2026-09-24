@@ -1,0 +1,13 @@
+{
+  "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/derived/turnaround/front.png",
+  "type": "png",
+  "bytes": 230084,
+  "width": 304,
+  "height": 535,
+  "aspectRatio": 0.5682242990654206,
+  "technicalSuitability": "conditional",
+  "warnings": [
+    "low resolution; small geometry/material details may be unreliable"
+  ],
+  "note": "This is only technical image probing. Semantic object suitability still requires visual inspection."
+}

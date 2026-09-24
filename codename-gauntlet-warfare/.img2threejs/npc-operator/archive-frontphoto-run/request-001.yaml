@@ -1,0 +1,32 @@
+id: req-gauntlet-npc-operator-001
+project_id: codename-gauntlet-warfare
+capability_id: asset.reconstruct.reference-image
+intent: >-
+  Reconstruct the depicted faceless tactical operator (black combat uniform, plate carrier,
+  knee pads, gloves, boots) as a rig-mappable procedural Three.js NPC model authored in
+  neutral A-pose, with a named joint-aligned part hierarchy suitable for Blender skeleton
+  mapping and skeletal animation.
+acceptance:
+  - Measured silhouette similarity at least 0.75 against the front reference and no missing identity-defining part.
+  - At most 12000 triangles and one standard Three.js dependency.
+  - "Named rig-mappable hierarchy present: hips, spine, chest, neck, head; shoulder/upperarm/forearm/hand mirrored left/right; upperleg/lowerleg/foot mirrored left/right."
+  - Pivots of limb parts placed at anatomical joint centers; authored stance is the reference's neutral A-pose; left/right pairs are reflections, not rotations.
+  - Reconstruction data (named nodes, pivots, sockets) recorded as asset affordances and kept separate from renderer objects.
+  - Weapon socket socket-weapon present for attaching an existing weapon asset; no weapon geometry reconstructed.
+  - External reference pixels remain reference-only, never shipped production textures.
+inputs:
+  target_role: character
+  module_output_path: src/assets/operator-npc.ts
+  min_reference_similarity: 0.75
+  budget_limits: { max_triangles: 12000 }
+  references:
+    - id: operator-tactical-front
+      path: references/operator-tactical-front.jpg
+      provenance_class: reference-only-external
+      license: reference-only; source terms apply
+    - id: operator-tactical-side
+      path: references/operator-tactical-side.jpg
+      provenance_class: reference-only-external
+      license: reference-only; source terms apply
+preferred_provider: agent-skill.img2threejs
+reference_ids: [operator-tactical-front, operator-tactical-side]

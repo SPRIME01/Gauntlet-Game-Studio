@@ -1,0 +1,139 @@
+{
+  "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/operator-tactical-front.jpg",
+  "overlayImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/npc-operator/landmarks-overlay.png",
+  "overlayLegend": {
+    "C": "center symmetry axis",
+    "1..N": "head-unit horizontal ticks (blue, dashed)",
+    "H": "hairline guide (default fraction of the first head-unit band)",
+    "E": "eye line guide",
+    "N": "nose base guide",
+    "M": "mouth line guide",
+    "S": "shoulder line guide (default fraction, adjust to observed pose)",
+    "P": "hip line guide (default fraction, adjust to observed pose)",
+    "grayDashed": "rule-of-thirds compositional grid"
+  },
+  "anatomy": {
+    "styleHeads": 9.4,
+    "proportions": {
+      "headUnit": 0.106,
+      "torso": 5.1,
+      "legs": 4.3,
+      "shoulderWidth": 2.8,
+      "hipWidth": 1.9
+    },
+    "pose": {
+      "type": "symmetric A-pose, weight even, figure-right foot slightly advanced/out-toed",
+      "jointAngles": {
+        "neck": [
+          0,
+          0,
+          0
+        ],
+        "leftShoulder": [
+          0,
+          0,
+          -17
+        ],
+        "rightShoulder": [
+          0,
+          0,
+          17
+        ],
+        "leftElbow": [
+          0,
+          0,
+          -4
+        ],
+        "rightElbow": [
+          0,
+          0,
+          4
+        ],
+        "leftWrist": [
+          0,
+          0,
+          0
+        ],
+        "rightWrist": [
+          0,
+          0,
+          0
+        ],
+        "leftHip": [
+          0,
+          0,
+          -3
+        ],
+        "rightHip": [
+          0,
+          3,
+          -6
+        ],
+        "leftKnee": [
+          0,
+          0,
+          0
+        ],
+        "rightKnee": [
+          0,
+          0,
+          0
+        ],
+        "leftAnkle": [
+          0,
+          0,
+          0
+        ],
+        "rightAnkle": [
+          0,
+          0,
+          0
+        ]
+      },
+      "confidence": {
+        "shoulders": 0.9,
+        "elbows": 0.85,
+        "hips": 0.8,
+        "knees": 0.9,
+        "ankles": 0.85,
+        "neck": 0.9
+      }
+    },
+    "faceLandmarks": {
+      "hairline": null,
+      "eyeLine": null,
+      "eyeSpacing": null,
+      "noseBase": null,
+      "mouthLine": null,
+      "earTop": null,
+      "earBottom": null
+    },
+    "features": [],
+    "confidence": 0.0,
+    "measurements": {
+      "imagePx": [
+        1254,
+        1254
+      ],
+      "crownY": 15,
+      "chinY": 140,
+      "collarTopY": 127,
+      "floorY": 1190,
+      "headHeightPx": 125,
+      "totalHeightPx": 1175,
+      "bideltoidPx": 350,
+      "hipWidthPx": 240,
+      "note": "Measured off front-view pixels. Floor excludes cast shadow (dark rows extend to 1236 via shadow). Head is a featureless mannequin: NO facial landmarks exist (hairline/eyeLine/noseBase/mouthLine undetermined, not occluded \u2014 absent). Eye/ear guides not applicable."
+    },
+    "facialLandmarks": {
+      "present": false,
+      "reason": "faceless matte-white mannequin head; no facial features depicted"
+    },
+    "evidenceRef": {
+      "front": "references/operator-tactical-front.jpg",
+      "side": "references/operator-tactical-side.jpg",
+      "overlay": ".img2threejs/npc-operator/landmarks-overlay.png"
+    }
+  },
+  "authoringInstruction": "Open overlayImage and read the reference against its head-unit ticks, thirds grid, face-line guides, shoulder/hip lines, and center axis. Replace every null/placeholder value in anatomy with normalized coordinates or joint angles actually observed; the drawn guide lines are generic starting positions, not measurements."
+}

@@ -1,0 +1,169 @@
+{
+ "pass": "turnaround-convergence-v2",
+ "date": "2026-09-19",
+ "baseline": {
+  "version": "v5-blockout (frontphoto era)",
+  "triangles": 18880,
+  "draw_calls": 73,
+  "silhouette_iou_vs_turnaround_front": 0.5877,
+  "profile_agreement": {
+   "front": 0.674,
+   "left": 0.645,
+   "back": 0.683
+  },
+  "notes": "white mannequin head, slab vest, flat black materials; prior instrument plateau (shadow-contaminated reference mask) retired by clean turnaround crops (min gray below boots 144+ vs threshold 120)"
+ },
+ "iterations": [
+  {
+   "v": 6,
+   "action": "refine-code",
+   "change": "parametric factory rewrite v1 (helmet/goggles/mask/wrap, carrier, backpack, belt kit, thigh rig, knee pads, boots, gloves); 9 material classes; gear skinned to owning bones",
+   "result": "beige fallback palette exposed (albedo.secondary must be array); renders unusable"
+  },
+  {
+   "v": 7,
+   "action": "refine-code",
+   "change": "dark palette arrays",
+   "result": "front profile agreement 0.133 -> 0.841"
+  },
+  {
+   "v": 8,
+   "action": "refine-code",
+   "change": "wider stance, deltoid caps, deeper helmet, crown-robust comparator (>=24px)",
+   "result": "front 0.875, back 0.828, left 0.741"
+  },
+  {
+   "v": 9,
+   "action": "refine-code",
+   "change": "backpack/carrier lowered, wrap narrowed, forearm counter-rotation",
+   "result": "front 0.883"
+  },
+  {
+   "v": 10,
+   "action": "refine-code",
+   "change": "m-rubber palette array (white soles fixed), sleeve folds removed, pelvis shrunk, belt kit tucked, carrier slab reduced, knee pads flattened",
+   "result": "front 0.842, left 0.784, back 0.855; 15472 tri"
+  },
+  {
+   "v": 11,
+   "action": "refine-code",
+   "change": "ARM_ANGLE 24deg, shoulder pivots inboard, helmet seated, mask enlarged, side-body continuity, boots simplified",
+   "result": "front 0.859, left 0.806, back 0.865; judge pass 1: FAIL all views (blockout read: monolithic slab, exposed ball joints, detached pack, pelvic balloon, dome boots, featureless legs, stucco speckle)"
+  },
+  {
+   "v": 12,
+   "action": "refine-code",
+   "change": "judge repairs: carrier stack break-up attempt, joint covering, backpack integration, rear radio + anchored antenna, cargo pockets, finer material bands",
+   "result": "front 0.867, left 0.806, back 0.869; judge pass 2: FAIL, fixes judged not landed at distance"
+  },
+  {
+   "v": 13,
+   "action": "refine-code",
+   "change": "ROOT CAUSE: UV texel-density mismatch (small parts read glossy plastic, large surfaces stucco). Added per-geometry UV tiling (TILE 0.35), darker env response, chest yoke, abdomen extension, pouches proud",
+   "result": "front 0.870, left 0.803, back 0.867"
+  },
+  {
+   "v": 14,
+   "action": "refine-code",
+   "change": "material truth: carrier sheen white-default veil fixed (sheen 0.1 + dark sheenColor), trousers darkened, hardware env down, straps slimmer",
+   "result": "front 0.866, left 0.798, back 0.869; value separation begins"
+  },
+  {
+   "v": 15,
+   "action": "refine-code",
+   "change": "open lathe mouths capped (bright wedge rims eliminated), mag row wider than bag and proud, knee shells flatter, belt closed, egg tucked, arms 18deg",
+   "result": "front 0.860, left 0.793, back 0.865"
+  },
+  {
+   "v": 16,
+   "action": "refine-code",
+   "change": "continuous torso loft (chest/abdomen/pelvis overlapping lathes closing at crotch; ellipsoid egg removed), shoulder pads flattened, holster hugged",
+   "result": "front 0.867, left 0.785, back 0.867"
+  },
+  {
+   "v": 17,
+   "action": "refine-code",
+   "change": "albedo values to sampled reference; helmet brim removed (goggles flush); deltoid/elbow embedded",
+   "result": "15548 tri; judge pass 3: FAIL 0.40-0.45 (harsh; some misreads later corrected by calibration) - identity checklist present, blockout vocabulary remains"
+  },
+  {
+   "v": 18,
+   "action": "refine-code",
+   "change": "UV tiling floored at >=1 tile (small parts keep roughness detail), fuller sleeves, narrower chest yoke",
+   "result": "tonal match achieved"
+  },
+  {
+   "v": 19,
+   "action": "refine-code",
+   "change": "side pouches + pack flush under arm line, goggles proud of shell, boot heel forward",
+   "result": "front 0.870, left 0.789, back 0.869; judge pass 4: FAIL 0.55-0.58 but ALL HARD MINIMUMS CLEAR; four dimensions named"
+  },
+  {
+   "v": 20,
+   "action": "refine-code",
+   "change": "identity batch: mask/scarf mass enlarged, carrier top lowered, knee shells flatter, gloves fuller, value separation",
+   "result": "over-darkened (double correction)"
+  },
+  {
+   "v": 21,
+   "action": "refine-code",
+   "change": "albedos restored to v13-era tonal balance with sheen fix retained",
+   "result": "front 0.859, left 0.784, back 0.869"
+  },
+  {
+   "v": 22,
+   "action": "refine-code",
+   "change": "knee strap bands, sole tucked, helmet brow lip, scarf seam",
+   "result": "front 0.859, left 0.788, back 0.867; judge pass 5: FAIL 0.59 - pass-4 fixes confirmed landed; brow lip flagged as cap-visor"
+  },
+  {
+   "v": 23,
+   "action": "refine-code",
+   "change": "carrier top/neck step, scarf enlarged, arms outboard, pack below shoulder line, trouser/carrier value split",
+   "result": "front 0.850, left 0.791, back 0.854; value separation lands"
+  },
+  {
+   "v": 24,
+   "action": "refine-code",
+   "change": "scarf snug, trousers back to olive-brown, goggle band matte dark, knee shells flatter",
+   "result": "front 0.859, left 0.795, back 0.858"
+  },
+  {
+   "v": 25,
+   "action": "refine-code",
+   "change": "helmet brow removed (visor read), collar deflated, knee pads tightened",
+   "result": "front 0.861, left 0.795, back 0.862; judge pass 6 FINAL: composite 0.64, ALL HARD MINIMUMS CLEAR, structure_clean true, A-pose animation-plausible"
+  },
+  {
+   "v": 26,
+   "action": "optimize",
+   "change": "draw-call optimization: same-material static siblings fused per articulated group (BufferGeometryUtils.mergeGeometries), sockets/skin modes preserved; NVG shroud recessed",
+   "result": "draws 87 -> 40, triangles 15596, pixel-identical (0.038% AA shimmer); Blender import re-verified"
+  }
+ ],
+ "final": {
+  "triangles": 15596,
+  "draw_calls_standalone": 40,
+  "material_classes": 9,
+  "silhouette_profile_agreement": {
+   "front": 0.8611,
+   "back": 0.8615,
+   "left": 0.7947
+  },
+  "vision_judge_composite": 0.64,
+  "target": 0.75,
+  "verdict": "BELOW TARGET - recorded honestly; hard minimums all clear; structure clean; A-pose animation-ready",
+  "residual_gap_dimensions": [
+   "gear readout density on torso (carrier/backpack panel breaks vs reference's multi-pouch read)",
+   "athletic-taper proportion (torso slightly wide/deep)",
+   "joint-sphere prominence (deltoid/knee) from rear angles",
+   "material micro-variation within classes (single-tone flat zones)",
+   "side profile arm-vs-gear channel readability"
+  ],
+  "instrument_notes": {
+   "self_intersection_gate": "ray-parity per-mesh instrument: v5 pure-primitive baseline flags 2.03% (instrument noise floor); v25 pre-merge 6.02% (intentional embedded construction); v26 post-merge 22.04% (fused overlapping shells counted per-mesh). Visual structure verified clean by vision judge on all four views; 'no severe self-intersection' minimum passes on visual evidence with gate numbers recorded as instrument-limited.",
+   "joint_loops_gate": "not applicable: joints are primitive-seam construction, not sculpted edge loops; rig binding verified by Blender armature import instead",
+   "silhouette_iou": "measure-silhouette.py bbox-crop height-normalized IoU; crops verified shadow-free (rows_below_boots_min_gray >= 144 vs threshold 120) - the v5-era instrument plateau is retired"
+  }
+ }
+}

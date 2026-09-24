@@ -1,0 +1,1 @@
+{"blender_version": "5.2.2 LTS", "armatures": 1, "bones": ["abdomen", "chest", "foot-l", "foot-r", "head", "neck", "pelvis", "shin-l", "shin-r", "thigh-l", "thigh-r"], "missing_expected_bones": [], "meshes": 40, "skinned_meshes": 31, "triangles": 15596, "orphan_meshes": [], "importer_placeholders": ["Icosphere"], "ok": true}

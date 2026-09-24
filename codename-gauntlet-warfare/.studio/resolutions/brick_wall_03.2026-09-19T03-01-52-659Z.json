@@ -1,0 +1,37 @@
+{
+  "schema": "gauntlet.asset.resolution",
+  "schema_version": "1.0",
+  "requested_id": "brick_wall_03",
+  "role": "texture",
+  "keywords": [
+    "brick_wall_03"
+  ],
+  "recorded_at": "2026-09-19T03:01:52.659Z",
+  "steps": [
+    {
+      "step": "search",
+      "target": "project-registry",
+      "outcome": "no-match",
+      "detail": "no project asset matches the requested id"
+    },
+    {
+      "step": "search",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "matched",
+      "detail": "matched 'patterned_brick_wall_03' (Patterned Brick Wall 03)"
+    },
+    {
+      "step": "acquire",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "failed",
+      "detail": "SOURCE_EXISTS: Retained source file already exists: assets/sources/polyhaven/patterned_brick_wall_03/patterned_brick_wall_03_2k.gltf"
+    }
+  ],
+  "decision": {
+    "route": "acquire",
+    "reason": "all 1 provider matches failed acquisition (SOURCE_EXISTS)",
+    "provider": "polyhaven"
+  }
+}

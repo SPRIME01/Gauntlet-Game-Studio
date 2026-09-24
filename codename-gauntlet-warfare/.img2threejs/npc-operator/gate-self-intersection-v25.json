@@ -1,0 +1,2625 @@
+{
+  "selfIntersecting": true,
+  "meshCount": 87,
+  "insideVertexCount": 495,
+  "undecidedVertexCount": 14,
+  "sampledVertexCount": 8220,
+  "totalVertexCount": 8220,
+  "meshes": [
+    {
+      "name": "Hand l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 128,
+      "sampledVertexCount": 128,
+      "totalVertexCount": 128,
+      "samplingStride": 1,
+      "triangleCount": 252,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00012760123474496164,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knuckle plate l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 3,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 117,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 4,
+          "position": [
+            0.02162499912083149,
+            -0.03462500125169754,
+            0.01900000125169754
+          ]
+        },
+        {
+          "vertexIndex": 18,
+          "position": [
+            -0.02500000037252903,
+            -0.028999999165534973,
+            0.01900000125169754
+          ]
+        },
+        {
+          "vertexIndex": 27,
+          "position": [
+            0.02500000037252903,
+            -0.010999999940395355,
+            0.03700000047683716
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 7.432361471217698e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Elbow l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 128,
+      "sampledVertexCount": 128,
+      "totalVertexCount": 128,
+      "samplingStride": 1,
+      "triangleCount": 252,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00011962587716103973,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Forearm l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 54,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001984122115418595,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Sleeve cuff l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 30,
+      "sampledVertexCount": 30,
+      "totalVertexCount": 30,
+      "samplingStride": 1,
+      "triangleCount": 56,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.90103021676476e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Deltoid l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 178,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00017433577418517613,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Upper arm l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 1,
+      "outsideVertexCount": 53,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00024680631498226214,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Hand r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 128,
+      "sampledVertexCount": 128,
+      "totalVertexCount": 128,
+      "samplingStride": 1,
+      "triangleCount": 252,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00012760123474496164,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knuckle plate r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 3,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 117,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 4,
+          "position": [
+            0.02162499912083149,
+            -0.03462500125169754,
+            0.01900000125169754
+          ]
+        },
+        {
+          "vertexIndex": 18,
+          "position": [
+            -0.02500000037252903,
+            -0.028999999165534973,
+            0.01900000125169754
+          ]
+        },
+        {
+          "vertexIndex": 27,
+          "position": [
+            0.02500000037252903,
+            -0.010999999940395355,
+            0.03700000047683716
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 7.432361471217698e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Weapon attachment socket (hand-r grip)",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 3.464101537709049e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Elbow r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 128,
+      "sampledVertexCount": 128,
+      "totalVertexCount": 128,
+      "samplingStride": 1,
+      "triangleCount": 252,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00011962587716103973,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Forearm r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 54,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001984122115418595,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Sleeve cuff r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 30,
+      "sampledVertexCount": 30,
+      "totalVertexCount": 30,
+      "samplingStride": 1,
+      "triangleCount": 56,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.90103021676476e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Deltoid r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 178,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00017433577418517613,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Upper arm r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 1,
+      "outsideVertexCount": 53,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00024680631498226214,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Pelvis (trouser yoke)",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 100,
+      "sampledVertexCount": 100,
+      "totalVertexCount": 100,
+      "samplingStride": 1,
+      "triangleCount": 160,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0003134826228584503,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Duty belt",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 50,
+      "sampledVertexCount": 50,
+      "totalVertexCount": 50,
+      "samplingStride": 1,
+      "triangleCount": 96,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00034473641813759,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Belt buckle",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 3.800000573851675e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Belt pouch L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001081110640161085,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Dump pouch",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001265069230549635,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Belt pouch back L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00010739181302436302,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Belt pouch back R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.679361406272586e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Butt pack",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001641219040316458,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Abdomen",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 100,
+      "sampledVertexCount": 100,
+      "totalVertexCount": 100,
+      "samplingStride": 1,
+      "triangleCount": 160,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0003633687606587176,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Chest",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 1,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 139,
+      "sampledVertexCount": 140,
+      "totalVertexCount": 140,
+      "samplingStride": 1,
+      "triangleCount": 240,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 137,
+          "position": [
+            -0.034609902650117874,
+            -0.1599999964237213,
+            0.0905405804514885
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0004291276649560584,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Collar flare",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 6,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 48,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 2,
+          "position": [
+            0.0,
+            -0.19499999284744263,
+            0.05000000074505806
+          ]
+        },
+        {
+          "vertexIndex": 5,
+          "position": [
+            0.01710100658237934,
+            -0.19499999284744263,
+            0.046984631568193436
+          ]
+        },
+        {
+          "vertexIndex": 8,
+          "position": [
+            0.032139379531145096,
+            -0.19499999284744263,
+            0.0383022204041481
+          ]
+        },
+        {
+          "vertexIndex": 20,
+          "position": [
+            0.04330126941204071,
+            -0.19499999284744263,
+            -0.02500000037252903
+          ]
+        },
+        {
+          "vertexIndex": 23,
+          "position": [
+            0.032139379531145096,
+            -0.19499999284744263,
+            -0.0383022204041481
+          ]
+        },
+        {
+          "vertexIndex": 26,
+          "position": [
+            0.01710100658237934,
+            -0.19499999284744263,
+            -0.046984631568193436
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0002722800987636427,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Carrier front plate bag",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 116,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 17,
+          "position": [
+            -0.08375000208616257,
+            -0.3382500112056732,
+            0.07800000160932541
+          ]
+        },
+        {
+          "vertexIndex": 18,
+          "position": [
+            -0.08500000089406967,
+            -0.3294999897480011,
+            0.07800000160932541
+          ]
+        },
+        {
+          "vertexIndex": 27,
+          "position": [
+            0.08500000089406967,
+            -0.25450000166893005,
+            0.12200000137090683
+          ]
+        },
+        {
+          "vertexIndex": 28,
+          "position": [
+            0.08375000208616257,
+            -0.24574999511241913,
+            0.12200000137090683
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0002235195797999358,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Carrier MOLLE ridge A",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00015056560676571302,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Carrier MOLLE ridge B",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00015056560676571302,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Carrier MOLLE ridge C",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00015056560676571302,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Mag pouch 1",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001367625579263457,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Mag flap 1",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.608340679533527e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Mag pouch 2",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013676256010547433,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Mag flap 2",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.608340966442041e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Mag pouch 3",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001367625579263457,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Mag flap 3",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.608340679533527e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Radio pouch",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 1,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 119,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 4,
+          "position": [
+            -0.07540097087621689,
+            -0.23844671249389648,
+            0.10700000077486038
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00010343817728606325,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Radio cable",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 12,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 92,
+      "sampledVertexCount": 104,
+      "totalVertexCount": 104,
+      "samplingStride": 1,
+      "triangleCount": 192,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 15,
+          "position": [
+            -0.08425996452569962,
+            -0.16382066905498505,
+            0.10375434160232544
+          ]
+        },
+        {
+          "vertexIndex": 23,
+          "position": [
+            -0.08145967125892639,
+            -0.15375332534313202,
+            0.10008874535560608
+          ]
+        },
+        {
+          "vertexIndex": 31,
+          "position": [
+            -0.07871279120445251,
+            -0.14376115798950195,
+            0.09649095684289932
+          ]
+        },
+        {
+          "vertexIndex": 39,
+          "position": [
+            -0.07585424929857254,
+            -0.1339709311723709,
+            0.09275796264410019
+          ]
+        },
+        {
+          "vertexIndex": 47,
+          "position": [
+            -0.07271748036146164,
+            -0.12454729527235031,
+            0.08868563175201416
+          ]
+        },
+        {
+          "vertexIndex": 54,
+          "position": [
+            -0.07180643826723099,
+            -0.11534886062145233,
+            0.08262685686349869
+          ]
+        },
+        {
+          "vertexIndex": 55,
+          "position": [
+            -0.06913087517023087,
+            -0.11573091894388199,
+            0.08406489342451096
+          ]
+        },
+        {
+          "vertexIndex": 62,
+          "position": [
+            -0.0675613209605217,
+            -0.1073540449142456,
+            0.07720211148262024
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001388903975215582,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Carrier side pouch L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013566132745333718,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Carrier side pouch R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013566132745333718,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Shoulder strap L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 100,
+      "sampledVertexCount": 104,
+      "totalVertexCount": 104,
+      "samplingStride": 1,
+      "triangleCount": 192,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 69,
+          "position": [
+            0.07718892395496368,
+            -0.17310087382793427,
+            0.0002145610487787053
+          ]
+        },
+        {
+          "vertexIndex": 77,
+          "position": [
+            0.07574915140867233,
+            -0.17426180839538574,
+            -0.011891918256878853
+          ]
+        },
+        {
+          "vertexIndex": 85,
+          "position": [
+            0.07379072159528732,
+            -0.1760539561510086,
+            -0.024705536663532257
+          ]
+        },
+        {
+          "vertexIndex": 95,
+          "position": [
+            0.0954497903585434,
+            -0.17884771525859833,
+            -0.04169774800539017
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00018232376113504737,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Shoulder strap R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 8,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 96,
+      "sampledVertexCount": 104,
+      "totalVertexCount": 104,
+      "samplingStride": 1,
+      "triangleCount": 192,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 16,
+          "position": [
+            -0.061962585896253586,
+            -0.17881694436073303,
+            0.07144477218389511
+          ]
+        },
+        {
+          "vertexIndex": 22,
+          "position": [
+            -0.07865799218416214,
+            -0.19592790305614471,
+            0.06889954209327698
+          ]
+        },
+        {
+          "vertexIndex": 24,
+          "position": [
+            -0.06533261388540268,
+            -0.17374654114246368,
+            0.0594152994453907
+          ]
+        },
+        {
+          "vertexIndex": 30,
+          "position": [
+            -0.08201862126588821,
+            -0.19087165594100952,
+            0.05690385028719902
+          ]
+        },
+        {
+          "vertexIndex": 32,
+          "position": [
+            -0.06842811405658722,
+            -0.16904041171073914,
+            0.04752897471189499
+          ]
+        },
+        {
+          "vertexIndex": 79,
+          "position": [
+            -0.07574915140867233,
+            -0.17426180839538574,
+            -0.011891918256878853
+          ]
+        },
+        {
+          "vertexIndex": 87,
+          "position": [
+            -0.07379072159528732,
+            -0.1760539561510086,
+            -0.024705536663532257
+          ]
+        },
+        {
+          "vertexIndex": 95,
+          "position": [
+            -0.07166685163974762,
+            -0.17801623046398163,
+            -0.03828011080622673
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00018232376113504737,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Shoulder pad L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 2,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 118,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 42,
+          "position": [
+            0.10429175198078156,
+            -0.1827397495508194,
+            -0.0494999997317791
+          ]
+        },
+        {
+          "vertexIndex": 82,
+          "position": [
+            0.05970824509859085,
+            -0.1532602459192276,
+            0.03349999710917473
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001178282801122876,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Shoulder pad R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 2,
+      "undecidedVertexCount": 2,
+      "outsideVertexCount": 116,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 42,
+          "position": [
+            -0.056203242391347885,
+            -0.17497925460338593,
+            -0.0494999997317791
+          ]
+        },
+        {
+          "vertexIndex": 82,
+          "position": [
+            -0.10779675841331482,
+            -0.16102075576782227,
+            0.03349999710917473
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001178282801122876,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Sternum strap",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 5.4194099587568115e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Backpack body",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00033743740162439086,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Backpack side pouch L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 116,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 11,
+          "position": [
+            0.1080000028014183,
+            -0.23499999940395355,
+            -0.10199999809265137
+          ]
+        },
+        {
+          "vertexIndex": 14,
+          "position": [
+            0.10362499952316284,
+            -0.2356249988079071,
+            -0.10199999809265137
+          ]
+        },
+        {
+          "vertexIndex": 22,
+          "position": [
+            0.13600000739097595,
+            -0.36500000953674316,
+            -0.053999997675418854
+          ]
+        },
+        {
+          "vertexIndex": 23,
+          "position": [
+            0.14037500321865082,
+            -0.3643749952316284,
+            -0.053999997675418854
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00015895911156358473,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Backpack side pouch R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 116,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 11,
+          "position": [
+            -0.13600000739097595,
+            -0.23499999940395355,
+            -0.10199999809265137
+          ]
+        },
+        {
+          "vertexIndex": 14,
+          "position": [
+            -0.14037500321865082,
+            -0.2356249988079071,
+            -0.10199999809265137
+          ]
+        },
+        {
+          "vertexIndex": 22,
+          "position": [
+            -0.1080000028014183,
+            -0.36500000953674316,
+            -0.053999997675418854
+          ]
+        },
+        {
+          "vertexIndex": 23,
+          "position": [
+            -0.10362499952316284,
+            -0.3643749952316284,
+            -0.053999997675418854
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00015895911156358473,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Rear radio pouch",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00010594337821676058,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Antenna base",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 22,
+      "sampledVertexCount": 22,
+      "totalVertexCount": 22,
+      "samplingStride": 1,
+      "triangleCount": 40,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 3.6356327126451573e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Antenna",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 18,
+      "sampledVertexCount": 18,
+      "totalVertexCount": 18,
+      "samplingStride": 1,
+      "triangleCount": 32,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00017283205204355644,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Neck",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 58,
+      "sampledVertexCount": 58,
+      "totalVertexCount": 58,
+      "samplingStride": 1,
+      "triangleCount": 112,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00016421594568137693,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Head (skull)",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 2,
+      "outsideVertexCount": 176,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00015213481309388595,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Helmet shell",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 2,
+      "outsideVertexCount": 176,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0002185497780428201,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Helmet NVG shroud",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 4.200000209467757e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Helmet rail L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 2,
+      "outsideVertexCount": 6,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 8.684468959370069e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Helmet rail R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 2,
+      "outsideVertexCount": 6,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 8.684468959370069e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Goggle band",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 106,
+      "undecidedVertexCount": 2,
+      "outsideVertexCount": 156,
+      "sampledVertexCount": 264,
+      "totalVertexCount": 264,
+      "samplingStride": 1,
+      "triangleCount": 528,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 62,
+          "position": [
+            0.02928260527551174,
+            -0.0798543319106102,
+            -0.05891014635562897
+          ]
+        },
+        {
+          "vertexIndex": 89,
+          "position": [
+            0.0544128455221653,
+            -0.0798543319106102,
+            0.0196756012737751
+          ]
+        },
+        {
+          "vertexIndex": 113,
+          "position": [
+            0.033834148198366165,
+            -0.07738000154495239,
+            0.0423099584877491
+          ]
+        },
+        {
+          "vertexIndex": 129,
+          "position": [
+            0.033834148198366165,
+            -0.07738000154495239,
+            -0.034309957176446915
+          ]
+        },
+        {
+          "vertexIndex": 142,
+          "position": [
+            -0.04780194163322449,
+            -0.07400000095367432,
+            0.01777108758687973
+          ]
+        },
+        {
+          "vertexIndex": 155,
+          "position": [
+            0.04957332834601402,
+            -0.07062000036239624,
+            0.018281400203704834
+          ]
+        },
+        {
+          "vertexIndex": 169,
+          "position": [
+            -0.021462902426719666,
+            -0.07062000036239624,
+            -0.04211046174168587
+          ]
+        },
+        {
+          "vertexIndex": 191,
+          "position": [
+            -0.02355818636715412,
+            -0.06814566999673843,
+            -0.04661192372441292
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00021615245784381755,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Goggle lens L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 34,
+      "sampledVertexCount": 34,
+      "totalVertexCount": 34,
+      "samplingStride": 1,
+      "triangleCount": 64,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 6.8614864595834e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Goggle lens R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 34,
+      "sampledVertexCount": 34,
+      "totalVertexCount": 34,
+      "samplingStride": 1,
+      "triangleCount": 64,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 6.8614864595834e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Face covering",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 178,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00019877459292681683,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Neck wrap (upper)",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 90,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 174,
+      "sampledVertexCount": 264,
+      "totalVertexCount": 264,
+      "samplingStride": 1,
+      "triangleCount": 528,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 68,
+          "position": [
+            0.048792704939842224,
+            -0.17399999499320984,
+            0.0333571694791317
+          ]
+        },
+        {
+          "vertexIndex": 106,
+          "position": [
+            0.01910909079015255,
+            -0.1707846075296402,
+            -0.03984307125210762
+          ]
+        },
+        {
+          "vertexIndex": 120,
+          "position": [
+            -0.035707905888557434,
+            -0.16200000047683716,
+            0.012484787032008171
+          ]
+        },
+        {
+          "vertexIndex": 131,
+          "position": [
+            0.035707905888557434,
+            -0.16200000047683716,
+            -0.008484786376357079
+          ]
+        },
+        {
+          "vertexIndex": 142,
+          "position": [
+            -0.03262276202440262,
+            -0.15000000596046448,
+            0.011578907258808613
+          ]
+        },
+        {
+          "vertexIndex": 153,
+          "position": [
+            0.03262276202440262,
+            -0.15000000596046448,
+            -0.007578907068818808
+          ]
+        },
+        {
+          "vertexIndex": 164,
+          "position": [
+            -0.035707905888557434,
+            -0.1379999965429306,
+            0.012484787032008171
+          ]
+        },
+        {
+          "vertexIndex": 183,
+          "position": [
+            -0.01910909079015255,
+            -0.12921538949012756,
+            0.04384307190775871
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0002356931531528441,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Thigh l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 100,
+      "sampledVertexCount": 100,
+      "totalVertexCount": 100,
+      "samplingStride": 1,
+      "triangleCount": 160,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00032715665339255734,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Admin pouch L",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 8.740708058398836e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knee pad l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 7,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 171,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 52,
+          "position": [
+            0.05376073345541954,
+            -0.7394999861717224,
+            0.03800154849886894
+          ]
+        },
+        {
+          "vertexIndex": 71,
+          "position": [
+            0.10346762090921402,
+            -0.7493883967399597,
+            0.0362451896071434
+          ]
+        },
+        {
+          "vertexIndex": 87,
+          "position": [
+            0.10464823246002197,
+            -0.7599999904632568,
+            0.03660660237073898
+          ]
+        },
+        {
+          "vertexIndex": 95,
+          "position": [
+            0.035351768136024475,
+            -0.7599999904632568,
+            0.015393397770822048
+          ]
+        },
+        {
+          "vertexIndex": 108,
+          "position": [
+            0.08811254799365997,
+            -0.770611584186554,
+            0.012614012695848942
+          ]
+        },
+        {
+          "vertexIndex": 111,
+          "position": [
+            0.03653237968683243,
+            -0.770611584186554,
+            0.015754809603095055
+          ]
+        },
+        {
+          "vertexIndex": 124,
+          "position": [
+            0.08623926341533661,
+            -0.7804999947547913,
+            0.013998451642692089
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013125549093511357,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knee pad strap top l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.769851571940079e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Cargo pocket l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001317535717402527,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Cargo flap l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 8.302857599822346e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Thigh r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 100,
+      "sampledVertexCount": 100,
+      "totalVertexCount": 100,
+      "samplingStride": 1,
+      "triangleCount": 160,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00032715665339255734,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Holster body",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 5,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 115,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 11,
+          "position": [
+            -0.10130463540554047,
+            -0.5283668637275696,
+            0.02008315548300743
+          ]
+        },
+        {
+          "vertexIndex": 13,
+          "position": [
+            -0.11021088808774948,
+            -0.5316258668899536,
+            0.019843410700559616
+          ]
+        },
+        {
+          "vertexIndex": 14,
+          "position": [
+            -0.1065298467874527,
+            -0.5292716026306152,
+            0.020023219287395477
+          ]
+        },
+        {
+          "vertexIndex": 23,
+          "position": [
+            -0.06947015225887299,
+            -0.6807283759117126,
+            0.06397677958011627
+          ]
+        },
+        {
+          "vertexIndex": 24,
+          "position": [
+            -0.0657891109585762,
+            -0.6783741116523743,
+            0.06415659189224243
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00018709387059070458,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Holster strap A",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 106,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 158,
+      "sampledVertexCount": 264,
+      "totalVertexCount": 264,
+      "samplingStride": 1,
+      "triangleCount": 528,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 66,
+          "position": [
+            -0.008000001311302185,
+            -0.5820000171661377,
+            4.286263818611965e-19
+          ]
+        },
+        {
+          "vertexIndex": 93,
+          "position": [
+            -0.0616745799779892,
+            -0.5810621976852417,
+            0.057904552668333054
+          ]
+        },
+        {
+          "vertexIndex": 116,
+          "position": [
+            -0.0779607817530632,
+            -0.578499972820282,
+            0.05536845698952675
+          ]
+        },
+        {
+          "vertexIndex": 129,
+          "position": [
+            -0.033368516713380814,
+            -0.578499972820282,
+            -0.04227498546242714
+          ]
+        },
+        {
+          "vertexIndex": 142,
+          "position": [
+            -0.12277211248874664,
+            -0.574999988079071,
+            0.015495290979743004
+          ]
+        },
+        {
+          "vertexIndex": 155,
+          "position": [
+            -0.016328051686286926,
+            -0.5715000033378601,
+            0.015759505331516266
+          ]
+        },
+        {
+          "vertexIndex": 168,
+          "position": [
+            -0.10663148015737534,
+            -0.5715000033378601,
+            -0.04227498546242714
+          ]
+        },
+        {
+          "vertexIndex": 187,
+          "position": [
+            -0.12849999964237213,
+            -0.5689378380775452,
+            6.7929825525753245e-18
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00019467483066808438,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Holster strap B",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 104,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 160,
+      "sampledVertexCount": 264,
+      "totalVertexCount": 264,
+      "samplingStride": 1,
+      "triangleCount": 528,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 66,
+          "position": [
+            -0.012000001966953278,
+            -0.6470000147819519,
+            4.286263818611965e-19
+          ]
+        },
+        {
+          "vertexIndex": 94,
+          "position": [
+            -0.07775615900754929,
+            -0.6460621953010559,
+            0.05394526943564415
+          ]
+        },
+        {
+          "vertexIndex": 117,
+          "position": [
+            -0.0915757492184639,
+            -0.6434999704360962,
+            0.04724430665373802
+          ]
+        },
+        {
+          "vertexIndex": 130,
+          "position": [
+            -0.0263071246445179,
+            -0.6434999704360962,
+            -0.02807970717549324
+          ]
+        },
+        {
+          "vertexIndex": 143,
+          "position": [
+            -0.12099999934434891,
+            -0.6399999856948853,
+            6.245698766204621e-18
+          ]
+        },
+        {
+          "vertexIndex": 156,
+          "position": [
+            -0.0263071246445179,
+            -0.6365000009536743,
+            0.02807970717549324
+          ]
+        },
+        {
+          "vertexIndex": 169,
+          "position": [
+            -0.0915757492184639,
+            -0.6365000009536743,
+            -0.04724430665373802
+          ]
+        },
+        {
+          "vertexIndex": 189,
+          "position": [
+            -0.11584831774234772,
+            -0.6339378356933594,
+            -0.029464924708008766
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00018344948193321672,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Thigh pouch R",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 120,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00010033940424221558,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knee pad r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 7,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 171,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 52,
+          "position": [
+            -0.08623926341533661,
+            -0.7394999861717224,
+            0.03800154849886894
+          ]
+        },
+        {
+          "vertexIndex": 71,
+          "position": [
+            -0.03653237968683243,
+            -0.7493883967399597,
+            0.0362451896071434
+          ]
+        },
+        {
+          "vertexIndex": 87,
+          "position": [
+            -0.035351768136024475,
+            -0.7599999904632568,
+            0.03660660237073898
+          ]
+        },
+        {
+          "vertexIndex": 95,
+          "position": [
+            -0.10464823246002197,
+            -0.7599999904632568,
+            0.015393397770822048
+          ]
+        },
+        {
+          "vertexIndex": 108,
+          "position": [
+            -0.051887452602386475,
+            -0.770611584186554,
+            0.012614012695848942
+          ]
+        },
+        {
+          "vertexIndex": 111,
+          "position": [
+            -0.10346762090921402,
+            -0.770611584186554,
+            0.015754809603095055
+          ]
+        },
+        {
+          "vertexIndex": 124,
+          "position": [
+            -0.05376073345541954,
+            -0.7804999947547913,
+            0.013998451642692089
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013125549093511357,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knee pad strap top r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.769851571940079e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Cargo pocket r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 116,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 56,
+          "position": [
+            -0.09996398538351059,
+            -0.6357512474060059,
+            -0.023919133469462395
+          ]
+        },
+        {
+          "vertexIndex": 57,
+          "position": [
+            -0.09822165966033936,
+            -0.6358553171157837,
+            -0.020511941984295845
+          ]
+        },
+        {
+          "vertexIndex": 98,
+          "position": [
+            -0.13377833366394043,
+            -0.5641446709632874,
+            0.036511942744255066
+          ]
+        },
+        {
+          "vertexIndex": 99,
+          "position": [
+            -0.1320360153913498,
+            -0.5642487406730652,
+            0.039919134229421616
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001317535717402527,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Cargo flap r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 8.302857599822346e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Shin l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 80,
+      "sampledVertexCount": 80,
+      "totalVertexCount": 80,
+      "samplingStride": 1,
+      "triangleCount": 120,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00020155643483580856,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knee pad strap bottom l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.24770330475333e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Shin r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 80,
+      "sampledVertexCount": 80,
+      "totalVertexCount": 80,
+      "samplingStride": 1,
+      "triangleCount": 120,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00020155643483580856,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Knee pad strap bottom r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 8,
+      "sampledVertexCount": 8,
+      "totalVertexCount": 8,
+      "samplingStride": 1,
+      "triangleCount": 12,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 9.24770330475333e-05,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Boot shaft l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 54,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013392541898095233,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Boot foot l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 174,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 15,
+          "position": [
+            0.06200234591960907,
+            -0.9390063881874084,
+            0.029361894354224205
+          ]
+        },
+        {
+          "vertexIndex": 30,
+          "position": [
+            0.06163836643099785,
+            -0.9414879083633423,
+            0.008576249703764915
+          ]
+        },
+        {
+          "vertexIndex": 150,
+          "position": [
+            0.0783616304397583,
+            -0.9845120906829834,
+            0.07742375135421753
+          ]
+        },
+        {
+          "vertexIndex": 167,
+          "position": [
+            0.07799765467643738,
+            -0.9869936108589172,
+            0.05663810670375824
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001797770306283647,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Boot sole l",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 2,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 118,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 42,
+          "position": [
+            0.10535533726215363,
+            -1.003999948501587,
+            -0.03550000488758087
+          ]
+        },
+        {
+          "vertexIndex": 82,
+          "position": [
+            0.034644659608602524,
+            -0.9739999771118164,
+            0.10750000178813934
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00018309832759512393,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Boot shaft r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": false,
+      "insideVertexCount": 0,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 54,
+      "sampledVertexCount": 54,
+      "totalVertexCount": 54,
+      "samplingStride": 1,
+      "triangleCount": 72,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00013392541898095233,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Boot foot r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 4,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 174,
+      "sampledVertexCount": 178,
+      "totalVertexCount": 178,
+      "samplingStride": 1,
+      "triangleCount": 352,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 15,
+          "position": [
+            -0.07799765467643738,
+            -0.9390063881874084,
+            0.029361894354224205
+          ]
+        },
+        {
+          "vertexIndex": 30,
+          "position": [
+            -0.0783616304397583,
+            -0.9414879083633423,
+            0.008576249703764915
+          ]
+        },
+        {
+          "vertexIndex": 150,
+          "position": [
+            -0.06163836643099785,
+            -0.9845120906829834,
+            0.07742375135421753
+          ]
+        },
+        {
+          "vertexIndex": 167,
+          "position": [
+            -0.06200234591960907,
+            -0.9869936108589172,
+            0.05663810670375824
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.0001797770306283647,
+      "rayDirectionCount": 3
+    },
+    {
+      "name": "Boot sole r",
+      "analyzed": true,
+      "error": null,
+      "selfIntersecting": true,
+      "insideVertexCount": 2,
+      "undecidedVertexCount": 0,
+      "outsideVertexCount": 118,
+      "sampledVertexCount": 120,
+      "totalVertexCount": 120,
+      "samplingStride": 1,
+      "triangleCount": 236,
+      "degenerateTriangleCount": 0,
+      "worstRegions": [
+        {
+          "vertexIndex": 42,
+          "position": [
+            -0.034644659608602524,
+            -1.003999948501587,
+            -0.03550000488758087
+          ]
+        },
+        {
+          "vertexIndex": 82,
+          "position": [
+            -0.10535533726215363,
+            -0.9739999771118164,
+            0.10750000178813934
+          ]
+        }
+      ],
+      "normalSource": "centroid",
+      "normalFallbackCount": 0,
+      "epsilon": 0.00018309832759512393,
+      "rayDirectionCount": 3
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,86 @@
+{
+  "ok": true,
+  "verdict": "pass",
+  "confidence": 0.812,
+  "estimatedFidelity": 0.812,
+  "targetThreshold": 0.7,
+  "materialId": "receiver",
+  "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/receiver.png",
+  "outDir": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver",
+  "palette": [
+    "#39393B",
+    "#434345",
+    "#2A2A2B",
+    "#171718",
+    "#727171"
+  ],
+  "maps": {
+    "albedo": {
+      "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_albedo.png",
+      "url": "receiver_albedo.png",
+      "channel": "albedo",
+      "source": "reference-pixel-extraction"
+    },
+    "roughness": {
+      "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_roughness.png",
+      "url": "receiver_roughness.png",
+      "channel": "roughness",
+      "source": "reference-pixel-extraction"
+    },
+    "height": {
+      "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_height.png",
+      "url": "receiver_height.png",
+      "channel": "height",
+      "source": "reference-pixel-extraction"
+    },
+    "normal": {
+      "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_normal.png",
+      "url": "receiver_normal.png",
+      "channel": "normal",
+      "source": "reference-pixel-extraction"
+    },
+    "ao": {
+      "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_ao.png",
+      "url": "receiver_ao.png",
+      "channel": "ao",
+      "source": "reference-pixel-extraction"
+    }
+  },
+  "diagnostics": {
+    "sourceWidth": 783,
+    "sourceHeight": 417,
+    "mapSize": 1024,
+    "cropBBoxPixels": {
+      "x": 0,
+      "y": 0,
+      "width": 783,
+      "height": 417
+    },
+    "mask": {
+      "backgroundColor": "#FFFFFF",
+      "backgroundNoise": 0.0,
+      "transparentPixelFraction": 0.0,
+      "foregroundCoverage": 0.8987
+    },
+    "mapStats": {
+      "valueRange": 0.184,
+      "heightP90Gradient": 0.09621,
+      "roughnessBase": 0.718,
+      "roughnessVariation": 0.179,
+      "normalStrength": 0.269,
+      "blurRadius": 21
+    },
+    "palette": [
+      "#39393B",
+      "#434345",
+      "#2A2A2B",
+      "#171718",
+      "#727171"
+    ]
+  },
+  "warnings": [
+    "single-image inverse rendering cannot prove true physical PBR; confidence is capped",
+    "low value range weakens height/roughness inference"
+  ],
+  "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review"
+}

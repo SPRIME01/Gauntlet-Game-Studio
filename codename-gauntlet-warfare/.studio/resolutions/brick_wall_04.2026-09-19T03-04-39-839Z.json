@@ -1,0 +1,37 @@
+{
+  "schema": "gauntlet.asset.resolution",
+  "schema_version": "1.0",
+  "requested_id": "brick_wall_04",
+  "role": "texture",
+  "keywords": [
+    "brick_wall_04"
+  ],
+  "recorded_at": "2026-09-19T03:04:39.839Z",
+  "steps": [
+    {
+      "step": "search",
+      "target": "project-registry",
+      "outcome": "no-match",
+      "detail": "no project asset matches the requested id"
+    },
+    {
+      "step": "search",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "matched",
+      "detail": "matched 'brick_wall_04' (Brick Wall 04)"
+    },
+    {
+      "step": "acquire",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "failed",
+      "detail": "UNEXPECTED_PAYLOAD: Poly Haven texture 'brick_wall_04' map 'diffuse' has no usable resolution entry"
+    }
+  ],
+  "decision": {
+    "route": "acquire",
+    "reason": "all 1 provider matches failed acquisition (UNEXPECTED_PAYLOAD)",
+    "provider": "polyhaven"
+  }
+}

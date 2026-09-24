@@ -1,0 +1,69 @@
+ Particle system powered by three.quarks. https://quarks.art/
+{
+  "status": "failed",
+  "operation": "studio.capability.verify-result",
+  "result": {
+    "ok": false,
+    "checks": [
+      {
+        "id": "RESULT_SCHEMA",
+        "status": "pass",
+        "detail": "CapabilityResult 'res-req-gauntlet-npc-operator-002' satisfies studio contracts"
+      },
+      {
+        "id": "REQUEST_CORRELATION",
+        "status": "pass",
+        "detail": "result 'res-req-gauntlet-npc-operator-002' correlates with request 'req-gauntlet-npc-operator-002' (capability asset.reconstruct.reference-image)"
+      },
+      {
+        "id": "PROVIDER_BINDING",
+        "status": "pass",
+        "detail": "accepted output bound to agent-skill.img2threejs"
+      },
+      {
+        "id": "ARTIFACT_INTEGRITY",
+        "status": "pass",
+        "detail": "committed module artifact present and hash-verified: src/assets/operator-npc.ts"
+      },
+      {
+        "id": "MODULE_SYNTAX",
+        "status": "pass",
+        "detail": "module parses cleanly (TypeScript)"
+      },
+      {
+        "id": "MODULE_IMPORTS",
+        "status": "pass",
+        "detail": "imports resolve against 'three' only; no network APIs; no gameplay/state imports"
+      },
+      {
+        "id": "THREE_RESOLUTION_GUARD",
+        "status": "fail",
+        "detail": "MULTIPLE_THREE_INSTALLATIONS: Compatibility guard failed: accepted output would resolve against 2 distinct three installations (/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/node_modules/three, /home/sprime01/projects/gauntlet-game-studio/node_modules/.bun/three@0.170.0/node_modules/three); exactly one standard installation is allowed"
+      },
+      {
+        "id": "OFFLINE_VERIFICATION",
+        "status": "pass",
+        "detail": "recorded run declares zero model invocation and zero network access; verification path is offline by construction (no network imports, no credential reads)"
+      },
+      {
+        "id": "REFERENCE_PROVENANCE",
+        "status": "pass",
+        "detail": "reference 'turnaround-front' provenance class 'reference-only-operator-supplied' registered reference-only and distinct from production records (REQ-ASSET-004)"
+      }
+    ],
+    "recomputed": {
+      "pinned_three": null
+    }
+  },
+  "diagnostics": {
+    "verified": false,
+    "capability": "asset.reconstruct.reference-image",
+    "result_file": ".studio/results/npc-operator.yaml",
+    "deterministic": true,
+    "model_invocation": "none",
+    "network_access": "none",
+    "failed_checks": [
+      "THREE_RESOLUTION_GUARD"
+    ]
+  }
+}

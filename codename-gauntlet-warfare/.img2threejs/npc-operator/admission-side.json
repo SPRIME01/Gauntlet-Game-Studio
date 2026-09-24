@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "side",
+    "sourcePath": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/operator-tactical-side.jpg",
+    "width": 1254,
+    "height": 1254,
+    "foregroundCoverage": 0.0866,
+    "largestComponentFraction": 1.0,
+    "pHash": 13811061938412694049,
+    "duplicateOfHash": null
+  }
+}

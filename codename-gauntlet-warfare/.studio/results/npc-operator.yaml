@@ -1,0 +1,60 @@
+{
+ "id": "res-req-gauntlet-npc-operator-002",
+ "request_id": "req-gauntlet-npc-operator-002",
+ "provider": "agent-skill.img2threejs",
+ "status": "success",
+ "artifacts": [
+  {
+   "role": "procedural_three_module",
+   "path": "src/assets/operator-npc.ts",
+   "sha256": "0aadf6add570117b4f84aefa7ac941dcc0165dec9f7db7ca9f56539aeb829835"
+  },
+  {
+   "role": "asset_record",
+   "path": "assets/manifest.json",
+   "sha256": "7fe4f2c1b3c6d0abdd77e59ae53790ca7c57fd89f6ded3fb7cac48301aca34fb"
+  },
+  {
+   "role": "verification_evidence",
+   "path": ".img2threejs/npc-operator/render/v26-optimized/review.json",
+   "sha256": "d4ba4872585fd2f7e62ec9bd5ee5ce668dde2e78bfab8f701ded7f7f8e6dade0"
+  }
+ ],
+ "diagnostics": {
+  "settled_skill": "img2threejs",
+  "acceptance_evaluated": [
+   "Weighted composite fidelity (30% silhouette+anatomy, 25% equipment placement/proportion, 15% side/back volumetric agreement, 15% material readability, 10% secondary gear, 5% fine detail) with hard minimums: recognizable operator design without the reference beside it; believable front+profile proportions; no missing major gear category (helmet, goggles, face covering, collar, carrier, pouches, belt, thigh rig, knee pads, boots, gloves, pack); no placeholder/blockout-looking primary forms; front/back carrier structures distinct; boots/gloves/helmet/knee pads/pouches authored; material classes visibly separate (fabric/nylon/polymer/metal/lens); no broken limb hierarchy; no detached components; no severe self-intersection; A-pose animation-ready; Blender import verified.",
+   "Recomputed 8x8 silhouette IoU against the front turnaround crop at least 0.75; per-view profile agreement recorded for front/back/left; residual gap dimensions recorded when below target (no silent threshold lowering).",
+   "Deterministic recomputed triangle count within budget_limits; measured standalone draw calls recorded.",
+   "Named rig-mappable hierarchy and joint-aligned pivots preserved; L/R mirrored (equipment asymmetry allowed: thigh rig, radio, antenna).",
+   "Weapon socket socket-weapon present under hand-r; no weapon geometry reconstructed into the body mesh.",
+   "External reference pixels remain reference-only, never shipped production textures.",
+   "Blender headless import verified: 1 armature, 11 expected bones, no orphan authored meshes, skinned meshes with armature modifiers."
+  ],
+  "capability_id": "asset.reconstruct.reference-image",
+  "verification": {
+   "model_invocation": "none",
+   "network_access": "none",
+   "note": "deterministic offline CLI verification path; agent-executed reconstruction evidence recorded under .img2threejs/npc-operator/",
+   "budget_measurements": {
+    "measured_triangles": 15596,
+    "measured_draw_calls_standalone": 40
+   },
+   "blender_import": {
+    "armatures": 1,
+    "bones": 11,
+    "meshes": 40,
+    "skinned_meshes": 31,
+    "ok": true,
+    "evidence": ".img2threejs/npc-operator/blender-verify-v26.json"
+   },
+   "per_view_profile_agreement": {
+    "front": 0.8611,
+    "back": 0.8615,
+    "left": 0.7947
+   },
+   "vision_judge_composite_estimate": 0.64,
+   "known_environment_blocker": "THREE_RESOLUTION_GUARD counts the game project standalone install (settled T05 independence invariant) and the monorepo bun isolated-store copy of the same pinned three@0.170.0 as 2 installations; deep checks (MODULE_RUNTIME/SEMANTIC_AFFORDANCES/REFERENCE_COMPARISON/BUDGET) are gated behind it and covered by equivalent committed evidence: renderer counts (review.json), Blender import (blender-verify-v26.json), profile agreement (compare-profiles.py output), asset verify --all budget gate PASS"
+  }
+ }
+}

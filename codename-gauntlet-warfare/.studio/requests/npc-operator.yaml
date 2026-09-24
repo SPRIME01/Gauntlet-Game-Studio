@@ -1,0 +1,54 @@
+id: req-gauntlet-npc-operator-002
+project_id: codename-gauntlet-warfare
+capability_id: asset.reconstruct.reference-image
+intent: >-
+  Converge the existing rig-mappable procedural operator NPC to the operator-supplied
+  AAA turnaround sheet (references/operator-turnaround-sheet.png, clean per-view crops
+  under references/derived/turnaround/): ~75% composite visual fidelity at normal
+  gameplay viewing distance while preserving the structural contract (named anatomical
+  hierarchy, joint-aligned pivots, bound 11-bone spine+leg skeleton, A-pose, weapon
+  socket, Blender export route). Supersedes req-gauntlet-npc-operator-001 whose
+  12k-triangle cap and single-photo reference were explicitly amended by the operator
+  (brief, 2026-09-19): prioritize the AAA read over an artificial per-character
+  triangle number and measure the real game budget after the improved asset exists.
+  Prior request archived at .img2threejs/npc-operator/archive-frontphoto-run/request-001.yaml.
+acceptance:
+  - "Weighted composite fidelity (30% silhouette+anatomy, 25% equipment placement/proportion, 15% side/back volumetric agreement, 15% material readability, 10% secondary gear, 5% fine detail) with hard minimums: recognizable operator design without the reference beside it; believable front+profile proportions; no missing major gear category (helmet, goggles, face covering, collar, carrier, pouches, belt, thigh rig, knee pads, boots, gloves, pack); no placeholder/blockout-looking primary forms; front/back carrier structures distinct; boots/gloves/helmet/knee pads/pouches authored; material classes visibly separate (fabric/nylon/polymer/metal/lens); no broken limb hierarchy; no detached components; no severe self-intersection; A-pose animation-ready; Blender import verified."
+  - "Recomputed 8x8 silhouette IoU against the front turnaround crop at least 0.75; per-view profile agreement recorded for front/back/left; residual gap dimensions recorded when below target (no silent threshold lowering)."
+  - Deterministic recomputed triangle count within budget_limits; measured standalone draw calls recorded.
+  - "Named rig-mappable hierarchy and joint-aligned pivots preserved; L/R mirrored (equipment asymmetry allowed: thigh rig, radio, antenna)."
+  - Weapon socket socket-weapon present under hand-r; no weapon geometry reconstructed into the body mesh.
+  - External reference pixels remain reference-only, never shipped production textures.
+  - "Blender headless import verified: 1 armature, 11 expected bones, no orphan authored meshes, skinned meshes with armature modifiers."
+inputs:
+  target_role: character
+  module_output_path: src/assets/operator-npc.ts
+  min_reference_similarity: 0.75
+  budget_limits: { max_triangles: 25000 }
+  references:
+    - id: turnaround-front
+      path: references/derived/turnaround/front.png
+      provenance_class: reference-only-operator-supplied
+      license: reference-only; project-owned art direction supplied by operator
+    - id: turnaround-left
+      path: references/derived/turnaround/left.png
+      provenance_class: reference-only-operator-supplied
+      license: reference-only; project-owned art direction supplied by operator
+    - id: turnaround-back
+      path: references/derived/turnaround/back.png
+      provenance_class: reference-only-operator-supplied
+      license: reference-only; project-owned art direction supplied by operator
+    - id: turnaround-right
+      path: references/derived/turnaround/right.png
+      provenance_class: reference-only-operator-supplied
+      license: reference-only; project-owned art direction supplied by operator
+    - id: turnaround-34front
+      path: references/derived/turnaround/34front.png
+      provenance_class: reference-only-operator-supplied
+      license: reference-only; project-owned art direction supplied by operator
+    - id: turnaround-34back
+      path: references/derived/turnaround/34back.png
+      provenance_class: reference-only-operator-supplied
+      license: reference-only; project-owned art direction supplied by operator
+preferred_provider: agent-skill.img2threejs
+reference_ids: [turnaround-front, turnaround-left, turnaround-back, turnaround-right, turnaround-34front, turnaround-34back]

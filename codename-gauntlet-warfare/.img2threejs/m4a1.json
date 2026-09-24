@@ -1,0 +1,6023 @@
+{
+  "targetName": "M4A1",
+  "targetId": "m4a1",
+  "schemaVersion": "2.1",
+  "terminologyProfile": {
+    "domain": "real-time procedural Three.js asset",
+    "geometryTerms": [
+      "silhouette",
+      "topology",
+      "primitive",
+      "bevel",
+      "chamfer",
+      "taper",
+      "bend",
+      "boolean cut",
+      "edge loop",
+      "surface normal",
+      "displacement"
+    ],
+    "materialTerms": [
+      "albedo",
+      "baseColor",
+      "roughness",
+      "metalness",
+      "normal map",
+      "bump map",
+      "ambient occlusion",
+      "cavity dirt",
+      "edge wear",
+      "clearcoat"
+    ],
+    "lightingTerms": [
+      "key light",
+      "fill light",
+      "rim light",
+      "HDRI/environment reflection",
+      "contact shadow"
+    ],
+    "descriptionRule": "Use measurable 3D graphics terms. Avoid vague words unless they are paired with concrete geometry/material/shader parameters."
+  },
+  "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+  "referenceCamera": {
+    "solved": false,
+    "fovDegrees": 40,
+    "aspect": 1,
+    "orientation": {
+      "yaw": 0,
+      "pitch": 0,
+      "roll": 0
+    },
+    "positionHint": [
+      0,
+      0,
+      3
+    ],
+    "note": "For likeness work, solve the reference camera (forge/stage1_intake/solve_camera_pose.py) so the review render aligns with the photo and the reference can be projected. Confirm by overlay review."
+  },
+  "suitability": "conditional",
+  "scores": {
+    "object_isolation": 0,
+    "silhouette_readability": 0,
+    "depth_inference": 0,
+    "primitive_decomposition": 0,
+    "material_procedurality": 0,
+    "occlusion_risk": 0,
+    "interaction_fit": 0
+  },
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "M4A1 carbine",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "mechanical"
+      ],
+      "structureKind": [
+        "compound"
+      ],
+      "motionPotential": [
+        "detachable",
+        "effect-emitter"
+      ],
+      "materialFamilies": [
+        "coated metal",
+        "polymer",
+        "aluminum"
+      ],
+      "notes": "Reference-derived side; hidden width inferred."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 0,
+        "componentCount": 0,
+        "hierarchyDepth": 0,
+        "repetitionDensity": 0,
+        "materialLayerCount": 0,
+        "localDetailDensity": 0,
+        "occlusionRisk": 0,
+        "actionReadinessNeed": 0
+      },
+      "estimatedCounts": {
+        "macroComponents": 1,
+        "mesoComponents": 0,
+        "microFeatureGroups": 0,
+        "materialLayers": 1,
+        "repetitionSystems": 0
+      },
+      "reasoning": [
+        "Assess 'M4A1' from the image before finalizing componentTree/materials."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Choose simple/moderate/complex/ultra-complex from observed structure, not from a hardcoded domain."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "component-zones",
+      "targetMinDetails": 10,
+      "note": "Enumerate every identity-defining small detail before authoring the spec. Each detail must map to a component.localFeatures entry or material.localOverrides entry, never prose only. Use forge/stage1_intake/build_detail_inventory.py to scan zones.",
+      "details": [
+        {
+          "id": "receiver-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on receiver",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "receiver-edge"
+          }
+        },
+        {
+          "id": "lower-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on lower",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "lower-edge"
+          }
+        },
+        {
+          "id": "handguard-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on handguard",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "handguard-edge"
+          }
+        },
+        {
+          "id": "stock-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on stock",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "stock-edge"
+          }
+        },
+        {
+          "id": "magazine-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on magazine",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "magazine-edge"
+          }
+        },
+        {
+          "id": "grip-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on grip",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "grip-edge"
+          }
+        },
+        {
+          "id": "barrel-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on barrel",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "barrel-edge"
+          }
+        },
+        {
+          "id": "buffer-tube-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on buffer-tube",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "buffer-tube-edge"
+          }
+        },
+        {
+          "id": "muzzle-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on muzzle",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "muzzle-edge"
+          }
+        },
+        {
+          "id": "foregrip-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on foregrip",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "foregrip-edge"
+          }
+        },
+        {
+          "id": "stock-heel-detail",
+          "kind": "bevel",
+          "description": "Soft machined edge on stock-heel",
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          },
+          "scale": "meso",
+          "confidence": 0.8,
+          "evidenceRef": "full-object",
+          "affects": [
+            "geometry"
+          ],
+          "mapsTo": {
+            "ref": "stock-heel-edge"
+          }
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {
+        "headUnit": 0,
+        "torso": 0,
+        "legs": 0,
+        "shoulderWidth": 0,
+        "hipWidth": 0
+      },
+      "pose": {
+        "type": "unassessed",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0,
+        "eyeSpacing": 0,
+        "noseBase": 0,
+        "mouthLine": 0,
+        "hairline": 0
+      },
+      "features": [],
+      "confidence": 0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity.",
+      "Do not place adjacent separate-geometry parts below 0.02 world-unit seam overlap (source: grimoire/build/geometry_patterns.md).",
+      "Do not satisfy raised or recessed relief, fasteners, or grip structure with a map alone when the feature affects form; use geometry or displacement (source: grimoire/build/geometry_patterns.md).",
+      "Adjacent components must overlap by at least 0.02 world units at shared seams (source: grimoire/build/geometry_patterns.md).",
+      "Raised or recessed relief and fasteners must be geometry, instanced micro-parts, or displacement; a map alone is an approximation (source: grimoire/build/geometry_patterns.md)."
+    ],
+    "mustNotDo": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity.",
+      "Do not place adjacent separate-geometry parts below 0.02 world-unit seam overlap (source: grimoire/build/geometry_patterns.md).",
+      "Do not satisfy raised or recessed relief, fasteners, or grip structure with a map alone when the feature affects form; use geometry or displacement (source: grimoire/build/geometry_patterns.md).",
+      "Adjacent components must overlap by at least 0.02 world units at shared seams (source: grimoire/build/geometry_patterns.md).",
+      "Raised or recessed relief and fasteners must be geometry, instanced micro-parts, or displacement; a map alone is an approximation (source: grimoire/build/geometry_patterns.md)."
+    ]
+  },
+  "qualityTargets": {
+    "targetFidelity": 0.7,
+    "mustMatch": [
+      "macro silhouette and proportions",
+      "primary material albedo/roughness response",
+      "reference-derived PBR material response at or above 0.7 confidence when source pixels are usable",
+      "most recognizable local features"
+    ],
+    "niceToHave": [
+      "micro scratches, stains, chips, and dirt masks",
+      "secondary lighting match"
+    ],
+    "fpsTarget": 60,
+    "reviewViewpoints": [
+      "front",
+      "three-quarter",
+      "side",
+      "thickness-axis",
+      "long-axis"
+    ]
+  },
+  "selfCorrectLoop": {
+    "enabled": true,
+    "visualAcceptance": {
+      "reviewer": "ai-vision",
+      "threshold": 0.7,
+      "comparisonArtifactRequired": true,
+      "layerScoresRequired": true,
+      "codePixelDiffIsAcceptanceAuthority": false,
+      "scoringRule": "AI vision must inspect a side-by-side reference/render sheet and score the current pass from 0 to 1. Pixel-diff code may assist diagnostics but cannot approve a pass.",
+      "requiredLayerScores": [
+        "silhouetteProportion",
+        "componentStructure",
+        "formDetail",
+        "materialSurface",
+        "lightingCamera"
+      ],
+      "featureReviewPolicy": {
+        "enabled": true,
+        "reviewUnit": "semantic-subsystem",
+        "maxCriticalFeaturesPerPass": 5,
+        "maxImportantFeaturesPerPass": 3,
+        "criticalDefaultThreshold": 0.8,
+        "importantAverageThreshold": 0.65,
+        "adaptiveEscalation": true,
+        "singleImagePairOnly": true,
+        "selectionRule": "Choose only the most visually salient, identity-defining, user-prioritized, or high-risk semantic systems. Group repeated parts instead of reviewing every mesh. AI vision scores every selected feature from the same full reference/render pair."
+      }
+    },
+    "reviewAfterPasses": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "allowedActions": [
+      "continue",
+      "refine-spec",
+      "refine-code",
+      "request-input",
+      "stop"
+    ],
+    "specRefineTriggers": [
+      "missing component",
+      "wrong primitive family",
+      "wrong proportions",
+      "material layer under-specified",
+      "local feature not traceable to viewEvidence",
+      "reference ambiguity discovered during implementation"
+    ],
+    "codeRefineTriggers": [
+      "spec is adequate but generated geometry/material does not match",
+      "browser render differs from reference",
+      "performance budget exceeded",
+      "lighting hides geometry or material response"
+    ],
+    "stopCriteria": [
+      "target fidelity reached or user accepts current approximation",
+      "remaining gaps require new reference images or manual art"
+    ],
+    "screenshotPolicy": {
+      "requiredForPasses": [
+        "blockout",
+        "structural-pass",
+        "form-refinement",
+        "material-pass",
+        "surface-pass",
+        "lighting-pass",
+        "interaction-pass"
+      ],
+      "preferredCapture": "in-app-browser-screenshot",
+      "fallbackCapture": "user-supplied-screenshot-path",
+      "minimumEvidence": "Each visual pass needs a reference image, rendered screenshot, side-by-side comparison sheet, AI vision score, layer scores, and critique before choosing continue.",
+      "reviewPairRule": "Compare the same camera/viewpoint whenever possible; do not judge a front reference against a random render angle.",
+      "acceptanceAuthority": "AI vision review of the comparison sheet. Code-generated pixel similarity is not sufficient evidence."
+    }
+  },
+  "featureReviewTargets": [
+    {
+      "id": "m4a1-outline",
+      "name": "Stock magazine foregrip silhouette",
+      "tier": "critical",
+      "passIds": [
+        "blockout"
+      ],
+      "minimumScore": 0.8,
+      "mustPass": true,
+      "componentRefs": [
+        "stock",
+        "magazine",
+        "foregrip"
+      ],
+      "evidenceRefs": [
+        "full-object"
+      ]
+    },
+    {
+      "id": "m4a1-openings",
+      "name": "Trigger guard stock frame sight triangle",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement"
+      ],
+      "minimumScore": 0.8,
+      "mustPass": true,
+      "componentRefs": [
+        "guard-bottom",
+        "stock-lower",
+        "front-sight-a"
+      ],
+      "evidenceRefs": [
+        "full-object"
+      ]
+    },
+    {
+      "id": "m4a1-finish",
+      "name": "Coated receiver and polymer furniture",
+      "tier": "critical",
+      "passIds": [
+        "material-pass",
+        "surface-pass"
+      ],
+      "minimumScore": 0.75,
+      "mustPass": true,
+      "componentRefs": [
+        "receiver",
+        "stock"
+      ],
+      "evidenceRefs": [
+        "full-object"
+      ]
+    }
+  ],
+  "sculptPipeline": {
+    "passGateMode": "locked-sequential",
+    "passOrder": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "currentPass": "blockout",
+    "completedPasses": [],
+    "lastCompletedPass": "",
+    "blockedReason": "",
+    "nextRequiredEvidence": [
+      "Silhouette reads correctly without materials.",
+      "Quality contract has named all required macro feature groups before code generation.",
+      "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold.",
+      "browser render screenshot from your agent's browser/screenshot tool",
+      "single side-by-side full reference/render comparison sheet",
+      "all critical semantic feature scores at or above their thresholds",
+      "self-correction review appended with action=continue before the next pass"
+    ]
+  },
+  "lookDevTargets": {
+    "qualityPriority": "reference-fidelity",
+    "materialPass": {
+      "albedoPaletteRequired": true,
+      "roughnessVariationRequired": true,
+      "normalOrBumpRequired": true,
+      "localOverridesRequired": true,
+      "minimumTextureResolution": 1024,
+      "preferredTextureResolution": 2048,
+      "independentMapChannels": [
+        "albedo",
+        "roughness",
+        "height",
+        "normal",
+        "ambient-occlusion"
+      ],
+      "requiredSurfaceFrequencyBands": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "geometryReliefRequiredWhenSilhouetteAffected": true,
+      "referencePbrExtraction": {
+        "requiredWhenSourceImagePresent": true,
+        "targetThreshold": 0.7,
+        "stopOnLowConfidence": true,
+        "script": "forge/stage1_intake/extract_pbr_evidence.py",
+        "acceptedLimitation": "single-image extraction is reference-derived inference, not exact photogrammetry"
+      },
+      "mustAvoid": [
+        "single flat albedo per material",
+        "uniform roughness",
+        "albedo texture reused as roughness/height/normal/AO",
+        "single-frequency random noise",
+        "plastic-looking smooth bark, stone, cloth, foliage, or aged material",
+        "local color/detail described only in prose without material masks",
+        "claiming exact PBR recovery when confidence is below the target threshold"
+      ]
+    },
+    "lightingPass": {
+      "requiredTerms": [
+        "key light",
+        "fill light",
+        "rim or environment light",
+        "exposure",
+        "tone mapping",
+        "background",
+        "contact shadow"
+      ],
+      "mustAvoid": [
+        "ambient-only lighting",
+        "flat value range",
+        "missing contact shadow",
+        "reference lighting copied without separating material readability"
+      ]
+    },
+    "screenshotReview": [
+      "Compare albedo palette and local color zones.",
+      "Compare roughness/normal/bump response under light.",
+      "Compare cavity dirt, edge wear, stains, moss, scratches, or other local masks.",
+      "Compare key/fill/rim structure, exposure, tone mapping, background, and contact shadows.",
+      "Capture a neutral-light render to verify material readability without reference lighting.",
+      "Capture a grazing-light close-up to expose flat normals, uniform roughness, tiling, and plastic highlights.",
+      "Capture a reference-matched render from the same camera framing as the source."
+    ]
+  },
+  "actionReadiness": {
+    "contract": "Every macro/meso component should be generated as a stable named Object3D pivot node with a mesh child, action metadata, optional sockets, collider proxy, and destruction metadata.",
+    "defaultRigType": "action-ready-static-rig",
+    "rootMotionNode": "receiver",
+    "requiredComponentFields": [
+      "id",
+      "parent",
+      "transform",
+      "attachment for child appendages, connectors, limbs, tubes, handles, legs, horns, wings, branches, or cables",
+      "actionProfile.animationRole",
+      "actionProfile.pivot",
+      "actionProfile.collider",
+      "actionProfile.destruction"
+    ],
+    "transformChannels": [
+      "translate",
+      "rotate",
+      "scale",
+      "bend",
+      "twist",
+      "detach",
+      "visibility",
+      "material-state"
+    ],
+    "authoringRules": [
+      "Do not collapse independently movable parts into one mesh.",
+      "Put transforms on component pivot groups, not only on raw meshes.",
+      "For attached child parts, put the pivot at the semantic root/socket and build visible geometry from localStart to localEnd.",
+      "Represent hinge, socket, detachable, and breakable intent even when no animation is implemented yet.",
+      "Use simplified collider proxies for runtime physics instead of visual mesh colliders by default."
+    ],
+    "destructionPolicy": {
+      "defaultBreakable": false,
+      "fractureGroupNaming": "Use stable semantic names such as body-shell, left-hinge, glass-panel, branch-segment.",
+      "debrisStrategy": "Prefer detachable component groups and a small number of procedural fragments over random mesh explosion."
+    }
+  },
+  "assumptions": [
+    "Source pixels remain reference-only; extracted maps are evidence, not shipped textures.",
+    "Hidden widths and opposite-side details are inferred."
+  ],
+  "coordinateFrame": {
+    "front": "camera-facing side in the reference image",
+    "up": "image up direction",
+    "scaleReference": "unit scale; adjust after first browser render"
+  },
+  "silhouette": {
+    "boundingShape": "",
+    "aspectRatios": [],
+    "symmetry": "",
+    "dominantCurves": [],
+    "negativeSpaces": [],
+    "landmarks": []
+  },
+  "viewEvidence": [
+    {
+      "id": "full-object",
+      "view": "primary",
+      "imageRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "units": "normalized"
+      },
+      "observations": [
+        "Full unclipped side silhouette; front sight triangular; magazine base bends toward muzzle; pistol grip rearward."
+      ],
+      "confidence": 0.5
+    }
+  ],
+  "componentTree": [
+    {
+      "id": "receiver",
+      "name": "receiver",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": null,
+      "attachment": null,
+      "dimensions": {
+        "width": 0.22,
+        "height": 0.055,
+        "depth": 0.052,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "root",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "receiver",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "receiver-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on receiver",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "lower",
+      "name": "lower",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.085,
+        "height": 0.067,
+        "depth": 0.05,
+        "units": "metres",
+        "confidence": 0.8
+      },
+      "transform": {
+        "position": [
+          0.048,
+          -0.052,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "lower",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "lower-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on lower",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "handguard",
+      "name": "handguard",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.2,
+        "height": 0.063,
+        "depth": 0.067,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.218,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "handguard",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "polymer"
+        }
+      },
+      "material": "polymer",
+      "materialLayers": [
+        "polymer"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "handguard-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on handguard",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(34, 31, 27, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "stock",
+      "name": "stock",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.16,
+        "height": 0.05,
+        "depth": 0.046,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.235,
+          -0.002,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "stock",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "polymer"
+        }
+      },
+      "material": "polymer",
+      "materialLayers": [
+        "polymer"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "stock-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on stock",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(34, 31, 27, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "magazine",
+      "name": "magazine",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "extrude",
+      "topologyClass": "continuous-sculpt",
+      "topologyRationale": "Curved box-magazine outline requires a closed volumetric profile rather than a rotated cuboid.",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry",
+        "profile2D": {
+          "points": [
+            [
+              -0.48,
+              0.5
+            ],
+            [
+              0.48,
+              0.5
+            ],
+            [
+              0.46,
+              0.25
+            ],
+            [
+              0.39,
+              0
+            ],
+            [
+              0.28,
+              -0.25
+            ],
+            [
+              0.12,
+              -0.5
+            ],
+            [
+              -0.5,
+              -0.38
+            ],
+            [
+              -0.38,
+              -0.1
+            ],
+            [
+              -0.35,
+              0.2
+            ]
+          ],
+          "bevelEnabled": false
+        }
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.075,
+        "height": 0.118,
+        "depth": 0.027,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.046,
+          -0.139,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "magazine",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "magazine"
+        }
+      },
+      "material": "magazine",
+      "materialLayers": [
+        "magazine"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "magazine-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on magazine",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(122, 125, 130, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "grip",
+      "name": "grip",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.045,
+        "height": 0.105,
+        "depth": 0.034,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.097,
+          -0.117,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          -0.35
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "grip",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "polymer"
+        }
+      },
+      "material": "polymer",
+      "materialLayers": [
+        "polymer"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "grip-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on grip",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(34, 31, 27, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "barrel",
+      "name": "barrel",
+      "level": "macro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "barrel-mount",
+        "localStart": [
+          0.3,
+          0,
+          0
+        ],
+        "localEnd": [
+          0.52,
+          0,
+          0
+        ],
+        "baseRadius": 0.0085,
+        "endRadius": 0.0085,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.017,
+        "height": 0.21,
+        "depth": 0.017,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.413,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "barrel",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "barrel-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on barrel",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "buffer-tube",
+      "name": "buffer-tube",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "buffer-tube-mount",
+        "localStart": [
+          -0.1,
+          0,
+          0
+        ],
+        "localEnd": [
+          -0.21,
+          0,
+          0
+        ],
+        "baseRadius": 0.015,
+        "endRadius": 0.015,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.03,
+        "height": 0.12,
+        "depth": 0.03,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.151,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "buffer-tube",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "buffer-tube-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on buffer-tube",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "muzzle",
+      "name": "muzzle",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "muzzle-mount",
+        "localStart": [
+          0.5,
+          0,
+          0
+        ],
+        "localEnd": [
+          0.542,
+          0,
+          0
+        ],
+        "baseRadius": 0.012,
+        "endRadius": 0.012,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.024,
+        "height": 0.034,
+        "depth": 0.024,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.525,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "muzzle",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "muzzle-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on muzzle",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "foregrip",
+      "name": "foregrip",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "foregrip-mount",
+        "localStart": [
+          0.257,
+          -0.02,
+          0
+        ],
+        "localEnd": [
+          0.257,
+          -0.15,
+          0
+        ],
+        "baseRadius": 0.0175,
+        "endRadius": 0.0175,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.035,
+        "height": 0.125,
+        "depth": 0.035,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.257,
+          -0.085,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "foregrip",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "polymer"
+        }
+      },
+      "material": "polymer",
+      "materialLayers": [
+        "polymer"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "foregrip-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on foregrip",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(34, 31, 27, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "stock-heel",
+      "name": "stock-heel",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.021,
+        "height": 0.14,
+        "depth": 0.048,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.31,
+          -0.05,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "stock-heel",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "polymer"
+        }
+      },
+      "material": "polymer",
+      "materialLayers": [
+        "polymer"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "stock-heel-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on stock-heel",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(34, 31, 27, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "stock-lower",
+      "name": "stock-lower",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "extrude",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Solid telescoping-stock lower cheek support with a tapered bottom edge.",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry",
+        "profile2D": {
+          "points": [
+            [
+              -0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.5
+            ],
+            [
+              0.5,
+              0.1
+            ],
+            [
+              0.15,
+              0.1
+            ],
+            [
+              0.05,
+              -0.12
+            ],
+            [
+              -0.08,
+              -0.12
+            ],
+            [
+              -0.5,
+              -0.5
+            ]
+          ],
+          "bevelEnabled": false
+        }
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.16,
+        "height": 0.078,
+        "depth": 0.026,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.236,
+          -0.053,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "stock-lower",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "polymer"
+        }
+      },
+      "material": "polymer",
+      "materialLayers": [
+        "polymer"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "stock-lower-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on stock-lower",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(34, 31, 27, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "guard-bottom",
+      "name": "guard-bottom",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.065,
+        "height": 0.009,
+        "depth": 0.017,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.03,
+          -0.087,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "guard-bottom",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "guard-bottom-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on guard-bottom",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "guard-front",
+      "name": "guard-front",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.009,
+        "height": 0.03,
+        "depth": 0.017,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.002,
+          -0.072,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "guard-front",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "guard-front-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on guard-front",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "front-sight-a",
+      "name": "front-sight-a",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "front-sight-a-mount",
+        "localStart": [
+          0.315,
+          0.018,
+          0
+        ],
+        "localEnd": [
+          0.356,
+          0.079,
+          0
+        ],
+        "baseRadius": 0.0035,
+        "endRadius": 0.0035,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.009,
+        "height": 0.067,
+        "depth": 0.016,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.305,
+          0.05,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "front-sight-a",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "front-sight-a-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on front-sight-a",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "front-sight-b",
+      "name": "front-sight-b",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "front-sight-b-mount",
+        "localStart": [
+          0.365,
+          0.018,
+          0
+        ],
+        "localEnd": [
+          0.356,
+          0.079,
+          0
+        ],
+        "baseRadius": 0.0035,
+        "endRadius": 0.0035,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.009,
+        "height": 0.067,
+        "depth": 0.016,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.326,
+          0.05,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "front-sight-b",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "front-sight-b-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on front-sight-b",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "rear-sight",
+      "name": "rear-sight",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.032,
+        "height": 0.018,
+        "depth": 0.026,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.066,
+          0.044,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "rear-sight",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "rear-sight-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on rear-sight",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "rail",
+      "name": "rail",
+      "level": "micro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.42,
+        "height": 0.012,
+        "depth": 0.026,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.1,
+          0.031,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "rail",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "rail-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on rail",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "selector",
+      "name": "selector",
+      "level": "micro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.024,
+        "height": 0.005,
+        "depth": 0.006,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.065,
+          -0.047,
+          0.028
+        ],
+        "rotation": [
+          0,
+          0,
+          0.2
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "selector",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "selector-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on selector",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "bolt-catch",
+      "name": "bolt-catch",
+      "level": "micro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.008,
+        "height": 0.024,
+        "depth": 0.007,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.002,
+          -0.023,
+          0.031
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "bolt-catch",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "bolt-catch-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on bolt-catch",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "magazine-floor",
+      "name": "magazine-floor",
+      "level": "micro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.073,
+        "height": 0.009,
+        "depth": 0.032,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          0.053,
+          -0.207,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0.16
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "magazine-floor",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "magazine"
+        }
+      },
+      "material": "magazine",
+      "materialLayers": [
+        "magazine"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "magazine-floor-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on magazine-floor",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(122, 125, 130, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "charging-handle",
+      "name": "charging-handle",
+      "level": "micro",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": {
+        "parentId": "receiver",
+        "parentSocket": "charging-handle-mount",
+        "localStart": [
+          -0.105,
+          0.022,
+          0
+        ],
+        "localEnd": [
+          -0.126,
+          0.022,
+          0
+        ],
+        "baseRadius": 0.004,
+        "endRadius": 0.004,
+        "embedDepth": 0.02,
+        "gapTolerance": 0.001,
+        "contactType": "overlap",
+        "evidenceRefs": [
+          "full-object"
+        ]
+      },
+      "dimensions": {
+        "width": 0.025,
+        "height": 0.008,
+        "depth": 0.075,
+        "units": "metres",
+        "confidence": 0.75
+      },
+      "transform": {
+        "position": [
+          -0.115,
+          0.022,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "charging-handle",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [
+        {
+          "id": "charging-handle-edge",
+          "type": "bevel",
+          "description": "Soft machined edge on charging-handle",
+          "confidence": 0.8,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "geometryEffect": "chamfer .002",
+          "materialEffect": "highlight"
+        }
+      ],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "rear-tang",
+      "name": "rear-tang",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.065,
+        "height": 0.038,
+        "depth": 0.042,
+        "units": "metres",
+        "confidence": 0.8
+      },
+      "transform": {
+        "position": [
+          -0.08,
+          -0.044,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "rear-tang",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    },
+    {
+      "id": "barrel-collar",
+      "name": "barrel-collar",
+      "level": "meso",
+      "role": "assembly-part",
+      "importance": 1,
+      "confidence": 0.8,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Mechanical connected assembly with finite width",
+      "geometryDescriptor": {
+        "topologyIntent": "low-poly blockout with bevel-ready edges",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": "receiver",
+      "attachment": null,
+      "dimensions": {
+        "width": 0.028,
+        "height": 0.069,
+        "depth": 0.068,
+        "units": "metres",
+        "confidence": 0.8
+      },
+      "transform": {
+        "position": [
+          0.115,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "static-part",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 0.5
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "barrel-collar",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0,
+          "debrisMaterial": "receiver"
+        }
+      },
+      "material": "receiver",
+      "materialLayers": [
+        "receiver"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [],
+      "surfaceDetail": {
+        "macroRoughness": 0,
+        "microRoughness": 0,
+        "bumpAmplitude": 0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "details": [],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(57, 57, 59, 1)",
+        "secondaryAlbedo": "rgba(40, 40, 42, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.8
+      }
+    }
+  ],
+  "materials": [
+    {
+      "id": "receiver",
+      "name": "receiver",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial / PBR approximation",
+      "baseColor": "#39393B",
+      "color": "#39393B",
+      "albedo": {
+        "dominant": "#39393B",
+        "secondary": [
+          "#434345",
+          "#2A2A2B",
+          "#171718",
+          "#727171"
+        ],
+        "samplingNotes": "Use image-observed local color zones, not a single averaged color."
+      },
+      "colorVariation": {
+        "palette": [
+          "#39393B",
+          "#434345",
+          "#2A2A2B",
+          "#171718",
+          "#727171"
+        ],
+        "pattern": "mottled",
+        "amplitude": 0.03,
+        "heightCorrelation": 0.3
+      },
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "uv",
+        "repeat": [
+          2,
+          2
+        ],
+        "anisotropy": 8,
+        "texelDensityIntent": "Preserve stable world/object-scale detail; do not stretch micro detail with component scale."
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 2,
+          "amplitude": 0.42,
+          "role": "broad color and height breakup"
+        },
+        {
+          "id": "meso",
+          "frequency": 12,
+          "amplitude": 0.22,
+          "role": "ridges, pores, grain, dents, or equivalent visible relief"
+        },
+        {
+          "id": "micro",
+          "frequency": 56,
+          "amplitude": 0.08,
+          "role": "highlight breakup visible under grazing light"
+        }
+      ],
+      "roughness": {
+        "base": 0.718,
+        "variation": 0.15,
+        "map": "independent-procedural-field",
+        "localResponse": "higher roughness in cavities, lower roughness on worn edges"
+      },
+      "metalness": {
+        "base": 0.65,
+        "variation": 0
+      },
+      "normal": {
+        "pattern": "derived-from-independent-height-field",
+        "strength": 0.35,
+        "scale": 24,
+        "space": "tangent"
+      },
+      "bump": {
+        "pattern": "none",
+        "amplitude": 0,
+        "scale": 1
+      },
+      "displacement": {
+        "pattern": "none",
+        "amplitude": 0,
+        "scale": 1,
+        "silhouetteAffects": false
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.25,
+        "contactShadowBias": 0.35,
+        "notes": "Darken creases, seams, intersections, and recessed local features."
+      },
+      "wear": {
+        "edgeWear": 0,
+        "scratches": [],
+        "chips": []
+      },
+      "dirt": {
+        "amount": 0,
+        "cavityBias": 0,
+        "color": "#2F2A22"
+      },
+      "localOverrides": [
+        {
+          "id": "edge-polish",
+          "region": "bevel edges",
+          "roughness": 0.4,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "description": "Restrained edge highlights"
+        }
+      ],
+      "shaderNotes": [
+        "Prefer MeshPhysicalMaterial when clearcoat, sheen, transmission, or thin-surface response is observed; otherwise use MeshStandardMaterial-compatible PBR channels.",
+        "Generate albedo, roughness, height/normal, and AO independently; never alias albedo into roughness.",
+        "Use normal/bump/displacement only when they map to observed surface relief.",
+        "Use displacement geometry when the observed relief changes the close-up silhouette; texture-only relief is insufficient there."
+      ],
+      "notes": "Replace with image-derived color, roughness, noise, and edge-wear notes.",
+      "referencePbr": {
+        "ok": true,
+        "verdict": "pass",
+        "confidence": 0.812,
+        "estimatedFidelity": 0.812,
+        "targetThreshold": 0.7,
+        "materialId": "receiver",
+        "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/receiver.png",
+        "outDir": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver",
+        "palette": [
+          "#39393B",
+          "#434345",
+          "#2A2A2B",
+          "#171718",
+          "#727171"
+        ],
+        "maps": {
+          "albedo": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_albedo.png",
+            "url": "receiver_albedo.png",
+            "channel": "albedo",
+            "source": "reference-pixel-extraction"
+          },
+          "roughness": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_roughness.png",
+            "url": "receiver_roughness.png",
+            "channel": "roughness",
+            "source": "reference-pixel-extraction"
+          },
+          "height": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_height.png",
+            "url": "receiver_height.png",
+            "channel": "height",
+            "source": "reference-pixel-extraction"
+          },
+          "normal": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_normal.png",
+            "url": "receiver_normal.png",
+            "channel": "normal",
+            "source": "reference-pixel-extraction"
+          },
+          "ao": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/receiver/receiver_ao.png",
+            "url": "receiver_ao.png",
+            "channel": "ao",
+            "source": "reference-pixel-extraction"
+          }
+        },
+        "diagnostics": {
+          "sourceWidth": 783,
+          "sourceHeight": 417,
+          "mapSize": 1024,
+          "cropBBoxPixels": {
+            "x": 0,
+            "y": 0,
+            "width": 783,
+            "height": 417
+          },
+          "mask": {
+            "backgroundColor": "#FFFFFF",
+            "backgroundNoise": 0,
+            "transparentPixelFraction": 0,
+            "foregroundCoverage": 0.8987
+          },
+          "mapStats": {
+            "valueRange": 0.184,
+            "heightP90Gradient": 0.09621,
+            "roughnessBase": 0.718,
+            "roughnessVariation": 0.179,
+            "normalStrength": 0.269,
+            "blurRadius": 21
+          },
+          "palette": [
+            "#39393B",
+            "#434345",
+            "#2A2A2B",
+            "#171718",
+            "#727171"
+          ]
+        },
+        "warnings": [
+          "single-image inverse rendering cannot prove true physical PBR; confidence is capped",
+          "low value range weakens height/roughness inference"
+        ],
+        "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review",
+        "usable": true
+      }
+    },
+    {
+      "id": "polymer",
+      "name": "polymer",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial / PBR approximation",
+      "baseColor": "#221F1B",
+      "color": "#221F1B",
+      "albedo": {
+        "dominant": "#221F1B",
+        "secondary": [
+          "#090808",
+          "#575759",
+          "#12100E",
+          "#FEFEFE"
+        ],
+        "samplingNotes": "Use image-observed local color zones, not a single averaged color."
+      },
+      "colorVariation": {
+        "palette": [
+          "#221F1B",
+          "#090808",
+          "#575759",
+          "#12100E",
+          "#FEFEFE"
+        ],
+        "pattern": "mottled",
+        "amplitude": 0.03,
+        "heightCorrelation": 0.3
+      },
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "uv",
+        "repeat": [
+          2,
+          2
+        ],
+        "anisotropy": 8,
+        "texelDensityIntent": "Preserve stable world/object-scale detail; do not stretch micro detail with component scale."
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 2,
+          "amplitude": 0.42,
+          "role": "broad color and height breakup"
+        },
+        {
+          "id": "meso",
+          "frequency": 12,
+          "amplitude": 0.22,
+          "role": "ridges, pores, grain, dents, or equivalent visible relief"
+        },
+        {
+          "id": "micro",
+          "frequency": 56,
+          "amplitude": 0.08,
+          "role": "highlight breakup visible under grazing light"
+        }
+      ],
+      "roughness": {
+        "base": 0.68,
+        "variation": 0.15,
+        "map": "independent-procedural-field",
+        "localResponse": "higher roughness in cavities, lower roughness on worn edges"
+      },
+      "metalness": {
+        "base": 0,
+        "variation": 0
+      },
+      "normal": {
+        "pattern": "derived-from-independent-height-field",
+        "strength": 0.35,
+        "scale": 24,
+        "space": "tangent"
+      },
+      "bump": {
+        "pattern": "none",
+        "amplitude": 0,
+        "scale": 1
+      },
+      "displacement": {
+        "pattern": "none",
+        "amplitude": 0,
+        "scale": 1,
+        "silhouetteAffects": false
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.25,
+        "contactShadowBias": 0.35,
+        "notes": "Darken creases, seams, intersections, and recessed local features."
+      },
+      "wear": {
+        "edgeWear": 0,
+        "scratches": [],
+        "chips": []
+      },
+      "dirt": {
+        "amount": 0,
+        "cavityBias": 0,
+        "color": "#2F2A22"
+      },
+      "localOverrides": [
+        {
+          "id": "edge-polish",
+          "region": "bevel edges",
+          "roughness": 0.4,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "description": "Restrained edge highlights"
+        }
+      ],
+      "shaderNotes": [
+        "Prefer MeshPhysicalMaterial when clearcoat, sheen, transmission, or thin-surface response is observed; otherwise use MeshStandardMaterial-compatible PBR channels.",
+        "Generate albedo, roughness, height/normal, and AO independently; never alias albedo into roughness.",
+        "Use normal/bump/displacement only when they map to observed surface relief.",
+        "Use displacement geometry when the observed relief changes the close-up silhouette; texture-only relief is insufficient there."
+      ],
+      "notes": "Replace with image-derived color, roughness, noise, and edge-wear notes.",
+      "referencePbr": {
+        "ok": true,
+        "verdict": "pass",
+        "confidence": 0.832,
+        "estimatedFidelity": 0.832,
+        "targetThreshold": 0.7,
+        "materialId": "polymer",
+        "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/polymer.png",
+        "outDir": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/polymer",
+        "palette": [
+          "#221F1B",
+          "#090808",
+          "#575759",
+          "#12100E",
+          "#FEFEFE"
+        ],
+        "maps": {
+          "albedo": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/polymer/polymer_albedo.png",
+            "url": "polymer_albedo.png",
+            "channel": "albedo",
+            "source": "reference-pixel-extraction"
+          },
+          "roughness": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/polymer/polymer_roughness.png",
+            "url": "polymer_roughness.png",
+            "channel": "roughness",
+            "source": "reference-pixel-extraction"
+          },
+          "height": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/polymer/polymer_height.png",
+            "url": "polymer_height.png",
+            "channel": "height",
+            "source": "reference-pixel-extraction"
+          },
+          "normal": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/polymer/polymer_normal.png",
+            "url": "polymer_normal.png",
+            "channel": "normal",
+            "source": "reference-pixel-extraction"
+          },
+          "ao": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/polymer/polymer_ao.png",
+            "url": "polymer_ao.png",
+            "channel": "ao",
+            "source": "reference-pixel-extraction"
+          }
+        },
+        "diagnostics": {
+          "sourceWidth": 522,
+          "sourceHeight": 165,
+          "mapSize": 1024,
+          "cropBBoxPixels": {
+            "x": 0,
+            "y": 0,
+            "width": 522,
+            "height": 165
+          },
+          "mask": {
+            "backgroundColor": "#242320",
+            "backgroundNoise": 30.166,
+            "transparentPixelFraction": 0,
+            "foregroundCoverage": 0.1115
+          },
+          "mapStats": {
+            "valueRange": 0.977,
+            "heightP90Gradient": 0.00992,
+            "roughnessBase": 0.68,
+            "roughnessVariation": 0.05,
+            "normalStrength": 0.168,
+            "blurRadius": 21
+          },
+          "palette": [
+            "#221F1B",
+            "#090808",
+            "#575759",
+            "#12100E",
+            "#FEFEFE"
+          ]
+        },
+        "warnings": [
+          "single-image inverse rendering cannot prove true physical PBR; confidence is capped"
+        ],
+        "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review",
+        "usable": true
+      }
+    },
+    {
+      "id": "magazine",
+      "name": "magazine",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial / PBR approximation",
+      "baseColor": "#7A7D82",
+      "color": "#7A7D82",
+      "albedo": {
+        "dominant": "#7A7D82",
+        "secondary": [
+          "#7E8187",
+          "#74777C",
+          "#66686D",
+          "#FEFEFE"
+        ],
+        "samplingNotes": "Use image-observed local color zones, not a single averaged color."
+      },
+      "colorVariation": {
+        "palette": [
+          "#7A7D82",
+          "#7E8187",
+          "#74777C",
+          "#66686D",
+          "#FEFEFE"
+        ],
+        "pattern": "mottled",
+        "amplitude": 0.03,
+        "heightCorrelation": 0.3
+      },
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "uv",
+        "repeat": [
+          2,
+          2
+        ],
+        "anisotropy": 8,
+        "texelDensityIntent": "Preserve stable world/object-scale detail; do not stretch micro detail with component scale."
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 2,
+          "amplitude": 0.42,
+          "role": "broad color and height breakup"
+        },
+        {
+          "id": "meso",
+          "frequency": 12,
+          "amplitude": 0.22,
+          "role": "ridges, pores, grain, dents, or equivalent visible relief"
+        },
+        {
+          "id": "micro",
+          "frequency": 56,
+          "amplitude": 0.08,
+          "role": "highlight breakup visible under grazing light"
+        }
+      ],
+      "roughness": {
+        "base": 0.687,
+        "variation": 0.15,
+        "map": "independent-procedural-field",
+        "localResponse": "higher roughness in cavities, lower roughness on worn edges"
+      },
+      "metalness": {
+        "base": 0.65,
+        "variation": 0
+      },
+      "normal": {
+        "pattern": "derived-from-independent-height-field",
+        "strength": 0.35,
+        "scale": 24,
+        "space": "tangent"
+      },
+      "bump": {
+        "pattern": "none",
+        "amplitude": 0,
+        "scale": 1
+      },
+      "displacement": {
+        "pattern": "none",
+        "amplitude": 0,
+        "scale": 1,
+        "silhouetteAffects": false
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.25,
+        "contactShadowBias": 0.35,
+        "notes": "Darken creases, seams, intersections, and recessed local features."
+      },
+      "wear": {
+        "edgeWear": 0,
+        "scratches": [],
+        "chips": []
+      },
+      "dirt": {
+        "amount": 0,
+        "cavityBias": 0,
+        "color": "#2F2A22"
+      },
+      "localOverrides": [
+        {
+          "id": "edge-polish",
+          "region": "bevel edges",
+          "roughness": 0.4,
+          "evidenceRefs": [
+            "full-object"
+          ],
+          "description": "Restrained edge highlights"
+        }
+      ],
+      "shaderNotes": [
+        "Prefer MeshPhysicalMaterial when clearcoat, sheen, transmission, or thin-surface response is observed; otherwise use MeshStandardMaterial-compatible PBR channels.",
+        "Generate albedo, roughness, height/normal, and AO independently; never alias albedo into roughness.",
+        "Use normal/bump/displacement only when they map to observed surface relief.",
+        "Use displacement geometry when the observed relief changes the close-up silhouette; texture-only relief is insufficient there."
+      ],
+      "notes": "Replace with image-derived color, roughness, noise, and edge-wear notes.",
+      "referencePbr": {
+        "ok": true,
+        "verdict": "pass",
+        "confidence": 0.758,
+        "estimatedFidelity": 0.758,
+        "targetThreshold": 0.7,
+        "materialId": "magazine",
+        "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/magazine.png",
+        "outDir": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/magazine",
+        "palette": [
+          "#7A7D82",
+          "#7E8187",
+          "#74777C",
+          "#66686D",
+          "#FEFEFE"
+        ],
+        "maps": {
+          "albedo": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/magazine/magazine_albedo.png",
+            "url": "magazine_albedo.png",
+            "channel": "albedo",
+            "source": "reference-pixel-extraction"
+          },
+          "roughness": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/magazine/magazine_roughness.png",
+            "url": "magazine_roughness.png",
+            "channel": "roughness",
+            "source": "reference-pixel-extraction"
+          },
+          "height": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/magazine/magazine_height.png",
+            "url": "magazine_height.png",
+            "channel": "height",
+            "source": "reference-pixel-extraction"
+          },
+          "normal": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/magazine/magazine_normal.png",
+            "url": "magazine_normal.png",
+            "channel": "normal",
+            "source": "reference-pixel-extraction"
+          },
+          "ao": {
+            "path": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/materials/magazine/magazine_ao.png",
+            "url": "magazine_ao.png",
+            "channel": "ao",
+            "source": "reference-pixel-extraction"
+          }
+        },
+        "diagnostics": {
+          "sourceWidth": 261,
+          "sourceHeight": 296,
+          "mapSize": 1024,
+          "cropBBoxPixels": {
+            "x": 0,
+            "y": 0,
+            "width": 261,
+            "height": 296
+          },
+          "mask": {
+            "backgroundColor": "#FFFFFF",
+            "backgroundNoise": 224.706,
+            "transparentPixelFraction": 0,
+            "foregroundCoverage": 1
+          },
+          "mapStats": {
+            "valueRange": 0.5838,
+            "heightP90Gradient": 0.01492,
+            "roughnessBase": 0.687,
+            "roughnessVariation": 0.05,
+            "normalStrength": 0.174,
+            "blurRadius": 21
+          },
+          "palette": [
+            "#7A7D82",
+            "#7E8187",
+            "#74777C",
+            "#66686D",
+            "#FEFEFE"
+          ]
+        },
+        "warnings": [
+          "foreground mask is tiny; material extraction is likely unreliable",
+          "image is not clearly isolated from background; using most pixels as material evidence",
+          "object/background separation is weak",
+          "single-image inverse rendering cannot prove true physical PBR; confidence is capped"
+        ],
+        "limitation": "single-image PBR extraction is an estimate; 70%+ extraction confidence still needs render screenshot review",
+        "usable": true
+      }
+    }
+  ],
+  "repetitionSystems": [
+    {
+      "id": "rail-teeth",
+      "componentRef": "rail",
+      "type": "linear",
+      "count": 32,
+      "axis": "x",
+      "spacing": 0.012,
+      "evidenceRefs": [
+        "full-object"
+      ]
+    }
+  ],
+  "buildPasses": [
+    {
+      "id": "blockout",
+      "goal": "Match macro silhouette and proportions.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel"
+      ],
+      "acceptance": [
+        "Silhouette reads correctly without materials.",
+        "Quality contract has named all required macro feature groups before code generation.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "structural-pass",
+      "goal": "Build the component hierarchy implied by the pre-spec complexity assessment.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "Macro, meso, and repeated structures meet qualityContract.minimumSpecDepth.",
+        "Parent-child relations, joints, seams, sockets, and contact points are explicit.",
+        "Every attached child appendage/connector has parentSocket, localStart/localEnd, contactType, embedDepth or overlap, and gapTolerance.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "form-refinement",
+      "goal": "Refine shape, deformation, bevels, tapers, curves, asymmetry, and visible local geometry.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "Important visible forms are represented in component geometryDescriptor, deformations, localFeatures, or repetitionSystems.",
+        "Endpoint-based child parts are rooted at their attachment sockets and do not visibly float away from parents.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "material-pass",
+      "goal": "Match material color, roughness, bump, and local variation.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "Reference-derived albedo palette records dominant, secondary, and accent colors per visible material.",
+        "Each important material defines roughness variation and at least one normal/bump/displacement response.",
+        "Local material overrides, dirt/wear/stains/moss/chips/scratches or equivalent masks are tied to evidenceRefs.",
+        "Thin, transparent, reflective, wet, or fibrous materials document alpha/transmission/clearcoat/metalness/fiber response when relevant.",
+        "Generated preview uses procedural albedo/roughness/bump texture or vertex color variation instead of one flat color.",
+        "Generated preview uses independent PBR maps at 1024px or higher for the quality-first tier.",
+        "If source pixels are available, referencePbr extraction passed at confidence >= 0.7 or the pass is stopped/requesting better references.",
+        "Macro, meso, and micro surface frequency bands are visible at the intended review distance without obvious tiling.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "surface-pass",
+      "goal": "Add procedural surface locality such as normal/bump/displacement, AO, dirt, stains, chips, grain, moss, scratches, and wear.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "Every required material feature group has local overrides or surfaceDetail tied to evidenceRefs.",
+        "A grazing-angle close-up proves that normal/height detail breaks highlights naturally and does not read as smooth plastic.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "lighting-pass",
+      "goal": "Make material and form readable under neutral turntable lighting plus optional reference lighting.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "lightingFromPhoto identifies key light direction/color/intensity, fill light, rim or environment light, and ambient color.",
+        "Exposure, tone mapping, background color/gradient, shadow softness, and contact shadow behavior are specified.",
+        "Lighting does not hide geometry/material gaps and screenshots can be compared fairly to the reference.",
+        "Neutral, grazing, and reference-matched lighting checks distinguish material errors from lighting errors.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "interaction-pass",
+      "goal": "Make the model ready for future animation, transformation, physics, or destruction.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "Macro and movable meso components have stable pivot nodes.",
+        "Sockets, collider proxies, and destruction metadata are present for future runtime actions.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "optimization-pass",
+      "goal": "Protect runtime performance after visual fidelity is accepted.",
+      "componentRefs": [
+        "receiver",
+        "lower",
+        "handguard",
+        "stock",
+        "magazine",
+        "grip",
+        "barrel",
+        "buffer-tube",
+        "muzzle",
+        "foregrip",
+        "stock-heel",
+        "stock-lower",
+        "guard-bottom",
+        "guard-front",
+        "front-sight-a",
+        "front-sight-b",
+        "rear-sight",
+        "rail",
+        "selector",
+        "bolt-catch",
+        "magazine-floor",
+        "charging-handle"
+      ],
+      "acceptance": [
+        "Triangle count, draw calls, instancing, LOD strategy, and FPS target are documented or verified.",
+        "Repeated detail is instanced or simplified where possible without breaking silhouette/material believability."
+      ]
+    }
+  ],
+  "visualEvidence": [
+    {
+      "timestamp": "2026-09-18T10:53:18.909622+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.4232,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+      "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-180.png",
+      "comparisonImage": "",
+      "cameraView": "",
+      "notes": "",
+      "aiVisionNotes": ""
+    },
+    {
+      "timestamp": "2026-09-18T10:53:18.977236+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.608,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+      "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-v2-180.png",
+      "comparisonImage": "",
+      "cameraView": "",
+      "notes": "",
+      "aiVisionNotes": ""
+    },
+    {
+      "timestamp": "2026-09-18T16:09:01.819250+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.7049,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+      "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-v3-180.png",
+      "comparisonImage": "",
+      "cameraView": "",
+      "notes": "",
+      "aiVisionNotes": ""
+    },
+    {
+      "timestamp": "2026-09-18T21:09:30.248685+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.705,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+      "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-v4-180.png",
+      "comparisonImage": "",
+      "cameraView": "",
+      "notes": "",
+      "aiVisionNotes": ""
+    }
+  ],
+  "reviewHistory": [
+    {
+      "timestamp": "2026-09-18T10:53:18.909622+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.4232,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "action": "refine-spec",
+      "summary": "Deterministic first blockout failed: reference framing mismatch, reversed magazine lean and closed trigger opening. No visual acceptance granted.",
+      "matched": [],
+      "mismatches": [],
+      "specFixes": [],
+      "codeFixes": [],
+      "evidence": [],
+      "visualEvidence": {
+        "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+        "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-180.png",
+        "comparisonImage": "",
+        "cameraView": "",
+        "notes": "",
+        "aiVisionNotes": ""
+      }
+    },
+    {
+      "timestamp": "2026-09-18T10:53:18.977236+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.608,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "action": "refine-spec",
+      "summary": "Second blockout failed silhouette gate; framing now matches but detached grip and rear sight, clipped front sight and magazine need correction. No visual acceptance granted.",
+      "matched": [],
+      "mismatches": [],
+      "specFixes": [],
+      "codeFixes": [],
+      "evidence": [],
+      "visualEvidence": {
+        "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+        "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-v2-180.png",
+        "comparisonImage": "",
+        "cameraView": "",
+        "notes": "",
+        "aiVisionNotes": ""
+      }
+    },
+    {
+      "timestamp": "2026-09-18T16:09:01.819250+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.7049,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "action": "refine-spec",
+      "summary": "Third bounded correction improves silhouette to 0.7049 without disconnected-mask warnings. Operator minimum 0.70 met, provider 0.85 gate fails; no visual acceptance or production promotion.",
+      "matched": [],
+      "mismatches": [],
+      "specFixes": [],
+      "codeFixes": [],
+      "evidence": [],
+      "visualEvidence": {
+        "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+        "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-v3-180.png",
+        "comparisonImage": "",
+        "cameraView": "",
+        "notes": "",
+        "aiVisionNotes": ""
+      }
+    },
+    {
+      "timestamp": "2026-09-18T21:09:30.248685+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.705,
+      "aiVisionScore": null,
+      "visualAcceptanceThreshold": 0.7,
+      "layerScores": {},
+      "featureReviews": [],
+      "action": "refine-spec",
+      "summary": "Operator-authorized fourth bounded correction used extruded magazine and lower stock profiles. Silhouette plateau: 0.7049 to 0.7050, below unchanged provider threshold 0.85. Deterministic gate failed; no AI visual acceptance and no production promotion. Original three-attempt stop and source preserved in artifacts/evidence/repair/weapon-recovery-v4.",
+      "matched": [],
+      "mismatches": [],
+      "specFixes": [],
+      "codeFixes": [],
+      "evidence": [],
+      "visualEvidence": {
+        "referenceScreenshot": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+        "renderScreenshot": "codename-gauntlet-warfare/.img2threejs/blockout-v4-180.png",
+        "comparisonImage": "",
+        "cameraView": "",
+        "notes": "",
+        "aiVisionNotes": ""
+      }
+    }
+  ],
+  "lodPlan": [
+    {
+      "tier": "near",
+      "distance": 0,
+      "strategy": "full component tree and material layers"
+    },
+    {
+      "tier": "far",
+      "distance": 30,
+      "strategy": "merge static components and reduce local feature geometry"
+    }
+  ],
+  "performanceBudget": {
+    "qualityPriority": "reference-fidelity",
+    "targetTriangles": 12000,
+    "maxDrawCalls": 45,
+    "textureSize": 2048,
+    "fpsTarget": 60,
+    "optimizationPolicy": "Reach accepted visual fidelity first, then optimize without removing reference-critical geometry or surface layers."
+  },
+  "lightingFromPhoto": [
+    {
+      "type": "directional",
+      "role": "key",
+      "position": [
+        -2,
+        4,
+        5
+      ],
+      "color": "#ffffff",
+      "intensity": 3
+    },
+    {
+      "type": "hemisphere",
+      "role": "fill",
+      "color": "#ccddee",
+      "intensity": 1
+    },
+    {
+      "type": "directional",
+      "role": "rim",
+      "position": [
+        3,
+        2,
+        -3
+      ],
+      "color": "#ffffff",
+      "intensity": 2
+    },
+    {
+      "type": "render",
+      "exposure": 1,
+      "toneMapping": "ACES filmic",
+      "contactShadow": "soft ground shadow in neutral review"
+    }
+  ],
+  "proceduralStrategy": [
+    "Block out macro silhouette first.",
+    "Add component hierarchy and joints.",
+    "Create stable pivot groups, sockets, collider proxies, and destruction metadata before visual polish.",
+    "Refine forms with bevels, tapers, bends, and procedural noise.",
+    "Run reference PBR extraction for important source-image materials and stop when confidence is below the target threshold.",
+    "Add material variation before adding expensive micro-geometry."
+  ],
+  "animationAnchors": [
+    "root pivot node supports whole-object translation, rotation, scale, and visibility changes",
+    "component pivot groups support later local transforms without rebuilding geometry"
+  ],
+  "destructionAnchors": [
+    "actionProfile.destruction.fractureGroup marks detachable or breakable component sets",
+    "component seams and sockets define plausible break points instead of random explosions"
+  ],
+  "risks": [],
+  "localSpecSearch": {
+    "collection": "core_3d",
+    "query": "M4A1",
+    "index": {
+      "status": "rebuilt",
+      "reason": "missing",
+      "fingerprint": "62f2831e1d52eeb6dbb94a87c44fa25b1f4926626a7b1f8c2bcadc63e04e9471"
+    },
+    "matches": []
+  },
+  "tier1Results": [
+    {
+      "passed": false,
+      "checks": {
+        "silhouetteIoU": 0.4232,
+        "aspectRatioDelta": 0.3716,
+        "scaleDelta": 0.4101,
+        "bilateralSymmetryError": 0.1478,
+        "colorDelta": {
+          "checked": 22,
+          "maxDeltaE": 10.89,
+          "perComponent": [
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.55
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.55
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            }
+          ],
+          "gated": false
+        }
+      },
+      "failures": [
+        "silhouette IoU 0.423 is below threshold 0.85",
+        "aspect-ratio delta 0.372 exceeds threshold 0.05",
+        "scale delta 0.410 exceeds threshold 0.08",
+        "blockout requires --map-stripped-render evidence"
+      ],
+      "maskWarnings": [],
+      "renderHash": "564f5eda8c68774b",
+      "passId": "blockout"
+    },
+    {
+      "passed": false,
+      "checks": {
+        "silhouetteIoU": 0.608,
+        "aspectRatioDelta": 0.0489,
+        "scaleDelta": 0.0323,
+        "bilateralSymmetryError": 0.2186,
+        "colorDelta": {
+          "checked": 22,
+          "maxDeltaE": 10.89,
+          "perComponent": [
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.66
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.66
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            }
+          ],
+          "gated": false
+        }
+      },
+      "failures": [
+        "silhouette IoU 0.608 is below threshold 0.85"
+      ],
+      "maskWarnings": [
+        "render: 8.5% of foreground cells lie outside the largest connected blob and were excluded from the bounding box; if the subject really has separated parts in this projection, they are not being measured"
+      ],
+      "renderHash": "f561565e264a34fe",
+      "passId": "blockout",
+      "mapStrippedRender": "codename-gauntlet-warfare/.img2threejs/blockout-v2-180.png"
+    },
+    {
+      "passed": false,
+      "checks": {
+        "silhouetteIoU": 0.7049,
+        "aspectRatioDelta": 0.0447,
+        "scaleDelta": 0.0277,
+        "bilateralSymmetryError": 0.2845,
+        "colorDelta": {
+          "checked": 24,
+          "maxDeltaE": 10.89,
+          "perComponent": [
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.39
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.39
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            }
+          ],
+          "gated": false
+        }
+      },
+      "failures": [
+        "silhouette IoU 0.705 is below threshold 0.85"
+      ],
+      "maskWarnings": [],
+      "renderHash": "add7c69af03e4d90",
+      "passId": "blockout",
+      "mapStrippedRender": "codename-gauntlet-warfare/.img2threejs/blockout-v3-180.png"
+    },
+    {
+      "passed": false,
+      "checks": {
+        "silhouetteIoU": 0.705,
+        "aspectRatioDelta": 0.0242,
+        "scaleDelta": 0.0414,
+        "bilateralSymmetryError": 0.2766,
+        "colorDelta": {
+          "checked": 24,
+          "maxDeltaE": 10.89,
+          "perComponent": [
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.34
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.34
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            }
+          ],
+          "gated": false
+        }
+      },
+      "failures": [
+        "silhouette IoU 0.705 is below threshold 0.85",
+        "blockout requires --map-stripped-render evidence"
+      ],
+      "maskWarnings": [],
+      "renderHash": "af28bfeb7e4de713",
+      "passId": "blockout"
+    },
+    {
+      "passed": false,
+      "checks": {
+        "silhouetteIoU": 0.705,
+        "aspectRatioDelta": 0.0242,
+        "scaleDelta": 0.0414,
+        "bilateralSymmetryError": 0.2766,
+        "colorDelta": {
+          "checked": 24,
+          "maxDeltaE": 10.89,
+          "perComponent": [
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.34
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 3.53
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 7.34
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            },
+            {
+              "componentId": null,
+              "deltaE": 10.89
+            }
+          ],
+          "gated": false
+        }
+      },
+      "failures": [
+        "silhouette IoU 0.705 is below threshold 0.85"
+      ],
+      "maskWarnings": [],
+      "renderHash": "af28bfeb7e4de713",
+      "passId": "blockout",
+      "mapStrippedRender": "codename-gauntlet-warfare/.img2threejs/blockout-v4-180.png"
+    }
+  ]
+}

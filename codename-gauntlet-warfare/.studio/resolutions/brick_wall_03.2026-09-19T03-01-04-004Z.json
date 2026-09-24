@@ -1,0 +1,39 @@
+{
+  "schema": "gauntlet.asset.resolution",
+  "schema_version": "1.0",
+  "requested_id": "brick_wall_03",
+  "role": "environment",
+  "keywords": [
+    "brick_wall_03"
+  ],
+  "recorded_at": "2026-09-19T03:01:04.004Z",
+  "steps": [
+    {
+      "step": "search",
+      "target": "project-registry",
+      "outcome": "no-match",
+      "detail": "no project asset matches the requested id"
+    },
+    {
+      "step": "search",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "matched",
+      "detail": "matched 'patterned_brick_wall_03' (Patterned Brick Wall 03)"
+    },
+    {
+      "step": "acquire",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "acquired",
+      "detail": "acquired 'patterned_brick_wall_03' into the registry as a 'pending' record with license 'CC0'"
+    }
+  ],
+  "decision": {
+    "route": "acquire",
+    "reason": "provider match acquired through asset.source intake as a 'pending' record; acceptance is a separate registry decision",
+    "provider": "polyhaven",
+    "asset_id": "patterned_brick_wall_03",
+    "license": "CC0"
+  }
+}

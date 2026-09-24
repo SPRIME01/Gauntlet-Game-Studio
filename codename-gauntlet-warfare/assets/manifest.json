@@ -1,0 +1,437 @@
+{
+ "schema": "gauntlet.asset.manifest",
+ "schema_version": "1.0",
+ "records": [
+  {
+   "id": "compound-kit",
+   "role": "environment",
+   "origin": "project",
+   "construction_route": "world.environment.compose/agent-skill.3dviz",
+   "runtime_representation": "src/environment.ts",
+   "source_provenance": {
+    "author": "Gauntlet Warfare project",
+    "license": "project-owned",
+    "sha256": "d22f1ad2222745aa77b3355ca4614793a0139c79aacdb2a079a0df9ddebc1292"
+   },
+   "acceptance_state": "accepted",
+   "budget": {
+    "max_draw_calls": 150,
+    "max_triangles": 180000,
+    "measured_draw_calls": 136,
+    "measured_triangles": 43990
+   },
+   "collider_policy": "src/arena.ts canonical conservative boxes shared with Rapier and Recast; sandbag scallops use solid hulls",
+   "lod_policy": "fixed compact arena; static material batching"
+  },
+  {
+   "id": "combatant",
+   "role": "character",
+   "origin": "project",
+   "construction_route": "procedural",
+   "runtime_representation": "src/environment.ts",
+   "source_provenance": {
+    "author": "Gauntlet Warfare project",
+    "license": "project-owned",
+    "sha256": "d22f1ad2222745aa77b3355ca4614793a0139c79aacdb2a079a0df9ddebc1292"
+   },
+   "acceptance_state": "accepted",
+   "budget": {},
+   "collider_policy": "Rapier capsule projected from Koota Actor",
+   "lod_policy": "single low-poly representation"
+  },
+  {
+   "id": "combat-effects",
+   "role": "vfx",
+   "origin": "project",
+   "construction_route": "vfx.particles/quarks",
+   "runtime_representation": "src/effects.ts",
+   "source_provenance": {
+    "author": "Gauntlet Warfare project",
+    "license": "project-owned",
+    "sha256": "5ec1e49755567b7835e3faea780b44c0a623255461c7fd928da68b2f7aff12fc"
+   },
+   "acceptance_state": "accepted",
+   "budget": {}
+  },
+  {
+   "id": "combat-audio",
+   "role": "audio",
+   "origin": "project",
+   "construction_route": "audio.procedural/webaudio",
+   "runtime_representation": "src/audio.ts",
+   "source_provenance": {
+    "author": "Gauntlet Warfare project",
+    "license": "project-owned",
+    "sha256": "d3c9ea6a41589e1a8b446ada6362343561ea0ed6a50e1f72d18e3face10f54bf"
+   },
+   "acceptance_state": "accepted",
+   "budget": {}
+  },
+  {
+   "id": "m4a1-viewmodel",
+   "role": "weapon",
+   "origin": "project",
+   "construction_route": "project-owned manual procedural authoring (operator-approved alternate route)",
+   "runtime_representation": "src/assets/m4a1-viewmodel.ts",
+   "source_provenance": {
+    "author": "Gauntlet Warfare project",
+    "license": "project-owned",
+    "uri": "references/m4a1-profile.png",
+    "sha256": "66092dd7dd0f8e66574f6f5aba96f81b5e64749d910ece255aa3391322b2c229"
+   },
+   "budget": {
+    "max_triangles": 12000,
+    "measured_triangles": 3144,
+    "measured_silhouette_iou": 0.834
+   },
+   "acceptance_state": "accepted",
+   "sockets": {
+    "socket-muzzle": "muzzle",
+    "socket-optic": "sight",
+    "socket-ejection": "casing origin"
+   },
+   "collider_policy": "viewmodel excluded from world collision",
+   "lod_policy": "single first-person representation; always near camera; no distance LOD"
+  },
+  {
+   "id": "polyhaven-dry_ground_01",
+   "role": "texture",
+   "origin": "cc0",
+   "construction_route": "asset.source/asset.polyhaven",
+   "source_provenance": {
+    "uri": "https://polyhaven.com/a/dry_ground_01",
+    "license": "CC0",
+    "author": "Poly Haven",
+    "sha256": "75222fc97a82b635a09cf8f2891dd58bc42e49599b9fda920b2c50193fe85e9f",
+    "retrieved_at": "2026-09-19T03:05:32.828Z"
+   },
+   "runtime_representation": "assets/sources/polyhaven/dry_ground_01/dry_ground_01_diff_1k.jpg",
+   "budget": {},
+   "acceptance_state": "accepted",
+   "verification_refs": [
+    "assets/sources/polyhaven/dry_ground_01/dry_ground_01_nor_gl_1k.jpg",
+    "assets/sources/polyhaven/dry_ground_01/dry_ground_01_arm_1k.jpg"
+   ]
+  },
+  {
+   "id": "polyhaven-concrete_wall_003",
+   "role": "texture",
+   "origin": "cc0",
+   "construction_route": "asset.source/asset.polyhaven",
+   "source_provenance": {
+    "uri": "https://polyhaven.com/a/concrete_wall_003",
+    "license": "CC0",
+    "author": "Poly Haven",
+    "sha256": "7d1d4b9f5ed1aa3e6385ef3232e26e123a3dac5f364e44f9f34784e39bf8d6bb",
+    "retrieved_at": "2026-09-19T03:05:34.675Z"
+   },
+   "runtime_representation": "assets/sources/polyhaven/concrete_wall_003/concrete_wall_003_diff_1k.jpg",
+   "budget": {},
+   "acceptance_state": "accepted",
+   "verification_refs": [
+    "assets/sources/polyhaven/concrete_wall_003/concrete_wall_003_nor_gl_1k.jpg",
+    "assets/sources/polyhaven/concrete_wall_003/concrete_wall_003_arm_1k.jpg"
+   ]
+  },
+  {
+   "id": "polyhaven-brick_wall_04",
+   "role": "texture",
+   "origin": "cc0",
+   "construction_route": "asset.source/asset.polyhaven",
+   "source_provenance": {
+    "uri": "https://polyhaven.com/a/brick_wall_04",
+    "license": "CC0",
+    "author": "Poly Haven",
+    "sha256": "c6800291ac2da9ab9b4be0349f99eb8eec9f020dc06e3d0034d6d8e35905aec7",
+    "retrieved_at": "2026-09-19T03:05:36.959Z"
+   },
+   "runtime_representation": "assets/sources/polyhaven/brick_wall_04/brick_wall_04_diff_1k.jpg",
+   "budget": {},
+   "acceptance_state": "accepted",
+   "verification_refs": [
+    "assets/sources/polyhaven/brick_wall_04/brick_wall_04_nor_gl_1k.jpg",
+    "assets/sources/polyhaven/brick_wall_04/brick_wall_04_arm_1k.jpg"
+   ]
+  },
+  {
+   "id": "polyhaven-container_side",
+   "role": "texture",
+   "origin": "cc0",
+   "construction_route": "asset.source/asset.polyhaven",
+   "source_provenance": {
+    "uri": "https://polyhaven.com/a/container_side",
+    "license": "CC0",
+    "author": "Poly Haven",
+    "sha256": "9d6a8a9a243b6111f9d13af12d90325f0f1d52e45c2e1731f2d496702f024452",
+    "retrieved_at": "2026-09-19T03:05:39.227Z"
+   },
+   "runtime_representation": "assets/sources/polyhaven/container_side/container_side_diff_1k.jpg",
+   "budget": {},
+   "acceptance_state": "accepted",
+   "verification_refs": [
+    "assets/sources/polyhaven/container_side/container_side_nor_gl_1k.jpg",
+    "assets/sources/polyhaven/container_side/container_side_arm_1k.jpg"
+   ]
+  },
+  {
+   "id": "operator-npc",
+   "role": "character",
+   "origin": "generated",
+   "construction_route": "asset.reconstruct.reference-image/agent-skill.img2threejs (character track, turnaround-convergence v2; parametric rebuild v6-v25, vision-judge composite 0.64 vs 0.75 target, hard minimums clear, residual gap documented; v27 profile-correction loop 2026-09-19: front 0.905 / back 0.890 / left 0.864; v28 vision-fidelity loop 2026-09-19: independent verifier failed v27 at 45% \u2014 skeleton rebuilt tall/slim (hip -0.465, legs 53.5% of height), matte ballistic helmet + NVG + flat pushed-up goggles, dark-on-dark palette (single muted-tan accent), sleeve-cap arms + boxed gloves, low-profile knee pads, tall lace-up boots, flat side profile, clean belt + one drop-leg panel, structured MOLLE rucksack; lathe winding fix (bottom-to-top profiles) removed the inverted-normal bright bands; front 0.844 / left 0.818 / back 0.888, full 9-view set + back.png in r2; v29 vision-fidelity loop 2026-09-19: independent verifier failed v28 at 58% \u2014 head rebuilt as ballistic helmet + goggle band/lens block + shooting glasses + balaclava (screen/egg read removed), bulky wrapped scarf, legs 52% of height and thinner with shorter torso and 15% smaller head, hip/flare slabs removed, arms hang near-straight with gloved hands (forearm screen removed), boots rebuilt with ankle break + defined sole (gap band closed), olive-brown-gray palette with carrier/pouch value separation + fabric micro-noise, tan accents deleted, pistol in right-thigh holster + cargo pockets + radio body added, rucksack reads packed (bulge/lid/straps/buckles, shin slabs removed); front 0.7225 / left 0.7525 / back 0.7416 (lower than r2 because the directed straight-arm hang removed the bowed silhouette the row profiles were fitting), full 9-view set + back.png in r3; v30 vision-fidelity loop 2026-09-19: independent verifier failed v29 at 62% with 10 findings, all corrected \u2014 gray-framed two-lens GOGGLE with dome strap (shooting glasses removed), helmet band recolored charcoal m-polymer + dome lowered + side-rail strips added, near-black glove value break (cuff included), LARGE tan-olive draped shawl (neck wrap + shoulder cape + three staggered chest panels ending above the patch + back drape, albedo keyed to sampled reference ~#6c6450), rucksack enlarged upper-back-to-belt with proud lid/straps/buckles/side pouches, carrier desaturated to gray-green #3e403a with dark velcro patch panel + 3 MOLLE rows + single distinct three-mag row, whole palette shifted weathered olive-brown-gray with raised mottling amplitudes, fatigues/trousers/carrier lifted for back-value separation, bicep swell + gear-broadened deltoids, straight narrow boot shafts with five proud lace rungs; front 0.6993 / left 0.7859 / back 0.7405 (front masked by the lit tan shawl crossing the 120 silhouette threshold \u2014 measurement artifact of the directed light scarf, image itself reads), full 9-view set + back.png in r4)",
+   "runtime_representation": "src/assets/operator-npc.ts",
+   "source_provenance": {
+    "author": "Gauntlet Warfare project (img2threejs reconstruction from reference-only imagery)",
+    "license": "project-owned",
+    "sha256": "6a8926e72d56d4adcbd088174b61f00ae1aaf995a51c2256710b6c2d907947a9"
+   },
+   "budget": {
+    "max_triangles": 25000,
+    "measured_triangles": 19440,
+    "measured_draw_calls_standalone": 45,
+    "note": "12k cap superseded by operator amendment (2026-09-19): prioritize the AAA read; 25000 = 2 NPC instances (38.9k tris) fit 121k remaining headroom of the 180k game budget with margin. Draw-call merge pass preserved: v31 measures 50 standalone draws (19440 tris; +5 for the knuckle-plate, knee-strap and thigh-mag gear groups); gear organized flat per the vision-verifier depth cut; materials clamped to matte cloth response (env <= 0.07 on cloth classes) so lit gear stays inside the weathered cool-gray read."
+   },
+   "acceptance_state": "degraded",
+   "sockets": {
+    "socket-weapon": "hand-r grip"
+   },
+   "collider_policy": "Rapier capsule projected from Koota Actor (unchanged from combatant placeholder)",
+   "lod_policy": "single representation; per-instance draw-call merge pending before live-loop use",
+   "animation_contract": {
+    "blender_mapping": "bone ids pelvis>abdomen>chest>neck>head + thigh/shin/foot-l/r are a bound skeleton; arm chains clavicle>upper-arm>forearm>hand-l/r are named joint-aligned pivots; A-pose authored; L/R mirrored",
+    "export": "assets/operator-npc.gltf (verified headless Blender 5.2.2: 1 armature/11 bones/74 meshes)"
+   },
+   "verification_refs": [
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/gauntlet-loop/r5/review.json",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/gauntlet-loop/r4/review.json",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/gauntlet-loop/r3/review.json",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/gauntlet-loop/r2/review.json",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/gauntlet-loop/r1/review.json",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/render/v26-optimized/review.json",
+    "references: references/operator-turnaround-sheet.png, references/derived/turnaround/front.png, references/derived/turnaround/left.png, references/derived/turnaround/back.png",
+    "reference sha256: 70986adc0c7c748a1d7b25ffd6ee681a223c21f52aa5c9579778ff238b45972b, a16f0a9dcf2229187d1528772e2c5cb180302b0c49c6f5274504892f007ab162, 89360a9b65dd7b145d4881f39cec23b0b1ac01e5875b8cad178928fff973e712, 49eaa7208645deeefc81d75fb29f53fe07bda1f5a87b1f1df5ffb1cfba4ab532",
+    "factory sha256: 9eeb66927a3a7eeff5a8c3cb500b1b9790da854f73d6d5a6fdf706e655df7d8b",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/review-sheets/cmp-v25-front.png",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/review-sheets/cmp-v25-left.png",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/review-sheets/cmp-v25-back.png",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/correction-history-v2.json",
+    "codename-gauntlet-warfare/.img2threejs/npc-operator/blender-verify-v26.json",
+    "note: composite fidelity 0.64 (vision judge pass 6) vs 0.75 target - hard minimums all clear, structure clean, A-pose animation-plausible; residual gap = gear readout density on torso, athletic-taper proportion, joint-sphere prominence, material micro-variation; recorded honestly, not threshold-lowered"
+   ]
+  }
+ ],
+ "history": [
+  {
+   "seq": 0,
+   "kind": "intake",
+   "asset_id": "polyhaven-dry_ground_01",
+   "at": "2026-09-19T03:00:50.859Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 1,
+   "kind": "intake",
+   "asset_id": "polyhaven-concrete_wall_003",
+   "at": "2026-09-19T03:00:55.379Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 2,
+   "kind": "intake",
+   "asset_id": "polyhaven-patterned_brick_wall_03",
+   "at": "2026-09-19T03:01:04.003Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 3,
+   "kind": "intake",
+   "asset_id": "polyhaven-container_side",
+   "at": "2026-09-19T03:01:07.339Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 4,
+   "kind": "intake",
+   "asset_id": "polyhaven-dry_ground_01",
+   "at": "2026-09-19T03:01:50.984Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 5,
+   "kind": "intake",
+   "asset_id": "polyhaven-concrete_wall_003",
+   "at": "2026-09-19T03:01:51.990Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 6,
+   "kind": "intake",
+   "asset_id": "polyhaven-container_side",
+   "at": "2026-09-19T03:01:53.629Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 7,
+   "kind": "intake",
+   "asset_id": "polyhaven-dry_ground_01",
+   "at": "2026-09-19T03:05:32.829Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 8,
+   "kind": "intake",
+   "asset_id": "polyhaven-concrete_wall_003",
+   "at": "2026-09-19T03:05:34.675Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 9,
+   "kind": "intake",
+   "asset_id": "polyhaven-brick_wall_04",
+   "at": "2026-09-19T03:05:36.960Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 10,
+   "kind": "intake",
+   "asset_id": "polyhaven-container_side",
+   "at": "2026-09-19T03:05:39.227Z",
+   "data": {
+    "origin": "cc0",
+    "construction_route": "asset.source/asset.polyhaven",
+    "state": "pending"
+   }
+  },
+  {
+   "seq": 11,
+   "kind": "accept",
+   "asset_id": "polyhaven-dry_ground_01",
+   "at": "2026-09-19T03:06:34.592Z",
+   "data": {
+    "route": "asset.source/asset.polyhaven"
+   }
+  },
+  {
+   "seq": 12,
+   "kind": "accept",
+   "asset_id": "polyhaven-concrete_wall_003",
+   "at": "2026-09-19T03:06:34.592Z",
+   "data": {
+    "route": "asset.source/asset.polyhaven"
+   }
+  },
+  {
+   "seq": 13,
+   "kind": "accept",
+   "asset_id": "polyhaven-brick_wall_04",
+   "at": "2026-09-19T03:06:34.592Z",
+   "data": {
+    "route": "asset.source/asset.polyhaven"
+   }
+  },
+  {
+   "seq": 14,
+   "kind": "accept",
+   "asset_id": "polyhaven-container_side",
+   "at": "2026-09-19T03:06:34.592Z",
+   "data": {
+    "route": "asset.source/asset.polyhaven"
+   }
+  }
+ ],
+ "references": [
+  {
+   "id": "turnaround-front",
+   "file": "references/derived/turnaround/front.png",
+   "derived_from": "operator-turnaround-sheet",
+   "derivation": "scripts/crop-turnaround.py (labels/borders/panels removed; shadow-free)",
+   "sha256": "a16f0a9dcf2229187d1528772e2c5cb180302b0c49c6f5274504892f007ab162",
+   "reference_only_note": true,
+   "license_status": "reference-only; project-owned art direction supplied by operator"
+  },
+  {
+   "id": "turnaround-left",
+   "file": "references/derived/turnaround/left.png",
+   "derived_from": "operator-turnaround-sheet",
+   "derivation": "scripts/crop-turnaround.py (labels/borders/panels removed; shadow-free)",
+   "sha256": "89360a9b65dd7b145d4881f39cec23b0b1ac01e5875b8cad178928fff973e712",
+   "reference_only_note": true,
+   "license_status": "reference-only; project-owned art direction supplied by operator"
+  },
+  {
+   "id": "turnaround-back",
+   "file": "references/derived/turnaround/back.png",
+   "derived_from": "operator-turnaround-sheet",
+   "derivation": "scripts/crop-turnaround.py (labels/borders/panels removed; shadow-free)",
+   "sha256": "49eaa7208645deeefc81d75fb29f53fe07bda1f5a87b1f1df5ffb1cfba4ab532",
+   "reference_only_note": true,
+   "license_status": "reference-only; project-owned art direction supplied by operator"
+  },
+  {
+   "id": "turnaround-right",
+   "file": "references/derived/turnaround/right.png",
+   "derived_from": "operator-turnaround-sheet",
+   "derivation": "scripts/crop-turnaround.py (labels/borders/panels removed; shadow-free)",
+   "sha256": "829a94d0ece25f8b5139e1bb519ed99a1633db08623fbed7155087a4e9d002af",
+   "reference_only_note": true,
+   "license_status": "reference-only; project-owned art direction supplied by operator"
+  },
+  {
+   "id": "turnaround-34front",
+   "file": "references/derived/turnaround/34front.png",
+   "derived_from": "operator-turnaround-sheet",
+   "derivation": "scripts/crop-turnaround.py (labels/borders/panels removed; shadow-free)",
+   "sha256": "cf3de32f43de09fe51fd98b1fff0108f9ce46f4d5cfc212367994c31c196554d",
+   "reference_only_note": true,
+   "license_status": "reference-only; project-owned art direction supplied by operator"
+  },
+  {
+   "id": "turnaround-34back",
+   "file": "references/derived/turnaround/34back.png",
+   "derived_from": "operator-turnaround-sheet",
+   "derivation": "scripts/crop-turnaround.py (labels/borders/panels removed; shadow-free)",
+   "sha256": "d9726063c9e82f0f9a556db54ae4d6045b79ed873c83afddd563daf6e833f484",
+   "reference_only_note": true,
+   "license_status": "reference-only; project-owned art direction supplied by operator"
+  }
+ ]
+}

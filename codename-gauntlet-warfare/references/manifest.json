@@ -1,0 +1,64 @@
+{
+  "reference_only": true,
+  "notice": "External images are visual references only and are not shipped production assets.",
+  "items": [
+    {
+      "id": "m4a1-profile",
+      "file": "m4a1-profile.png",
+      "origin_url": "https://www.therealgrit.com/products/m4a1-carbine-socom-145-30-round-556x45mm-ar-15-semi-auto-rifle-black",
+      "image_url": "https://cdn.buildresonance.com/images/cntnt-2Z89OZDz23PCB2ua5AvQX0dfCzn/image.png",
+      "sha256": "e6aa18bf5e1e57580173c73d342dc62ee7251865612a0c21ce432d7a91cd9296",
+      "license_status": "reference-only; source terms apply",
+      "retrieved_at": "2026-09-17"
+    },
+    {
+      "id": "cod-mw-viewmodel",
+      "file": "cod-mw-viewmodel.jpg",
+      "origin_url": "https://www.imfdb.org/wiki/File%3AMW_AK-47_%282%29.jpg",
+      "image_url": "https://www.imfdb.org/images/a/a6/MW_AK-47_%282%29.jpg",
+      "sha256": "56af14769710882cbb62fb9a07c0d1cb7790c4135c87201029e8ad89f09eb149",
+      "license_status": "reference-only; copyright remains with respective owner",
+      "retrieved_at": "2026-09-17"
+    },
+    {
+      "id": "urban-compound",
+      "file": "urban-compound.jpg",
+      "origin_url": "https://containerone.net/blogs/news/military-finding-creative-uses-for-shipping-containers",
+      "image_url": "https://containerone.net/cdn/shop/articles/Military_Blog_Image_1200x1200.jpg?v=1620670121",
+      "sha256": "6038c183b2610b17272bee180e1c71d9f82658b6933d7584649f986584a41499",
+      "license_status": "reference-only; source terms apply",
+      "retrieved_at": "2026-09-17"
+    },
+    {
+      "id": "operator-tactical-front",
+      "file": "operator-tactical-front.jpg",
+      "origin_url": "https://www.etsy.com/ (tactical uniform product listing, via image search)",
+      "image_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/14c03b218847.jpg",
+      "sha256": "ce7c32880fe5a22b07e30d6361de217b560c99b78688c976bb6e2ab521b1d0cf",
+      "license_status": "reference-only; source terms apply",
+      "retrieved_at": "2026-09-19"
+    },
+    {
+      "id": "operator-tactical-side",
+      "file": "operator-tactical-side.jpg",
+      "origin_url": "https://www.etsy.com/ (tactical uniform product listing, via image search)",
+      "image_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8b3712b2e3d3.jpg",
+      "sha256": "62cafb3cc1f9a24094a1797e3184bfad6d3381b584cb3ff397c93b77569aa0a8",
+      "license_status": "reference-only; copyright remains with respective owner",
+      "retrieved_at": "2026-09-19"
+    },
+    {
+      "id": "operator-turnaround-sheet",
+      "file": "operator-turnaround-sheet.png",
+      "origin_url": "operator-supplied (Gauntlet War AAA NPC reference turnaround, generated art direction)",
+      "image_url": "operator-supplied session attachment 01-gauntlet-warefare-ref-soilder.png",
+      "sha256": "70986adc0c7c748a1d7b25ffd6ee681a223c21f52aa5c9579778ff238b45972b",
+      "license_status": "reference-only; project-owned art direction supplied by operator",
+      "retrieved_at": "2026-09-19",
+      "derived": {
+        "notice": "Per-view working crops cut by scripts/crop-turnaround.py; labels/borders/panels/labels removed; no cast-shadow contamination (min gray below boots 144+ vs subject threshold 120).",
+        "crops_manifest": "references/derived/turnaround/crops-manifest.json"
+      }
+    }
+  ]
+}

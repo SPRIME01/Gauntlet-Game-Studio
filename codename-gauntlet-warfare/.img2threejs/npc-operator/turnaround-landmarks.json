@@ -1,0 +1,121 @@
+{
+  "threshold": 120,
+  "front": {
+    "view": "front",
+    "image_wh": [
+      304,
+      535
+    ],
+    "crown_y": 4,
+    "sole_y": 530,
+    "height_px": 526,
+    "head_block_end_y": 63,
+    "head_block_px": 59,
+    "head_units_visible_block": 8.915,
+    "goggle_line_y": 99,
+    "head_height_inferred": {
+      "method": "goggle-line eye-line at ~0.47 anatomical head height (chin occluded by mask/wrap)",
+      "head_px": 202.1,
+      "head_units": 2.6
+    },
+    "shoulder": {
+      "y": 181,
+      "width_px": 233.0,
+      "frac_height": 0.443
+    },
+    "torso_midline_run_frac_height": {
+      "deltoid_0.22": 0.2966,
+      "chest_0.30": 0.3764,
+      "waist_0.42": 0.2262,
+      "hip_0.50": 0.2376
+    },
+    "a_pose_arm_deg_from_vertical": {
+      "left": 26.9,
+      "right": 26.6
+    },
+    "hand_tips": {
+      "left": [
+        4,
+        264
+      ],
+      "right": [
+        299,
+        264
+      ]
+    },
+    "crotch_y": 325,
+    "ankle_pinch": null,
+    "width_frac_height": {
+      "head_block_0.06": 77.0,
+      "chest_0.30": 0.39543726235741444,
+      "waist_0.42": 0.3745247148288973,
+      "hips_0.50": 0.344106463878327,
+      "knees_0.72": 0.1806083650190114,
+      "calves_0.85": 0.20532319391634982,
+      "ankles_0.95": 0.13498098859315588
+    },
+    "spans_frac_height": {
+      "0.30": [
+        49,
+        257
+      ],
+      "0.42": [
+        16,
+        289
+      ],
+      "0.50": [
+        5,
+        299
+      ]
+    }
+  },
+  "left": {
+    "view": "left",
+    "image_wh": [
+      144,
+      539
+    ],
+    "crown_y": 4,
+    "sole_y": 534,
+    "height_px": 530,
+    "front_x": 4,
+    "back_x": 139,
+    "depth_px": 135,
+    "depth_frac_height": {
+      "helmet_0.05": 0.15660377358490565,
+      "shoulders_0.25": 0.2358490566037736,
+      "chest_0.32": 0.24528301886792453,
+      "waist_0.44": 0.19056603773584907,
+      "hips_0.52": 0.16226415094339622,
+      "thigh_0.62": 0.13773584905660377,
+      "knee_0.72": 0.1320754716981132,
+      "calf_0.82": 0.1169811320754717,
+      "boot_0.95": 0.16981132075471697
+    }
+  },
+  "back": {
+    "view": "back",
+    "image_wh": [
+      299,
+      537
+    ],
+    "crown_y": 4,
+    "sole_y": 532,
+    "height_px": 528,
+    "front_x": 4,
+    "back_x": 294,
+    "depth_px": 290,
+    "depth_frac_height": {
+      "helmet_0.05": 0.13636363636363635,
+      "shoulders_0.25": 0.35984848484848486,
+      "chest_0.32": 0.42424242424242425,
+      "waist_0.44": 0.5132575757575758,
+      "hips_0.52": 0.5492424242424242,
+      "thigh_0.62": 0.29545454545454547,
+      "knee_0.72": 0.2556818181818182,
+      "calf_0.82": 0.2878787878787879,
+      "boot_0.95": 0.2840909090909091
+    }
+  },
+  "note": "depth_frac_height rows are row-widths of the side silhouette = body depth at that height fraction"
+}

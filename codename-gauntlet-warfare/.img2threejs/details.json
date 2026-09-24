@@ -1,0 +1,71 @@
+{
+  "sourceImage": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/m4a1-profile.png",
+  "zonesDir": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones",
+  "detailInventory": {
+    "scanMethod": "component-zones",
+    "targetMinDetails": 6,
+    "details": [
+      {
+        "id": "receiver",
+        "kind": "",
+        "description": "",
+        "region": {
+          "x": 0.53,
+          "y": 0.16,
+          "width": 0.24,
+          "height": 0.38,
+          "units": "normalized"
+        },
+        "scale": "",
+        "affects": "",
+        "mapsTo": {
+          "type": "",
+          "ref": ""
+        },
+        "evidenceRef": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/receiver.png",
+        "confidence": 0.0
+      },
+      {
+        "id": "polymer",
+        "kind": "",
+        "description": "",
+        "region": {
+          "x": 0.81,
+          "y": 0.24,
+          "width": 0.16,
+          "height": 0.15,
+          "units": "normalized"
+        },
+        "scale": "",
+        "affects": "",
+        "mapsTo": {
+          "type": "",
+          "ref": ""
+        },
+        "evidenceRef": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/polymer.png",
+        "confidence": 0.0
+      },
+      {
+        "id": "magazine",
+        "kind": "",
+        "description": "",
+        "region": {
+          "x": 0.53,
+          "y": 0.6,
+          "width": 0.08,
+          "height": 0.27,
+          "units": "normalized"
+        },
+        "scale": "",
+        "affects": "",
+        "mapsTo": {
+          "type": "",
+          "ref": ""
+        },
+        "evidenceRef": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/.img2threejs/zones/magazine.png",
+        "confidence": 0.0
+      }
+    ]
+  },
+  "authoringInstruction": "Open each zone crop under zonesDir and replace every detail stub's kind, description, scale, affects, mapsTo, and confidence with what is actually observed. Add more detail entries per zone if a single zone contains multiple distinct marks; do not leave stubs unfilled or unlinked (mapsTo must reference a real component.localFeatures or material.localOverrides entry)."
+}

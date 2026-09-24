@@ -1,0 +1,136 @@
+{
+  "sheet": "references/operator-turnaround-sheet.png",
+  "views": {
+    "front": {
+      "file": "references/derived/turnaround/front.png",
+      "sheet_bbox": [
+        2,
+        27,
+        306,
+        562
+      ],
+      "subject_px": 61845,
+      "rows_below_boots_min_gray": 144.33333333333334
+    },
+    "left": {
+      "file": "references/derived/turnaround/left.png",
+      "sheet_bbox": [
+        314,
+        26,
+        458,
+        565
+      ],
+      "subject_px": 40494,
+      "rows_below_boots_min_gray": 150.0
+    },
+    "back": {
+      "file": "references/derived/turnaround/back.png",
+      "sheet_bbox": [
+        463,
+        27,
+        762,
+        564
+      ],
+      "subject_px": 62093,
+      "rows_below_boots_min_gray": 154.66666666666666
+    },
+    "right": {
+      "file": "references/derived/turnaround/right.png",
+      "sheet_bbox": [
+        767,
+        27,
+        909,
+        565
+      ],
+      "subject_px": 41440,
+      "rows_below_boots_min_gray": 144.33333333333334
+    },
+    "34front": {
+      "file": "references/derived/turnaround/34front.png",
+      "sheet_bbox": [
+        908,
+        29,
+        1186,
+        564
+      ],
+      "subject_px": 60701,
+      "rows_below_boots_min_gray": 152.66666666666666
+    },
+    "34back": {
+      "file": "references/derived/turnaround/34back.png",
+      "sheet_bbox": [
+        1190,
+        28,
+        1447,
+        564
+      ],
+      "subject_px": 61403,
+      "rows_below_boots_min_gray": 149.33333333333334
+    }
+  },
+  "details": {
+    "head-front": {
+      "file": "references/derived/turnaround/detail-head-front.png",
+      "sheet_bbox": [
+        36,
+        598,
+        188,
+        796
+      ]
+    },
+    "head-side": {
+      "file": "references/derived/turnaround/detail-head-side.png",
+      "sheet_bbox": [
+        240,
+        598,
+        394,
+        796
+      ]
+    },
+    "head-back": {
+      "file": "references/derived/turnaround/detail-head-back.png",
+      "sheet_bbox": [
+        449,
+        598,
+        609,
+        796
+      ]
+    },
+    "torso": {
+      "file": "references/derived/turnaround/detail-torso.png",
+      "sheet_bbox": [
+        643,
+        598,
+        896,
+        796
+      ]
+    },
+    "leg": {
+      "file": "references/derived/turnaround/detail-leg.png",
+      "sheet_bbox": [
+        925,
+        598,
+        1055,
+        796
+      ]
+    },
+    "glove": {
+      "file": "references/derived/turnaround/detail-glove.png",
+      "sheet_bbox": [
+        1083,
+        598,
+        1250,
+        796
+      ]
+    },
+    "boot": {
+      "file": "references/derived/turnaround/detail-boot.png",
+      "sheet_bbox": [
+        1260,
+        598,
+        1436,
+        796
+      ]
+    }
+  }
+}

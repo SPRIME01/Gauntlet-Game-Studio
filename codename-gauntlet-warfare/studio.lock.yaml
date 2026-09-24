@@ -1,0 +1,50 @@
+schema: gauntlet.studio.lock
+schema_version: "1.0"
+studio:
+  version: "0.2.0"
+  spec_sha256: "595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e"
+  commit: "82ca90c"
+runtime:
+  package: "@gauntlet/runtime"
+  version: "0.2.0"
+  three_version: "0.170.0"
+capabilities:
+  world.composition:
+    provider: "agent-skill.3dviz"
+    version: "1.0.0"
+  asset.reconstruct:
+    provider: "agent-skill.img2threejs"
+    version: "1.0.0"
+  world.terrain:
+    provider: "procedural_generator"
+    version: "1.0.0"
+  world.physics:
+    provider: "physics.rapier"
+    version: "1.0.0"
+  world.navigation:
+    provider: "navigation.recast"
+    version: "1.0.0"
+  world.spatial:
+    provider: "spatial.three-mesh-bvh"
+    version: "1.0.0"
+  asset.source:
+    provider: "asset.polyhaven"
+    version: "1.0.0"
+  asset.optimize:
+    provider: "asset.gltf-transform"
+    version: "1.0.0"
+  asset.dcc_escalate:
+    provider: "dcc.blender"
+    version: "1.0.0"
+  vfx.particles:
+    provider: "vfx.quarks"
+    version: "1.0.0"
+  audio.procedural:
+    provider: "audio.tone"
+    version: "1.0.0"
+  network.multiplayer:
+    provider: "network.websocket"
+    version: "1.0.0"
+  verify.browser:
+    provider: "browser.playwright"
+    version: "1.0.0"

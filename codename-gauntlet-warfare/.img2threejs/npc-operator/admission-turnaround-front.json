@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "reference",
+    "sourcePath": "/home/sprime01/projects/gauntlet-game-studio/codename-gauntlet-warfare/references/derived/turnaround/front.png",
+    "width": 304,
+    "height": 535,
+    "foregroundCoverage": 0.4194,
+    "largestComponentFraction": 1.0,
+    "pHash": 16909602260170836667,
+    "duplicateOfHash": null
+  }
+}

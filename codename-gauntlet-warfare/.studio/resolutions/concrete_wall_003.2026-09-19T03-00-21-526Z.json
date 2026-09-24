@@ -1,0 +1,35 @@
+{
+  "schema": "gauntlet.asset.resolution",
+  "schema_version": "1.0",
+  "requested_id": "concrete_wall_003",
+  "role": "environment",
+  "keywords": [
+    "concrete_wall_003"
+  ],
+  "recorded_at": "2026-09-19T03:00:21.526Z",
+  "steps": [
+    {
+      "step": "search",
+      "target": "project-registry",
+      "outcome": "no-match",
+      "detail": "no project asset matches the requested id"
+    },
+    {
+      "step": "search",
+      "target": "provider:polyhaven",
+      "provider": "polyhaven",
+      "outcome": "no-match",
+      "detail": "provider returned no matches for the request keywords"
+    },
+    {
+      "step": "acquire",
+      "target": "creation-routes",
+      "outcome": "no-match",
+      "detail": "no existing or acquirable asset; creation is the recorded fallback via the existing capability routes"
+    }
+  ],
+  "decision": {
+    "route": "create-fallback",
+    "reason": "no accepted project asset, provider match, or adapt candidate exists; route creation through the existing capability routes (procedural, reference reconstruction, DCC)"
+  }
+}
