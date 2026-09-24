@@ -1,1 +1,0 @@
-{"schemaVersion":1,"eventId":"8bf51dae-265f-45aa-8dbc-7780105d9952","eventName":"queue_drained","surface":"cli","surfaceVersion":"0.99.11","installId":"6fa91154-b7dc-452e-a1b4-78934eda8abe","os":"linux","arch":"x64","runtimeVersion":"node-26.8.2","env":"prod","tsIso":"2026-09-24T15:12:30.614Z","accountId":null,"properties":{"ops":1,"duration_ms":78604}}

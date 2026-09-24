@@ -5534,3 +5534,64 @@
 [91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
 
 [2026-09-24T15:12:39.873Z] INFO  [LlmClient] [trace=4c9ccd38b92a3167305b8ebe95237434] Local agent opencode failed with a setup error; retrying without --pure (failure named no flag; dropping all remaining)
+[2026-09-24T15:12:44.539Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-09-24T15:12:44.584Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-09-24T15:12:45.628Z] INFO  [PostCommitHook] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Detected operation: commit
+[2026-09-24T15:12:45.652Z] INFO  [PostCommitHook] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Enqueued: type=commit hash=56bef61f
+[2026-09-24T15:12:45.653Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Launching background worker
+[2026-09-24T15:12:45.655Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Background worker spawned (PID: 1635583)
+[2026-09-24T15:12:46.516Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] === Queue worker started === node=26.8.2 kind=cli source=cli pkgVer=0.99.11 cliVer=0.99.11 dist=/home/sprime01/.cache/nub/pm/store/@jolli.ai+cli@0.99.11_zod@4.4.3_-da09ec1fbb3fa1b7/node_modules/@jolli.ai/cli/dist
+[2026-09-24T15:12:46.544Z] INFO  [StorageFactory] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T15:12:46.643Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Processing queue entry: type=commit hash=56bef61f
+[2026-09-24T15:12:46.668Z] INFO  [GitOps] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Commit 56bef61f: chore(evidence): append post-fix security green run and tool
+[2026-09-24T15:12:46.672Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Commit: 56bef61f - chore(evidence): append post-fix security green run and tool state (12ms)
+[2026-09-24T15:12:46.708Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Discovered 1 OpenCode session(s)
+[2026-09-24T15:12:46.857Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Discovered 1 Antigravity session(s)
+[2026-09-24T15:12:47.018Z] INFO  [OpenCodeTranscriptReader] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Read OpenCode session ses_f2ed: 1 new messages, 0 entries extracted (index 184→185)
+[2026-09-24T15:12:47.097Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Git diff: 6 files changed, +130 -4 (51ms)
+[2026-09-24T15:12:48.628Z] INFO  [PrePushHook] [trace=6c1348dcff847268745600d6fff0884c] pre-push hook: remote=origin budget=3000ms
+[2026-09-24T15:12:48.665Z] INFO  [PushPendingStore] [trace=6c1348dcff847268745600d6fff0884c] Enqueued 3 new push-pending entries (branch=main)
+[2026-09-24T15:12:48.667Z] INFO  [PrePushHook] [trace=6c1348dcff847268745600d6fff0884c] pre-push: recorded 3 commit(s) across 1 pushed ref(s)
+[2026-09-24T15:12:48.679Z] INFO  [PrePushHook] [trace=6c1348dcff847268745600d6fff0884c] Recorded 3 commit(s) for later sync — not signed in to Jolli
+[2026-09-24T15:12:48.707Z] INFO  [StorageFactory] [trace=6c1348dcff847268745600d6fff0884c] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T15:12:47.157Z] INFO  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-09-24T15:12:47.159Z] INFO  [Summarizer] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Generating summary for commit 56bef61f
+[2026-09-24T15:12:47.159Z] INFO  [Summarizer] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Context: transcript=0, files=6, lines=130+4
+[2026-09-24T15:12:47.159Z] INFO  [LlmClient] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] LLM call: action=summarize source=local-agent
+[2026-09-24T15:12:47.342Z] INFO  [ExecutableResolver] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] opencode discovery: 1 candidate(s)=[/home/sprime01/.local/share/pnpm/opencode]; shims=[(none)]; knownPaths present=[(none)] (searched 67 PATH entries)
+[2026-09-24T15:12:49.079Z] INFO  [ExecutableResolver] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Resolved opencode executable: /home/sprime01/.local/share/pnpm/opencode (v1.18.32)
+[2026-09-24T15:12:56.014Z] WARN  [LocalAgentRunner] [trace=4c9ccd38b92a3167305b8ebe95237434] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:12:56.015Z] ERROR [LlmClient] [trace=4c9ccd38b92a3167305b8ebe95237434] Local-agent call failed: action=route tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=24959 errorName=LocalAgentSetupError error=Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T15:12:56.016Z] ERROR [QueueWorker] [trace=4c9ccd38b92a3167305b8ebe95237434] Ingest phase failed (non-fatal): Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T15:13:07.564Z] WARN  [LocalAgentRunner] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:13:07.565Z] INFO  [LlmClient] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Local agent opencode failed with a setup error; retrying without --pure (failure named no flag; dropping all remaining)
+[2026-09-24T15:13:21.638Z] WARN  [LocalAgentRunner] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:13:21.638Z] ERROR [LlmClient] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Local-agent call failed: action=summarize tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=32559 errorName=LocalAgentSetupError error=Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T15:13:21.638Z] WARN  [QueueWorker] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] First API attempt failed: Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.. Retrying in 2000ms...
+[2026-09-24T15:13:23.640Z] INFO  [Summarizer] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Generating summary for commit 56bef61f
+[2026-09-24T15:13:23.640Z] INFO  [Summarizer] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] Context: transcript=0, files=6, lines=130+4
+[2026-09-24T15:13:23.640Z] INFO  [LlmClient] [trace=7a2a7d20b29c8d3fe4d30299e065bc68] LLM call: action=summarize source=local-agent
