@@ -155,6 +155,14 @@ const SECRET_BASELINE: Array<{ file: string; pattern: string; exactContent: stri
     reason:
       "Self-declaration: this scanner's own baseline must quote the canary literal to match it exactly; not a credential",
   },
+  {
+    file: "artifacts/plan/T24/security-correction2-failure.txt",
+    pattern: "openai-style-key",
+    exactContent:
+      'detail:   BASELINE apps/studio-cli/src/cli.test.ts:49 [openai-style-key] BASELINE: T03 TEETH canary: fake literal proving loadStudioConfig REJECTS literal secrets without echoing; not a credential; scripts/conformance-security.ts:147 [openai-style-key] exactContent: \'const leakingSecret = "sk-live-super-secret-key-12345";\',',
+    reason:
+      "Historical SEC-01 failure evidence quotes the TEETH canary (and its baseline declarations) as the observed detail; not a credential. Append-only T24 correction record.",
+  },
 ];
 
 function scanSecrets(): { ok: boolean; observed: string; detail: string } {

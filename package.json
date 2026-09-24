@@ -5,7 +5,8 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "examples/blackwater-relay"
+    "examples/blackwater-relay",
+    "codename-gauntlet-warfare"
   ],
   "scripts": {
     "start": "bun run --cwd codename-gauntlet-warfare start",

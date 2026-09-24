@@ -21,6 +21,23 @@
         "@gauntlet/studio": "workspace:*",
       },
     },
+    "codename-gauntlet-warfare": {
+      "name": "codename-gauntlet-warfare",
+      "version": "0.1.0",
+      "dependencies": {
+        "@dimforge/rapier3d-compat": "0.20.0",
+        "koota": "0.6.6",
+        "recast-navigation": "0.43.1",
+        "three": "0.170.0",
+        "three.quarks": "0.16.0",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.2.0",
+        "@types/three": "^0.170.0",
+        "playwright": "1.63.0",
+        "typescript": "^5.7.3",
+      },
+    },
     "examples/blackwater-relay": {
       "name": "blackwater-relay",
       "version": "0.2.0",
@@ -199,6 +216,8 @@
     "blackwater-relay": ["blackwater-relay@workspace:examples/blackwater-relay"],
 
     "bun-types": ["bun-types@1.4.2", "", { "dependencies": { "@types/node": "*" } }, "sha512-bxV1FgK7yBIzjRe5zBozIM4Bem11ZJcCXSrjWRG3YWLt8yFDePu4cLjpebO8OvPeIE9trbyPF4fuj3Cia4Fj3w=="],
+
+    "codename-gauntlet-warfare": ["codename-gauntlet-warfare@workspace:codename-gauntlet-warfare"],
 
     "cwise-compiler": ["cwise-compiler@1.1.3", "", { "dependencies": { "uniq": "^1.0.0" } }, "sha512-WXlK/m+Di8DMMcCjcWr4i+XzcQra9eCdXIJrgh4TUgh0pIS/yJduLxS9JgefsHJ/YVLdgPtXm9r62W92MvanEQ=="],
 
