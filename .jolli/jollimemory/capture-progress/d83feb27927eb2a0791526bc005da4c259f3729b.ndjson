@@ -1,0 +1,6 @@
+{"step":"start","hash":"d83feb27927eb2a0791526bc005da4c259f3729b","ts":1790262566600}
+{"step":"diff","hash":"d83feb27927eb2a0791526bc005da4c259f3729b","ts":1790262567324,"data":{"filesChanged":4,"insertions":61,"deletions":1}}
+{"step":"references","hash":"d83feb27927eb2a0791526bc005da4c259f3729b","ts":1790262567428,"data":{"references":[],"notes":0}}
+{"step":"analyzing","hash":"d83feb27927eb2a0791526bc005da4c259f3729b","ts":1790262567428}
+{"step":"stored","hash":"d83feb27927eb2a0791526bc005da4c259f3729b","ts":1790262660887,"data":{"topics":0,"llmFailure":"Local agent exited with code 1. \u001b[0m\n> build · cline-pass/glm-5.2\n\u001b[0m\n\u001b[91m\u001b[1mError: \u001b[0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account."}}
+{"step":"end","hash":"d83feb27927eb2a0791526bc005da4c259f3729b","ts":1790262660887,"terminal":true}

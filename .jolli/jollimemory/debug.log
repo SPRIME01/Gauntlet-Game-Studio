@@ -5257,3 +5257,168 @@
 > build · cline-pass/glm-5.2
 [0m
 [91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T14:47:29.535Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-09-24T14:47:29.549Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-09-24T14:47:30.052Z] INFO  [PostCommitHook] [trace=15c51de8c210cfb28109803e355f840e] Detected operation: commit
+[2026-09-24T14:47:30.060Z] INFO  [PostCommitHook] [trace=15c51de8c210cfb28109803e355f840e] Enqueued: type=commit hash=bfb268fa
+[2026-09-24T14:47:30.060Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Launching background worker
+[2026-09-24T14:47:30.062Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Background worker spawned (PID: 1580555)
+[2026-09-24T14:47:30.288Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] === Queue worker started === node=26.8.2 kind=cli source=cli pkgVer=0.99.11 cliVer=0.99.11 dist=/home/sprime01/.cache/nub/pm/store/@jolli.ai+cli@0.99.11_zod@4.4.3_-da09ec1fbb3fa1b7/node_modules/@jolli.ai/cli/dist
+[2026-09-24T14:47:30.297Z] INFO  [StorageFactory] [trace=15c51de8c210cfb28109803e355f840e] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T14:47:30.354Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Processing queue entry: type=commit hash=bfb268fa
+[2026-09-24T14:47:30.361Z] INFO  [GitOps] [trace=15c51de8c210cfb28109803e355f840e] Commit bfb268fa: chore(tooling): commit Serena project config and OpenCode sc
+[2026-09-24T14:47:30.361Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Commit: bfb268fa - chore(tooling): commit Serena project config and OpenCode schema (5ms)
+[2026-09-24T14:47:30.370Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Discovered 1 OpenCode session(s)
+[2026-09-24T14:47:30.400Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Discovered 1 Antigravity session(s)
+[2026-09-24T14:47:30.449Z] INFO  [OpenCodeTranscriptReader] [trace=15c51de8c210cfb28109803e355f840e] Read OpenCode session ses_f2ed: 4 new messages, 1 entries extracted (index 160→164)
+[2026-09-24T14:47:30.450Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Transcript source: session=ses_f2ed41bc5ffeq1TTnnFbHcumUq, lines=160→164, entries=1
+[2026-09-24T14:47:30.490Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Git diff: 40 files changed, +834 -171 (31ms)
+[2026-09-24T14:47:30.526Z] WARN  [GitOps] [trace=15c51de8c210cfb28109803e355f840e] Diff exceeds 60000-char budget (114117 chars) — prepending --stat file list and truncating body
+[2026-09-24T14:47:30.534Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-09-24T14:47:30.536Z] INFO  [Summarizer] [trace=15c51de8c210cfb28109803e355f840e] Generating summary for commit bfb268fa
+[2026-09-24T14:47:30.536Z] INFO  [Summarizer] [trace=15c51de8c210cfb28109803e355f840e] Context: transcript=1, files=40, lines=834+171
+[2026-09-24T14:47:30.536Z] INFO  [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] LLM call: action=summarize source=local-agent
+[2026-09-24T14:47:30.646Z] INFO  [ExecutableResolver] [trace=15c51de8c210cfb28109803e355f840e] opencode discovery: 1 candidate(s)=[/home/sprime01/.local/share/pnpm/opencode]; shims=[(none)]; knownPaths present=[(none)] (searched 67 PATH entries)
+[2026-09-24T14:47:31.875Z] INFO  [ExecutableResolver] [trace=15c51de8c210cfb28109803e355f840e] Resolved opencode executable: /home/sprime01/.local/share/pnpm/opencode (v1.18.32)
+[2026-09-24T14:47:31.885Z] ERROR [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] Local-agent call failed: action=summarize tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=9 errorName=Error error=spawn E2BIG
+[2026-09-24T14:47:31.886Z] WARN  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] First API attempt failed: spawn E2BIG. Retrying in 2000ms...
+[2026-09-24T14:47:33.890Z] INFO  [Summarizer] [trace=15c51de8c210cfb28109803e355f840e] Generating summary for commit bfb268fa
+[2026-09-24T14:47:33.890Z] INFO  [Summarizer] [trace=15c51de8c210cfb28109803e355f840e] Context: transcript=1, files=40, lines=834+171
+[2026-09-24T14:47:33.890Z] INFO  [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] LLM call: action=summarize source=local-agent
+[2026-09-24T14:47:33.910Z] ERROR [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] Local-agent call failed: action=summarize tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=20 errorName=Error error=spawn E2BIG
+[2026-09-24T14:47:33.911Z] ERROR [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] API call failed after retry: spawn E2BIG
+[2026-09-24T14:47:33.911Z] WARN  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Saving summary with empty topics + llm-failed marker for commit bfb268fa
+[2026-09-24T14:47:33.911Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] API summary generated (3.4s)
+[2026-09-24T14:47:33.912Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-09-24T14:47:33.913Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Plan association: detected 0 slug(s) from transcripts: []
+[2026-09-24T14:47:33.914Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-09-24T14:47:33.915Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Note association: detected 0 note(s): []
+[2026-09-24T14:47:33.916Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Reference association: detected 0 ref(s) for branch main
+[2026-09-24T14:47:33.921Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Summary built for bfb268fa: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-09-24T14:47:34.019Z] INFO  [MetadataManager] [trace=15c51de8c210cfb28109803e355f840e] Manifest updated: main/choretooling-commit-serena-project-config-and-open-bfb268fa.md (commit)
+[2026-09-24T14:47:34.020Z] INFO  [FolderStorage] [trace=15c51de8c210cfb28109803e355f840e] Markdown generated: main/choretooling-commit-serena-project-config-and-open-bfb268fa.md
+[2026-09-24T14:47:34.022Z] INFO  [FolderStorage] [trace=15c51de8c210cfb28109803e355f840e] Wrote 4 files, deleted 0 (Add summary for bfb268fa: chore(tooling): commit Serena project config and O)
+[2026-09-24T14:47:34.022Z] INFO  [SummaryStore] [trace=15c51de8c210cfb28109803e355f840e] Summary stored successfully for commit bfb268fa
+[2026-09-24T14:47:34.039Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Summary stored successfully for commit bfb268fa (117ms, 0 plans, 0 notes, 0 references)
+[2026-09-24T14:47:34.039Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] === Pipeline completed in 3.7s ===
+[2026-09-24T14:47:34.039Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] === Summary content (0 topics) ===
+[2026-09-24T14:47:34.049Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Processed 1 queue entries
+[2026-09-24T14:47:34.056Z] INFO  [PushExecutor] [trace=15c51de8c210cfb28109803e355f840e] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-09-24T14:47:34.116Z] INFO  [GitOps] [trace=15c51de8c210cfb28109803e355f840e] Commit bfb268fa: chore(tooling): commit Serena project config and OpenCode sc
+[2026-09-24T14:47:34.242Z] INFO  [StorageFactory] [trace=15c51de8c210cfb28109803e355f840e] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T14:47:34.360Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] === Queue worker finished ===
+[2026-09-24T14:47:34.390Z] INFO  [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Processing queue entry: type=ingest triggeredBy=post-commit
+[2026-09-24T14:47:34.639Z] INFO  [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] LLM call: action=route source=local-agent
+[2026-09-24T14:47:58.819Z] WARN  [LocalAgentRunner] [trace=15c51de8c210cfb28109803e355f840e] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T14:47:58.823Z] INFO  [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] Local agent opencode failed with a setup error; retrying without --pure (failure named no flag; dropping all remaining)
+[2026-09-24T14:48:21.561Z] WARN  [LocalAgentRunner] [trace=15c51de8c210cfb28109803e355f840e] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T14:48:21.561Z] ERROR [LlmClient] [trace=15c51de8c210cfb28109803e355f840e] Local-agent call failed: action=route tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=46909 errorName=LocalAgentSetupError error=Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T14:48:21.567Z] ERROR [QueueWorker] [trace=15c51de8c210cfb28109803e355f840e] Ingest phase failed (non-fatal): Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T14:49:31.383Z] INFO  [PrePushHook] [trace=5c6819aa6a6f05b4d442116cc73a1146] pre-push hook: remote=origin budget=3000ms
+[2026-09-24T14:49:31.406Z] INFO  [PushPendingStore] [trace=5c6819aa6a6f05b4d442116cc73a1146] Enqueued 6 new push-pending entries (branch=main)
+[2026-09-24T14:49:31.408Z] INFO  [PrePushHook] [trace=5c6819aa6a6f05b4d442116cc73a1146] pre-push: recorded 6 commit(s) across 1 pushed ref(s)
+[2026-09-24T14:49:31.412Z] INFO  [PrePushHook] [trace=5c6819aa6a6f05b4d442116cc73a1146] Recorded 6 commit(s) for later sync — not signed in to Jolli
+[2026-09-24T14:49:31.424Z] INFO  [StorageFactory] [trace=5c6819aa6a6f05b4d442116cc73a1146] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T15:09:25.171Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-09-24T15:09:25.214Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-09-24T15:09:26.159Z] INFO  [PostCommitHook] [trace=62efb0958db2bbbad342e583fc0783f2] Detected operation: commit
+[2026-09-24T15:09:26.171Z] INFO  [PostCommitHook] [trace=62efb0958db2bbbad342e583fc0783f2] Enqueued: type=commit hash=d83feb27
+[2026-09-24T15:09:26.171Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Launching background worker
+[2026-09-24T15:09:26.175Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Background worker spawned (PID: 1626890)
+[2026-09-24T15:09:26.504Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] === Queue worker started === node=26.8.2 kind=cli source=cli pkgVer=0.99.11 cliVer=0.99.11 dist=/home/sprime01/.cache/nub/pm/store/@jolli.ai+cli@0.99.11_zod@4.4.3_-da09ec1fbb3fa1b7/node_modules/@jolli.ai/cli/dist
+[2026-09-24T15:09:26.527Z] INFO  [StorageFactory] [trace=62efb0958db2bbbad342e583fc0783f2] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T15:09:26.597Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Processing queue entry: type=commit hash=d83feb27
+[2026-09-24T15:09:26.612Z] INFO  [GitOps] [trace=62efb0958db2bbbad342e583fc0783f2] Commit d83feb27: fix(conformance): baseline historical SEC-01 canary quote; a
+[2026-09-24T15:09:26.616Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Commit: d83feb27 - fix(conformance): baseline historical SEC-01 canary quote; add codename workspace for clean installs (13ms)
+[2026-09-24T15:09:26.792Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Discovered 1 OpenCode session(s)
+[2026-09-24T15:09:26.929Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Discovered 1 Antigravity session(s)
+[2026-09-24T15:09:27.259Z] INFO  [OpenCodeTranscriptReader] [trace=62efb0958db2bbbad342e583fc0783f2] Read OpenCode session ses_f2ed: 19 new messages, 3 entries extracted (index 164→183)
+[2026-09-24T15:09:27.260Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Transcript source: session=ses_f2ed41bc5ffeq1TTnnFbHcumUq, lines=164→183, entries=3
+[2026-09-24T15:09:27.324Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Git diff: 4 files changed, +61 -1 (38ms)
+[2026-09-24T15:09:27.427Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-09-24T15:09:27.428Z] INFO  [Summarizer] [trace=62efb0958db2bbbad342e583fc0783f2] Generating summary for commit d83feb27
+[2026-09-24T15:09:27.428Z] INFO  [Summarizer] [trace=62efb0958db2bbbad342e583fc0783f2] Context: transcript=3, files=4, lines=61+1
+[2026-09-24T15:09:27.429Z] INFO  [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] LLM call: action=summarize source=local-agent
+[2026-09-24T15:09:27.564Z] INFO  [ExecutableResolver] [trace=62efb0958db2bbbad342e583fc0783f2] opencode discovery: 1 candidate(s)=[/home/sprime01/.local/share/pnpm/opencode]; shims=[(none)]; knownPaths present=[(none)] (searched 67 PATH entries)
+[2026-09-24T15:09:33.472Z] INFO  [ExecutableResolver] [trace=62efb0958db2bbbad342e583fc0783f2] Resolved opencode executable: /home/sprime01/.local/share/pnpm/opencode (v1.18.32)
+[2026-09-24T15:10:06.998Z] WARN  [LocalAgentRunner] [trace=62efb0958db2bbbad342e583fc0783f2] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:10:07.001Z] INFO  [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] Local agent opencode failed with a setup error; retrying without --pure (failure named no flag; dropping all remaining)
+[2026-09-24T15:10:30.541Z] WARN  [LocalAgentRunner] [trace=62efb0958db2bbbad342e583fc0783f2] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:10:30.542Z] ERROR [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] Local-agent call failed: action=summarize tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=57070 errorName=LocalAgentSetupError error=Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T15:10:30.551Z] WARN  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] First API attempt failed: Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.. Retrying in 2000ms...
+[2026-09-24T15:10:32.564Z] INFO  [Summarizer] [trace=62efb0958db2bbbad342e583fc0783f2] Generating summary for commit d83feb27
+[2026-09-24T15:10:32.564Z] INFO  [Summarizer] [trace=62efb0958db2bbbad342e583fc0783f2] Context: transcript=3, files=4, lines=61+1
+[2026-09-24T15:10:32.564Z] INFO  [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] LLM call: action=summarize source=local-agent
+[2026-09-24T15:10:47.010Z] WARN  [LocalAgentRunner] [trace=62efb0958db2bbbad342e583fc0783f2] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:10:47.015Z] INFO  [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] Local agent opencode failed with a setup error; retrying without --pure (failure named no flag; dropping all remaining)
+[2026-09-24T15:11:00.698Z] WARN  [LocalAgentRunner] [trace=62efb0958db2bbbad342e583fc0783f2] Local agent exited 1 with no stdout; stderr tail: [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+
+[2026-09-24T15:11:00.699Z] ERROR [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] Local-agent call failed: action=summarize tool=opencode exe=/home/sprime01/.local/share/pnpm/opencode elapsedMs=28121 errorName=LocalAgentSetupError error=Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T15:11:00.699Z] ERROR [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] API call failed after retry: Local agent exited with code 1. [0m
+> build · cline-pass/glm-5.2
+[0m
+[91m[1mError: [0mUnauthorized: Unauthorized: Please make sure you're using the latest version of Cline and re-authenticate your Cline account.
+[2026-09-24T15:11:00.700Z] WARN  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Saving summary with empty topics + llm-failed marker for commit d83feb27
+[2026-09-24T15:11:00.700Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] API summary generated (93.3s)
+[2026-09-24T15:11:00.701Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-09-24T15:11:00.701Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Plan association: detected 0 slug(s) from transcripts: []
+[2026-09-24T15:11:00.702Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-09-24T15:11:00.702Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Note association: detected 0 note(s): []
+[2026-09-24T15:11:00.703Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Reference association: detected 0 ref(s) for branch main
+[2026-09-24T15:11:00.707Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Summary built for d83feb27: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-09-24T15:11:00.873Z] INFO  [MetadataManager] [trace=62efb0958db2bbbad342e583fc0783f2] Manifest updated: main/fixconformance-baseline-historical-sec-01-canary-q-d83feb27.md (commit)
+[2026-09-24T15:11:00.873Z] INFO  [FolderStorage] [trace=62efb0958db2bbbad342e583fc0783f2] Markdown generated: main/fixconformance-baseline-historical-sec-01-canary-q-d83feb27.md
+[2026-09-24T15:11:00.877Z] INFO  [FolderStorage] [trace=62efb0958db2bbbad342e583fc0783f2] Wrote 4 files, deleted 0 (Add summary for d83feb27: fix(conformance): baseline historical SEC-01 canar)
+[2026-09-24T15:11:00.877Z] INFO  [SummaryStore] [trace=62efb0958db2bbbad342e583fc0783f2] Summary stored successfully for commit d83feb27
+[2026-09-24T15:11:00.887Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Summary stored successfully for commit d83feb27 (180ms, 0 plans, 0 notes, 0 references)
+[2026-09-24T15:11:00.887Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] === Pipeline completed in 94.3s ===
+[2026-09-24T15:11:00.887Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] === Summary content (0 topics) ===
+[2026-09-24T15:11:00.896Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Processed 1 queue entries
+[2026-09-24T15:11:00.899Z] INFO  [SessionTracker] [trace=62efb0958db2bbbad342e583fc0783f2] Enqueued queue operation: type=ingest tag=ingest file=1790262660898-00000001-2213371d-ingest.json
+[2026-09-24T15:11:00.902Z] INFO  [PushExecutor] [trace=62efb0958db2bbbad342e583fc0783f2] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-09-24T15:11:00.910Z] INFO  [PushExecutor] [trace=62efb0958db2bbbad342e583fc0783f2] processPushPending(post-queue): 6 pending entr(ies) (filtered to 1 hash(es))
+[2026-09-24T15:11:00.928Z] INFO  [PushExecutor] [trace=62efb0958db2bbbad342e583fc0783f2] processPushPending(post-queue): not signed in — keeping 6 entries for later
+[2026-09-24T15:11:00.952Z] INFO  [GitOps] [trace=62efb0958db2bbbad342e583fc0783f2] Commit d83feb27: fix(conformance): baseline historical SEC-01 canary quote; a
+[2026-09-24T15:11:01.087Z] INFO  [StatsWriter] [trace=62efb0958db2bbbad342e583fc0783f2] pruned 1 projected events older than 2026-09-10
+[2026-09-24T15:11:01.105Z] INFO  [StorageFactory] [trace=62efb0958db2bbbad342e583fc0783f2] StorageFactory.create: route=cutover, projectPath=/home/sprime01/projects/gauntlet-game-studio
+[2026-09-24T15:11:01.223Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] === Queue worker finished ===
+[2026-09-24T15:11:01.235Z] INFO  [QueueWorker] [trace=62efb0958db2bbbad342e583fc0783f2] Processing queue entry: type=ingest triggeredBy=post-commit
+[2026-09-24T15:11:01.407Z] INFO  [LlmClient] [trace=62efb0958db2bbbad342e583fc0783f2] LLM call: action=route source=local-agent

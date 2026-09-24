@@ -1,0 +1,6 @@
+{"step":"start","hash":"bfb268fa1202c503f0fbb8d01ed8a1bf75378c21","ts":1790261250354}
+{"step":"diff","hash":"bfb268fa1202c503f0fbb8d01ed8a1bf75378c21","ts":1790261250491,"data":{"filesChanged":40,"insertions":834,"deletions":171}}
+{"step":"references","hash":"bfb268fa1202c503f0fbb8d01ed8a1bf75378c21","ts":1790261250535,"data":{"references":[],"notes":0}}
+{"step":"analyzing","hash":"bfb268fa1202c503f0fbb8d01ed8a1bf75378c21","ts":1790261250535}
+{"step":"stored","hash":"bfb268fa1202c503f0fbb8d01ed8a1bf75378c21","ts":1790261254039,"data":{"topics":0,"llmFailure":"spawn E2BIG"}}
+{"step":"end","hash":"bfb268fa1202c503f0fbb8d01ed8a1bf75378c21","ts":1790261254039,"terminal":true}
