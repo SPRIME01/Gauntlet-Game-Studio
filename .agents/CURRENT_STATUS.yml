@@ -194,13 +194,13 @@ latest_evidence:
   T27:
     report: artifacts/plan/T27/summary.md
     confirmation: independent_adversarial CONFIRM (artifacts/plan/T27/confirmation.md)
-    commit: uncommitted (working tree retains recipe-layer changes atop HEAD c849732)
+    commit: 7c8b6d2
     gate: "recipe+contracts+cli suites 88/88 then full workspace 411/0; traceability 171/171 EXIT:0; recipes/describe CLI EXIT:0; source:verify, third-party:verify, check-topology pass; just ci EXIT:0 (t27-ci-final.txt)"
     teeth: "PASS (attack 1 provider-binding plan rejected ROUTING_AUTHORITY_VIOLATION with 0 route calls and no .studio mutation; attack 2 non-asset.resolve asset affordance typed ASSET_POLICY_VIOLATION before route; attack 3 re-apply steps satisfied append-only no duplicates; attack 4 blocked dependency structured_failure never bare recipe-failed)"
   T28:
     report: artifacts/plan/T28/summary.md
     confirmation: independent_adversarial CONFIRM (artifacts/plan/T28/confirmation.md)
-    commit: uncommitted (same working tree as T27)
+    commit: 7c8b6d2
     gate: "recipes E2E 24/0; UX benchmark artifacts/plan/T28/ux-benchmark.json PASS (28 vs 47 decisions, 13 capabilities composed internally); cold-agent recipe plan EXIT:0 mutation:false; blackwater-relay verify --suite all EXIT:0 all_settled settled=9 failed=0 fresh_observation; just ci + full bun test 411/0"
     teeth: "PASS (attack 1 parser-only evidence insufficient until apply E2E writes provenance; attack 2 cold-agent reaches RecipePlan from public CLI only; attack 3 no second evidence format — validateRecipeApplyProvenance under gauntlet.recipe.apply)"
 
@@ -354,10 +354,13 @@ corrections:
 
 next_action:
   task: null
-  action: "Operator NPC turnaround convergence v2 (2026-09-19, operator-directed bounded pass): parametric factory rebuild against the operator-supplied AAA turnaround sheet - silhouette profile agreement front 0.861 / back 0.862 / left 0.795 (v5 baseline 0.674/0.645/0.683), vision-judge composite 0.64 vs 0.75 target with ALL hard minimums clear and structure clean; draw-call optimization 87->40 standalone draws (pixel-identical merge); Blender import re-verified (1 armature / 11 bones / 40 meshes / 15596 tris); 12k-tri cap superseded by operator amendment, new cap 25000 measured 15596, asset verify --all 10/10 gates pass (operator-npc honestly degraded). Known follow-ups: (1) residual fidelity gap dimensions recorded in correction-history-v2.json (torso gear readout density, athletic taper, joint-sphere prominence, material micro-variation, profile arm channel); (2) THREE_RESOLUTION_GUARD environment blocker: game standalone install + monorepo bun isolated store both hold three@0.170.0 - studio-level topology decision needed; (3) live-combat-loop integration deferred as next bounded step (per-instance draw analysis)."
+  action: none — plan settled
   reason: >-
-    T25/T26 studio settlement unchanged. This pass settled the asset itself per the
-    operator brief; live-loop integration explicitly deferred. Evidence under
-    codename-gauntlet-warfare/.img2threejs/npc-operator/ (correction-history-v2.json,
-    render/v26-optimized/, review-sheets/, blender-verify-v26.json, verify-result-v2.json).
-
+    All main-plan settlement tasks T00-T28 are settled with recorded gates, teeth, and confirmations;
+    check-traceability passes 171/171; global gates and conformance matrices are green. Per handoff_contract,
+    the next executable main-plan action is none — plan settled. Outside-plan Codename: Gauntlet Warfare
+    operator-track follow-ups remain deferred and do not reopen main-plan settlement: residual Operator NPC
+    fidelity dimensions (correction-history-v2.json), THREE_RESOLUTION_GUARD dual three@0.170.0 topology
+    decision, and live-combat-loop integration (evidence under
+    codename-gauntlet-warfare/.img2threejs/npc-operator/). Open operator questions: G6 R1/R2 freeze-artifact
+    definition; phantom deferred chores (task:hygiene / modal chmod) have no matching repo surfaces.
