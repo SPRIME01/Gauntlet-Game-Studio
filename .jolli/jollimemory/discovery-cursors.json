@@ -1,0 +1,21 @@
+{
+	"version": 1,
+	"cursors": {
+		"/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-64b2-7cb1-a32e-0b7b66b114d5.jsonl": {
+			"transcriptPath": "/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-64b2-7cb1-a32e-0b7b66b114d5.jsonl",
+			"lineNumber": 452,
+			"updatedAt": "2026-09-17T18:56:15.197Z",
+			"extractors": {
+				"skills": 452
+			}
+		},
+		"/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-65be-7221-9c4e-6abe4b53cec7.jsonl": {
+			"transcriptPath": "/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-65be-7221-9c4e-6abe4b53cec7.jsonl",
+			"lineNumber": 79,
+			"updatedAt": "2026-09-17T18:56:15.345Z",
+			"extractors": {
+				"skills": 79
+			}
+		}
+	}
+}

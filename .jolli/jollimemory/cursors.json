@@ -20,6 +20,31 @@
 			"transcriptPath": "/home/sprime01/.gemini/antigravity-ide/brain/3bd2b1b2-3003-41ff-9929-ff0e894fa770/.system_generated/logs/transcript_full.jsonl",
 			"lineNumber": 1658,
 			"updatedAt": "2026-09-16T00:15:59Z"
+		},
+		"/home/sprime01/.gemini/antigravity-ide/brain/3bb7aa38-b9d7-4025-9be2-2a951cf78e48/.system_generated/logs/transcript_full.jsonl": {
+			"transcriptPath": "/home/sprime01/.gemini/antigravity-ide/brain/3bb7aa38-b9d7-4025-9be2-2a951cf78e48/.system_generated/logs/transcript_full.jsonl",
+			"lineNumber": 204,
+			"updatedAt": "2026-09-17T01:45:58Z"
+		},
+		"/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-64b2-7cb1-a32e-0b7b66b114d5.jsonl": {
+			"transcriptPath": "/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-64b2-7cb1-a32e-0b7b66b114d5.jsonl",
+			"lineNumber": 452,
+			"updatedAt": "2026-09-17T18:56:16.596Z"
+		},
+		"/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-65be-7221-9c4e-6abe4b53cec7.jsonl": {
+			"transcriptPath": "/home/sprime01/.codex/sessions/2026/09/17/rollout-2026-09-17T09-38-49-01a0af97-65be-7221-9c4e-6abe4b53cec7.jsonl",
+			"lineNumber": 79,
+			"updatedAt": "2026-09-17T18:56:16.618Z"
+		},
+		"/home/sprime01/.local/share/opencode/opencode.db#ses_f2ed41bc5ffeq1TTnnFbHcumUq": {
+			"transcriptPath": "/home/sprime01/.local/share/opencode/opencode.db#ses_f2ed41bc5ffeq1TTnnFbHcumUq",
+			"lineNumber": 160,
+			"updatedAt": "2026-09-24T14:45:50.162Z"
+		},
+		"/home/sprime01/.gemini/antigravity-ide/brain/4406e526-a2ac-4642-9756-7df5b84f369c/.system_generated/logs/transcript_full.jsonl": {
+			"transcriptPath": "/home/sprime01/.gemini/antigravity-ide/brain/4406e526-a2ac-4642-9756-7df5b84f369c/.system_generated/logs/transcript_full.jsonl",
+			"lineNumber": 46,
+			"updatedAt": "2026-09-24T03:29:44Z"
 		}
 	}
 }
