@@ -1,0 +1,53 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T36
+title: Semantic tool registry, loopback MCP, WebMCP, and authority teeth
+proof_level: P3
+timestamp: "2026-10-04T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T36-001
+    settles:
+      - REQ-MCP-001
+      - REQ-MCP-002
+      - REQ-MCP-003
+      - REQ-MCP-004
+    statement: >-
+      One semantic tool registry feeds the CLI, the loopback MCP endpoint, and WebMCP
+      (document.modelContext.registerTool with graceful fallback and signal-based withdrawal); tools are
+      dynamically offered/withdrawn by cockpit context with annotations; no tool can impersonate the owner,
+      approve its own work, silently mutate the canonical Game Model, waive licenses, override the release
+      gate, publish externally, or forge a ruling; malformed or unknown tool actions return structured
+      errors and mutate nothing.
+
+falsifiers:
+  - id: TEETH-T36-001
+    attack: >-
+      Enumerate the tool set from all three transports (CLI, /mcp tools/list, /api/boot toolSchemas) and
+      diff them.
+    expected: >-
+      Name/schema sets are identical up to transport framing; no manually divergent API exists.
+  - id: TEETH-T36-002
+    attack: >-
+      Call every tool attempting an authority escalation (accept work request, write model decision, waive
+      a license, settle the release gate, impersonate human).
+    expected: >-
+      Each attempt returns a structured authority error; canonical state is unchanged; no tool surface
+      exposes such capability.
+  - id: TEETH-T36-003
+    attack: >-
+      Send malformed input (unknown tool, schema-violating arguments, wrong types) through MCP and WebMCP
+      paths.
+    expected: >-
+      Structured errors with code/message/issues; nothing mutates; responses are valid JSON-RPC/HTTP without
+      crashes.
+  - id: TEETH-T36-004
+    attack: >-
+      Change cockpit context (no subject focused) and re-list the advertised tool set.
+    expected: >-
+      Context-gated tools are withdrawn; base tools remain; offering changes never change what is
+      executable via the registry.
+
+known_confounds:
+  - document.modelContext exists only in supporting browsers; fallback/no-op behavior is tested headlessly.

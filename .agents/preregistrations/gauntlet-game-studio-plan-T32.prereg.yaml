@@ -1,0 +1,57 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T32
+title: Godot production backend, engine-neutral world manifest, and cross-runtime observability
+proof_level: P3
+timestamp: "2026-10-04T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T32-001
+    settles:
+      - REQ-GODOT-001
+      - REQ-GODOT-002
+      - REQ-GODOT-003
+      - REQ-GODOT-004
+      - REQ-GODOT-005
+      - REQ-GODOT-006
+    statement: >-
+      The Three.js/Koota/Rapier/Recast reference runtime remains the semantic authority and behavior oracle;
+      Godot is added strictly as a production export backend (godot.web/android/ios) behind capability
+      contracts, projected from an engine-neutral WorldManifest that also projects into the gauntlet-three
+      representation; a Godot observability adapter exposes semantically comparable channels under the
+      versioned observation architecture with production mutation lockout; absent platform toolchains
+      (godot binary, iOS signing) yield typed blocked states, never claimed readiness.
+
+falsifiers:
+  - id: TEETH-T32-001
+    attack: >-
+      Generate a Godot project from a declared WorldManifest and mutate a Godot scene node as if it were
+      semantic authority.
+    expected: >-
+      The projection is regenerated from the manifest (projection, not truth); manifest regeneration is
+      deterministic; no Godot artifact is treated as canonical game state.
+  - id: TEETH-T32-002
+    attack: >-
+      Run the Godot export path with the godot binary absent from the environment.
+    expected: >-
+      Typed blocked result (toolchain unavailable); normal studio operation, builds, and tests stay green;
+      no readiness is claimed for the blocked target.
+  - id: TEETH-T32-003
+    attack: >-
+      Present an observability surface from the production target carrying privileged mutation tokens in
+      production mode.
+    expected: >-
+      The production surface inspector rejects it exactly as for the reference runtime; lockout is
+      target-agnostic.
+  - id: TEETH-T32-004
+    attack: >-
+      Change the runtime config to a production target and re-run existing game builds/tests.
+    expected: >-
+      The reference runtime path is unchanged (no "three" rename); production targets are additive
+      declarations; blackwater-relay and warfare builds remain green.
+
+known_confounds:
+  - No Godot binary in this environment; export/export-test legs are proven as typed blockage plus, where
+    possible, static projection determinism.
+  - iOS/Android toolchains unavailable; release readiness for those targets remains unknown/blocked, never assumed.

@@ -3,30 +3,30 @@ schema_version: "1.0"
 
 metadata:
   plan_id: gauntlet-game-studio-plan
-  plan_version: "0.4.0"
+  plan_version: "0.5.0"
   spec_id: gauntlet-game-studio
-  spec_version: "0.4.0"
+  spec_version: "0.5.0"
   initialized: true
-  last_updated: "2026-09-24"
+  last_updated: "2026-10-04"
   updated_by: >-
-    Operator and agent: operator-authorized formal amendment to spec v0.4.0 (SHA-256: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8,
-    prior v0.3.0: b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39, frozen v0.2.0: 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e)
-    introducing the recipe layer (REQ-RECIPE-001..014); settlement plan rebound with tasks T27/T28; T00-T26 remain
-    settled on original evidence. Traceability gate passes 171/171 REQ. T27 and T28 settled on 2026-09-24:
-    recipe contracts/studio module/CLI + canonical recipes/E2E/UX benchmark/blackwater regression green.
+    Operator and agent: operator-authorized formal amendment to spec v0.5.0 (SHA-256: 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3,
+    prior v0.4.0: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8) introducing the Game Actualizer
+    requirements (REQ-GM/STALE/RES/NORM/GLB/DCC/ANIM/GODOT/QUAL/CASE/COCKPIT/MCP/RELEASE; 224 REQ total). Settlement
+    plan rebound with tasks T29-T37; T00-T28 remain settled on original evidence. Traceability gate passes 224/224 REQ.
+    Frozen P3 preregistrations exist for T29/T30/T32/T34/T36/T37 before any evidence evaluation.
 
 execution:
   last_settled_task: T28
-  in_flight_task: null
-  workable_task: null
-  ready_tasks: []
+  in_flight_task: T29
+  workable_task: T29
+  ready_tasks: [T29]
   blocked_tasks: {}
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: null
-  phase: recipe_layer_settled
+  task: T29
+  phase: game_actualizer_amendment_settled_implementation_beginning
   blocker: null
 
 latest_evidence:
@@ -353,14 +353,13 @@ corrections:
     warning: SwiftShader software-renderer evidence remains non-target and cannot settle the requested hardware 60 FPS claim.
 
 next_action:
-  task: null
-  action: none — plan settled
+  task: T29
+  action: implement canonical Game Model, versioning, and model-derived staleness engine (T29)
   reason: >-
-    All main-plan settlement tasks T00-T28 are settled with recorded gates, teeth, and confirmations;
-    check-traceability passes 171/171; global gates and conformance matrices are green. Per handoff_contract,
-    the next executable main-plan action is none — plan settled. Outside-plan Codename: Gauntlet Warfare
-    operator-track follow-ups remain deferred and do not reopen main-plan settlement: residual Operator NPC
-    fidelity dimensions (correction-history-v2.json), THREE_RESOLUTION_GUARD dual three@0.170.0 topology
-    decision, and live-combat-loop integration (evidence under
-    codename-gauntlet-warfare/.img2threejs/npc-operator/). Open operator questions: G6 R1/R2 freeze-artifact
-    definition; phantom deferred chores (task:hygiene / modal chmod) have no matching repo surfaces.
+    The v0.5.0 Game Actualizer amendment is approved and the plan is rebound with tasks T29-T37 (224/224 REQ mapped,
+    critical path preserved, P3 preregs frozen). T29 is the first ready task: canonical Game Model contracts, strict
+    loader with v1 back-compatibility, append-only decision ledger, and the pure staleness engine with targeted-
+    invalidation teeth. Downstream: T30 resource resolution/reservoir, T31 normalization/GLB/DCC/animation,
+    T32 Godot backend/world manifest, T33 quality bar/Game Case/release matrix, T34 cockpit core, T35 cockpit
+    surfaces, T36 MCP/WebMCP, T37 whole-studio hardening. Outside-plan Codename: Gauntlet Warfare operator-track
+    follow-ups remain deferred and do not reopen settlement.

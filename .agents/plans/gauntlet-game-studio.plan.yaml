@@ -4,26 +4,31 @@ metadata:
   id: gauntlet-game-studio-plan
   title: Gauntlet Game Studio Development Settlement Plan
   status: approved
-  version: 0.4.0
+  version: 0.5.0
   created: '2026-09-15'
   purpose: Project the revised Gauntlet Game Studio normative specification into an executable settlement graph that
     builds a first-party Bun/Three.js/Koota/Rapier runtime, strategically mines Mavon only as disposable donor source,
     integrates specialist game-production capabilities, proves optional authoritative multiplayer, settles the
-    studio through Blackwater Relay plus fresh adversarial evidence, and settles the post-baseline recipe layer that
-    compiles outcome-level intents into the existing capability system.
+    studio through Blackwater Relay plus fresh adversarial evidence, settles the post-baseline recipe layer that
+    compiles outcome-level intents into the existing capability system, and (v0.5.0 amendment) actualizes the
+    Game Actualizer — canonical Game Model with decision-ledger staleness, universal resource resolution with
+    reservoir, coherence normalization over a GLB ABI, structured DCC jobs and first-class animation, Godot
+    production backend from an engine-neutral world manifest, professional quality bar, derived Game Case, the
+    Game Cockpit, and CLI/MCP/WebMCP over one semantic tool registry — without reopening T00–T28 evidence.
 source:
   spec:
     intended_repository_path: .agents/specs/gauntlet-game-studio.spec.yaml
     artifact_name: gauntlet-game-studio.spec.yaml
     spec_id: gauntlet-game-studio
-    spec_version: 0.4.0
-    sha256: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8
+    spec_version: 0.5.0
+    sha256: 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3
     authority: normative
-    freeze_note: The bound source specification is the v0.4.0 formal amendment (operator-authorized 2026-09-23 recipe-layer
-      request; prior v0.3.0 SHA-256 b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39; frozen v0.2.0
+    freeze_note: The bound source specification is the v0.5.0 formal amendment (operator-authorized 2026-10-04 Game
+      Actualizer mission; prior v0.4.0 SHA-256 b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8;
+      v0.3.0 SHA-256 b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39; frozen v0.2.0
       SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e) approved at metadata.status=approved
-      with SHA-256 b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8. T27/T28 execute the amended
-      recipe-layer requirements; T00-T26 remain settled on their original evidence.
+      with SHA-256 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3. T29–T37 execute the amended
+      Game Actualizer requirements; T00–T28 remain settled on their original evidence.
   supporting_sources:
     - path: AGENTS.md
       role: Durable agent operating contract; governs execution behavior but does not override normative desired state.
@@ -454,6 +459,28 @@ dependency_graph:
         - T27
     -   - T27
         - T28
+    -   - T25
+        - T29
+    -   - T29
+        - T30
+    -   - T30
+        - T31
+    -   - T31
+        - T32
+    -   - T32
+        - T33
+    -   - T29
+        - T34
+    -   - T33
+        - T35
+    -   - T34
+        - T35
+    -   - T34
+        - T36
+    -   - T35
+        - T37
+    -   - T36
+        - T37
   critical_path:
     - T00
     - T01
@@ -2706,6 +2733,527 @@ tasks:
     redesign_trigger: If the canonical set cannot express the listed outcomes without encoding provider/engine nouns
       or expanding into a workflow framework, reopen REQ-RECIPE-006/012 through a new amendment.
     evidence: artifacts/plan/T28/
+  T29:
+    title: Canonical Game Model, versioning, and model-derived staleness engine over the amended v0.5.0 spec
+    initial_status: blocked
+    depends_on:
+      - T25
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-GM-001
+      - REQ-GM-002
+      - REQ-GM-003
+      - REQ-GM-004
+      - REQ-GM-005
+      - REQ-GM-006
+      - REQ-STALE-001
+      - REQ-STALE-002
+      - REQ-STALE-003
+      - REQ-STALE-004
+    confirms: []
+    changes: Extends the game.spec.yaml seam into the canonical Game Model — strict GameModel contracts in
+      packages/contracts, a strict loader with v1 back-compatibility and extension preservation in packages/studio,
+      an append-only decision ledger, and a pure decision/touched versus built_from/reads staleness engine with
+      targeted-invalidation teeth. The normative specification is amended to v0.5.0 under operator authorization and
+      this plan is rebound to the amended spec SHA-256.
+    proves: The game spec is the single versioned declared-truth authority; silent mutation is impossible; staleness
+      marks exactly the derivatives whose recorded reads are touched by newer decisions and leaves unrelated
+      derivatives current; stale evidence cannot settle; existing game projects keep loading unchanged.
+    steps:
+      - Frozen preregistrations exist for all new P3 tasks before any evidence evaluation (falsifier TEETH-T29-001..004 declared).
+      - Add GameModel/GameModelDecision/derivative-stamp contracts (strict Zod) to packages/contracts.
+      - Implement loadGameModel with back-compat and extension preservation, model writes requiring decision records,
+        and the pure staleness engine in packages/studio.
+      - Run focused tests with the preregistered falsifiers, then workspace-wide gates.
+      - Obtain independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/contracts packages/studio passes including the game-model and staleness suites.
+      - Template, blackwater-relay, and codename-gauntlet-warfare game specs load through the new loader without
+        rewrite and with extensions preserved.
+      - Targeted-staleness falsifiers pass (camera decision stales exactly camera readers).
+      - python3 scripts/check-traceability.py passes on the amended artifacts; just check/test/lint exit 0.
+    teeth:
+      - attack: Load all three existing game specs through the new loader.
+        expected: All load; free-form sections preserved as extensions; quality profiles still validated; no rewrite.
+      - attack: Append a camera third-to-first decision and recompute staleness for camera-reading and audio-reading
+          derivatives.
+        expected: Only the camera-reading derivative is stale; computation is pure.
+      - attack: Write a model change without a decision record; settle evidence stamped stale.
+        expected: Both typed-rejected (decision required; stale evidence cannot settle).
+      - attack: Derivative reads referencing absent model fields; decision touching all.
+        expected: Absent reads reported unavailable, not silently dropped; all-derivative staling is explicit.
+    redesign_trigger: If the existing game.spec.yaml seam cannot carry decision-ledger versioning without breaking
+      settled loaders, reopen REQ-GM-001 through a new amendment rather than introducing a parallel model file.
+    evidence: artifacts/plan/T29/
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T29.prereg.yaml
+      claims:
+        - The canonical Game Model extends the existing game.spec.yaml seam as the single declared-truth authority;
+          staleness is a pure function of recorded dependencies, not manual invalidation lists.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T30:
+    title: Universal resource resolution, reservoir, and creation exceptions
+    initial_status: blocked
+    depends_on:
+      - T29
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-RES-001
+      - REQ-RES-002
+      - REQ-RES-003
+      - REQ-RES-004
+      - REQ-RES-005
+      - REQ-RES-006
+    confirms: []
+    changes: Adds a ResourceResolver generalizing the asset.resolve policy across resource kinds with the R0–R10
+      minimum-novelty cascade and injectable providers, delegation of asset-kind requests to the settled
+      AssetResolver, a content-addressed studio-level reservoir with lineage metadata, append-only resolution
+      records, and append-only creation exceptions.
+    proves: Cheaper routes win and costlier routes record why cheaper ones failed; license evidence gates intake;
+      adapted derivatives become reusable reservoir resources; scratch creation exists only as a recorded exception.
+    steps:
+      - Preregister failing tests proving no ResourceResolver/reservoir/creation-exception surface exists.
+      - Implement resource contracts, ResourceResolver cascade, reservoir store/index, and exception records.
+      - Wire asset-kind delegation through AssetResolver and record append-only decisions.
+      - Run focused tests with the preregistered falsifiers, then workspace-wide gates.
+      - Obtain independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/contracts packages/studio passes including the resource-resolution and reservoir suites.
+      - Cascade-order, license-evidence, creation-exception, and reservoir-lineage falsifiers pass.
+      - bun run studio -- resource resolve smoke exercises reuse/acquire/adapt/create-fallback routes deterministically.
+      - just check/test/lint exit 0; source/third-party verification and topology pass.
+    teeth:
+      - attack: Request a mesh with accepted project, reservoir, and provider candidates all available.
+        expected: R0 project resource wins; providers untouched; decision record names the stage.
+      - attack: Provider match without license evidence.
+        expected: Typed rejection before intake; resource never becomes accepted.
+      - attack: Scratch creation without prior-resolution rationale, then with a recorded exception.
+        expected: Rejected where policy requires rationale; with an exception, the record captures the full justification.
+      - attack: Adapt a reservoir resource and re-resolve from a fresh project.
+        expected: Adapted derivative discoverable as R1 with lineage; original blob not duplicated.
+    redesign_trigger: If cascade stages cannot be expressed without forking AssetResolver policy, reopen REQ-RES-001
+      through a new amendment rather than duplicating the policy.
+    evidence: artifacts/plan/T30/
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T30.prereg.yaml
+      claims:
+        - Resource resolution generalizes asset.resolve behind the existing capability contracts with append-only
+          records, a content-addressed reservoir, and creation exceptions; asset-kind requests still flow through
+          the settled AssetResolver.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T31:
+    title: Coherence normalization, GLB production ABI, structured DCC jobs, and first-class animation contracts
+    initial_status: blocked
+    depends_on:
+      - T30
+    proof_level: P2
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-NORM-001
+      - REQ-NORM-002
+      - REQ-GLB-001
+      - REQ-DCC-001
+      - REQ-DCC-002
+      - REQ-ANIM-001
+      - REQ-ANIM-002
+    confirms: []
+    changes: Adds normalization-plan contracts driven by the model's declared art/material/animation language, an
+      explicit GLB production ABI statement enforced through the existing glTF-Transform route, DccJob contracts
+      with lighter-route rationale requirements, and animation capability descriptors (rig/retarget/source/adapt/
+      bake/validate/runtime-graph) with composition-first policy.
+    proves: Acquired resources carry recorded normalization lineage toward model-declared language; GLB is the
+      production asset boundary; DCC escalation requires structured justification; animation composes before it
+      creates.
+    steps:
+      - Add NormalizationPlan/DccJob/animation capability contracts (strict Zod).
+      - Bind normalization plans to model language fields and record lineage on derivatives.
+      - Register animation capability descriptors with providers and composition policy in the catalog.
+      - Run focused tests with falsification checks and repository-wide gates.
+      - Obtain builder_with_teeth confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/contracts packages/studio packages/adapters passes including normalization/DCC/animation suites.
+      - GLB ABI conformance reuses the settled glTF-Transform verification path with no parallel optimizer.
+      - DCC job without lighter-route rationale is rejected; animation descriptors pass capabilities lint.
+      - just check/test/lint exit 0; capabilities lint passes.
+    teeth:
+      - attack: Declare a DCC job with no reason lighter routes were insufficient.
+        expected: Typed rejection naming the missing cascade rationale.
+      - attack: Produce a normalized derivative that drops provenance.
+        expected: Rejection — normalization preserves the provenance chain.
+      - attack: Register an animation capability bypassing the capability registry or a bespoke-create default.
+        expected: Lint/registry rejection; composition-first policy stated in the descriptor contract.
+    redesign_trigger: If normalization cannot bind to model language without a second art-direction authority, reopen
+      REQ-NORM-001 through a new amendment.
+    evidence: artifacts/plan/T31/
+  T32:
+    title: Godot production backend, engine-neutral world manifest, and cross-runtime observability
+    initial_status: blocked
+    depends_on:
+      - T31
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-GODOT-001
+      - REQ-GODOT-002
+      - REQ-GODOT-003
+      - REQ-GODOT-004
+      - REQ-GODOT-005
+      - REQ-GODOT-006
+    confirms: []
+    changes: Adds an engine-neutral WorldManifest contract projected into both gauntlet-three and Godot
+      representations, Godot project generation and export-target preflight behind capability contracts with typed
+      blocked states for absent toolchains, a production-target config distinction (never a rename), and a Godot
+      observability adapter honoring production mutation lockout.
+    proves: The reference runtime remains untouched and authoritative; world definitions project to both runtimes
+      deterministically; Godot scenes are projections; unavailable toolchains yield honest typed blockage with
+      normal studio operation unaffected.
+    steps:
+      - Add WorldManifest contracts and deterministic projection to the gauntlet-three representation.
+      - Implement Godot project generation, scene bootstrap from the manifest, and export-target preflight.
+      - Implement the Godot observability adapter against the versioned observation architecture with lockout.
+      - Run focused tests with the preregistered falsifiers, then workspace-wide gates.
+      - Obtain independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/contracts packages/studio packages/adapters passes including world-manifest and godot suites.
+      - Manifest → gauntlet-three projection is deterministic; Godot projection regenerates byte-identically.
+      - Godot-absent export yields typed blocked; existing game builds/tests stay green.
+      - just check/test/lint exit 0; production-surface inspection passes for the adapter.
+    teeth:
+      - attack: Mutate a generated Godot scene node and regenerate from the manifest.
+        expected: Regeneration is deterministic from the manifest; scene state is never semantic authority.
+      - attack: Run export with the godot binary absent.
+        expected: Typed blocked; studio operation unaffected; no readiness claimed.
+      - attack: Present a production observability surface carrying privileged mutation tokens in production mode.
+        expected: Production surface inspector rejects it exactly as for the reference runtime.
+      - attack: Declare a production target and re-run existing game builds/tests.
+        expected: Reference path unchanged; production targets additive; blackwater-relay and warfare green.
+    redesign_trigger: If the world manifest cannot project to both runtimes without embedding engine nouns in
+      studio contracts, reopen REQ-GODOT-003 through a new amendment.
+    evidence: artifacts/plan/T32/
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T32.prereg.yaml
+      claims:
+        - Godot is strictly a production export backend projected from engine-neutral representations; the reference
+          runtime remains the semantic authority and behavior oracle; absent toolchains yield typed blocked states.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T33:
+    title: Professional quality bar, derived Game Case, and target release matrix
+    initial_status: blocked
+    depends_on:
+      - T32
+    proof_level: P2
+    confirmation: peer
+    settles:
+      - REQ-QUAL-001
+      - REQ-QUAL-002
+      - REQ-CASE-001
+      - REQ-CASE-002
+      - REQ-CASE-003
+      - REQ-RELEASE-001
+      - REQ-RELEASE-002
+      - REQ-RELEASE-003
+    confirms: []
+    changes: Adds model-declared quality-bar evaluation to pass/attention/fail/unknown/not-applicable states with
+      evidence linkage and no numeric score, the derived read-only Game Case with leverage-ordered primary move,
+      and the target-by-target release matrix with independent per-target settlement and target-specific quality
+      profiles.
+    proves: Quality claims carry real evidence or stay unknown; the Game Case is a pure derived function whose
+      primary move is guidance; blocked moves are never recommended; per-target settlement never inherits from
+      another target; software-rendered evidence cannot settle hardware-bound profiles.
+    steps:
+      - Add quality-bar evaluation with the five states and evidence linkage.
+      - Implement deriveGameCase (pure) with the leverage ordering and blocked-move lanes.
+      - Implement the release matrix derivation with target-specific profiles extending the existing profile schema.
+      - Run focused tests with falsification checks and repository-wide gates.
+      - Obtain peer confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/studio passes including quality-bar, game-case, and release-matrix suites.
+      - No numeric score/percentage exists anywhere in quality or release derivations.
+      - Cross-target settlement falsifier passes (web pass does not settle android/ios).
+      - just check/test/lint exit 0.
+    teeth:
+      - attack: Evaluate a quality criterion with no linked evidence.
+        expected: State is unknown (or fail where evidence contradicts), never pass; unknown is surfaced.
+      - attack: Derive the Game Case with a contradiction and blocked release prerequisites present.
+        expected: Contradiction outranks optimistic progress; blocked moves appear only in blocked lanes with blockers.
+      - attack: Mark the web target settled and read the android target.
+        expected: Android remains its own independent settlement state.
+      - attack: Settle a hardware-bound profile with software-rendered evidence.
+        expected: Typed rejection extending the existing non-target renderer rule.
+    redesign_trigger: If the Game Case cannot be derived without storing it, reopen REQ-CASE-001 through a new
+      amendment rather than adding a case store.
+    evidence: artifacts/plan/T33/
+  T34:
+    title: Game Cockpit core — protocol, storage, server, authority, and world debugger
+    initial_status: blocked
+    depends_on:
+      - T29
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-COCKPIT-001
+      - REQ-COCKPIT-002
+      - REQ-COCKPIT-003
+      - REQ-COCKPIT-004
+      - REQ-COCKPIT-005
+      - REQ-COCKPIT-006
+      - REQ-COCKPIT-007
+      - REQ-COCKPIT-008
+    confirms: []
+    changes: Adds packages/cockpit — strict protocol schemas for the block vocabulary (donor 15 blocks plus viewport)
+      with source-bound data, two-class bun:sqlite storage with a proven rebuild, Bun.serve human/agent transports
+      with transport-decided authority, the immutable release rail, workbench ORIENT/DECIDE/BUILD/VERIFY/RELEASE
+      modes, read-only world-debugger operations, and the work-request lifecycle with executor self-acceptance
+      refusal. Topology approval and tsconfig paths updated for the new package.
+    proves: Agent intent reaches the DOM only through typed actions; authority is transport-decided; the projection
+      is disposable; the rail is not coverable; debugger answers distinguish recorded/derived/unavailable; work
+      requests cannot be self-accepted.
+    steps:
+      - Preregister failing tests proving no cockpit package/protocol exists.
+      - Implement protocol schemas, refs/sources grammar, and the closed block vocabulary.
+      - Implement two-class SQLite storage with deterministic projection/rebuild, server transports, authority
+        reducer, release rail, workbench modes, world-debugger ops, and work requests.
+      - Register the package in topology/tsconfig and run focused tests with the preregistered falsifiers.
+      - Obtain independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/cockpit passes including protocol, authority, storage, debugger, and work-request suites.
+      - Cockpit DB deletion/rebuild leaves canonical project files byte-identical.
+      - Every human authority op typed-rejected on the agent transport; pinned/rail protections hold.
+      - python3 scripts/check-topology.py passes with the registered package; just check/test/lint exit 0.
+    teeth:
+      - attack: Send every human authority op through the agent transport.
+        expected: Typed authority rejections; nothing applied; rejections recorded.
+      - attack: Delete the cockpit DB and rebuild; diff canonical project files.
+        expected: Byte-identical canonical truth; projection re-derives.
+      - attack: Agent moves/removes pinned surfaces or covers the release rail; composes unknown block types or
+          arbitrary HTML.
+        expected: All rejected; schema validation precedes render; no arbitrary markup path.
+      - attack: Executor moves its own request to accepted; malformed actions sent.
+        expected: Authority error naming the human role; structured errors mutate nothing.
+      - attack: Query debugger ops for unrecorded subjects.
+        expected: recorded/derived/unavailable basis; no invention; read-only.
+    redesign_trigger: If the cockpit cannot bind to canonical state without becoming a second evidence store, reopen
+      REQ-COCKPIT-003 through a new amendment.
+    evidence: artifacts/plan/T34/
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T34.prereg.yaml
+      claims:
+        - The cockpit is a projection/control surface with transport-decided authority and a disposable two-class
+          projection; the executor cannot accept its own work; debugger operations are read-only with honest basis.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T35:
+    title: Game cockpit surfaces — viewport, North Star, Resource Scout, affordance graph, workbench, work terminal
+    initial_status: blocked
+    depends_on:
+      - T33
+      - T34
+    proof_level: P2
+    confirmation: builder_with_teeth
+    settles:
+      - REQ-COCKPIT-009
+      - REQ-COCKPIT-010
+      - REQ-COCKPIT-011
+      - REQ-COCKPIT-012
+    confirms:
+      - REQ-CASE-001
+    changes: Adds the game-specific cockpit surfaces — closed-render client with the release rail, viewport block
+      (typed source-bound modes), workbench screens over the derived Game Case/quality bar/release matrix, work
+      terminal rule interpreter, North Star with visible reference classification, Resource Scout over the real
+      resolver, and the affordance-graph surface from the recipe layer.
+    proves: The game is the dominant surface; surfaces are pure/derived projections; the terminal routes known
+      questions to views and imperatives to typed requests while refusing ambiguity; reference-only imagery is
+      never presented as shippable.
+    steps:
+      - Implement the closed-render client (React + dockview) over the server-authoritative layout tree.
+      - Implement viewport/North Star/Resource Scout/affordance/Game Case/quality/release surfaces.
+      - Implement workbench modes and the work terminal interpreter.
+      - Run focused tests (surface composition rules, terminal routing, banner honesty) and workspace gates.
+      - Obtain builder_with_teeth confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/cockpit passes including surfaces/workbench/terminal suites.
+      - Workbench screens are pure functions of project+control state; mode changes update in place.
+      - Terminal known-question/imperative/ambiguity routing tests pass.
+      - just check/test/lint exit 0; cockpit serves and renders the deterministic surfaces headlessly where possible.
+    teeth:
+      - attack: Compose a North Star surface with a reference-only image marked shippable.
+        expected: Classification is carried from the model/reference registry and rendered visibly; misclassification
+          is rejected at the source boundary.
+      - attack: Issue ambiguous terminal commands and known questions.
+        expected: Ambiguous commands are refused without creating work; known questions resolve to views without
+          creating requests.
+      - attack: Open the workbench in each mode with a state containing contradictions and blockers.
+        expected: Screens show them; nothing omits or smooths; no percentage completion anywhere.
+    redesign_trigger: If a required surface cannot be expressed with the fixed block vocabulary, propose the minimal
+      vocabulary extension through a spec amendment rather than bypassing the protocol.
+    evidence: artifacts/plan/T35/
+  T36:
+    title: Semantic tool registry, loopback MCP, WebMCP, and authority teeth
+    initial_status: blocked
+    depends_on:
+      - T34
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-MCP-001
+      - REQ-MCP-002
+      - REQ-MCP-003
+      - REQ-MCP-004
+    confirms: []
+    changes: Adds the single semantic tool registry (status/workspace/vocabulary/list/entity/show/compare/ask/arrange/
+      annotate/responses + game case/quality/release/resources + world-debugger + workbench/work tools) consumed by
+      the CLI, the loopback MCP endpoint, and WebMCP via document.modelContext.registerTool with signal-based
+      withdrawal, contextual offering, annotations, and the authority falsifier matrix.
+    proves: One registry feeds all three transports; tools are dynamically offered by context; no tool can forge
+      human authority, self-approve, silently mutate the model, waive licenses, or override the release gate;
+      malformed actions return structured errors and mutate nothing.
+    steps:
+      - Preregister failing tests proving no shared tool registry/MCP/WebMCP surface exists.
+      - Implement the registry, tool implementations over cockpit core, loopback MCP, and WebMCP bridge.
+      - Implement contextual offering and annotations.
+      - Run the authority falsifier matrix and workspace gates.
+      - Obtain independent adversarial confirmation and update durable status only after verdicts pass.
+    gate:
+      - bun test packages/cockpit apps/studio-cli passes including tool-registry, MCP, and WebMCP suites.
+      - CLI/MCP/WebMCP tool sets are identical up to transport framing.
+      - The human-authority escalation matrix is typed-rejected from every agent transport.
+      - just check/test/lint exit 0; conformance:security remains green.
+    teeth:
+      - attack: Diff tool sets across CLI, /mcp tools/list, and /api/boot.
+        expected: Identical name/schema sets up to framing.
+      - attack: Attempt authority escalation (accept work, write model decision, waive license, settle release) via
+          every tool surface.
+        expected: Structured authority errors; canonical state unchanged.
+      - attack: Send malformed/unknown tool calls through MCP and WebMCP paths.
+        expected: Structured errors; nothing mutates; no crashes.
+      - attack: Change cockpit context and re-list tools.
+        expected: Context-gated tools withdrawn; base tools stable; offering never changes executability.
+    redesign_trigger: If a tool cannot be served from the shared registry without transport-specific semantics, reopen
+      REQ-MCP-001 through a new amendment rather than forking the registry.
+    evidence: artifacts/plan/T36/
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T36.prereg.yaml
+      claims:
+        - One semantic tool registry feeds CLI, loopback MCP, and WebMCP with explicit agent-authority boundaries;
+          discovery is not authorization.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
+  T37:
+    title: End-to-end hardening, clean checkout, and whole-studio settlement over the amended v0.5.0 spec
+    initial_status: blocked
+    depends_on:
+      - T35
+      - T36
+    proof_level: P3
+    confirmation: independent_adversarial
+    settles:
+      - REQ-COCKPIT-003
+      - REQ-MCP-003
+      - REQ-GODOT-001
+      - REQ-RES-003
+    confirms: []
+    changes: Whole-studio settlement of the Game Actualizer amendment — clean-checkout with donor absent, cockpit
+      disposability re-proven on the integrated build, the full agent-authority escalation matrix, license-policy
+      conformance across the resource layer, full workspace gates, traceability on the final tree, and
+      docs/source-map/status updates.
+    proves: The integrated architecture holds under adversarial and clean-checkout conditions with no duplicate
+      authority, no donor dependency, and no unrelated user work disturbed; all global gates are green on the
+      final tree.
+    steps:
+      - Run the full conformance/clean-checkout battery with .tmp/donor physically absent.
+      - Delete/rebuild the cockpit DB mid-session and re-derive the Game Case identically.
+      - Run the human-authority escalation matrix from every agent transport on the final build.
+      - Run the strongest available test/conformance suite; inspect the final diff for duplicate authority.
+      - Update source maps/docs/CURRENT_STATUS; obtain independent adversarial confirmation.
+    gate:
+      - conformance suites (recovery/security/clean-checkout) pass with donor absent.
+      - just ci exit 0 on the final tree; check-traceability passes with every REQ mapped.
+      - Cockpit rebuild determinism and authority matrix evidence recorded.
+      - Docs/source map/status updated to match the implemented architecture.
+    teeth:
+      - attack: Fresh clone with .tmp/donor absent — full build/test battery.
+        expected: Fully green; typed errors only where environment tooling is legitimately unavailable.
+      - attack: Delete/rebuild the cockpit DB mid-session; re-derive the Game Case.
+        expected: Identical derivation from canonical files; no truth lived in the DB.
+      - attack: Full escalation matrix from every agent transport.
+        expected: Every attempt typed-rejected; matrix recorded as evidence.
+      - attack: Final diff inspection for duplicate authority or parallel abstractions.
+        expected: None found; unrelated user work untouched.
+    redesign_trigger: If integrated settlement cannot pass without weakening any gate, stop and record a correction
+      plan; gates are never weakened to pass.
+    evidence: artifacts/plan/T37/
+    preregistration:
+      required: true
+      artifact: .agents/preregistrations/gauntlet-game-studio-plan-T37.prereg.yaml
+      claims:
+        - The integrated Game Actualizer holds under adversarial and clean-checkout conditions with canonical truth
+          untouched by cockpit rebuilds and agent surfaces unable to acquire human authority.
+    independent_confirmation:
+      verifier_receives:
+        - source requirement(s)
+        - frozen preregistration
+        - relevant implementation
+        - fresh task evidence
+        - exact confirmation question
+      verifier_should_not_receive:
+        - builder conclusion as authority; it may be available only as non-authoritative context after the verifier
+          forms an evidence-based judgment
+      required_verdict: CONFIRM
 final_acceptance:
   studio_and_repository:
     - A clean checkout under Bun 1.4 passes global gates and `studio doctor` with `.tmp/donor/` absent.
@@ -2775,8 +3323,8 @@ handoff_contract:
   settled_next_action_rule: The next executable action MUST be set to `none — plan settled` only after the final 
     required conformance/confirmation task succeeds.
 traceability:
-  spec_requirement_count: 171
-  mapped_requirement_count: 171
+  spec_requirement_count: 224
+  mapped_requirement_count: 224
   unmapped_requirements: []
   unknown_plan_requirement_ids: []
   requirement_to_tasks:
@@ -3123,6 +3671,118 @@ traceability:
       - T25
     REQ-VERIFY-005:
       - T20
+
+    REQ-GM-001:
+      - T29
+    REQ-GM-002:
+      - T29
+    REQ-GM-003:
+      - T29
+    REQ-GM-004:
+      - T29
+    REQ-GM-005:
+      - T29
+    REQ-GM-006:
+      - T29
+    REQ-STALE-001:
+      - T29
+    REQ-STALE-002:
+      - T29
+    REQ-STALE-003:
+      - T29
+    REQ-STALE-004:
+      - T29
+    REQ-RES-001:
+      - T30
+    REQ-RES-002:
+      - T30
+    REQ-RES-003:
+      - T30
+      - T37
+    REQ-RES-004:
+      - T30
+    REQ-RES-005:
+      - T30
+    REQ-RES-006:
+      - T30
+    REQ-NORM-001:
+      - T31
+    REQ-NORM-002:
+      - T31
+    REQ-GLB-001:
+      - T31
+    REQ-DCC-001:
+      - T31
+    REQ-DCC-002:
+      - T31
+    REQ-ANIM-001:
+      - T31
+    REQ-ANIM-002:
+      - T31
+    REQ-GODOT-001:
+      - T32
+      - T37
+    REQ-GODOT-002:
+      - T32
+    REQ-GODOT-003:
+      - T32
+    REQ-GODOT-004:
+      - T32
+    REQ-GODOT-005:
+      - T32
+    REQ-GODOT-006:
+      - T32
+    REQ-QUAL-001:
+      - T33
+    REQ-QUAL-002:
+      - T33
+    REQ-CASE-001:
+      - T33
+      - T35
+    REQ-CASE-002:
+      - T33
+    REQ-CASE-003:
+      - T33
+    REQ-COCKPIT-001:
+      - T34
+    REQ-COCKPIT-002:
+      - T34
+    REQ-COCKPIT-003:
+      - T34
+      - T37
+    REQ-COCKPIT-004:
+      - T34
+    REQ-COCKPIT-005:
+      - T34
+    REQ-COCKPIT-006:
+      - T34
+    REQ-COCKPIT-007:
+      - T34
+    REQ-COCKPIT-008:
+      - T34
+    REQ-COCKPIT-009:
+      - T35
+    REQ-COCKPIT-010:
+      - T35
+    REQ-COCKPIT-011:
+      - T35
+    REQ-COCKPIT-012:
+      - T35
+    REQ-MCP-001:
+      - T36
+    REQ-MCP-002:
+      - T36
+    REQ-MCP-003:
+      - T36
+      - T37
+    REQ-MCP-004:
+      - T36
+    REQ-RELEASE-001:
+      - T33
+    REQ-RELEASE-002:
+      - T33
+    REQ-RELEASE-003:
+      - T33
 
   spec_variation_count: 14
   mapped_variation_count: 14

@@ -1,0 +1,55 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T30
+title: Universal resource resolution, reservoir, and creation exceptions
+proof_level: P3
+timestamp: "2026-10-04T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T30-001
+    settles:
+      - REQ-RES-001
+      - REQ-RES-002
+      - REQ-RES-003
+      - REQ-RES-004
+      - REQ-RES-005
+      - REQ-RES-006
+    statement: >-
+      A ResourceResolver generalizes the asset.resolve policy across resource kinds (mesh, material,
+      texture, hdri, environment, kit, rig, animation, audio, music, vfx, shader, ui, icon, font, code,
+      addon, gameplay implementation, controller, save, dialogue, navigation/networking patterns) following
+      the minimum-novelty cascade R0–R10; asset-kind requests delegate to the settled AssetResolver; a
+      content-addressed reservoir makes adapted derivatives reusable across games; resolution records and
+      creation exceptions are append-only; unknown licenses are unusable and costlier routes record why
+      cheaper routes failed.
+
+falsifiers:
+  - id: TEETH-T30-001
+    attack: >-
+      Request a mesh resource with an accepted project record, a reservoir record, and an available
+      provider simultaneously.
+    expected: >-
+      The resolver returns the accepted project resource (R0) without touching providers; the decision
+      record names the cascade stage and why no cheaper route needed bypassing.
+  - id: TEETH-T30-002
+    attack: >-
+      Request a resource whose only provider match carries no license evidence.
+    expected: >-
+      Typed rejection before intake (license evidence missing); the resource never becomes accepted;
+      the resolution record preserves the failure.
+  - id: TEETH-T30-003
+    attack: >-
+      Force scratch creation (R10) without prior-resolution rationale, then with a recorded exception.
+    expected: >-
+      Without rationale the route is rejected where policy requires it; with a creation exception the
+      record captures what was required, routes searched, why they failed, and the resulting derivative.
+  - id: TEETH-T30-004
+    attack: >-
+      Adapt a reservoir resource and re-run resolution in a fresh project context.
+    expected: >-
+      The adapted derivative is discoverable as an R1 reservoir candidate with lineage (derived_from,
+      provenance chain); the original blob is not duplicated.
+
+known_confounds:
+  - Network providers are injectable; deterministic tests never require live network access.

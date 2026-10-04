@@ -4,11 +4,13 @@ metadata:
   id: gauntlet-game-studio
   title: Gauntlet Game Studio Normative Specification
   status: approved
-  version: 0.4.0
+  version: 0.5.0
   created: '2026-09-15'
   scope: Agentic development studio for polished browser-native 3D games built on a first-party Gauntlet Runtime using standard
     Three.js, Koota, Rapier, Recast, and related narrow libraries, with capability-routed content production, optional authoritative
-    multiplayer, evidence-driven verification, and Gauntlet settlement.
+    multiplayer, evidence-driven verification, and Gauntlet settlement; amended v0.5.0 to actualize games across production
+    export targets (Godot web/Android/iOS) from an engine-neutral representation while the Three.js runtime remains the
+    reference implementation and behavior oracle.
   purpose: Define the stable contracts by which agents turn a game specification and supplied or authorized references into
     a runnable, observable, verifiable browser game while keeping specialist tools narrow, the runtime first-party, and
     all completion claims evidence-backed.
@@ -54,6 +56,26 @@ metadata:
     authorization_record: .agents/decisions/game-studio.jsonl (SPEC_AMENDMENT 0.4.0)
     change_plan: .agents/plans/recipe-layer.amendment.plan.yaml
     prior_revision_sha256: b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39
+  amendment_0_5_0:
+    role: >-
+      Formal normative amendment authorized by the operator on 2026-10-04 (Game Actualizer mission: "Implement its
+      next architectural form completely and additively: turn Gauntlet Game Studio into an evidence-driven,
+      resource-maximizing Game Actualizer with a cockpit analogous to the Product Actualizer cockpit, while preserving
+      and exploiting the architecture already present"). Introduces REQ-GM-001..006 (canonical versioned Game Model),
+      REQ-STALE-001..004 (model-derived staleness), REQ-RES-001..006 (universal resource resolution, reservoir,
+      creation exceptions), REQ-NORM-001..002 (coherence normalization), REQ-GLB-001 (GLB production ABI),
+      REQ-DCC-001..002 (structured DCC jobs), REQ-ANIM-001..002 (first-class animation), REQ-GODOT-001..006 (Godot
+      production backend, engine-neutral world manifest, cross-runtime observability), REQ-QUAL-001..002
+      (professional quality bar), REQ-CASE-001..003 (derived Game Case), REQ-COCKPIT-001..012 (Game Cockpit),
+      REQ-MCP-001..004 (CLI/MCP/WebMCP over one semantic tool registry), and REQ-RELEASE-001..003 (target-specific
+      release settlement) under core_behavior_requirements. The reference Three.js/Koota/Rapier/Recast runtime and all
+      settled authority boundaries are preserved; Godot enters strictly as a production export backend behind capability
+      contracts; the cockpit is a projection/control surface, never a second engine or authority. Settlement plan
+      rebound to this revision with tasks T29-T37; T00-T28 evidence is preserved.
+    authorization_record: .agents/decisions/game-studio.jsonl (SPEC_AMENDMENT 0.5.0)
+    change_plan: .agents/plans/game-actualizer.amendment.plan.yaml
+    donor_reference: /home/sprime01/projects/product-actualizer (architectural donor only; not a runtime dependency)
+    prior_revision_sha256: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8
 sources:
   normative_artifact:
     role: This file is the approved normative desired-state authority.
@@ -1664,6 +1686,306 @@ core_behavior_requirements:
   - id: REQ-DONOR-007
     text: No upstream-tracking, merge, rebase, or API-compatibility obligation is required after transplantation; later
       donor changes are new external inputs subject to normal review.
+  game_model:
+  - id: REQ-GM-001
+    text: >-
+      Each game project's `.agents/specs/game.spec.yaml` MUST be the canonical Game Model — the single authority for
+      declared game truth (schema `gauntlet.game.model`). A parallel game specification, project database, or cockpit
+      store MUST NOT become a second truth source.
+  - id: REQ-GM-002
+    text: >-
+      The Game Model schema MUST be able to represent, as typed optional sections, game identity, player fantasy,
+      audience, genre, experience pillars, core and secondary loops, progression, mechanics, worlds, entities,
+      characters, factions, objects, interactions, camera grammar, control/input grammar, visual/material/lighting/
+      animation/VFX/audio/UI languages, narrative rules, target platforms and devices, quality profiles, performance
+      budgets, accessibility requirements, asset requirements, resource provenance policy, playable scenarios,
+      acceptance criteria, unresolved unknowns, decisions, contradictions, North Star references, and release
+      requirements. Absent sections are absent facts, not defaults.
+  - id: REQ-GM-003
+    text: >-
+      The Game Model MUST be versioned (`model_version`). Every settled change MUST append a decision record
+      (ordinal, model version, summary, `touched` fields) to the model's decision ledger; the ledger is append-only.
+  - id: REQ-GM-004
+    text: >-
+      Providers, specialists, capabilities, agents, and cockpit surfaces MUST NOT silently mutate the Game Model.
+      Canonical changes land only as recorded decisions through the model's declared change path; proposals,
+      candidates, and search results are non-authoritative data.
+  - id: REQ-GM-005
+    text: >-
+      The studio MUST provide a strict loader for the Game Model that validates the typed core, preserves
+      project-specific extension sections without inventing semantics for them, and loads existing
+      `gauntlet.game.spec` v1 projects (including quality-profile validation) without rewriting their files.
+  - id: REQ-GM-006
+    text: >-
+      Unresolved questions MUST be representable as model unknowns and MUST remain unknown; uncertainty MUST NOT be
+      silently resolved into declared truth by any capability, derivation, or surface.
+  staleness_and_derivatives:
+  - id: REQ-STALE-001
+    text: >-
+      Model-derived artifacts (recipe project content, resource records and adaptations, evidence manifests, builds
+      and exports, normalized derivatives) MUST record what they were built from — `built_from` (model version) and
+      `reads` (the model fields and asset/resource ids they consume) — at derivation time.
+  - id: REQ-STALE-002
+    text: >-
+      Staleness MUST be computed structurally, not from manual invalidation lists: a derivative is stale exactly
+      when a decision recorded at a model version newer than its `built_from` touches a field or resource the
+      derivative reads (with whole-ledger `all` semantics); the computation MUST be a pure, deterministic function.
+  - id: REQ-STALE-003
+    text: >-
+      Staling MUST be targeted. Changing one model field MUST NOT mark unrelated derivatives stale; a falsification
+      check MUST demonstrate that a non-overlapping decision leaves unrelated derivatives current.
+  - id: REQ-STALE-004
+    text: >-
+      Stale derivatives, builds, and evidence MUST be surfaced (Game Case and cockpit) and MUST NOT settle new
+      claims until re-derived against the current model version; historical views MUST NOT masquerade as current.
+  resource_resolution:
+  - id: REQ-RES-001
+    text: >-
+      The studio MUST generalize `asset.resolve` into resource resolution behind the existing capability contracts,
+      covering meshes, materials, textures, HDRIs, environments, modular kits, rigs, animations, audio, music, VFX,
+      shaders, UI components, icons, fonts, code libraries, engine addons, gameplay implementations, controllers,
+      inventory/dialogue/save implementations, and navigation/networking patterns. Asset-kind requests MUST still flow
+      through the settled AssetResolver policy; resource resolution extends, never replaces, it.
+  - id: REQ-RES-002
+    text: >-
+      Resource resolution MUST follow the minimum-novelty cascade in order — accepted project resource (R0),
+      normalized reservoir resource (R1), exact permissive external resource (R2), near-match requiring adaptation
+      (R3), composite/kitbash of existing resources (R4), permissive code/addon/demo donor (R5), procedural adaptation
+      (R6), reference reconstruction via img2threejs (R7), Blender/DCC modification (R8), generation of only the
+      missing irreducible component (R9), scratch creation (R10). Selecting a costlier route MUST record why each
+      cheaper valid route failed or could not satisfy acceptance; scratch creation MUST be an explicit recorded
+      exception, never a default.
+  - id: REQ-RES-003
+    text: >-
+      Provenance and licensing MUST carry into resource resolution: the accepted license set and unknown-license
+      rejection from the asset policy stand; license evidence is required before intake; source URI, hash, adaptation
+      lineage, and provenance chain MUST be recorded; "free" is never treated as "safe to ship".
+  - id: REQ-RES-004
+    text: >-
+      Resolution decisions MUST be recorded append-only with the attempted route ladder, per-route outcomes, chosen
+      route, and decision rationale, in the project's established decision-record location discipline.
+  - id: REQ-RES-005
+    text: >-
+      The studio MUST maintain a reusable, indexed, content-addressed resource reservoir so later games benefit
+      from earlier work: records carry semantic tags, source, license, source and local hashes, format, technical
+      metadata, lineage (`derived_from`), usage, and verification evidence; adaptations that pass acceptance become
+      reservoir resources where licensing permits; blobs are stored once, not duplicated per game.
+  - id: REQ-RES-006
+    text: >-
+      Every material scratch-created resource MUST have a creation-exception record: what was required, which
+      cheaper routes were searched, why they failed, what was nevertheless reused, provenance, and the resulting
+      reusable derivative if any. Vanity reuse metrics MUST NOT be invented; the exception record is the pressure.
+  coherence_normalization:
+  - id: REQ-NORM-001
+    text: >-
+      Acquired resources MUST be normalizable toward the art, material, lighting, and animation language the Game
+      Model declares before production acceptance. A normalization plan MUST record the systematic transformations
+      applied or directed — units, scale, orientation, pivots, naming, skeleton/animation conventions, PBR material
+      model, palette, roughness/metalness ranges, normal intensity, texel density, texture resolution, LOD structure,
+      collision representation, sockets, and runtime metadata — so twenty sources read as one authored world while
+      provenance stays explicit internally.
+  - id: REQ-NORM-002
+    text: >-
+      Normalized derivatives MUST retain their full provenance chain (source resource plus transformation lineage);
+      normalization MUST NOT erase origin, license, or attribution.
+  production_asset_abi:
+  - id: REQ-GLB-001
+    text: >-
+      glTF/GLB MUST be the explicit production asset ABI: sources, reconstruction outputs, and DCC results converge
+      into normalized, validated, optimized GLB (via the existing glTF-Transform route) before runtime import by the
+      reference runtime or a production backend. Provider-specific object graphs MUST NOT leak downstream of this
+      boundary.
+  dcc_job_system:
+  - id: REQ-DCC-001
+    text: >-
+      DCC work (topology cleanup, retopology, UVs, baking, rigging, skinning, animation authoring/retargeting/
+      baking, mesh repair, collision proxies, LOD generation, kitbash consolidation, export normalization) MUST be
+      declared as structured DCC jobs with explicit inputs, operations, the reason lighter cascade routes were
+      insufficient, budgets, output paths, a deterministic/reproducible definition where possible, acceptance,
+      verification, and the resulting AssetRecord lineage.
+  - id: REQ-DCC-002
+    text: >-
+      Blender remains an expensive escalation behind its capability boundary, never the default authoring
+      environment, and MUST NOT own gameplay semantics.
+  animation_domain:
+  - id: REQ-ANIM-001
+    text: >-
+      Animation MUST be a first-class capability domain with coherent contracts for rig, retarget, animation
+      source, adaptation, bake, validation, and runtime animation graph/state-machine integration, expressed as
+      capability descriptors with providers.
+  - id: REQ-ANIM-002
+    text: >-
+      Animation SHOULD prefer composition (base cycles plus additive/partial layers) over bespoke creation; DCC
+      owns skeleton/keyframe/retarget/bake work, the runtime owns blending/transitions/root motion, and the Game
+      Model owns semantic meaning (for example "enemy enters alerted locomotion").
+  production_backend:
+  - id: REQ-GODOT-001
+    text: >-
+      The first-party Three.js/Koota/Rapier/Recast runtime MUST be preserved as the reference implementation and
+      behavior oracle with unchanged semantic authority (Koota authoritative; renders/bodies/nav projections). Godot
+      MUST NOT replace it.
+  - id: REQ-GODOT-002
+    text: >-
+      Runtime configuration MUST distinguish the reference/authoring runtime from production targets (for example
+      `godot.web`, `godot.android`, `godot.ios`) as an explicit modeled distinction, not a literal rename; production
+      targets are declared additively and MUST NOT disturb existing project configs.
+  - id: REQ-GODOT-003
+    text: >-
+      World/environment authoring MUST be expressible as an engine-neutral World Manifest (zones, placements,
+      transforms, asset bindings, sockets, scatter rules, lighting and atmosphere intent, collider intent, navigation
+      surfaces, spawn points, interaction anchors, LOD policy, streaming hints) projectable into both the gauntlet-three
+      reference representation and Godot production representations. Terrain authority and navigation authority remain
+      separate from world composition.
+  - id: REQ-GODOT-004
+    text: >-
+      A production target MUST expose semantically comparable observations (state, pixels, telemetry, performance,
+      network where applicable, scenario checkpoints) through an adapter honoring the versioned observability
+      architecture; the browser target MAY use a JS bridge and native targets a debug/evidence bridge; production
+      mutation lockout MUST hold on every target.
+  - id: REQ-GODOT-005
+    text: >-
+      Godot project generation, export targets, and their platform toolchain prerequisites MUST be inspectable.
+      Where a required toolchain is unavailable (for example the godot binary, or macOS/Xcode signing for iOS), the
+      affected operations MUST yield explicit typed blocked states; unavailability MUST NEVER be reported as release
+      readiness, and studio/build/test operation MUST remain independent of Godot's presence.
+  - id: REQ-GODOT-006
+    text: >-
+      Godot scenes and nodes are projections. They MUST NOT silently become semantic authority; semantic gameplay
+      truth lives in the authoritative state layer (reference runtime) or the declared production semantic contract,
+      never in engine scene state.
+  professional_quality_bar:
+  - id: REQ-QUAL-001
+    text: >-
+      "Professional quality MUST be expressed as a project-specific quality bar declared in the Game Model: named
+      dimensions (player feel, visual, world, audio, UX, technical, release) with explicit criteria. A numeric AAA
+      score, percentage, or composite quality index MUST NOT exist."
+  - id: REQ-QUAL-002
+    text: >-
+      Quality criteria MUST evaluate to the states pass, attention, fail, unknown, or not-applicable. Every pass
+      MUST cite real evidence; unknown MUST remain unknown and be shown; not-applicable MUST be declared with reason;
+      contradictions MUST surface rather than smooth.
+  game_case:
+  - id: REQ-CASE-001
+    text: >-
+      A Game Case MUST be derivable as a read-only view answering, for the current project: destination, current
+      state, material deviation, primary next move, why that move, cost estimate without fabricated precision,
+      authority split (what the system may do automatically versus what needs owner judgment), recovery/reversibility,
+      expected evidence, what the move opens, credible alternatives, blocked moves with their blockers, and settlement
+      reachability. The Game Case MUST be stored nowhere; it is a pure function of canonical state.
+  - id: REQ-CASE-002
+    text: >-
+      Primary-move selection MUST prefer, in order: clearing release blockers; resolving contradictions; enabling
+      multiple downstream affordances; replacing expensive bespoke work with reusable/permissive resources;
+      eliminating uncertainty cheaply; repairing visibly broken player experience; closing the largest evidence-backed
+      quality gap; then platform-specific release blockers. It MUST NOT optimize for task counts, content volume, or
+      model activity. Blocked moves MUST NOT be recommended as reachable; contradictions outrank optimistic progress.
+  - id: REQ-CASE-003
+    text: >-
+      The primary move is guidance, not authority. Derivation MUST NOT silently decide release; release verdicts
+      remain owner-settled through Gauntlet settlement channels.
+  game_cockpit:
+  - id: REQ-COCKPIT-001
+    text: >-
+      The cockpit MUST expose a typed UI protocol: a fixed block vocabulary under strict schema validation with
+      source-bound data from a bounded source grammar, agent-supplied data visibly badged, and closed client
+      rendering. Arbitrary HTML/React/DOM generation through the protocol MUST NOT exist; a type that is not in the
+      vocabulary cannot be drawn.
+  - id: REQ-COCKPIT-002
+    text: >-
+      The cockpit MUST render an immutable release rail (game, model version, actualization phase, milestone,
+      target platforms, active quality profile, contradictions, unknowns, stale derivatives/evidence, blockers, owner
+      input required, one next move, release verdict) that agent surfaces cannot cover, remove, or edit. It MUST NOT
+      contain percentage completion, decorative KPIs, or quality scores.
+  - id: REQ-COCKPIT-003
+    text: >-
+      Cockpit storage MUST use two classes in a disposable SQLite database — a rebuildable projection of canonical
+      state, and non-authoritative cockpit state (workspace, pins, interactions, work requests, bindings). The
+      database MUST NOT become canonical game truth: deleting and rebuilding it MUST NOT change the game.
+  - id: REQ-COCKPIT-004
+    text: >-
+      Authority MUST be decided by transport, not by caller claims. Human authority operations (answers, rulings,
+      confirmations, annotations, reviews, cancellations) are accepted only on the human channel; agent attempts are
+      typed-rejected regardless of payload. Owner layout precedence holds: pinned surfaces cannot be moved or removed
+      by agents; agent content updates replace content in place; closed surfaces stay closed until the owner reopens
+      them.
+  - id: REQ-COCKPIT-005
+    text: >-
+      The cockpit MUST support a viewport block with typed declarative modes (live game, reference runtime, Godot
+      web build, asset preview, scene preview, animation preview, scenario replay, captured view) whose data is
+      source-bound and which respects production mutation lockout.
+  - id: REQ-COCKPIT-006
+    text: >-
+      The workbench MUST present deterministic screen modes — ORIENT, DECIDE, BUILD, VERIFY, RELEASE — as pure
+      functions of project state and cockpit control state; mode changes update content in place rather than
+      destroying owner layout.
+  - id: REQ-COCKPIT-007
+    text: >-
+      The cockpit MUST provide read-only world-debugger operations — why, impact, diff, timeline, counterfactual,
+      resource reach, and replay — answering with recorded, derived, or explicitly unavailable basis and never
+      mutating canonical truth; only the proper actualization/settlement path changes truth.
+  - id: REQ-COCKPIT-008
+    text: >-
+      Work requests MUST follow the lifecycle queued → acknowledged → running → produced → ready_for_review →
+      accepted, with blocked/cancelled/failed states, an append-only history, and the invariant that the executor or
+      agent cannot accept its own work; human review authority is explicit.
+  - id: REQ-COCKPIT-009
+    text: >-
+      The work terminal MUST be a persistent work line (not a chat) that resolves known questions into views,
+      turns imperatives into typed durable work requests, lets the owner review or cancel accepted workflow states
+      according to authority, and refuses ambiguous commands rather than inventing intent.
+  - id: REQ-COCKPIT-010
+    text: >-
+      The cockpit MUST surface a North Star projection of the model's declared direction (world, character,
+      materials, lighting, UI, animation, VFX, audio, reference games/films/art) in which every external reference
+      visibly shows its classification (reference-only, shippable, derivative-permitted, license-unresolved); the
+      North Star is a projection, not a second art-direction authority.
+  - id: REQ-COCKPIT-011
+    text: >-
+      The cockpit MUST offer a Resource Scout view for resource gaps — project, reservoir, permissive external,
+      donor, and composite candidates with adaptation requirements, license, expected quality and work, why the
+      recommended route wins, and the scratch-creation justification when present — derived from the real resource
+      resolution machinery, not a separate catalog.
+  - id: REQ-COCKPIT-012
+    text: >-
+      The cockpit MUST expose the player affordance graph from the recipe layer — what the player can do, with
+      working/needs-polish/blocked/unproven states — where selecting an affordance reveals what implements it,
+      supporting resources, dependencies, downstream affordances, relevant quality bar, evidence, gaps, and next move.
+  mcp_webmcp:
+  - id: REQ-MCP-001
+    text: >-
+      CLI, loopback MCP, and WebMCP MUST consume one semantic tool registry with one implementation per tool;
+      manually divergent per-transport APIs MUST NOT be maintained.
+  - id: REQ-MCP-002
+    text: >-
+      WebMCP MUST register tools through `document.modelContext.registerTool` (with graceful degradation when
+      unavailable) using signal-based withdrawal, must dynamically offer or withdraw tools according to current
+      cockpit context, and must apply appropriate tool annotations. Tool discovery is not authorization.
+  - id: REQ-MCP-003
+    text: >-
+      No agent-surface tool MAY impersonate the owner, approve its own work, silently change the canonical Game
+      Model, waive license restrictions, override the release gate, publish or release externally, or forge a human
+      ruling. WebMCP executes under agent authority only.
+  - id: REQ-MCP-004
+    text: >-
+      Malformed or unknown tool actions MUST return structured errors (code, message, issue paths) and mutate
+      nothing.
+  release_settlement:
+  - id: REQ-RELEASE-001
+    text: >-
+      A derived target-by-target release matrix MUST represent per-target settlement across dimensions such as
+      build, core loop, scenarios, visual quality, animation, audio, UI/UX, performance, input, save/resume, startup,
+      crash/error state, packaging, signing, and platform-specific requirements. Each target settles independently
+      against its own declared requirements; one target passing MUST NOT settle another.
+  - id: REQ-RELEASE-002
+    text: >-
+      Target-specific quality profiles MUST extend the project-owned quality profile architecture (preserving the
+      structural versus hardware-sensitive versus environment-binding distinctions) only as declared by the project;
+      target evidence (startup/load, memory, frame pacing, input latency, package size, orientation/resume,
+      save/resume, touch, native integration) is added where measurable and required.
+  - id: REQ-RELEASE-003
+    text: >-
+      Software-rendered or otherwise non-target evidence MUST NOT settle a hardware-bound target profile; this
+      rule extends across reference and production targets, and required skipped integrations are reported as skipped.
 execution_integration_contract:
   invocation:
     method: Bun/TypeScript studio CLI and library calls through deterministic adapters; agent-skill routes emit AgentHandoff
@@ -2338,5 +2660,39 @@ conformance_traceability:
     - REQ-RECIPE-012
     - REQ-RECIPE-013
     - REQ-RECIPE-014
+    confirmation: adversarial
+  - group: Canonical Game Model authority and targeted staleness
+    requirements:
+    - REQ-GM-001
+    - REQ-GM-003
+    - REQ-GM-004
+    - REQ-STALE-002
+    - REQ-STALE-003
+    confirmation: adversarial
+  - group: Resource licensing and minimum-novelty pressure
+    requirements:
+    - REQ-RES-002
+    - REQ-RES-003
+    - REQ-RES-005
+    confirmation: adversarial
+  - group: Production backend authority preservation
+    requirements:
+    - REQ-GODOT-001
+    - REQ-GODOT-002
+    - REQ-GODOT-005
+    - REQ-GODOT-006
+    confirmation: adversarial
+  - group: Cockpit authority and disposable projection
+    requirements:
+    - REQ-COCKPIT-001
+    - REQ-COCKPIT-003
+    - REQ-COCKPIT-004
+    - REQ-COCKPIT-008
+    confirmation: adversarial
+  - group: Tool surface authority (MCP/WebMCP)
+    requirements:
+    - REQ-MCP-001
+    - REQ-MCP-002
+    - REQ-MCP-003
     confirmation: adversarial
   plan_projection_rule: "The plan projection MUST preserve semantic distinctions between identifier classes: every REQUIRED normative requirement (REQ-*) MUST map to at least one implementation plan task; every required variation case (VAR-*) and recovery case (RECOV-*) MUST map to settlement tasks; every claim/hypothesis (CLAIM-*) MUST map to its establishing/falsifying task and evidence. Non-goals (NONGOAL-*) establish explicit project boundaries and are not tasks. A requirement or case without a plan task or settled evidence remains open."

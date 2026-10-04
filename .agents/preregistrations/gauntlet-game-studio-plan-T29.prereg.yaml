@@ -1,0 +1,60 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T29
+title: Canonical Game Model, versioning, and model-derived staleness engine
+proof_level: P3
+timestamp: "2026-10-04T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T29-001
+    settles:
+      - REQ-GM-001
+      - REQ-GM-002
+      - REQ-GM-003
+      - REQ-GM-004
+      - REQ-GM-005
+      - REQ-GM-006
+      - REQ-STALE-001
+      - REQ-STALE-002
+      - REQ-STALE-003
+      - REQ-STALE-004
+    statement: >-
+      game.spec.yaml is extended in place into the canonical Game Model (strict typed core sections,
+      declared per-game extensions preserved), versioned with an append-only decision ledger; a pure
+      staleness engine marks exactly those derivatives stale whose recorded reads are touched by decisions
+      newer than their built_from version; unrelated derivatives are unaffected; stale evidence cannot
+      settle; existing v1 game specs keep loading unchanged.
+
+falsifiers:
+  - id: TEETH-T29-001
+    attack: >-
+      Load each existing game spec (template, blackwater-relay, codename-gauntlet-warfare) through the new
+      Game Model loader.
+    expected: >-
+      All three load successfully with unknown/free-form sections preserved under extensions and
+      quality_profiles still schema-validated; no project file is rewritten.
+  - id: TEETH-T29-002
+    attack: >-
+      Mutate the model by appending a decision (e.g. camera third-person → first-person, touched: [camera])
+      and recompute staleness for derivatives stamped built_from with reads [camera] and reads [audio].
+    expected: >-
+      Only the camera-reading derivative is stale; the audio-reading derivative remains current; the
+      staleness computation is a pure function of the model and stamps.
+  - id: TEETH-T29-003
+    attack: >-
+      Attempt to write a model change without a decision ledger record (silent mutation path), and attempt
+      to settle evidence stamped stale.
+    expected: >-
+      Silent mutation is rejected (model writes require a decision record); settlement against stale
+      evidence is rejected with a typed staleness error.
+  - id: TEETH-T29-004
+    attack: >-
+      Feed a model with an unresolvable field reference in reads and a decision touching "all".
+    expected: >-
+      reads referencing absent fields are reported as unavailable rather than silently dropped; a decision
+      touching all marks every stamped derivative stale; no crash and no partial truth.
+
+known_confounds:
+  - Existing games may contain free-form sections that only parse as opaque extensions.
+  - Model version identity must not depend on formatting-only YAML changes.

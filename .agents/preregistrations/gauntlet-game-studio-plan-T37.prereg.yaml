@@ -1,0 +1,51 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T37
+title: End-to-end hardening, clean checkout, and whole-studio settlement
+proof_level: P3
+timestamp: "2026-10-04T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T37-001
+    settles:
+      - REQ-COCKPIT-003
+      - REQ-MCP-003
+      - REQ-GODOT-001
+      - REQ-RES-003
+    statement: >-
+      The integrated Game Actualizer holds under adversarial and clean-checkout conditions: a fresh clone
+      with donor workspace absent builds and tests green; the cockpit database is disposable without
+      canonical consequence; agent surfaces (CLI/MCP/WebMCP) cannot acquire human authority from any
+      transport; the reference runtime remains untouched by production-backend work; license policy holds
+      across the resource layer; all repository gates (check, test, lint, traceability, topology,
+      source/third-party verification) pass on the final tree.
+
+falsifiers:
+  - id: TEETH-T37-001
+    attack: >-
+      Run the full conformance/clean-checkout battery with .tmp/donor physically absent.
+    expected: >-
+      Fully green; no donor dependency; typed errors where environment tooling is legitimately unavailable.
+  - id: TEETH-T37-002
+    attack: >-
+      Delete/rebuild the cockpit DB mid-session and re-derive the Game Case.
+    expected: >-
+      Game Case and release state re-derive identically from canonical files; no truth lived in the DB.
+  - id: TEETH-T37-003
+    attack: >-
+      Attempt the full human-authority escalation matrix from every agent transport on the final build.
+    expected: >-
+      Every attempt typed-rejected; matrix recorded as evidence.
+  - id: TEETH-T37-004
+    attack: >-
+      Run the strongest available test/conformance suite and inspect the final diff for duplicate authority
+      or parallel abstractions.
+    expected: >-
+      Gates green; no second truth source, router, evidence store, or engine introduced; unrelated user
+      work untouched.
+
+known_confounds:
+  - Live model/LLM credentials are not part of deterministic CI; agent-skill generation legs use the
+    established credential-independent paths.
+  - Godot binary and mobile toolchains absent; blocked-state honesty is the conformant outcome.

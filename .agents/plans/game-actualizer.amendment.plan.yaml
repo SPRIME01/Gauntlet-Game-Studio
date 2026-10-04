@@ -1,0 +1,200 @@
+schema: agent.correction_plan
+schema_version: "1.0"
+
+metadata:
+  id: game-actualizer-amendment
+  status: approved
+  created: "2026-10-04"
+  governing_spec: .agents/specs/gauntlet-game-studio.spec.yaml
+  governing_plan: .agents/plans/gauntlet-game-studio.plan.yaml
+  amendment_version: "0.5.0"
+  scope: >-
+    Formal operator-authorized amendment turning Gauntlet Game Studio into an evidence-driven,
+    resource-maximizing Game Actualizer: canonical versioned Game Model with decision-ledger staleness,
+    universal resource resolution with a reusable reservoir and creation exceptions, coherence normalization
+    over a GLB production ABI, structured DCC jobs and first-class animation contracts, Godot production
+    backend with an engine-neutral world manifest and cross-runtime observability, a professional quality bar,
+    a derived Game Case, the Game Cockpit (protocol, storage, server, workbench, work terminal, world
+    debugger, viewport, North Star, Resource Scout), and CLI/MCP/WebMCP over one semantic tool registry with
+    explicit authority separation — all compiled into and exploiting the settled capability/recipe/asset/
+    evidence/settlement substrate without reopening T00–T28 evidence.
+
+discovery:
+  classification:
+    - model_gap: >-
+        game.spec.yaml is free-form YAML with only quality_profiles schema-validated; no canonical versioned
+        Game Model with decision-ledger semantics exists.
+    - staleness_gap: >-
+        derived artifacts do not record built_from/reads; a settled decision cannot mark exactly its
+        downstream consumers stale.
+    - resource_gap: >-
+        asset.resolve covers permissive mesh/texture/HDRI acquisition; no generalized resource resolution,
+        reservoir, or creation-exception record exists.
+    - pipeline_gap: >-
+        no model-owned coherence normalization, explicit GLB production ABI, structured DCC job contract, or
+        first-class animation capability domain.
+    - backend_gap: >-
+        runtime config is a "three" literal; no engine-neutral world manifest, Godot production projection,
+        cross-runtime observability adapter, or target-specific release matrix.
+    - experience_gap: >-
+        no professional quality bar representation, derived Game Case, cockpit, or MCP/WebMCP semantic
+        control plane.
+    - precedent: >-
+        capability registry/router, asset.resolve ordered policy, recipes, AssetRegistry, EvidenceStore,
+        Gauntlet settlement, observability bridge, and production mutation lockout are settled and remain the
+        sole execution/authority paths.
+  preserved_evidence:
+    - .agents/reports/game-actualizer.discovery.md
+    - .agents/reports/game-actualizer.spec-delta.proposal.md
+  authorization:
+    operator: >-
+      2026-10-04, explicit operator mission: "Implement its next architectural form completely and additively:
+      turn Gauntlet Game Studio into an evidence-driven, resource-maximizing Game Actualizer with a cockpit
+      analogous to the Product Actualizer cockpit, while preserving and exploiting the architecture already
+      present," with explicit instruction to follow the repository's planning/specification discipline
+      (preregistrations, requirements, plan DAGs, traceability IDs, CURRENT_STATUS, settlement gates,
+      adversarial confirmation) rather than bypassing it.
+  governing_requirements:
+    - REQ-GOAL-001
+    - REQ-GOAL-003
+    - REQ-ROUTE-001
+    - REQ-ROUTE-005
+    - REQ-ASSET-008
+    - REQ-ASSET-011
+    - REQ-RECIPE-001
+    - REQ-RECIPE-003
+    - REQ-OBS-001
+    - REQ-GAUNTLET-002
+    - REQ-SEC-001
+    - REQ-SEC-005
+
+claims:
+  - id: AMR-CLAIM-001
+    statement: >-
+      The canonical Game Model extends the existing game.spec.yaml seam as the single declared-truth authority;
+      specialists, providers, cockpit surfaces, and agents never silently mutate it, and model-derived
+      staleness is computed purely from recorded decision/touched versus built_from/reads relationships.
+    proof_level: P2
+  - id: AMR-CLAIM-002
+    statement: >-
+      Resource resolution generalizes asset.resolve behind the existing capability contracts with the
+      minimum-novelty cascade (reuse → reservoir → acquire → adapt → composite → donor → procedural →
+      reconstruction → DCC → generate → scratch), append-only resolution records, a content-addressed
+      reservoir, and creation exceptions; asset-kind requests still flow through the settled AssetResolver.
+    proof_level: P2
+  - id: AMR-CLAIM-003
+    statement: >-
+      The reference Three.js/Koota/Rapier/Recast runtime remains the behavior oracle and semantic authority;
+      Godot exists only as a production export backend projected from engine-neutral representations under
+      capability contracts, with typed blocked states where platform toolchains are absent.
+    proof_level: P2
+  - id: AMR-CLAIM-004
+    statement: >-
+      The Game Cockpit is a projection/control surface: strict typed block vocabulary, disposable two-class
+      SQLite projection, transport-decided authority, immutable release rail, work-request lifecycle in which
+      the executor cannot accept its own work, and read-only world-debugger operations — never a second
+      engine, router, evidence store, or truth source.
+    proof_level: P2
+  - id: AMR-CLAIM-005
+    statement: >-
+      One semantic tool registry feeds CLI, loopback MCP, and WebMCP; WebMCP registers through
+      document.modelContext.registerTool with graceful fallback, dynamic contextual offering, and no tool that
+      can forge human authority, approve its own work, waive licenses, or override the release gate.
+    proof_level: P2
+
+execution_graph:
+  - id: GA-01
+    title: Preregister amendment and failing tests for the Game Model foundation
+    depends_on: []
+    gate:
+      - amendment plan approved by operator intent and recorded in the decision log.
+      - frozen P3 preregistrations exist for T29, T30, T32, T34, T36, T37 before any evidence evaluation.
+      - failing tests prove no Game Model loader/staleness engine/resource resolver/cockpit package exists.
+  - id: GA-02
+    title: Amend specification to v0.5.0 and rebind settlement plan
+    depends_on: [GA-01]
+    gate:
+      - spec carries REQ-GM/STALE/RES/NORM/GLB/DCC/ANIM/GODOT/QUAL/CASE/COCKPIT/MCP/RELEASE groups under
+        core_behavior_requirements with operator authorization recorded in metadata.amendment_0_5_0.
+      - plan rebound to the amended spec SHA-256 with tasks T29–T37 and 100% REQ traceability; T24/T25 and
+        the T00→T25 critical path are untouched.
+      - python3 scripts/check-traceability.py passes with the amended artifacts.
+  - id: GA-03
+    title: T29 — canonical Game Model, versioning, staleness engine
+    depends_on: [GA-02]
+    gate:
+      - strict GameModel contracts and loader; decisions ledger; pure staleness engine with targeted
+        invalidation teeth; existing game projects keep loading unchanged.
+  - id: GA-04
+    title: T30 — resource resolution, reservoir, creation exceptions
+    depends_on: [GA-03]
+    gate:
+      - ResourceResolver cascade R0–R10 over injectable providers; asset-kind delegation to AssetResolver;
+        content-addressed reservoir index; append-only resolution records and creation exceptions; license
+        teeth carry over.
+  - id: GA-05
+    title: T31 — normalization, GLB ABI, DCC jobs, animation contracts
+    depends_on: [GA-04]
+    gate:
+      - normalization plan contracts driven by model language; GLB ABI statement enforced through existing
+        glTF-Transform verification; DccJob schema + validation; animation capability descriptors with
+        composition-first policy.
+  - id: GA-06
+    title: T32 — Godot production backend, world manifest, observability adapter
+    depends_on: [GA-05]
+    gate:
+      - engine-neutral WorldManifest projected to gauntlet-three and godot representations; godot project
+        generation and export preflight with typed blocked states; observability adapter honoring production
+        mutation lockout; reference runtime untouched.
+  - id: GA-07
+    title: T33 — quality bar, Game Case, release matrix
+    depends_on: [GA-06]
+    gate:
+      - model-declared quality bar evaluated to pass/attention/fail/unknown/not-applicable with evidence
+        linkage; derived Game Case with leverage-ordered primary move; target-by-target release matrix with
+        independent settlement teeth.
+  - id: GA-08
+    title: T34 — cockpit protocol, server, storage, authority, world debugger
+    depends_on: [GA-03]
+    gate:
+      - strict block/protocol schemas; two-class bun:sqlite with proven rebuild; transport-decided authority
+        with typed rejections; release rail; work-request lifecycle; read-only debugger ops; topology approval
+        for packages/cockpit.
+  - id: GA-09
+    title: T35 — game cockpit surfaces
+    depends_on: [GA-07, GA-08]
+    gate:
+      - viewport, North Star, Resource Scout, affordance graph, Game Case/quality/release surfaces,
+        workbench ORIENT/DECIDE/BUILD/VERIFY/RELEASE, work terminal over the live server.
+  - id: GA-10
+    title: T36 — tool registry, MCP, WebMCP, authority teeth
+    depends_on: [GA-08]
+    gate:
+      - one semantic tool registry feeding CLI, loopback MCP, and WebMCP; dynamic offering; authority
+        falsifiers pass; structured errors mutate nothing.
+  - id: GA-11
+    title: T37 — end-to-end hardening and whole-studio settlement
+    depends_on: [GA-09, GA-10]
+    gate:
+      - clean checkout with donor absent; conformance suites green; cockpit rebuild does not change canonical
+        truth; WebMCP authority matrix; docs/source map/status updated; full workspace gates green.
+
+non_goals:
+  - Do not alter any previously settled task, gate, tooth, or provider-specific proof; T00–T28 evidence and
+    frozen games remain untouched.
+  - Do not replace the Three.js/Koota/Rapier/Recast reference runtime, evidence system, capability registry,
+    recipe layer, or settlement authority.
+  - Do not introduce a second engine, ECS, recipe system, evidence store, capability registry, orchestration
+    authority, workflow engine, or unbounded UI framework.
+  - Do not make Product Actualizer a runtime dependency; it remains an architectural donor only.
+  - Do not claim numeric AAA scores, percentages, or decorative KPIs anywhere in the quality/release surfaces.
+  - Do not claim iOS/Android release readiness where platform toolchains are unavailable; typed blocked states
+    are conformant.
+
+outcome:
+  settled: ""
+  confirmation: ""
+  gates: []
+  notes: >-
+    Settlement is recorded by tasks T29–T37 evidence in the rebound settlement plan; this plan records the
+    amendment authorization, scope, and claims.

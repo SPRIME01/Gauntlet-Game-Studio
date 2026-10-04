@@ -1,0 +1,64 @@
+schema: agent.preregistration
+schema_version: "1.0"
+task_id: T34
+title: Game Cockpit core — protocol, storage, server, authority, world debugger
+proof_level: P3
+timestamp: "2026-10-04T00:00:00Z"
+status: frozen
+
+claims:
+  - id: CLAIM-T34-001
+    settles:
+      - REQ-COCKPIT-001
+      - REQ-COCKPIT-002
+      - REQ-COCKPIT-003
+      - REQ-COCKPIT-004
+      - REQ-COCKPIT-005
+      - REQ-COCKPIT-006
+      - REQ-COCKPIT-007
+      - REQ-COCKPIT-008
+    statement: >-
+      The cockpit is a projection/control surface with a strict typed block vocabulary (donor 15 blocks plus
+      a viewport block), source-bound data, a disposable two-class SQLite projection that rebuilds without
+      changing canonical truth, transport-decided authority (human ops only on the human channel; agents
+      typed-rejected), an immutable release rail, in-place workbench mode updates, read-only world-debugger
+      operations with recorded/derived/unavailable basis, and a work-request lifecycle whose executor cannot
+      accept its own work.
+
+falsifiers:
+  - id: TEETH-T34-001
+    attack: >-
+      Send every human authority op (answer, rule, confirm, annotate, review accept, cancel) through the
+      agent transport.
+    expected: >-
+      Each is rejected with a typed authority error by the reducer regardless of request state; nothing is
+      applied; the rejection is recorded.
+  - id: TEETH-T34-002
+    attack: >-
+      Delete the cockpit database and rebuild it; compare canonical project files before/after.
+    expected: >-
+      Canonical truth (game model, assets, recipes, evidence, settlements) is byte-identical; the projection
+      re-derives; cockpit-owned state (layout/pins/work requests) is the only loss.
+  - id: TEETH-T34-003
+    attack: >-
+      Agent attempts to move, remove, or cover a pinned owner surface and to remove/hide the release rail;
+      agent composes a surface with an unknown block type or arbitrary HTML field.
+    expected: >-
+      Pinned/rail mutations are rejected; unknown block types fail schema validation before render; no
+      arbitrary markup path exists in the protocol.
+  - id: TEETH-T34-004
+    attack: >-
+      Executor reports a work request ready_for_review and then attempts to move it to accepted; a malformed
+      action (unknown op, bad schema) is sent.
+    expected: >-
+      Self-acceptance is refused (authority error naming the human role); malformed actions return
+      structured errors and mutate nothing.
+  - id: TEETH-T34-005
+    attack: >-
+      Query world-debugger operations for a subject with no recorded basis.
+    expected: >-
+      Answers distinguish recorded/derived/unavailable; unavailable stays unavailable; no invention; all
+      debugger ops are read-only over canonical truth.
+
+known_confounds:
+  - Browser UI legs require the served cockpit page; protocol/authority/storage teeth run headless.
