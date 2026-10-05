@@ -9,7 +9,7 @@
 
 import { useEffect } from "react";
 import { DockviewReact, type DockviewReadyEvent, type DockviewApi, type DockviewPanelProps } from "dockview-react";
-import { connect, useClientState, human, api, type ClientState } from "./store";
+import { connect, useClientState, human, api, refreshSnapshot, type ClientState } from "./store";
 import { BlockView } from "./blocks/registry";
 
 function Rail({ state }: { state: ClientState }) {
@@ -64,8 +64,11 @@ function SurfaceView(props: DockviewPanelProps<{ surfaceId: string }>) {
 
 function WorkTerminal({ state }: { state: ClientState }) {
   const pending = state.work.filter((w) => !["accepted", "cancelled", "failed"].includes(w.status));
+  // Owner review goes through the human channel (authority: human). The work
+  // terminal is owner UI; agent tokens cannot reach these buttons' path.
   const review = (seq: number, accepted: boolean) => {
-    void api("work_update", { id: seq, status: accepted ? "accepted" : "cancelled" }).then(() => undefined);
+    human("human.work-review", { seq, accepted });
+    setTimeout(() => void refreshSnapshot(), 150);
   };
   return (
     <footer className="terminal">

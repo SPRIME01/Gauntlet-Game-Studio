@@ -11,6 +11,7 @@
  */
 
 import { join } from "node:path";
+import { existsSync } from "node:fs";
 import {
   loadGameModel,
   collectDerivativeStamps,
@@ -319,15 +320,59 @@ export function replay(env: WorldEnv, expectationId: string): {
   expectation: string;
   verdict: "evidence-found" | "evidence-missing";
   settles: false;
+  basis: Basis;
   detail: string;
+  runs: { run: string; settlements: string[]; decisions: string[] }[];
 } {
-  void expectationId;
-  void env;
+  // Consult the real evidence store: a replay names recorded runs and their
+  // settlement decisions, or it says evidence-missing. It never invents a
+  // verdict (TEETH-T34-005) and it never settles (settles:false always).
+  const runsRoot = join(env.projectRoot, "artifacts", "runs");
+  const runs: { run: string; settlements: string[]; decisions: string[] }[] = [];
+  if (existsSync(runsRoot)) {
+    const fs = require("node:fs");
+    for (const entry of fs.readdirSync(runsRoot)) {
+      const runDir = join(runsRoot, entry);
+      if (!fs.statSync(runDir).isDirectory()) continue;
+      const settlements: string[] = [];
+      const decisions: string[] = [];
+      for (const file of fs.readdirSync(runDir)) {
+        if (file.startsWith("settlement-") && file.endsWith(".json")) {
+          try {
+            const body = JSON.parse(fs.readFileSync(join(runDir, file), "utf8"));
+            settlements.push(String(body.id ?? file));
+            decisions.push(String(body.decision ?? "unknown"));
+          } catch {
+            settlements.push(file);
+            decisions.push("unreadable");
+          }
+        }
+      }
+      if (settlements.length > 0) runs.push({ run: entry, settlements, decisions });
+    }
+  }
+  const needle = expectationId.replace(/^expectation[-:]?/, "").toLowerCase();
+  const matching = runs.filter((r) =>
+    r.run.toLowerCase().includes(needle) ||
+    r.settlements.some((s) => s.toLowerCase().includes(needle)),
+  );
+  if (matching.length === 0) {
+    return {
+      expectation: expectationId,
+      verdict: "evidence-missing",
+      settles: false,
+      basis: "unavailable",
+      detail: "no recorded run or settlement matches this expectation; replay fabricates nothing — produce the evidence first",
+      runs: [],
+    };
+  }
   return {
     expectation: expectationId,
     verdict: "evidence-found",
     settles: false,
-    detail: "replay re-evaluates declared criteria over recorded runs and always reports settles:false; settlement is a separate, evidence-gated act",
+    basis: "recorded",
+    detail: `recorded decisions: ${matching.flatMap((m) => m.decisions).join(", ")} — replay re-evaluates declared criteria over recorded runs and always reports settles:false; settlement is a separate, evidence-gated act`,
+    runs: matching,
   };
 }
 

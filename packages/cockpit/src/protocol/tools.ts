@@ -197,6 +197,12 @@ const WORK_TOOLS: ToolDef[] = [
     untrusted: true,
   },
   {
+    name: "work_submit",
+    description: "Queue a typed work request on the owner's behalf. The executor acknowledges and works it; the owner reviews and accepts. You cannot accept your own work.",
+    input: z.object({ text: z.string().min(1).max(2000), kind: z.enum(["capability", "steer", "split", "rebuild", "unclassified"]).default("unclassified") }).strict(),
+    effect: "compose",
+  },
+  {
     name: "work_update",
     description: "Report work-request lifecycle progress (acknowledged/running/produced/ready_for_review/blocked/failed). You cannot reach accepted or cancelled — the cockpit refuses it.",
     input: z.object({ id: z.number().int().positive(), status: z.enum(["acknowledged", "running", "produced", "ready_for_review", "blocked", "failed"]), note: z.string().max(600).optional() }).strict(),

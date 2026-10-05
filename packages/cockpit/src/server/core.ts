@@ -101,6 +101,22 @@ export class Cockpit {
       this.db.appendInteraction(role, op, { rejected: refusal.message });
       return refusal;
     }
+    // Owner work review/cancellation moves through the lifecycle with human
+    // authority (REQ-COCKPIT-008): accept, or reject → blocked with the reason.
+    if (role === "human" && op === "human.work-review") {
+      const args = (raw as { args?: Record<string, unknown> }).args ?? {};
+      const seq = Number(args.seq);
+      const accepted = Boolean(args.accepted);
+      if (!Number.isInteger(seq)) return { ok: false, code: "SCHEMA", message: "human.work-review requires a work request seq" };
+      const note = args.note ? String(args.note) : accepted ? undefined : "rejected by the owner";
+      return this.workMove(seq, accepted ? "accepted" : "blocked", note, "human");
+    }
+    if (role === "human" && op === "human.work-cancel") {
+      const args = (raw as { args?: Record<string, unknown> }).args ?? {};
+      const seq = Number(args.seq);
+      if (!Number.isInteger(seq)) return { ok: false, code: "SCHEMA", message: "human.work-cancel requires a work request seq" };
+      return this.workMove(seq, "cancelled", args.note ? String(args.note) : undefined, "human");
+    }
     const { next, result } =
       role === "agent" && !op.startsWith("human.") ? applyAgent(this.workspace, raw) : applyHuman(this.workspace, raw);
     this.db.appendInteraction(role, op, { ok: result.ok, code: result.ok ? undefined : result.code });
@@ -322,11 +338,15 @@ export class Cockpit {
           const row = world.gameCaseFor(this.projectRoot);
           return compose({ ok: true, result: { mode: this.workspace.screenMode, game_case: row ? JSON.parse(row.data) : null } });
         }
-        case "work_get":
+                case "work_get":
           return compose({ ok: true, result: { requests: this.workspace.work.map((w) => ({ seq: w.seq, text: w.text, status: w.status, kind: w.kind, history: w.history.slice(-5) })) } });
+        case "work_submit": {
+          const submitted = this.workSubmit(String(args.text ?? ""), String(args.kind ?? "unclassified"));
+          return compose("seq" in submitted ? { ok: true, result: { seq: submitted.seq, status: "queued", note: "queued for the executor; the owner reviews and accepts" } } : submitted);
+        }
         case "work_update": {
           const result = this.workMove(args.id as number, args.status as RequestStatus, args.note as string | undefined);
-          return compose(result.ok ? result : result);
+          return compose(result);
         }
         default:
           return compose({ ok: false, error: { code: "UNKNOWN_TOOL", message: `tool '${name}' has no implementation` } });

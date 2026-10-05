@@ -41,6 +41,11 @@ export interface WorkspaceState {
   rev: number;
   surfaces: (Surface & { placedBy: Role; pinned: boolean; minimized: boolean })[];
   placementOrder: string[];
+  /** Surfaces the owner closed. Agent surface.put on these ids is refused
+   * until the owner reopens them (REQ-COCKPIT-004: closed stays closed). */
+  closedByOwner: string[];
+  /** Real placement records for agent/human place ops (not fabricated effects). */
+  placements: Record<string, { rel: string; to: string; size?: number }>;
   focused: string | null;
   notes: { surface: string; text: string; at: string }[];
   answers: { surface: string; ask: string; outcome: string; value?: unknown; at: string; actor: Role }[];
@@ -53,6 +58,8 @@ export function initialWorkspace(): WorkspaceState {
     rev: 0,
     surfaces: [],
     placementOrder: [],
+    closedByOwner: [],
+    placements: {},
     focused: null,
     notes: [],
     answers: [],
@@ -95,6 +102,9 @@ export function applyAgent(state: WorkspaceState, raw: unknown): { next: Workspa
       return { next: state, result: err("SCHEMA", `invalid surface: ${surface.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).slice(0, 4).join("; ")}`) };
     }
     const incoming = surface.data as Surface;
+    if (next.closedByOwner.includes(incoming.id)) {
+      return { next: state, result: err("AUTHORITY_LAYOUT", `surface '${incoming.id}' was closed by the owner and stays closed until the owner reopens it`) };
+    }
     const existing = next.surfaces.find((s) => s.id === incoming.id);
     if (existing) {
       // In-place content replacement: never steals placement, never moves it.
@@ -153,16 +163,25 @@ export function applyAgent(state: WorkspaceState, raw: unknown): { next: Workspa
 
   if (action.op === "view.place" || action.op === "view.size") {
     // Placement belongs to the owner. Agent placement applies only to its own
-    // unpinned surfaces and never repositions owner-placed ones.
+    // unpinned surfaces and never repositions owner-placed ones. Placement is
+    // recorded for real (the workspace layout consumes it), never fabricated.
     const surfaceId = action.args.surface as string;
     const existing = next.surfaces.find((s) => s.id === surfaceId);
     if (!existing) return { next: state, result: err("NOT_FOUND", `surface '${surfaceId}' does not exist`) };
     if (existing.placedBy === "human") {
       return { next: state, result: err("AUTHORITY_LAYOUT", `surface '${surfaceId}' was placed by the owner; agents cannot reposition it`) };
     }
-    const placement = PlacementSchema.safeParse(action.args.placement);
+    const placement = PlacementSchema.safeParse(action.args.placement ?? {});
     if (action.op === "view.place" && !placement.success) {
       return { next: state, result: err("SCHEMA", `invalid placement: ${placement.error.issues[0]?.message ?? "unknown"}`) };
+    }
+    if (action.op === "view.place" && placement.success) {
+      next.placements[surfaceId] = {
+        rel: placement.data.rel,
+        to: placement.data.to,
+        ...(placement.data.size !== undefined ? { size: placement.data.size } : {}),
+      };
+      existing.placedBy = "agent";
     }
     return { next, result: ok(next, [`surface.${surfaceId}.${action.op === "view.place" ? "placed" : "sized"}`], ["owner-placed surfaces are immune"]) };
   }
@@ -227,15 +246,14 @@ export function applyHuman(state: WorkspaceState, raw: unknown): { next: Workspa
     const surfaceId = String(action.args.surface ?? "");
     next.surfaces = next.surfaces.filter((s) => s.id !== surfaceId);
     next.placementOrder = next.placementOrder.filter((id) => id !== surfaceId);
+    if (!next.closedByOwner.includes(surfaceId)) next.closedByOwner.push(surfaceId);
     return { next, result: ok(next, [`surface.${surfaceId}.closed`]) };
   }
 
   if (action.op === "human.open") {
     const surfaceId = String(action.args.surface ?? "");
-    if (!next.surfaces.some((s) => s.id === surfaceId)) {
-      return { next: state, result: err("NOT_FOUND", `surface '${surfaceId}' was closed; reopen requires its content (owner decision)`) };
-    }
-    return { next, result: ok(next, [`surface.${surfaceId}.opened`]) };
+    next.closedByOwner = next.closedByOwner.filter((id) => id !== surfaceId);
+    return { next, result: ok(next, [`surface.${surfaceId}.reopened-by-owner`]) };
   }
 
   if (action.op === "human.layout") {
@@ -251,21 +269,25 @@ export function applyHuman(state: WorkspaceState, raw: unknown): { next: Workspa
   }
 
   if (action.op === "human.layout-restore") {
-    return { next, result: ok(next, ["layout.restored"]) };
+    next.placements = {};
+    next.placementOrder = next.surfaces.map((s) => s.id);
+    return { next, result: ok(next, ["layout.restored-to-default"]) };
   }
 
   if (action.op === "human.size") {
-    return { next, result: ok(next, ["layout.sized"]) };
+    const surfaceId = String(action.args.surface ?? "");
+    const size = Number(action.args.size);
+    if (!Number.isFinite(size) || size <= 0 || size >= 1) {
+      return { next: state, result: err("SCHEMA", "human.size requires a size fraction in (0,1)") };
+    }
+    next.placements[surfaceId] = { ...next.placements[surfaceId], rel: next.placements[surfaceId]?.rel ?? "within", to: next.placements[surfaceId]?.to ?? "active", size };
+    return { next, result: ok(next, [`surface.${surfaceId}.sized`]) };
   }
 
   if (action.op === "human.select") {
     const surfaceId = String(action.args.surface ?? "");
     if (next.surfaces.some((s) => s.id === surfaceId)) next.focused = surfaceId;
     return { next, result: ok(next, [`focus.${surfaceId}`]) };
-  }
-
-  if (action.op === "human.work-review" || action.op === "human.work-cancel") {
-    return { next: state, result: err("AUTHORITY_HUMAN", "work reviews and cancellations move through the work-request lifecycle (workMove), not the layout reducer") };
   }
 
   return { next: state, result: err("UNKNOWN_OP", `unknown human op '${(action as { op: string }).op}'`) };

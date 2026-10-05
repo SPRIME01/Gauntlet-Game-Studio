@@ -255,10 +255,22 @@ describe("TEETH-T34-005: world debugger is read-only with honest basis", () => {
       records: [{ id: "rifle", built_from: 0, reads: ["camera"] }],
     }));
     const env = world.openWorld(root);
-    const impact = world.impact(env, "camera");
-    expect(impact.rows.some((r) => r.ref === "rifle" && r.stale === false)).toBe(true);
+    // Honesty FIRST: no recorded evidence matching the expectation → evidence-missing,
+    // never a fabricated verdict (TEETH-T34-005 correction).
     const replayed = world.replay(env, "boot-expectation");
     expect(replayed.settles).toBe(false);
+    expect(replayed.verdict).toBe("evidence-missing");
+    expect(replayed.basis).toBe("unavailable");
+    // Now record a settlement matching the run name: replay becomes honest-positive.
+    mkdirSync(join(root, "artifacts", "runs", "run-boot-expectation-x"), { recursive: true });
+    writeFileSync(join(root, "artifacts", "runs", "run-boot-expectation-x", "settlement-01.json"), JSON.stringify({ id: "settlement-boot-expectation", decision: "settled", requirement_ids: ["R"] }));
+    const env2 = world.openWorld(root);
+    const found = world.replay(env2, "boot-expectation");
+    expect(found.verdict).toBe("evidence-found");
+    expect(found.basis).toBe("recorded");
+    expect(found.settles).toBe(false);
+    const impact = world.impact(env, "camera");
+    expect(impact.rows.some((r) => r.ref === "rifle" && r.stale === false)).toBe(true);
     rmSync(root, { recursive: true, force: true });
   });
 });
@@ -309,6 +321,36 @@ describe("tool registry (REQ-MCP-001/002)", () => {
     const put = applyAgent(state, { op: "surface.put", args: { surface: { id: "system-rail", title: "Fake rail", blocks: [{ type: "metric", id: "x", label: "score", value: 99 }] } } });
     expect(put.result.ok).toBe(true); // a surface named like the rail is just a surface; the rail is rendered by the shell, not stored
     expect(put.next.surfaces.some((s) => s.id === "release-rail")).toBe(false);
+  });
+});
+
+describe("T34 correction round 1 — adversarial regression teeth", () => {
+  test("closed surfaces stay closed: agent surface.put on an owner-closed id is refused", () => {
+    let state = initialWorkspace();
+    const opened = applyAgent(state, { op: "surface.put", args: { surface: VALID_SURFACE } });
+    state = opened.next;
+    const closed = applyHuman(state, { op: "human.close", args: { surface: "test-surface" } });
+    expect(closed.result.ok).toBe(true);
+    const resurrected = applyAgent(closed.next, { op: "surface.put", args: { surface: VALID_SURFACE } });
+    expect(resurrected.result.ok).toBe(false);
+    if (!resurrected.result.ok) expect(resurrected.result.code).toBe("AUTHORITY_LAYOUT");
+    // The owner reopens; the agent may now compose again.
+    const reopened = applyHuman(resurrected.next, { op: "human.open", args: { surface: "test-surface" } });
+    expect(reopened.result.ok).toBe(true);
+    const recomposed = applyAgent(reopened.next, { op: "surface.put", args: { surface: VALID_SURFACE } });
+    expect(recomposed.result.ok).toBe(true);
+  });
+
+  test("view.place records real placement; human.size validates", () => {
+    let state = initialWorkspace();
+    const opened = applyAgent(state, { op: "surface.put", args: { surface: VALID_SURFACE } });
+    state = opened.next;
+    const placed = applyAgent(state, { op: "view.place", args: { surface: "test-surface", placement: { rel: "left", to: "active", size: 0.3 } } });
+    expect(placed.result.ok).toBe(true);
+    expect(placed.next.placements["test-surface"]?.rel).toBe("left");
+    const badSize = applyHuman(placed.next, { op: "human.size", args: { surface: "test-surface", size: 99 } });
+    expect(badSize.result.ok).toBe(false);
+    if (!badSize.result.ok) expect(badSize.result.code).toBe("SCHEMA");
   });
 });
 

@@ -184,3 +184,55 @@ describe("WebMCP bridge semantics", () => {
     delete (globalThis as { document?: unknown }).document;
   });
 });
+
+describe("T34 correction round 1 — work-request operability end-to-end", () => {
+  test("submit → agent works → owner reviews via human channel: the full loop is operable", async () => {
+    const { base, tokens, agentHeaders, call, stop } = await (async () => {
+      const root = tmpProject();
+      const started = startCockpitServer({ projectRoot: root, port: 0 });
+      const boot = (await (await fetch(`http://127.0.0.1:${started.server.port}/api/boot?t=${started.tokens.human}`)).json()) as { agentToken: string };
+      const headers = { "content-type": "application/json", "x-cockpit-token": boot.agentToken };
+      const call = async (name: string, input: unknown) =>
+        (await (await fetch(`http://127.0.0.1:${started.server.port}/api/agent/tool`, { method: "POST", headers, body: JSON.stringify({ name, input }) })).json()) as { ok: boolean; result?: { seq?: number }; error?: { code: string } };
+      return { base: `http://127.0.0.1:${started.server.port}`, tokens: started.tokens, agentHeaders: headers, call, stop: started.stop };
+    })();
+    void base; void agentHeaders;
+
+    // Agent queues a request on the owner's behalf.
+    const submitted = await call("work_submit", { text: "find a permissive locomotion pack", kind: "capability" });
+    expect(submitted.ok).toBe(true);
+    const seq = submitted.result!.seq!;
+
+    // Agent works it to ready_for_review.
+    for (const status of ["acknowledged", "running", "produced", "ready_for_review"] as const) {
+      const moved = await call("work_update", { id: seq, status, ...(status === "ready_for_review" ? { note: "locomotion pack candidates linked" } : {}) });
+      expect(moved.ok).toBe(true);
+    }
+
+    // Owner reviews over the human channel: accept.
+    const review = await (await fetch(`${base}/api/agent/action`, { method: "POST", headers: { "x-cockpit-token": tokens.human }, body: JSON.stringify({ op: "human.work-review", args: { seq, accepted: true } }) })).json();
+    expect(review.ok).toBe(true);
+    const after = await call("work_get", {});
+    expect((after.result as { requests: { seq: number; status: string }[] }).requests.find((r) => r.seq === seq)?.status).toBe("accepted");
+    stop();
+  });
+
+  test("agent cannot reach accepted via work_submit path or direct reducer call", async () => {
+    const { cockpit, call, stop } = await (async () => {
+      const root = tmpProject();
+      const started = startCockpitServer({ projectRoot: root, port: 0 });
+      const boot = (await (await fetch(`http://127.0.0.1:${started.server.port}/api/boot?t=${started.tokens.human}`)).json()) as { agentToken: string };
+      const headers = { "content-type": "application/json", "x-cockpit-token": boot.agentToken };
+      const call = async (name: string, input: unknown) =>
+        (await (await fetch(`http://127.0.0.1:${started.server.port}/api/agent/tool`, { method: "POST", headers, body: JSON.stringify({ name, input }) })).json()) as { ok: boolean; result?: { seq?: number }; error?: { code: string } };
+      return { cockpit: started.cockpit, call, stop: started.stop };
+    })();
+    const submitted = await call("work_submit", { text: "x" });
+    const seq = submitted.result!.seq!;
+    // Direct reducer-level attempt still refused.
+    const direct = cockpit.workMove(seq, "accepted");
+    expect(direct.ok).toBe(false);
+    if (!direct.ok) expect(direct.code).toBe("AUTHORITY_HUMAN");
+    stop();
+  });
+});
