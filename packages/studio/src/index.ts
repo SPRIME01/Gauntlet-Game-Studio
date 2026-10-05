@@ -18,3 +18,8 @@ export * from "./evidence";
 export * from "./gauntlet";
 export * from "./quality";
 export * from "./recipes";
+export * from "./model/staleness";
+export * from "./model/model";
+export * from "./resources/reservoir";
+export * from "./resources/resolver";
+export * from "./resources/exceptions";

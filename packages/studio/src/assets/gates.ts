@@ -49,7 +49,7 @@ export const DEFAULT_ASSET_POLICY: AssetPolicy = {
  * REQ-SEC-004: acceptance MUST include provenance/license state appropriate to the
  * project's distribution model. Unknown or unacceptable license states are blocked.
  */
-const ACCEPTABLE_LICENSES: ReadonlyArray<string> = [
+export const ACCEPTABLE_LICENSES: ReadonlyArray<string> = [
   // Open/creative-commons source classes
   "cc0",
   "cc0-1.0",

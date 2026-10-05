@@ -73,3 +73,31 @@ export function validateRecipePlan(data: unknown) {
 export function validateRecipeApplyProvenance(data: unknown) {
   return S.RecipeApplyProvenanceSchema.parse(data);
 }
+
+export function validateGameModelDecision(data: unknown) {
+  return S.GameModelDecisionSchema.parse(data);
+}
+
+export function validateResourceResolutionRecord(data: unknown) {
+  return S.ResourceResolutionRecordSchema.parse(data);
+}
+
+export function validateReservoirRecord(data: unknown) {
+  return S.ReservoirRecordSchema.parse(data);
+}
+
+export function validateCreationException(data: unknown) {
+  return S.CreationExceptionSchema.parse(data);
+}
+
+export function validateNormalizationPlan(data: unknown) {
+  return S.NormalizationPlanSchema.parse(data);
+}
+
+export function validateDccJob(data: unknown) {
+  return S.DccJobSchema.parse(data);
+}
+
+export function validateAnimationResourceContract(data: unknown) {
+  return S.AnimationResourceContractSchema.parse(data);
+}

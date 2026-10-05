@@ -9,6 +9,20 @@ import * as path from "node:path";
 import {
   getDoctorStudioResult,
   loadStudioConfig,
+  loadGameModel,
+  applyDecision,
+  ResourceResolver,
+  ReservoirStore,
+  ReservoirError,
+  recordCreationException,
+  listCreationExceptions,
+  exceptionsPathFor,
+  ResourceResolverError,
+  type ResourceSourceProvider,
+  collectDerivativeStamps,
+  evaluateProjectStaleness,
+  gameSpecPathFor,
+  GameModelLoadError,
   defaultCapabilityRegistry,
   routeCapability,
   settleAgentHandoff,
@@ -606,6 +620,103 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         console.log(`\nOverall Status: ${result.status.toUpperCase()}\n`);
       }
       return result.status === "success" ? 0 : 1;
+    }
+
+    case "model": {
+      const sub = filteredArgs[1] || "verify";
+      const projectIdx = filteredArgs.indexOf("--project");
+      const projectRoot =
+        projectIdx >= 0 ? filteredArgs[projectIdx + 1] || process.cwd() : process.cwd();
+      try {
+        const modelPath = gameSpecPathFor(projectRoot);
+        if (sub === "decide") {
+          const summaryIdx = filteredArgs.indexOf("--summary");
+          const summary = summaryIdx >= 0 ? filteredArgs[summaryIdx + 1] : undefined;
+          if (!summary) {
+            const res: StudioResult = {
+              status: "failed",
+              operation: "studio.model.decide",
+              diagnostics: { error: "--summary is required", code: "SUMMARY_REQUIRED" },
+            };
+            console.log(JSON.stringify(res, null, 2));
+            return 1;
+          }
+          const touchedIdx = filteredArgs.indexOf("--touched");
+          const touched =
+            touchedIdx >= 0
+              ? filteredArgs[touchedIdx + 1].split(",").map((s) => s.trim()).filter(Boolean)
+              : [];
+          const { decision, modelVersion } = applyDecision(modelPath, { summary, touched });
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.model.decide",
+            result: { decision, model_version: modelVersion, path: modelPath },
+            diagnostics: { note: "decision appended; model_version bumped" },
+          };
+          console.log(JSON.stringify(res, null, 2));
+          return 0;
+        }
+        const model = loadGameModel(modelPath);
+        if (sub === "verify") {
+          const res: StudioResult = {
+            status: "success",
+            operation: "studio.model.verify",
+            result: {
+              path: model.path,
+              schema: model.schema,
+              schema_version: model.schemaVersion,
+              model_version: model.modelVersion,
+              decisions: model.decisions.length,
+              extensions: Object.keys(model.extensions),
+              legacy_sections: model.legacySections,
+              quality_profiles: Object.keys(model.qualityProfiles),
+              identity: model.known.identity,
+            },
+            diagnostics: {},
+          };
+          console.log(JSON.stringify(res, null, 2));
+          return 0;
+        }
+        if (sub === "stale") {
+          const stamps = collectDerivativeStamps(projectRoot);
+          const report = evaluateProjectStaleness(model, stamps);
+          const stale = report.filter((r) => r.stale);
+          const unstamped = report.filter((r) => !r.stamped);
+          const res: StudioResult = {
+            status: stale.length > 0 ? "degraded" : "success",
+            operation: "studio.model.stale",
+            result: {
+              model_version: model.modelVersion,
+              total: report.length,
+              stale,
+              unstamped,
+              current: report.filter((r) => r.stamped && !r.stale),
+            },
+            diagnostics: {
+              note: "stale derivatives must be re-derived against the current model version before settling",
+            },
+          };
+          console.log(JSON.stringify(res, null, 2));
+          return stale.length > 0 ? 0 : 0;
+        }
+        const res: StudioResult = {
+          status: "failed",
+          operation: "studio.model",
+          diagnostics: { error: `unknown subcommand '${sub}'`, code: "UNKNOWN_SUBCOMMAND" },
+        };
+        console.log(JSON.stringify(res, null, 2));
+        return 1;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const code = err instanceof GameModelLoadError ? err.code : "MODEL_ERROR";
+        const res: StudioResult = {
+          status: "failed",
+          operation: `studio.model.${sub}`,
+          diagnostics: { error: msg, code },
+        };
+        console.log(JSON.stringify(res, null, 2));
+        return 1;
+      }
     }
 
     case "config": {
@@ -1568,6 +1679,166 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       if (isJson) console.log(JSON.stringify(res, null, 2));
       else console.log(`Asset action '${sub}' is pending plan settlement.`);
       return 0;
+    }
+
+    case "resource": {
+      const sub = filteredArgs[1] || "";
+      const projectIdx = filteredArgs.indexOf("--project");
+      const projectRoot = path.resolve(
+        projectIdx >= 0 ? filteredArgs[projectIdx + 1] || process.cwd() : process.cwd(),
+      );
+      const emit = (res: StudioResult) => console.log(JSON.stringify(res, null, 2));
+
+      if (sub === "resolve") {
+        const requestedId = filteredArgs[2];
+        const kindIdx = filteredArgs.indexOf("--kind");
+        const kind = kindIdx >= 0 ? filteredArgs[kindIdx + 1] : undefined;
+        const roleIdx = filteredArgs.indexOf("--role");
+        const role = roleIdx >= 0 ? filteredArgs[roleIdx + 1] : undefined;
+        const kwIdx = filteredArgs.indexOf("--keywords");
+        const keywords = kwIdx >= 0 ? filteredArgs[kwIdx + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
+        const reqLicIdx = filteredArgs.indexOf("--require-license");
+        const requireLicense = reqLicIdx >= 0 ? filteredArgs[reqLicIdx + 1] : undefined;
+        const excIdx = filteredArgs.indexOf("--exception-id");
+        let creationException: Record<string, unknown> | undefined;
+        if (excIdx >= 0) {
+          const found = listCreationExceptions(projectRoot).find((e) => e.id === filteredArgs[excIdx + 1]);
+          if (!found) {
+            emit({ status: "failed", operation: "studio.resource.resolve", diagnostics: { error: `no recorded creation exception '${filteredArgs[excIdx + 1]}'`, code: "EXCEPTION_NOT_FOUND" } });
+            return 1;
+          }
+          creationException = found as unknown as Record<string, unknown>;
+        }
+        if (!requestedId || !kind) {
+          emit({ status: "failed", operation: "studio.resource.resolve", diagnostics: { error: "usage: studio resource resolve <id> --kind <kind> [--role r] [--keywords a,b] [--require-license l] [--exception-id id] [--project dir]", code: "USAGE" } });
+          return 1;
+        }
+        try {
+          const reservoir = ReservoirStore.resolveFor(projectRoot);
+          const providers: ResourceSourceProvider[] = [];
+          // Deterministic inline Poly Haven provider for external acquisition,
+          // mirroring the settled `asset resolve` CLI wiring.
+          const polyhaven = {
+            id: "polyhaven",
+            async search(kws: string[], r: string) {
+              const preferred: Array<"models" | "textures" | "hdris"> = /texture|material/i.test(r) ? ["textures", "models", "hdris"] : /hdri|skybox/i.test(r) ? ["hdris", "models", "textures"] : ["models", "textures", "hdris"];
+              const source = new PolyHavenAssetSource();
+              const needles = kws.map((k) => k.toLowerCase());
+              const lists = await Promise.all(preferred.map((type) => source.listAssets(type)));
+              const unavailable = lists.find((l) => l.status !== "success");
+              if (unavailable && lists.every((l) => l.status !== "success")) return { status: "unavailable", detail: `${unavailable.code}: ${unavailable.detail}` };
+              const matches = lists.flatMap((l) => (l.status === "success" ? l.data : []))
+                .filter((a) => needles.some((n) => a.id.toLowerCase().includes(n) || a.name.toLowerCase().includes(n)))
+                .slice(0, 5)
+                .map((a) => ({ provider: "polyhaven", assetId: a.id, title: a.name, license: null, sourceUri: `https://polyhaven.com/a/${a.id}`, metadata: { polycount: a.polycount } }));
+              return { status: "success", matches };
+            },
+            async acquire(m: { assetId: string }, r: string, root: string) {
+              const intake = await new PolyHavenAssetSource().intakeAsset(m.assetId, { role: r, projectRoot: root });
+              if (intake.status === "success") return { status: "success", assetRecord: intake.data.asset_record as Record<string, unknown>, files: intake.data.files.map((f) => f.path) };
+              return { status: intake.status, code: intake.code, detail: intake.detail };
+            },
+            kinds: ["mesh", "material", "texture", "hdri", "environment"],
+            stage: "acquire",
+          } as never;
+          providers.push(polyhaven);
+          const resolver = new ResourceResolver({
+            providers,
+            reservoir,
+            assetResolver: new AssetResolver({ providers: [polyhaven as AssetSourceProvider] }),
+          });
+          const outcome = await resolver.resolve(
+            {
+              requested_id: requestedId,
+              kind: kind as Parameters<typeof resolver.resolve>[0]["kind"],
+              role,
+              keywords,
+              ...(requireLicense ? { require_license: requireLicense } : {}),
+              ...(creationException ? { creation_exception: creationException as never } : {}),
+            },
+            projectRoot,
+          );
+          emit({
+            status: outcome.status === "resolved" ? "success" : outcome.status,
+            operation: "studio.resource.resolve",
+            result: { route: outcome.route, status_code: outcome.statusCode, rationale: outcome.rationale, asset_id: outcome.assetId, record: outcome.record },
+            diagnostics: {},
+          });
+          return outcome.status === "resolved" ? 0 : outcome.status === "blocked" ? 2 : 1;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          const code = err instanceof ResourceResolverError ? err.code : err instanceof ReservoirError ? err.code : "RESOURCE_ERROR";
+          emit({ status: "failed", operation: "studio.resource.resolve", diagnostics: { error: msg, code } });
+          return 1;
+        }
+      }
+
+      if (sub === "reservoir") {
+        const action = filteredArgs[2] || "list";
+        const reservoir = ReservoirStore.resolveFor(projectRoot);
+        if (action === "list") {
+          const records = reservoir.records();
+          emit({ status: "success", operation: "studio.resource.reservoir.list", result: { root: reservoir.root, count: records.length, records }, diagnostics: {} });
+          return 0;
+        }
+        if (action === "search") {
+          const kindIdx = filteredArgs.indexOf("--kind");
+          const tagsIdx = filteredArgs.indexOf("--tags");
+          const kwIdx = filteredArgs.indexOf("--keywords");
+          const records = reservoir.search({
+            ...(kindIdx >= 0 ? { kind: filteredArgs[kindIdx + 1] as never } : {}),
+            ...(tagsIdx >= 0 ? { tags: filteredArgs[tagsIdx + 1].split(",").map((s) => s.trim()).filter(Boolean) } : {}),
+            ...(kwIdx >= 0 ? { keywords: filteredArgs[kwIdx + 1].split(",").map((s) => s.trim()).filter(Boolean) } : {}),
+          });
+          emit({ status: "success", operation: "studio.resource.reservoir.search", result: { root: reservoir.root, count: records.length, records }, diagnostics: {} });
+          return 0;
+        }
+        emit({ status: "failed", operation: "studio.resource.reservoir", diagnostics: { error: `unknown action '${action}' (list|search)`, code: "UNKNOWN_ACTION" } });
+        return 1;
+      }
+
+      if (sub === "exceptions") {
+        const exceptions = listCreationExceptions(projectRoot);
+        emit({ status: "success", operation: "studio.resource.exceptions", result: { count: exceptions.length, exceptions }, diagnostics: { path: exceptionsPathFor(projectRoot) } });
+        return 0;
+      }
+
+      if (sub === "exception") {
+        // Record a creation exception: studio resource exception <id> --what "..." --routes acquire:none --why "..." [--reuse a,b] [--derivative id] [--project dir]
+        const id = filteredArgs[2];
+        const whatIdx = filteredArgs.indexOf("--what");
+        const whyIdx = filteredArgs.indexOf("--why");
+        const routesIdx = filteredArgs.indexOf("--routes");
+        if (!id || whatIdx < 0 || whyIdx < 0 || routesIdx < 0) {
+          emit({ status: "failed", operation: "studio.resource.exception", diagnostics: { error: "usage: studio resource exception <id> --what <text> --why <text> --routes <stage:outcome-detail,...>", code: "USAGE" } });
+          return 1;
+        }
+        try {
+          const routes = filteredArgs[routesIdx + 1].split(",").map((pair) => {
+            const [stage, rest] = pair.split(":", 2);
+            return { stage, target: id, outcome: "unavailable", detail: rest ?? "" };
+          });
+          const reuseIdx = filteredArgs.indexOf("--reuse");
+          const derivativeIdx = filteredArgs.indexOf("--derivative");
+          const exception = recordCreationException(projectRoot, {
+            id,
+            what: filteredArgs[whatIdx + 1],
+            routes_searched: routes as never,
+            why_failed: [filteredArgs[whyIdx + 1]],
+            ...(reuseIdx >= 0 ? { partial_reuse: filteredArgs[reuseIdx + 1].split(",").map((s) => s.trim()).filter(Boolean) } : {}),
+            ...(derivativeIdx >= 0 ? { derivative_id: filteredArgs[derivativeIdx + 1] } : {}),
+          });
+          emit({ status: "success", operation: "studio.resource.exception", result: exception, diagnostics: {} });
+          return 0;
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : String(err);
+          emit({ status: "failed", operation: "studio.resource.exception", diagnostics: { error: msg, code: "EXCEPTION_ERROR" } });
+          return 1;
+        }
+      }
+
+      emit({ status: "failed", operation: "studio.resource", diagnostics: { error: `unknown subcommand '${sub}' (resolve|reservoir|exceptions|exception)`, code: "UNKNOWN_SUBCOMMAND" } });
+      return 1;
     }
 
     case "observe": {

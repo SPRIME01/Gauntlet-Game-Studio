@@ -136,6 +136,10 @@ export const AssetRecordSchema = z
     lod_policy: z.string().optional(),
     animation_contract: z.record(z.string(), z.unknown()).optional(),
     verification_refs: z.array(z.string()).optional(),
+    // Derivative stamp (REQ-STALE-001): which Game Model version and fields
+    // this asset was accepted against. Optional so pre-stamp records load.
+    built_from: z.number().int().nonnegative().optional(),
+    reads: z.array(z.string().min(1).max(120)).max(64).optional(),
   })
   .strict();
 
@@ -451,3 +455,591 @@ export const RecipeApplyProvenanceSchema = z
     recorded_at: z.string().min(1),
   })
   .strict();
+
+// ── Game Model (REQ-GM-001..006, v0.5.0 amendment) ──────────────────────────
+
+/**
+ * GameModelDecision: one append-only settled change of the canonical Game Model
+ * (REQ-GM-003). `touched` names model fields/resources the decision affects
+ * ("all", dotted field keys like "camera" or "languages.material", or
+ * resource-scoped keys like "asset:rifle" / "entity:player"). Staleness is
+ * computed from these records, never from manual invalidation lists
+ * (REQ-STALE-002).
+ */
+export const GameModelDecisionSchema = z
+  .object({
+    n: z.number().int().positive(),
+    version: z.number().int().nonnegative(),
+    decided_at: z.string().min(1).optional(),
+    summary: z.string().min(1).max(1200),
+    touched: z.array(z.string().min(1).max(120)).max(64).default([]),
+  })
+  .strict();
+
+export type GameModelDecision = z.infer<typeof GameModelDecisionSchema>;
+
+/**
+ * DerivativeStamp: what a model-derived artifact was built from (REQ-STALE-001).
+ * `built_from` is the Game Model version; `reads` names the model fields and
+ * resource ids the derivative consumed.
+ */
+export const DerivativeStampSchema = z
+  .object({
+    built_from: z.number().int().nonnegative(),
+    reads: z.array(z.string().min(1).max(120)).max(256).default([]),
+  })
+  .strict();
+
+export type DerivativeStamp = z.infer<typeof DerivativeStampSchema>;
+
+const LanguageSpecSchema = z
+  .object({
+    summary: z.string().max(4000).optional(),
+    references: z.array(z.string().min(1).max(80)).max(24).optional(),
+  })
+  .strict();
+
+const ModelEntitySchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    name: z.string().min(1).max(120),
+    role: z.string().max(120).optional(),
+    summary: z.string().max(2000).optional(),
+  })
+  .strict();
+
+const ModelMechanicSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    name: z.string().min(1).max(120),
+    summary: z.string().max(2000).optional(),
+    affordances: z.array(z.string().min(1).max(80)).max(32).optional(),
+  })
+  .strict();
+
+const ModelWorldSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    name: z.string().min(1).max(120),
+    summary: z.string().max(2000).optional(),
+  })
+  .strict();
+
+const ModelLoopStepSchema = z.string().min(1).max(400);
+
+const CoreLoopSchema = z
+  .object({
+    summary: z.string().max(2000).optional(),
+    steps: z.array(ModelLoopStepSchema).max(32).optional(),
+  })
+  .strict();
+
+const SecondaryLoopSchema = CoreLoopSchema.extend({ name: z.string().min(1).max(120) }).strict();
+
+const ProgressionSchema = z
+  .object({
+    summary: z.string().max(2000).optional(),
+    milestones: z.array(z.string().min(1).max(200)).max(64).optional(),
+  })
+  .strict();
+
+const CameraGrammarSchema = z
+  .object({
+    mode: z.enum(["first-person", "third-person", "fixed", "top-down", "isometric", "cinematic", "other"]),
+    fov: z.number().min(20).max(150).optional(),
+    notes: z.string().max(2000).optional(),
+  })
+  .strict();
+
+const ControlBindingSchema = z
+  .object({
+    action: z.string().min(1).max(80),
+    input: z.string().min(1).max(80),
+  })
+  .strict();
+
+const ControlsGrammarSchema = z
+  .object({
+    grammar: z.string().max(2000).optional(),
+    bindings: z.array(ControlBindingSchema).max(128).optional(),
+  })
+  .strict();
+
+const PlatformTargetSchema = z
+  .object({
+    id: z.enum(["web", "android", "ios", "desktop", "other"]),
+    requirements: z.array(z.string().min(1).max(400)).max(64).optional(),
+  })
+  .strict();
+
+const NorthStarReferenceSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    kind: z.enum([
+      "world",
+      "character",
+      "materials",
+      "lighting",
+      "ui",
+      "animation",
+      "vfx",
+      "audio",
+      "game",
+      "film",
+      "art",
+      "other",
+    ]),
+    classification: z.enum(["reference-only", "shippable", "derivative-permitted", "license-unresolved"]),
+    location: z.string().min(1).max(600),
+    notes: z.string().max(1000).optional(),
+  })
+  .strict();
+
+const UnknownSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    question: z.string().min(1).max(1000),
+    status: z.enum(["open", "resolved"]),
+    resolution: z.string().max(2000).optional(),
+  })
+  .strict();
+
+const ContradictionSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    text: z.string().min(1).max(2000),
+    refs: z.array(z.string().min(1).max(120)).max(24).default([]),
+  })
+  .strict();
+
+const ModelScenarioSchema = z
+  .object({
+    description: z.string().min(1).max(2000),
+    acceptance: z.record(z.string(), z.unknown()).default({}),
+  })
+  .strict();
+
+const AssetRequirementSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9_.-]+$/),
+    kind: z.string().min(1).max(60).optional(),
+    description: z.string().min(1).max(2000),
+  })
+  .strict();
+
+/**
+ * GameModelKnownSchema: strict typed core of the canonical Game Model
+ * (REQ-GM-002). Every section is optional (absence is an absent fact, not a
+ * default); unknown top-level keys are per-game extensions preserved by the
+ * loader, not silently accepted into the typed core (REQ-GM-005).
+ * `quality_profiles` is validated by the studio quality-profile loader against
+ * the same game-owned schema used since REQ-CONFIG-005.
+ */
+export const GameModelKnownSchema = z
+  .object({
+    schema: z.literal("gauntlet.game.model").or(z.literal("gauntlet.game.spec")).optional(),
+    schema_version: z.string().min(1).max(20).optional(),
+    model_version: z.number().int().nonnegative().optional(),
+    identity: z
+      .object({
+        game_id: z.string().regex(/^[a-z0-9_.-]+$/),
+        title: z.string().min(1).max(160),
+        tagline: z.string().max(400).optional(),
+        status: z.string().max(60).optional(),
+      })
+      .strict()
+      .optional(),
+    fantasy: z.string().max(4000).optional(),
+    audience: z.string().max(2000).optional(),
+    genre: z.string().max(200).optional(),
+    pillars: z.array(z.string().min(1).max(400)).max(16).optional(),
+    core_loop: CoreLoopSchema.optional(),
+    secondary_loops: z.array(SecondaryLoopSchema).max(16).optional(),
+    progression: ProgressionSchema.optional(),
+    mechanics: z.array(ModelMechanicSchema).max(256).optional(),
+    worlds: z.array(ModelWorldSchema).max(256).optional(),
+    entities: z.array(ModelEntitySchema).max(1024).optional(),
+    characters: z.array(ModelEntitySchema).max(512).optional(),
+    factions: z.array(ModelEntitySchema).max(128).optional(),
+    objects: z.array(ModelEntitySchema).max(1024).optional(),
+    interactions: z.array(ModelMechanicSchema).max(512).optional(),
+    camera: CameraGrammarSchema.optional(),
+    controls: ControlsGrammarSchema.optional(),
+    languages: z
+      .object({
+        visual: LanguageSpecSchema.optional(),
+        material: LanguageSpecSchema.optional(),
+        lighting: LanguageSpecSchema.optional(),
+        animation: LanguageSpecSchema.optional(),
+        vfx: LanguageSpecSchema.optional(),
+        audio: LanguageSpecSchema.optional(),
+        ui: LanguageSpecSchema.optional(),
+      })
+      .strict()
+      .optional(),
+    narrative: z.object({ summary: z.string().max(8000).optional() }).strict().optional(),
+    platforms: z.array(PlatformTargetSchema).max(8).optional(),
+    budgets: z
+      .object({
+        target_fps: z.number().positive().optional(),
+        max_draw_calls: z.number().int().nonnegative().optional(),
+        max_triangles: z.number().int().nonnegative().optional(),
+        max_memory_mb: z.number().nonnegative().optional(),
+      })
+      .strict()
+      .optional(),
+    accessibility: z.object({ requirements: z.array(z.string().min(1).max(400)).max(64).optional() }).strict().optional(),
+    assets: z
+      .object({
+        manifest: z.string().max(400).optional(),
+        requirements: z.array(AssetRequirementSchema).max(512).optional(),
+      })
+      .strict()
+      .optional(),
+    provenance_policy: z
+      .object({ acceptable_licenses: z.array(z.string().min(1).max(60)).max(64).optional() })
+      .strict()
+      .optional(),
+    scenarios: z.record(z.string(), ModelScenarioSchema).optional(),
+    release: z
+      .object({ requirements: z.record(z.string(), z.array(z.string().min(1).max(400)).max(64)) })
+      .strict()
+      .optional(),
+    north_star: z.object({ references: z.array(NorthStarReferenceSchema).max(256).optional() }).strict().optional(),
+    unknowns: z.array(UnknownSchema).max(256).optional(),
+    contradictions: z.array(ContradictionSchema).max(128).optional(),
+    decisions: z.array(GameModelDecisionSchema).max(4096).optional(),
+  })
+  .strict();
+
+export type GameModelKnown = z.infer<typeof GameModelKnownSchema>;
+
+export function validateDerivativeStamp(data: unknown) {
+  return DerivativeStampSchema.parse(data);
+}
+
+// ── Resource resolution (REQ-RES-001..006, v0.5.0 amendment) ────────────────
+
+/** Resource kinds covered by generalized resource resolution (REQ-RES-001). */
+export const RESOURCE_KINDS = [
+  "mesh",
+  "material",
+  "texture",
+  "hdri",
+  "environment",
+  "kit",
+  "rig",
+  "animation",
+  "audio",
+  "music",
+  "vfx",
+  "shader",
+  "ui",
+  "icon",
+  "font",
+  "code",
+  "addon",
+  "gameplay",
+  "controller",
+  "save",
+  "dialogue",
+  "navigation-pattern",
+  "networking-pattern",
+  "other",
+] as const;
+
+export const ResourceKindSchema = z.enum(RESOURCE_KINDS);
+export type ResourceKind = (typeof RESOURCE_KINDS)[number];
+
+/** Asset-kind requests delegate to the settled AssetResolver policy (REQ-RES-001). */
+export const ASSET_RESOURCE_KINDS: readonly ResourceKind[] = ["mesh", "material", "texture", "hdri", "environment"];
+
+/**
+ * Minimum-novelty cascade stages, ordered cheapest first (REQ-RES-002).
+ * Choosing a costlier stage requires recording why cheaper valid routes failed.
+ */
+export const RESOURCE_ROUTE_STAGES = [
+  "reuse-accepted",
+  "reuse-reservoir",
+  "acquire",
+  "adapt",
+  "composite",
+  "code-donor",
+  "procedural",
+  "reference-reconstruction",
+  "dcc-modification",
+  "generate-component",
+  "scratch",
+] as const;
+
+export const ResourceRouteStageSchema = z.enum(RESOURCE_ROUTE_STAGES);
+export type ResourceRouteStage = (typeof RESOURCE_ROUTE_STAGES)[number];
+
+export const ResourceRouteAttemptSchema = z
+  .object({
+    stage: ResourceRouteStageSchema,
+    target: z.string().min(1).max(300),
+    provider: z.string().min(1).max(120).optional(),
+    outcome: z.enum(["satisfied", "rejected", "unavailable", "blocked", "skipped"]),
+    detail: z.string().min(1).max(1200),
+  })
+  .strict();
+
+export type ResourceRouteAttempt = z.infer<typeof ResourceRouteAttemptSchema>;
+
+export const CreationExceptionSchema = z
+  .object({
+    id: z.string().min(1).max(120),
+    what: z.string().min(1).max(2000),
+    routes_searched: z.array(ResourceRouteAttemptSchema).min(1).max(64),
+    why_failed: z.array(z.string().min(1).max(600)).min(1).max(32),
+    partial_reuse: z.array(z.string().min(1).max(200)).max(32).default([]),
+    provenance: z
+      .object({
+        uri: z.string().max(600).optional(),
+        license: z.string().max(60).optional(),
+        author: z.string().max(200).optional(),
+        sha256: z.string().max(64).optional(),
+      })
+      .strict()
+      .default({}),
+    derivative_id: z.string().max(120).optional(),
+    recorded_at: z.string().min(1),
+  })
+  .strict();
+
+export type CreationException = z.infer<typeof CreationExceptionSchema>;
+
+/**
+ * ResourceResolutionRecord: append-only record of one resource resolution
+ * (REQ-RES-004) with the attempted cascade ladder, the chosen route, and —
+ * when the terminal scratch stage is used — the creation exception
+ * (REQ-RES-006). Model-derived resolutions carry a derivative stamp
+ * (REQ-STALE-001).
+ */
+export const ResourceResolutionRecordSchema = z
+  .object({
+    schema: z.literal("gauntlet.resource.resolution"),
+    schema_version: z.literal("1.0"),
+    id: z.string().min(1),
+    requested_id: z.string().min(1).max(200),
+    kind: ResourceKindSchema,
+    role: z.string().max(120).optional(),
+    keywords: z.array(z.string().min(1).max(80)).max(16).default([]),
+    attempts: z.array(ResourceRouteAttemptSchema).min(1).max(64),
+    chosen_route: ResourceRouteStageSchema.optional(),
+    decision: z.enum(["resolved", "blocked", "failed"]),
+    status_code: z.string().min(1).max(80),
+    rationale: z.string().min(1).max(2000),
+    creation_exception: CreationExceptionSchema.optional(),
+    asset_id: z.string().max(120).optional(),
+    built_from: z.number().int().nonnegative().optional(),
+    reads: z.array(z.string().min(1).max(120)).max(64).default([]),
+    recorded_at: z.string().min(1),
+  })
+  .strict();
+
+export type ResourceResolutionRecord = z.infer<typeof ResourceResolutionRecordSchema>;
+
+/** Reservoir record: one indexed, content-addressed reusable resource (REQ-RES-005). */
+export const ReservoirRecordSchema = z
+  .object({
+    id: z.string().min(1).max(160),
+    kind: ResourceKindSchema,
+    tags: z.array(z.string().min(1).max(60)).max(32).default([]),
+    source: z
+      .object({
+        uri: z.string().max(600).optional(),
+        license: z.string().min(1).max(60),
+        author: z.string().max(200).optional(),
+        sha256: z.string().max(64).optional(),
+      })
+      .strict(),
+    local_hash: z.string().min(8).max(64),
+    format: z.string().min(1).max(40),
+    metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
+    derived_from: z.array(z.string().min(1).max(160)).max(32).default([]),
+    used_by: z.array(z.string().min(1).max(120)).max(64).default([]),
+    accepted: z.boolean().default(false),
+    verification_refs: z.array(z.string().min(1).max(160)).max(16).default([]),
+    built_from: z.number().int().nonnegative().optional(),
+    reads: z.array(z.string().min(1).max(120)).max(64).default([]),
+    added_at: z.string().min(1),
+  })
+  .strict();
+
+export type ReservoirRecord = z.infer<typeof ReservoirRecordSchema>;
+
+// ── Coherence normalization, DCC jobs, animation (v0.5.0 amendment) ─────────
+
+/** Normalization operations a resource may require toward model language (REQ-NORM-001). */
+export const NORMALIZATION_OPS = [
+  "units",
+  "scale",
+  "orientation",
+  "pivot",
+  "naming",
+  "skeleton-convention",
+  "animation-naming",
+  "material-model",
+  "palette",
+  "roughness-range",
+  "metalness-range",
+  "normal-intensity",
+  "texel-density",
+  "texture-resolution",
+  "lod",
+  "collider",
+  "sockets",
+  "runtime-metadata",
+  "lighting-response",
+] as const;
+
+export const NormalizationOpSchema = z.enum(NORMALIZATION_OPS);
+export type NormalizationOp = (typeof NORMALIZATION_OPS)[number];
+
+export const NormalizationTransformSchema = z
+  .object({
+    op: NormalizationOpSchema,
+    params: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
+    reason: z.string().min(1).max(600),
+  })
+  .strict();
+
+/**
+ * NormalizationPlan: the systematic transformation record that makes twenty
+ * sources read as one authored world (REQ-NORM-001). The plan is bound to the
+ * Game Model language sections it conforms to (`model_reads`); provenance of
+ * the source resource is never erased (REQ-NORM-002).
+ */
+export const NormalizationPlanSchema = z
+  .object({
+    schema: z.literal("gauntlet.resource.normalization"),
+    schema_version: z.literal("1.0"),
+    id: z.string().min(1).max(160),
+    target: z.string().min(1).max(200),
+    kind: ResourceKindSchema,
+    model_reads: z.array(z.string().min(1).max(120)).max(32).min(1),
+    transforms: z.array(NormalizationTransformSchema).min(1).max(64),
+    source_provenance: z
+      .object({
+        uri: z.string().max(600).optional(),
+        license: z.string().max(60).optional(),
+        sha256: z.string().max(64).optional(),
+        derived_from: z.array(z.string().max(160)).max(32).default([]),
+      })
+      .strict(),
+    built_from: z.number().int().nonnegative(),
+    executed: z.boolean().default(false),
+    execution_refs: z.array(z.string().min(1).max(200)).max(16).default([]),
+    recorded_at: z.string().min(1),
+  })
+  .strict();
+
+export type NormalizationPlan = z.infer<typeof NormalizationPlanSchema>;
+
+/** Structured DCC operations (REQ-DCC-001). */
+export const DCC_OPERATIONS = [
+  "topology-cleanup",
+  "retopology",
+  "uv-edit",
+  "material-bake",
+  "bake",
+  "rig",
+  "skin",
+  "animate",
+  "retarget",
+  "bake-animation",
+  "mesh-repair",
+  "collision-proxy",
+  "lod-generate",
+  "kitbash-consolidate",
+  "export-normalize",
+] as const;
+
+export const DccOperationSchema = z.enum(DCC_OPERATIONS);
+export type DccOperation = (typeof DCC_OPERATIONS)[number];
+
+export const DccJobOperationSchema = z
+  .object({
+    op: DccOperationSchema,
+    params: z.record(z.string(), z.unknown()).default({}),
+  })
+  .strict();
+
+/**
+ * DccJob: a structured, reviewable declaration of DCC work (REQ-DCC-001).
+ * `cascade_rationale` is mandatory: the record of why cheaper routes
+ * (R0–R7) were insufficient. DCC jobs never own gameplay semantics
+ * (REQ-DCC-002).
+ */
+export const DccJobSchema = z
+  .object({
+    schema: z.literal("gauntlet.dcc.job"),
+    schema_version: z.literal("1.0"),
+    id: z.string().min(1).max(160),
+    capability_id: z.string().min(1).max(120),
+    inputs: z.array(z.string().min(1).max(300)).min(1).max(64),
+    operations: z.array(DccJobOperationSchema).min(1).max(64),
+    cascade_rationale: z.string().min(1).max(2000),
+    cascade_attempts: z.array(ResourceRouteAttemptSchema).max(64).default([]),
+    budgets: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
+    outputs: z
+      .array(z.object({ path: z.string().min(1).max(400), format: z.string().min(1).max(40) }).strict())
+      .min(1)
+      .max(32),
+    deterministic: z
+      .object({
+        recipe_sha256: z.string().max(64).optional(),
+        tool_version: z.string().max(60).optional(),
+      })
+      .strict()
+      .default({}),
+    acceptance: z.array(z.string().min(1).max(400)).min(1).max(32),
+    verification: z.string().min(1).max(600),
+    built_from: z.number().int().nonnegative().optional(),
+    reads: z.array(z.string().min(1).max(120)).max(64).default([]),
+  })
+  .strict();
+
+export type DccJob = z.infer<typeof DccJobSchema>;
+
+/**
+ * AnimationResourceContract: first-class animation domain contracts
+ * (REQ-ANIM-001). `composition` declares the additive/layer composition this
+ * resource participates in, so composition is preferred over bespoke creation
+ * (REQ-ANIM-002) and the Game Model owns the semantic meaning.
+ */
+export const AnimationResourceContractSchema = z
+  .object({
+    schema: z.literal("gauntlet.animation.contract"),
+    schema_version: z.literal("1.0"),
+    id: z.string().min(1).max(160),
+    domain: z.enum(["rig", "retarget", "source", "adaptation", "bake", "validation", "runtime-graph"]),
+    skeleton: z.string().max(160).optional(),
+    clip_inventory: z.array(z.string().min(1).max(160)).max(256).default([]),
+    composition: z
+      .object({
+        base_clips: z.array(z.string().max(160)).max(32).default([]),
+        layers: z
+          .array(
+            z
+              .object({
+                clip: z.string().min(1).max(160),
+                mode: z.enum(["additive", "override", "upper-body", "partial"]),
+                mask: z.string().max(160).optional(),
+              })
+              .strict(),
+          )
+          .max(32)
+          .default([]),
+      })
+      .strict()
+      .optional(),
+    semantics: z.string().max(600).optional(),
+    built_from: z.number().int().nonnegative().optional(),
+    reads: z.array(z.string().min(1).max(120)).max(64).default([]),
+  })
+  .strict();
+
+export type AnimationResourceContract = z.infer<typeof AnimationResourceContractSchema>;
