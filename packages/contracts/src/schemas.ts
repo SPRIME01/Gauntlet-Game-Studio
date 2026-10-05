@@ -1073,8 +1073,8 @@ export const WorldManifestSchema = z
   .object({
     schema: z.literal("gauntlet.world.manifest"),
     schema_version: z.literal("1.0"),
-    id: z.string().min(1).max(160),
-    game_id: z.string().min(1).max(160),
+    id: z.string().regex(/^[a-z0-9_.-]+$/).max(160),
+    game_id: z.string().regex(/^[a-z0-9_.-]+$/).max(160),
     zones: z
       .array(
         z
@@ -1136,7 +1136,9 @@ export const WorldManifestSchema = z
             placement_ref: z.string().regex(/^[a-z0-9_.-]+$/).optional(),
             zone: z.string().regex(/^[a-z0-9_.-]+$/).optional(),
             kind: z.enum(["box", "sphere", "capsule", "trimesh", "heightfield"]),
-            params: z.record(z.string(), z.unknown()).default({}),
+            // Typed params (no opaque arrays): collider intent cannot smuggle
+            // terrain heightfield data into world composition.
+            params: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
           })
           .strict(),
       )

@@ -161,6 +161,14 @@ function godotSafe(value: string): string {
   return value.replace(/[^A-Za-z0-9_-]/g, "_");
 }
 
+/** Free-text sanitizer for generated config files: no newlines, quotes, or control chars. */
+function godotText(value: string): string {
+  return value
+    .replace(/[\r\n\x00-\x1f]/g, " ")
+    .replace(/["'\\;]/g, " ")
+    .trim();
+}
+
 function godotVector(v: [number, number, number]): string {
   return `Vector3(${v[0]}, ${v[1]}, ${v[2]})`;
 }
@@ -184,7 +192,7 @@ config_version=5
 
 [application]
 
-config/name="${opts.title.replace(/"/g, "'")}"
+config/name="${godotText(opts.title)}"
 run/main_scene="res://scenes/boot.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
@@ -221,7 +229,7 @@ func _ready() -> void:
 	for p in MANIFEST.placements:
 		var node := Node3D.new()
 		node.name = String(p.id)
-		node.position = ${"Vector3(0, 0, 0)"} if false else Vector3(p.position[0], p.position[1], p.position[2])
+		node.position = Vector3(p.position[0], p.position[1], p.position[2])
 		if p.has("rotation_euler"):
 			node.rotation = Vector3(p.rotation_euler[0], p.rotation_euler[1], p.rotation_euler[2])
 		if p.has("scale"):
@@ -350,19 +358,10 @@ export function checkGodotExportPreflight(
       detail: `iOS export requires a macOS host with Xcode and signing identity (found platform '${probe.platform()}')`,
     };
   }
-  if (target === "godot.android" && probe.platform() === "darwin" && !existsSync("/Users")) {
-    return {
-      target,
-      status: "blocked",
-      code: "TOOLCHAIN_UNAVAILABLE",
-      requirements: requirements[target],
-      detail: "Android SDK not detected",
-    };
-  }
   return {
     target,
     status: "available",
     requirements: requirements[target],
-    detail: `godot ${godot} available; export may proceed subject to target-specific evidence`,
+    detail: `godot ${godot} available; export may proceed subject to target-specific evidence (Android SDK / signing presence is verified by the export itself, not claimed here)`,
   };
 }

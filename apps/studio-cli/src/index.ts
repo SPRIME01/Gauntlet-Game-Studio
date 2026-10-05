@@ -1990,7 +1990,13 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       try {
         if (sub === "preflight") {
           const targetIdx = filteredArgs.indexOf("--target");
-          const target = (targetIdx >= 0 ? filteredArgs[targetIdx + 1] : "godot.web") as "godot.web" | "godot.android" | "godot.ios";
+          const targetRaw = targetIdx >= 0 ? filteredArgs[targetIdx + 1] : "godot.web";
+          const TARGETS = ["godot.web", "godot.android", "godot.ios"] as const;
+          if (!TARGETS.includes(targetRaw as never)) {
+            console.log(JSON.stringify({ status: "failed", operation: "studio.godot.preflight", diagnostics: { error: `unknown export target '${targetRaw}' (expected one of ${TARGETS.join(", ")})`, code: "UNKNOWN_TARGET" } }, null, 2));
+            return 1;
+          }
+          const target = targetRaw as (typeof TARGETS)[number];
           const preflight = checkGodotExportPreflight(target);
           const res: StudioResult = {
             status: preflight.status === "available" ? "success" : "blocked",
