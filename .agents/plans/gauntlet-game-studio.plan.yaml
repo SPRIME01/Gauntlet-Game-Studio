@@ -4,7 +4,7 @@ metadata:
   id: gauntlet-game-studio-plan
   title: Gauntlet Game Studio Development Settlement Plan
   status: approved
-  version: 0.5.0
+  version: 0.5.1
   created: '2026-09-15'
   purpose: Project the revised Gauntlet Game Studio normative specification into an executable settlement graph that
     builds a first-party Bun/Three.js/Koota/Rapier runtime, strategically mines Mavon only as disposable donor source,
@@ -20,14 +20,14 @@ source:
     intended_repository_path: .agents/specs/gauntlet-game-studio.spec.yaml
     artifact_name: gauntlet-game-studio.spec.yaml
     spec_id: gauntlet-game-studio
-    spec_version: 0.5.0
-    sha256: 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3
+    spec_version: 0.5.1
+    sha256: a071663769fb25618eaaed4a070b0b6739709a9c3a5516527e1eed037abb9f2f
     authority: normative
-    freeze_note: The bound source specification is the v0.5.0 formal amendment (operator-authorized 2026-10-04 Game
-      Actualizer mission; prior v0.4.0 SHA-256 b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8;
-      v0.3.0 SHA-256 b020a49d460e7647c3f3c3a16e6d336d95b67f7412e1d1217ba442cd3f7b5f39; frozen v0.2.0
-      SHA-256 595c1f56f1f59e8f59d93d6e19f857635a98ca3418504dc861ca6a7f149d9e7e) approved at metadata.status=approved
-      with SHA-256 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3. T29–T37 execute the amended
+    freeze_note: The bound source specification is the v0.5.1 clarifying amendment (2026-10-04; v0.5.0 Game
+      Actualizer amendment SHA-256 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3; prior v0.4.0
+      SHA-256 b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8) approved at metadata.status=approved
+      with SHA-256 a071663769fb25618eaaed4a070b0b6739709a9c3a5516527e1eed037abb9f2f. v0.5.1 scopes REQ-GLB-001 to
+      mesh geometry, preserving settled procedural and environment-composition routes. T29–T37 execute the amended
       Game Actualizer requirements; T00–T28 remain settled on their original evidence.
   supporting_sources:
     - path: AGENTS.md

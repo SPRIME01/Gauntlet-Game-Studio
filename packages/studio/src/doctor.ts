@@ -135,13 +135,13 @@ export async function runDoctor(cwd: string = process.cwd()): Promise<DoctorRepo
   }
 
   // 4. Check Core Packages Presence
-  const requiredPkgs = ["packages/contracts", "packages/studio", "packages/runtime", "packages/adapters", "apps/studio-cli"];
+  const requiredPkgs = ["packages/contracts", "packages/studio", "packages/runtime", "packages/adapters", "packages/cockpit", "apps/studio-cli"];
   const missingPkgs = requiredPkgs.filter((p) => !fs.existsSync(path.join(cwd, p, "package.json")));
   if (missingPkgs.length === 0) {
     checks.push({
       name: "workspace_packages",
       status: "pass",
-      details: `All 5 required workspace packages present (${requiredPkgs.join(", ")})`,
+      details: `All 6 required workspace packages present (${requiredPkgs.join(", ")})`,
     });
   } else {
     overallFailed = true;

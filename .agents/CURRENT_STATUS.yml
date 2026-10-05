@@ -16,17 +16,17 @@ metadata:
     Frozen P3 preregistrations exist for T29/T30/T32/T34/T36/T37 before any evidence evaluation.
 
 execution:
-  last_settled_task: T28
-  in_flight_task: T29
-  workable_task: T29
-  ready_tasks: [T29]
+  last_settled_task: T36
+  in_flight_task: T37
+  workable_task: T37
+  ready_tasks: [T37]
   blocked_tasks: {}
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T29
-  phase: game_actualizer_amendment_settled_implementation_beginning
+  task: T37
+  phase: game_actualizer_implementation_whole_studio_hardening
   blocker: null
 
 latest_evidence:
@@ -353,13 +353,23 @@ corrections:
     warning: SwiftShader software-renderer evidence remains non-target and cannot settle the requested hardware 60 FPS claim.
 
 next_action:
-  task: T29
-  action: implement canonical Game Model, versioning, and model-derived staleness engine (T29)
+  task: T37
+  action: whole-studio settlement — conformance battery, docs/status finalization, final diff inspection, implementation report
   reason: >-
-    The v0.5.0 Game Actualizer amendment is approved and the plan is rebound with tasks T29-T37 (224/224 REQ mapped,
-    critical path preserved, P3 preregs frozen). T29 is the first ready task: canonical Game Model contracts, strict
-    loader with v1 back-compatibility, append-only decision ledger, and the pure staleness engine with targeted-
-    invalidation teeth. Downstream: T30 resource resolution/reservoir, T31 normalization/GLB/DCC/animation,
-    T32 Godot backend/world manifest, T33 quality bar/Game Case/release matrix, T34 cockpit core, T35 cockpit
-    surfaces, T36 MCP/WebMCP, T37 whole-studio hardening. Outside-plan Codename: Gauntlet Warfare operator-track
-    follow-ups remain deferred and do not reopen settlement.
+    T29-T36 are implemented and adversarially confirmed: T29 canonical Game Model + staleness (independent
+    adversarial CONFIRM; 4 defects found and fixed in the confirmation round), T30 resource resolution +
+    reservoir (first verification REJECTED on the reservoir license-gate bypass; correction round 1 fixed
+    H1-H9; fresh independent adversarial CONFIRM), T31 normalization/GLB ABI/DCC jobs/animation (builder
+    with teeth), T32 Godot backend + world manifest + observability adapter (independent adversarial CONFIRM;
+    hardening round applied injection guards, honest SDK probe, CLI target validation), T33 quality bar +
+    Game Case + release matrix (peer track), T34/T35 Game Cockpit (first verification REJECTED on game_replay
+    fabrication + closed-surface resurrection; correction round 1 fixed both plus work-request operability and
+    real placements; re-verification in flight), T36 MCP/WebMCP authority teeth (live-server matrix green).
+    Spec clarified to v0.5.1 mid-stream (REQ-GLB-001 scoped to mesh geometry; procedural and
+    environment-composition routes preserved) after the GLB ABI gate collided with settled T13/T14/T15/T18
+    evidence in RECOV-003 — recorded as SPEC_AMENDMENT 0.5.1 with plan rebind. Conformance: recovery 22 PASS
+    (after the ABI fix), security 6 PASS, clean-checkout 13 PASS. Remaining T37 items: final verification
+    verdicts, docs/status completion, final diff inspection, implementation report. Known gaps carried
+    honestly (not concealed): cockpit rail content is structural (field wiring is surface work), web-client
+    source-binding depth, viewport target free-string hardening, iOS/Android export unproven (no toolchains
+    in this environment — typed blocked is the conformant state).

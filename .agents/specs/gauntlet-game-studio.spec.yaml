@@ -4,7 +4,7 @@ metadata:
   id: gauntlet-game-studio
   title: Gauntlet Game Studio Normative Specification
   status: approved
-  version: 0.5.0
+  version: 0.5.1
   created: '2026-09-15'
   scope: Agentic development studio for polished browser-native 3D games built on a first-party Gauntlet Runtime using standard
     Three.js, Koota, Rapier, Recast, and related narrow libraries, with capability-routed content production, optional authoritative
@@ -76,6 +76,20 @@ metadata:
     change_plan: .agents/plans/game-actualizer.amendment.plan.yaml
     donor_reference: /home/sprime01/projects/product-actualizer (architectural donor only; not a runtime dependency)
     prior_revision_sha256: b8f6ea7649253225cebbc9a15c579de6137506d6d48918b1720bc90b3e2e3fb8
+  amendment_0_5_1:
+    role: >-
+      Clarifying amendment (2026-10-04, agent-executed under the Game Actualizer mission's authority and the
+      repository's correction protocol): conformance evidence (T13 committed assets, RECOV-003) showed the
+      REQ-GLB-001 text as written would force settled procedural reconstruction outputs (img2threejs code
+      modules) and environment composition outputs (3dviz skies) out of their accepted representations,
+      reopening preserved T14/T15/T18/T22 evidence. The requirement is clarified to scope the GLB ABI to
+      sourced, generated, normalized, and DCC-produced mesh geometry; procedural code-module routes and
+      environment composition outputs retain their settled representations. No previously settled requirement
+      is weakened; the gate implementation gains an explicit procedural-route exemption with this amendment as
+      its authority.
+    authorization_record: .agents/decisions/game-studio.jsonl (SPEC_AMENDMENT 0.5.1)
+    change_plan: .agents/plans/game-actualizer.amendment.plan.yaml
+    prior_revision_sha256: 0c23833f2933496a04672c0c46dde2a91b80e73f0917c6b05fd6fd23e8b7c4e3
 sources:
   normative_artifact:
     role: This file is the approved normative desired-state authority.
@@ -1791,10 +1805,14 @@ core_behavior_requirements:
   production_asset_abi:
   - id: REQ-GLB-001
     text: >-
-      glTF/GLB MUST be the explicit production asset ABI: sources, reconstruction outputs, and DCC results converge
-      into normalized, validated, optimized GLB (via the existing glTF-Transform route) before runtime import by the
-      reference runtime or a production backend. Provider-specific object graphs MUST NOT leak downstream of this
-      boundary.
+      glTF/GLB MUST be the explicit production asset ABI: sourced, generated, normalized, and DCC-produced mesh
+      geometry converges into normalized, validated, optimized GLB (via the existing glTF-Transform route) before
+      runtime import by the reference runtime or a production backend. Provider-specific object graphs MUST NOT
+      leak downstream of this boundary. Clarified v0.5.1: procedural first-party code-module routes already
+      settled under preserved evidence (the img2threejs reconstruction route, T14/T18) and environment
+      composition outputs such as skies, lighting, and atmosphere (settled 3dviz route, T15) retain their
+      inspectable representations — the ABI governs mesh geometry, and environment composition is governed by
+      the World Manifest (REQ-GODOT-003).
   dcc_job_system:
   - id: REQ-DCC-001
     text: >-
