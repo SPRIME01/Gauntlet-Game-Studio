@@ -261,6 +261,74 @@ export const CAPABILITY_CATALOG: CapabilityDescriptor[] = [
     providers: ["audio.tone", "audio.null"],
   },
   {
+    id: "animation.rig",
+    summary: "Skeleton rig creation and validation for characters and creatures, executed through structured DCC jobs on the Blender escalation path. Composition-first: prefer an existing accepted rig from the project or reservoir before authoring a new one.",
+    use_when: [
+      "new character requires a skeleton",
+      "rig validation against skeleton conventions",
+      "existing rig needs sockets or collision proxies added",
+    ],
+    do_not_use_when: [
+      "runtime animation blending or state machines (runtime owns these)",
+      "semantic gameplay meaning such as alert states (Game Model owns these)",
+      "single static mesh placement",
+    ],
+    inputs: ["character_asset_id", "skeleton_convention"],
+    outputs: ["rigged_asset_id", "rig_report"],
+    verification: ["blender_job_verification", "asset_registry_acceptance"],
+    providers: ["dcc.blender"],
+  },
+  {
+    id: "animation.retarget",
+    summary: "Animation retargeting between skeletons through structured DCC jobs on the Blender escalation path. Prefers retargeting an accepted permissive animation source over authoring new keyframes.",
+    use_when: [
+      "existing clip must fit a different skeleton",
+      "locomotion pack adaptation",
+      "upper-body layering source preparation",
+    ],
+    do_not_use_when: [
+      "runtime graph transitions (runtime owns blending)",
+      "creating gameplay semantics",
+    ],
+    inputs: ["source_animation_id", "target_rig_id"],
+    outputs: ["retargeted_animation_id", "retarget_report"],
+    verification: ["blender_job_verification", "clip_inventory_check"],
+    providers: ["dcc.blender"],
+  },
+  {
+    id: "animation.bake",
+    summary: "Baking animation (keyframes, constraints, simulation) and material baking through structured DCC jobs on the Blender escalation path, producing normalized GLB derivatives for the production asset ABI.",
+    use_when: [
+      "procedural constraint or simulation must become keyframes",
+      "material baking for export normalization",
+    ],
+    do_not_use_when: [
+      "runtime-time animation evaluation",
+      "semantic gameplay meaning",
+    ],
+    inputs: ["input_asset_id", "bake_spec"],
+    outputs: ["baked_asset_id", "bake_report"],
+    verification: ["blender_job_verification", "deterministic_reproduction"],
+    providers: ["dcc.blender"],
+  },
+  {
+    id: "animation.validate",
+    summary: "Deterministic animation validation: clip inventory, skeleton convention conformance, composition layering integrity, and budget checks against the Game Model animation language.",
+    use_when: [
+      "animation resource enters the AssetRegistry",
+      "composition of base clips plus additive layers must be proven",
+      "clip inventory must match the Game Model animation language",
+    ],
+    do_not_use_when: [
+      "authoring new keyframes",
+      "gameplay state authority",
+    ],
+    inputs: ["animation_contract_id"],
+    outputs: ["validation_report"],
+    verification: ["clip_inventory_check", "budget_check"],
+    providers: ["dcc.blender"],
+  },
+  {
     id: "network.multiplayer",
     summary: "Multiplayer replication and transport with Bun WebSockets baseline and optional WebRTC datagrams. Provides authoritative server tick synchronization and entity state replication.",
     use_when: [

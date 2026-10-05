@@ -8,6 +8,7 @@
  */
 
 import type { AssetRecord, AssetOrigin } from "@gauntlet/contracts";
+import { isGeometryRole, isGltfRepresentation } from "../normalize/abi";
 
 export type GateStatus = "pass" | "fail" | "blocked" | "waived";
 
@@ -268,6 +269,18 @@ export function evaluateAsset(
 
   results.push(budgetGate(record, waivedGates));
   results.push(textureFormatGate(record));
+
+  // GLB production ABI gate (REQ-GLB-001): geometry enters production as
+  // normalized glTF/GLB; provider object graphs never leak through.
+  if (isGeometryRole(record.role) && !isGltfRepresentation(record.runtime_representation)) {
+    results.push({
+      gate: "glb_abi",
+      status: "fail",
+      detail: `Geometry role '${record.role}' must be represented as normalized glTF/GLB (found '${record.runtime_representation}'); normalize via the glTF-Transform route before acceptance`,
+    });
+  } else if (isGeometryRole(record.role)) {
+    results.push({ gate: "glb_abi", status: "pass", detail: "Runtime representation satisfies the glTF/GLB production ABI" });
+  }
 
   const blockers = results.filter((r) => r.status === "fail" || r.status === "blocked");
   const stateOk = record.acceptance_state === "accepted" || record.acceptance_state === "degraded";
