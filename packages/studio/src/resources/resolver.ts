@@ -12,6 +12,8 @@
 
 import {
   RESOURCE_ROUTE_STAGES,
+  CreationExceptionSchema,
+  ResourceResolutionRecordSchema,
   type ResourceKind,
   type ResourceResolutionRecord,
   type ResourceRouteAttempt,
@@ -21,7 +23,18 @@ import {
 import { ACCEPTABLE_LICENSES, isAcceptableLicense } from "../assets/gates";
 import type { AssetResolver, ResolutionDecision } from "../assets/resolve";
 import type { ReservoirStore } from "./reservoir";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, openSync, closeSync, writeFileSync } from "node:fs";
+
+/** Exclusive-create write (wx): append-only records, never overwritten. */
+function writeFileSyncExclusive(path: string, data: string): void {
+  let fd: number | null = null;
+  try {
+    fd = openSync(path, "wx");
+    writeFileSync(fd, data);
+  } finally {
+    if (fd !== null) closeSync(fd);
+  }
+}
 import { join } from "node:path";
 
 export { RESOURCE_ROUTE_STAGES };
@@ -90,7 +103,9 @@ export type ResourceResolverErrorCode =
   | "SCRATCH_REQUIRES_EXCEPTION"
   | "PROVIDERS_UNAVAILABLE"
   | "ACQUIRE_FAILED"
-  | "COMPOSITE_INCOMPLETE";
+  | "COMPOSITE_INCOMPLETE"
+  | "RECORD_SCHEMA_INVALID"
+  | "CREATION_EXCEPTION_INVALID";
 
 export class ResourceResolverError extends Error {
   constructor(
@@ -137,6 +152,33 @@ export class ResourceResolver {
       throw new ResourceResolverError("KIND_REQUIRED", "resource kind is required", attempts);
     }
 
+    // Validate a supplied creation exception once, at the boundary: the raw
+    // input is never embedded into records (a forged exception cannot leak
+    // into the audit trail), and it must reference this request.
+    let validatedException: CreationException | undefined;
+    if (request.creation_exception) {
+      const parsedException = CreationExceptionSchema.safeParse(request.creation_exception);
+      if (!parsedException.success || parsedException.data.routes_searched.length === 0) {
+        throw new ResourceResolverError(
+          "CREATION_EXCEPTION_INVALID",
+          `creation exception failed validation: ${parsedException.success ? "no searched routes recorded" : String(parsedException.error).slice(0, 300)}`,
+          attempts,
+        );
+      }
+      const bound =
+        parsedException.data.derivative_id === request.requested_id ||
+        parsedException.data.id.includes(request.requested_id) ||
+        parsedException.data.what.includes(request.requested_id);
+      if (!bound) {
+        throw new ResourceResolverError(
+          "CREATION_EXCEPTION_INVALID",
+          `creation exception '${parsedException.data.id}' does not reference requested id '${request.requested_id}'`,
+          attempts,
+        );
+      }
+      validatedException = parsedException.data;
+    }
+
     const finish = (
       decision: "resolved" | "blocked" | "failed",
       statusCode: string,
@@ -156,7 +198,7 @@ export class ResourceResolver {
         decision,
         status_code: statusCode,
         rationale,
-        creation_exception: request.creation_exception,
+        creation_exception: validatedException,
         asset_id: extra.assetId,
         built_from: request.built_from,
         reads: request.reads ?? [],
@@ -166,20 +208,97 @@ export class ResourceResolver {
       return { status: decision, statusCode, rationale, attempts, record, ...extra };
     };
 
-    // R4 (composite) — declared ingredients must all be resolvable first.
+    // R4 (composite) — declared ingredients must actually exist as accepted
+    // project resources before the composite attempt counts as satisfied;
+    // declaration alone is recorded as blocked, never as satisfied theater.
     if (request.composite_of && request.composite_of.length > 0) {
-      attempts.push(
-        attempt(
-          "composite",
-          request.composite_of.join("+"),
-          "satisfied",
-          `composite declared from ${request.composite_of.length} ingredients; ingredients resolve independently before composition`,
-        ),
-      );
+      const { AssetRegistry } = await import("../assets/registry");
+      const registry = new AssetRegistry(projectRoot);
+      registry.load();
+      const missing = request.composite_of.filter((id) => {
+        const record = registry.get(id);
+        return !record || record.acceptance_state !== "accepted";
+      });
+      if (missing.length === 0) {
+        attempts.push(
+          attempt(
+            "composite",
+            request.composite_of.join("+"),
+            "satisfied",
+            `composite verified from ${request.composite_of.length} accepted project resources`,
+          ),
+        );
+      } else {
+        attempts.push(
+          attempt(
+            "composite",
+            request.composite_of.join("+"),
+            "blocked",
+            `composite ingredients not accepted in the project registry: ${missing.join(", ")}`,
+          ),
+        );
+      }
     }
 
     // Asset-kind requests delegate to the settled AssetResolver (REQ-RES-001);
     // its routes, policy teeth, and decision records are inherited verbatim.
+    // Two passes preserve cascade order: the reuse-only pass resolves R0
+    // (project registry) before the reservoir R1 check below; the acquire
+    // pass after it performs provider acquisition (R2+) when cheaper routes
+    // found nothing.
+    if (this.options.assetResolver && isAssetKind(request.kind)) {
+      // Provider-free probe: the project-registry reuse check WITHOUT any
+      // acquisition, so cheaper routes (R1 reservoir) stay ahead of R2.
+      const reuseProbe = await new (this.options.assetResolver.constructor as { new (options: { providers: never[] }): AssetResolver })({ providers: [] }).resolve({
+        requestedId: request.requested_id,
+        role: request.role ?? request.kind,
+        keywords: request.keywords ?? [],
+        projectRoot,
+        requireLicense: request.require_license,
+        maxTriangles: request.max_triangles,
+      });
+      if (reuseProbe.status === "success" && "decision" in reuseProbe.result && reuseProbe.result.decision?.route === "reuse") {
+        for (const step of reuseProbe.result.steps) {
+          attempts.push({
+            stage: "reuse-accepted",
+            target: step.target,
+            provider: step.provider,
+            outcome: mapAssetOutcome(step.outcome),
+            detail: step.detail,
+          });
+        }
+        return finish("resolved", "REUSE_ACCEPTED", reuseProbe.result.decision.reason, {
+          route: "reuse-accepted",
+          assetId: reuseProbe.result.decision.asset_id,
+        });
+      }
+    }
+
+    // R0: accepted project resource.
+    // (Project-level acceptance for non-asset kinds lives in the reservoir's
+    // accepted flag plus the project registry; providers may also serve.)
+    // R1: reservoir.
+    if (this.options.reservoir) {
+      const reservoirHit = this.options.reservoir
+        .records()
+        .find((r) => r.id === request.requested_id && r.accepted);
+      if (reservoirHit && request.require_license && reservoirHit.source.license !== request.require_license) {
+        attempts.push(
+          attempt("reuse-reservoir", reservoirHit.id, "rejected", `reservoir license '${reservoirHit.source.license}' != required '${request.require_license}'`),
+        );
+        void reservoirHit;
+      } else if (reservoirHit) {
+        attempts.push(attempt("reuse-reservoir", reservoirHit.id, "satisfied", "accepted reservoir record matches requested id"));
+        return finish("resolved", "REUSE_RESERVOIR", `accepted reservoir resource '${reservoirHit.id}' satisfies the request`, {
+          route: "reuse-reservoir",
+          assetId: reservoirHit.id,
+        });
+      }
+      attempts.push(attempt("reuse-reservoir", request.requested_id, "unavailable", "no accepted reservoir record with this id"));
+    }
+
+    // Acquire pass (R2+) through the settled AssetResolver policy — only after
+    // cheaper routes (R0 reuse probe, R1 reservoir) found nothing.
     if (this.options.assetResolver && isAssetKind(request.kind)) {
       const assetResult = await this.options.assetResolver.resolve({
         requestedId: request.requested_id,
@@ -225,28 +344,30 @@ export class ResourceResolver {
       }
     }
 
-    // R0: accepted project resource.
-    // (Project-level acceptance for non-asset kinds lives in the reservoir's
-    // accepted flag plus the project registry; providers may also serve.)
-    // R1: reservoir.
-    if (this.options.reservoir) {
-      const reservoirHit = this.options.reservoir
-        .records()
-        .find((r) => r.id === request.requested_id && r.accepted);
-      if (reservoirHit) {
-        attempts.push(attempt("reuse-reservoir", reservoirHit.id, "satisfied", "accepted reservoir record matches requested id"));
-        return finish("resolved", "REUSE_RESERVOIR", `accepted reservoir resource '${reservoirHit.id}' satisfies the request`, {
-          route: "reuse-reservoir",
-          assetId: reservoirHit.id,
-        });
-      }
-      attempts.push(attempt("reuse-reservoir", request.requested_id, "unavailable", "no accepted reservoir record with this id"));
-    }
-
     // R2..R7: providers, cheapest stage first; license evidence mandatory
     // before intake (REQ-RES-003 — same policy teeth as asset.resolve).
+    // Provider-declared stages are untrusted for authority-bearing stages:
+    // a provider can never claim reuse-accepted/reuse-reservoir/scratch —
+    // those routes belong to the project registry, the reservoir gate, and
+    // the recorded creation exception respectively (cascade semantics and
+    // record provenance do not rest on provider honesty).
+    const PROVIDER_ALLOWED_STAGES: readonly ResourceRouteStage[] = [
+      "acquire",
+      "adapt",
+      "composite",
+      "code-donor",
+      "procedural",
+      "reference-reconstruction",
+    ];
     const providers = this.options.providers
       .filter((p) => p.kinds.includes(request.kind))
+      .filter((p) => {
+        if (PROVIDER_ALLOWED_STAGES.includes(p.stage)) return true;
+        attempts.push(
+          attempt(p.stage, p.id, "skipped", `provider declares authority-bearing stage '${p.stage}'; clamped out of the cascade`, p.id),
+        );
+        return false;
+      })
       .sort((a, b) => STAGE_RANK[a.stage] - STAGE_RANK[b.stage]);
     if (providers.length > 0) {
       for (const provider of providers) {
@@ -314,7 +435,33 @@ export class ResourceResolver {
       attempt("generate-component", request.requested_id, "unavailable", "no capability route declared for generating this component"),
     );
 
-    // R10: scratch creation requires a recorded creation exception.
+    // R10: scratch creation requires a recorded creation exception, validated
+    // at the resolver boundary and bound to this request (no forged or
+    // borrowed exceptions).
+    if (request.creation_exception) {
+      const parsedException = CreationExceptionSchema.safeParse(request.creation_exception);
+      if (!parsedException.success) {
+        return finish(
+          "failed",
+          "CREATION_EXCEPTION_INVALID",
+          `creation exception failed validation: ${String(parsedException.error).slice(0, 400)}`,
+        );
+      }
+      if (parsedException.data.routes_searched.length === 0) {
+        return finish("failed", "CREATION_EXCEPTION_INVALID", "creation exception records no searched routes");
+      }
+      const bound =
+        parsedException.data.derivative_id === request.requested_id ||
+        parsedException.data.id.includes(request.requested_id) ||
+        parsedException.data.what.includes(request.requested_id);
+      if (!bound) {
+        return finish(
+          "failed",
+          "CREATION_EXCEPTION_INVALID",
+          `creation exception '${parsedException.data.id}' does not reference requested id '${request.requested_id}'`,
+        );
+      }
+    }
     if (request.creation_exception) {
       attempts.push(attempt("scratch", request.creation_exception.id, "satisfied", "scratch creation justified by recorded creation exception"));
       return finish("resolved", "SCRATCH", request.creation_exception.why_failed.join("; "), {
@@ -344,7 +491,17 @@ export class ResourceResolver {
       path = `${base}-${n}.json`;
       n += 1;
     }
-    Bun.write(path, JSON.stringify(record, null, 2));
+    // Contract validation on the write path: an invalid record is a failure,
+    // never persisted garbage (records are the audit trail).
+    const validated = ResourceResolutionRecordSchema.safeParse(record);
+    if (!validated.success) {
+      throw new ResourceResolverError(
+        "RECORD_SCHEMA_INVALID",
+        `resolution record for '${record.requested_id}' failed contract validation: ${String(validated.error).slice(0, 400)}`,
+        record.attempts,
+      );
+    }
+    writeFileSyncExclusive(path, JSON.stringify(record, null, 2));
   }
 }
 

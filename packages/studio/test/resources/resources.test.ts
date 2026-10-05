@@ -316,3 +316,97 @@ describe("TEETH-T30-004: reservoir lineage and deduplication", () => {
     rmSync(root, { recursive: true, force: true });
   });
 });
+
+describe("T30 correction round 1 — adversarial regression teeth", () => {
+  test("H1: reservoir rejects unknown/unacceptable licenses at intake and acceptance", () => {
+    const root = tmpProject();
+    const reservoir = new ReservoirStore(join(root, "reservoir"));
+    expect(() =>
+      reservoir.put({ id: "nc-mesh", kind: "mesh", source: { license: "cc-by-nc-4.0" }, content: "x", filename: "a.glb", format: "glb" }),
+    ).toThrow(/RESERVOIR_LICENSE_UNACCEPTABLE|unknown or not acceptable/);
+    expect(() =>
+      reservoir.put({ id: "unknown-mesh", kind: "mesh", source: { license: "unknown" }, content: "x", filename: "a.glb", format: "glb" }),
+    ).toThrow(/RESERVOIR_LICENSE_UNACCEPTABLE/);
+    // A record with an acceptable license can be accepted; the poisoned path is closed.
+    reservoir.put({ id: "ok-mesh", kind: "mesh", source: { license: "cc0" }, content: "y", filename: "b.glb", format: "glb" });
+    expect(reservoir.markAccepted("ok-mesh").accepted).toBe(true);
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("H1b: resolver R1 hit re-examines license and require_license", async () => {
+    const root = tmpProject();
+    const reservoir = new ReservoirStore(join(root, "reservoir"));
+    reservoir.put({ id: "robot-raw", kind: "mesh", source: { license: "cc0" }, content: "R", filename: "r.glb", format: "glb" });
+    reservoir.markAccepted("robot-raw");
+    const provider = makeResourceProvider("free-audio", "acquire", "cc0");
+    // require_license mismatch on an accepted reservoir record keeps looking.
+    const resolver = new ResourceResolver({ providers: [provider], reservoir, now: () => new Date("2026-10-04T00:00:00Z") });
+    const mismatch = await resolver.resolve({ requested_id: "robot-raw", kind: "audio", require_license: "mit" }, root);
+    expect(mismatch.status).toBe("blocked");
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("H2: providers declaring authority-bearing stages are clamped out of the cascade", async () => {
+    const root = tmpProject();
+    const scratchProvider = makeResourceProvider("sneaky", "scratch", "cc0");
+    const reuseProvider = makeResourceProvider("sneaky-reuse", "reuse-accepted", "cc0");
+    const resolver = new ResourceResolver({ providers: [scratchProvider, reuseProvider], now: () => new Date("2026-10-04T00:00:00Z") });
+    const result = await resolver.resolve({ requested_id: "lonely", kind: "audio" }, root);
+    expect(result.route).toBeUndefined(); // nothing satisfied: both providers were skipped
+    expect(result.attempts.filter((a) => a.outcome === "skipped").length).toBe(2);
+    expect(result.status).toBe("blocked");
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("H3: forged creation exceptions are validated and bound at the resolver boundary", async () => {
+    const root = tmpProject();
+    const resolver = new ResourceResolver({ providers: [], now: () => new Date("2026-10-04T00:00:00Z") });
+    const forged = { id: "exc-forged", what: "nothing", routes_searched: [], why_failed: ["because"], provenance: {}, partial_reuse: [], recorded_at: "2026-10-04T00:00:00Z" };
+    expect(() => resolver.resolve({ requested_id: "hero-rig", kind: "rig", creation_exception: forged as never }, root)).toThrow(/CREATION_EXCEPTION_INVALID/);
+    // Borrowed exception (references a different id) is rejected too.
+    const borrowed = { ...forged, routes_searched: [{ stage: "acquire", target: "x", outcome: "unavailable", detail: "none" }] };
+    await expect(resolver.resolve({ requested_id: "hero-rig", kind: "rig", creation_exception: borrowed as never }, root)).rejects.toThrow(/does not reference requested id/);
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("H5: composite declaration alone never records satisfied", async () => {
+    const root = tmpProject();
+    const resolver = new ResourceResolver({ providers: [], now: () => new Date("2026-10-04T00:00:00Z") });
+    const result = await resolver.resolve(
+      { requested_id: "composite-thing", kind: "kit", composite_of: ["nonexistent-part"] },
+      root,
+    );
+    const composite = result.attempts.find((a) => a.stage === "composite");
+    expect(composite?.outcome).toBe("blocked");
+    expect(composite?.detail).toContain("nonexistent-part");
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("H9: identical content under different filenames is deduplicated per content", () => {
+    const root = tmpProject();
+    const reservoir = new ReservoirStore(join(root, "reservoir"));
+    const first = reservoir.put({ id: "a", kind: "texture", source: { license: "mit" }, content: "SAME", filename: "a.png", format: "png" });
+    const second = reservoir.put({ id: "b", kind: "texture", source: { license: "mit" }, content: "SAME", filename: "b.png", format: "png" });
+    expect(second.deduplicated).toBe(true);
+    expect(first.blobPath).toBe(second.blobPath);
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("H4: asset-kind requests consult the reservoir before provider acquisition", async () => {
+    const root = tmpProject();
+    const reservoir = new ReservoirStore(join(root, "reservoir"));
+    reservoir.put({ id: "reservoired-mesh", kind: "mesh", source: { license: "cc0" }, content: "M", filename: "m.glb", format: "glb" });
+    reservoir.markAccepted("reservoired-mesh");
+    const spy = makeAssetProviderSpy();
+    const resolver = new ResourceResolver({
+      providers: [],
+      reservoir,
+      assetResolver: makeAssetResolver([spy.provider]),
+      now: () => new Date("2026-10-04T00:00:00Z"),
+    });
+    const result = await resolver.resolve({ requested_id: "reservoired-mesh", kind: "mesh", role: "prop", keywords: ["x"] }, root);
+    expect(result.route).toBe("reuse-reservoir");
+    expect(spy.calls()).toBeLessThanOrEqual(1); // only the reuse probe, no acquisition
+    rmSync(root, { recursive: true, force: true });
+  });
+});

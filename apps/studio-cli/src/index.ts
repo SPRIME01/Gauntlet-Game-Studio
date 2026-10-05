@@ -1782,6 +1782,40 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
       if (sub === "reservoir") {
         const action = filteredArgs[2] || "list";
         const reservoir = ReservoirStore.resolveFor(projectRoot);
+        if (action === "add") {
+          // studio resource reservoir add <id> --kind <kind> --file <path> --license <l> [--tags a,b] [--from uri] [--accept]
+          const id = filteredArgs[3];
+          const kindIdx = filteredArgs.indexOf("--kind");
+          const fileIdx = filteredArgs.indexOf("--file");
+          const licIdx = filteredArgs.indexOf("--license");
+          if (!id || kindIdx < 0 || fileIdx < 0 || licIdx < 0) {
+            emit({ status: "failed", operation: "studio.resource.reservoir.add", diagnostics: { error: "usage: studio resource reservoir add <id> --kind <kind> --file <path> --license <license> [--tags a,b] [--from uri] [--accept]", code: "USAGE" } });
+            return 1;
+          }
+          try {
+            const file = Bun.file(filteredArgs[fileIdx + 1]);
+            const content = new Uint8Array(await file.arrayBuffer());
+            const tagsIdx = filteredArgs.indexOf("--tags");
+            const fromIdx = filteredArgs.indexOf("--from");
+            const { record, blobPath } = reservoir.put({
+              id,
+              kind: filteredArgs[kindIdx + 1] as never,
+              source: { license: filteredArgs[licIdx + 1], ...(fromIdx >= 0 ? { uri: filteredArgs[fromIdx + 1] } : {}) },
+              content,
+              filename: filteredArgs[fileIdx + 1].split("/").pop() ?? "blob",
+              format: (filteredArgs[fileIdx + 1].split(".").pop() ?? "bin").toLowerCase(),
+              ...(tagsIdx >= 0 ? { tags: filteredArgs[tagsIdx + 1].split(",").map((s) => s.trim()).filter(Boolean) } : {}),
+            });
+            const accepted = filteredArgs.includes("--accept") ? reservoir.markAccepted(id) : null;
+            emit({ status: "success", operation: "studio.resource.reservoir.add", result: { record: accepted ?? record, blob_path: blobPath, accepted: Boolean(accepted) }, diagnostics: {} });
+            return 0;
+          } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            const code = err instanceof ReservoirError ? err.code : "RESERVOIR_ADD_ERROR";
+            emit({ status: "failed", operation: "studio.resource.reservoir.add", diagnostics: { error: msg, code } });
+            return 1;
+          }
+        }
         if (action === "list") {
           const records = reservoir.records();
           emit({ status: "success", operation: "studio.resource.reservoir.list", result: { root: reservoir.root, count: records.length, records }, diagnostics: {} });

@@ -10,6 +10,7 @@
  */
 
 import { ReservoirRecordSchema, type ReservoirRecord, type ResourceKind } from "@gauntlet/contracts";
+import { isAcceptableLicense } from "../assets/gates";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -40,7 +41,7 @@ export interface ReservoirPutInput {
 
 export class ReservoirError extends Error {
   constructor(
-    readonly code: "RESERVOIR_RECORD_INVALID" | "RESERVOIOIR_INDEX_CORRUPT" | "RESERVOIR_ID_CONFLICT",
+    readonly code: "RESERVOIR_RECORD_INVALID" | "RESERVOIR_INDEX_CORRUPT" | "RESERVOIR_ID_CONFLICT" | "RESERVOIR_LICENSE_UNACCEPTABLE",
     message: string,
   ) {
     super(`${code}: ${message}`);
@@ -86,7 +87,7 @@ export class ReservoirStore {
     try {
       parsed = JSON.parse(readFileSync(this.indexPath, "utf8"));
     } catch (error) {
-      throw new ReservoirError("RESERVOIOIR_INDEX_CORRUPT", String(error));
+      throw new ReservoirError("RESERVOIR_INDEX_CORRUPT", String(error));
     }
     const index = ReservoirIndexSafe.parse(parsed);
     return { schema: RESERVOIR_INDEX_SCHEMA, schema_version: "1.0", records: index.records };
@@ -94,15 +95,10 @@ export class ReservoirStore {
 
   private writeIndex(index: ReservoirIndex): void {
     mkdirSync(this.root, { recursive: true });
+    // Atomic replace: write tmp, rename over the index (no torn reads).
     const tmp = `${this.indexPath}.tmp`;
     writeFileSync(tmp, JSON.stringify(index, null, 2));
-    writeFileSync(this.indexPath, JSON.stringify(index, null, 2));
-    try {
-      // Keep or remove tmp; removal keeps the tree clean.
-      require("node:fs").rmSync(tmp, { force: true });
-    } catch {
-      /* best effort */
-    }
+    require("node:fs").renameSync(tmp, this.indexPath);
   }
 
   records(): ReservoirRecord[] {
@@ -132,14 +128,30 @@ export class ReservoirStore {
    * record with the same id is a conflict unless `supersede` is set.
    */
   put(input: ReservoirPutInput, opts: { supersede?: boolean } = {}): { record: ReservoirRecord; blobPath: string; deduplicated: boolean } {
+    // License gate at intake (REQ-RES-003): the accepted license set and
+    // unknown-license rejection from the asset policy stand at the reservoir
+    // boundary. Unknown/unacceptable licenses are unusable here, before any
+    // acceptance path can exist.
+    if (!isAcceptableLicense("licensed", input.source.license)) {
+      throw new ReservoirError(
+        "RESERVOIR_LICENSE_UNACCEPTABLE",
+        `reservoir intake rejected: license '${input.source.license}' is unknown or not acceptable`,
+      );
+    }
+
     const contentBytes =
       typeof input.content === "string" ? new TextEncoder().encode(input.content) : input.content;
     const localHash = createHash("sha256").update(contentBytes).digest("hex");
     const blobDir = join(this.root, "objects", localHash.slice(0, 12));
-    const blobPath = join(blobDir, input.filename.replace(/[^A-Za-z0-9._-]/g, "_"));
-    const deduplicated = existsSync(blobPath);
-    if (!deduplicated) {
+    // Content-addressed dedupe is per content, not per (content, filename):
+    // identical content under a different filename reuses the existing blob.
+    const deduplicated = existsSync(blobDir);
+    let blobPath: string;
+    if (deduplicated) {
+      blobPath = join(blobDir, readFileSyncSafeDir(blobDir) ?? input.filename.replace(/[^A-Za-z0-9._-]/g, "_"));
+    } else {
       mkdirSync(blobDir, { recursive: true });
+      blobPath = join(blobDir, input.filename.replace(/[^A-Za-z0-9._-]/g, "_"));
       writeFileSync(blobPath, contentBytes);
     }
 
@@ -177,9 +189,9 @@ export class ReservoirStore {
   blobPath(record: ReservoirRecord): string {
     const dir = join(this.root, "objects", record.local_hash.slice(0, 12));
     // The blob filename is not in the record; locate by listing the dir.
-    if (!existsSync(dir)) throw new ReservoirError("RESERVOIOIR_INDEX_CORRUPT", `missing blob dir for ${record.id}`);
+    if (!existsSync(dir)) throw new ReservoirError("RESERVOIR_INDEX_CORRUPT", `missing blob dir for ${record.id}`);
     const name = readFileSyncSafeDir(dir);
-    if (!name) throw new ReservoirError("RESERVOIOIR_INDEX_CORRUPT", `missing blob for ${record.id}`);
+    if (!name) throw new ReservoirError("RESERVOIR_INDEX_CORRUPT", `missing blob for ${record.id}`);
     return join(dir, name);
   }
 
@@ -187,6 +199,14 @@ export class ReservoirStore {
     const index = this.readIndex();
     const record = index.records.find((r) => r.id === id);
     if (!record) throw new ReservoirError("RESERVOIR_RECORD_INVALID", `unknown reservoir id '${id}'`);
+    // Acceptance gate (REQ-RES-003): an unknown/unacceptable license can never
+    // become an accepted, production-reusable reservoir resource.
+    if (!isAcceptableLicense("licensed", record.source.license)) {
+      throw new ReservoirError(
+        "RESERVOIR_LICENSE_UNACCEPTABLE",
+        `reservoir record '${id}' cannot be accepted: license '${record.source.license}' is unknown or not acceptable`,
+      );
+    }
     record.accepted = true;
     this.writeIndex(index);
     return record;
