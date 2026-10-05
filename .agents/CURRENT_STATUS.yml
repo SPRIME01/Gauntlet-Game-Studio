@@ -16,17 +16,17 @@ metadata:
     Frozen P3 preregistrations exist for T29/T30/T32/T34/T36/T37 before any evidence evaluation.
 
 execution:
-  last_settled_task: T36
-  in_flight_task: T37
-  workable_task: T37
-  ready_tasks: [T37]
+  last_settled_task: T37
+  in_flight_task: null
+  workable_task: null
+  ready_tasks: []
   blocked_tasks: {}
   plan_blocked: false
   plan_blocker: null
 
 active:
-  task: T37
-  phase: game_actualizer_implementation_whole_studio_hardening
+  task: null
+  phase: game_actualizer_settled
   blocker: null
 
 latest_evidence:
@@ -353,8 +353,8 @@ corrections:
     warning: SwiftShader software-renderer evidence remains non-target and cannot settle the requested hardware 60 FPS claim.
 
 next_action:
-  task: T37
-  action: whole-studio settlement — conformance battery, docs/status finalization, final diff inspection, implementation report
+  task: null
+  action: none — plan settled (v0.5.1 amendment T29-T37)
   reason: >-
     T29-T36 are implemented and adversarially confirmed: T29 canonical Game Model + staleness (independent
     adversarial CONFIRM; 4 defects found and fixed in the confirmation round), T30 resource resolution +
