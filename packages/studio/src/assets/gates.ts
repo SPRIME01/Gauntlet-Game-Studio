@@ -8,7 +8,7 @@
  */
 
 import type { AssetRecord, AssetOrigin } from "@gauntlet/contracts";
-import { isGeometryRole, isGltfRepresentation } from "../normalize/abi";
+import { isGeometryRole, isGltfRepresentation, isProceduralCodeRoute } from "../normalize/abi";
 
 export type GateStatus = "pass" | "fail" | "blocked" | "waived";
 
@@ -270,9 +270,15 @@ export function evaluateAsset(
   results.push(budgetGate(record, waivedGates));
   results.push(textureFormatGate(record));
 
-  // GLB production ABI gate (REQ-GLB-001): geometry enters production as
-  // normalized glTF/GLB; provider object graphs never leak through.
-  if (isGeometryRole(record.role) && !isGltfRepresentation(record.runtime_representation)) {
+  // GLB production ABI gate (REQ-GLB-001, clarified v0.5.1): geometry enters
+  // production as normalized glTF/GLB; settled procedural code-module routes
+  // (img2threejs reconstruction, DCC committed modules) keep their inspectable
+  // representation; provider object graphs never leak through.
+  if (
+    isGeometryRole(record.role) &&
+    !isProceduralCodeRoute(record) &&
+    !isGltfRepresentation(record.runtime_representation)
+  ) {
     results.push({
       gate: "glb_abi",
       status: "fail",
