@@ -236,3 +236,96 @@ describe("T34 correction round 1 — work-request operability end-to-end", () =>
     stop();
   });
 });
+
+describe("T34 correction round 2 — D1-D6 regression teeth", () => {
+  test("D1: third work_submit in one session gets a fresh seq; owner review hits the right request", async () => {
+    const { base, tokens, call, stop } = await (async () => {
+      const root = tmpProject();
+      const started = startCockpitServer({ projectRoot: root, port: 0 });
+      const boot = (await (await fetch(`http://127.0.0.1:${started.server.port}/api/boot?t=${started.tokens.human}`)).json()) as { agentToken: string };
+      const headers = { "content-type": "application/json", "x-cockpit-token": boot.agentToken };
+      const call = async (name: string, input: unknown) =>
+        (await (await fetch(`http://127.0.0.1:${started.server.port}/api/agent/tool`, { method: "POST", headers, body: JSON.stringify({ name, input }) })).json()) as { ok: boolean; result?: { seq?: number; requests?: { seq: number; status: string; text: string }[] }; error?: { code: string } };
+      return { base: `http://127.0.0.1:${started.server.port}`, tokens: started.tokens, call, stop: started.stop };
+    })();
+
+    // Three submits in one session (the exact aliasing scenario).
+    const s1 = await call("work_submit", { text: "request one" });
+    const s2 = await call("work_submit", { text: "request two" });
+    const s3 = await call("work_submit", { text: "request three" });
+    const seqs = [s1.result!.seq!, s2.result!.seq!, s3.result!.seq!];
+    expect(new Set(seqs).size).toBe(3);
+
+    // Owner rejects request two; the handle must hit request two, not three.
+    const reject = await (await fetch(`${base}/api/agent/action`, { method: "POST", headers: { "x-cockpit-token": tokens.human }, body: JSON.stringify({ op: "human.work-cancel", args: { seq: seqs[1], note: "not now" } }) })).json();
+    expect(reject.ok).toBe(true);
+    const listing = await call("work_get", {});
+    const requests = listing.result!.requests!;
+    const bySeq = new Map(requests.map((r) => [r.seq, r]));
+    expect(bySeq.get(seqs[1])?.status).toBe("cancelled");
+    expect(bySeq.get(seqs[2])?.status).toBe("queued");
+    expect(bySeq.get(seqs[2])?.text).toBe("request three");
+    // No duplicate seq rows.
+    expect(requests.filter((r) => r.seq === seqs[1]).length).toBe(1);
+    stop();
+  });
+
+  test("D2: work_submit is advertised on /api/boot and /mcp tools/list", async () => {
+    const { base, agentHeaders, boot, stop } = await (async () => {
+      const root = tmpProject();
+      const started = startCockpitServer({ projectRoot: root, port: 0 });
+      const boot = (await (await fetch(`http://127.0.0.1:${started.server.port}/api/boot?t=${started.tokens.human}`)).json()) as { agentToken: string; activeTools: string[] };
+      const headers = { "content-type": "application/json", "x-cockpit-token": boot.agentToken };
+      return { base: `http://127.0.0.1:${started.server.port}`, agentHeaders: headers, boot, stop: started.stop };
+    })();
+    expect(boot.activeTools).toContain("work_submit");
+    const mcpList = (await (await fetch(`${base}/mcp`, { method: "POST", headers: agentHeaders, body: JSON.stringify({ id: 1, method: "tools/list", params: {} }) })).json()) as { result: { tools: { name: string }[] } };
+    expect(mcpList.result.tools.map((t) => t.name)).toContain("work_submit");
+    stop();
+  });
+
+  test("D3: work_update refusals carry the tool contract shape (error.code)", async () => {
+    const { cockpit, stop } = await (async () => {
+      const root = tmpProject();
+      const started = startCockpitServer({ projectRoot: root, port: 0 });
+      return { cockpit: started.cockpit, stop: started.stop };
+    })();
+    const result = cockpit.tool("work_update", { id: 999, status: "running" });
+    expect(result.ok).toBe(false);
+    expect((result as { error?: { code: string } }).error?.code).toBeDefined();
+    stop();
+  });
+
+  test("D4: work history starts with the queued step attributed to the submitter", async () => {
+    const { call, stop } = await (async () => {
+      const root = tmpProject();
+      const started = startCockpitServer({ projectRoot: root, port: 0 });
+      const boot = (await (await fetch(`http://127.0.0.1:${started.server.port}/api/boot?t=${started.tokens.human}`)).json()) as { agentToken: string };
+      const headers = { "content-type": "application/json", "x-cockpit-token": boot.agentToken };
+      const call = async (name: string, input: unknown) =>
+        (await (await fetch(`http://127.0.0.1:${started.server.port}/api/agent/tool`, { method: "POST", headers, body: JSON.stringify({ name, input }) })).json()) as { ok: boolean; result?: { requests?: { seq: number; actor?: string; history?: { status: string; by: string }[] }[] } };
+      return { call, stop: started.stop };
+    })();
+    const submitted = await call("work_submit", { text: "agent-submitted request" });
+    const listing = await call("work_get", {});
+    const request = listing.result!.requests!.find((r) => r.seq === submitted.result!.seq);
+    expect(request?.history?.[0]?.status).toBe("queued");
+    expect(request?.history?.[0]?.by).toBe("agent");
+    stop();
+  });
+
+  test("D5: degenerate replay id matches nothing (evidence-missing, never everything)", async () => {
+    const { root, stop } = await (async () => {
+      const root = tmpProject();
+      mkdirSync(join(root, "artifacts", "runs", "run-something"), { recursive: true });
+      writeFileSync(join(root, "artifacts", "runs", "run-something", "settlement-01.json"), JSON.stringify({ id: "settlement-x", decision: "settled", requirement_ids: [] }));
+      return { root, stop: null as null | (() => void) };
+    })();
+    const world = await import("../src/server/world");
+    const env = world.openWorld(root);
+    const result = world.replay(env, "expectation:");
+    expect(result.verdict).toBe("evidence-missing");
+    rmSync(root, { recursive: true, force: true });
+    void stop;
+  });
+});

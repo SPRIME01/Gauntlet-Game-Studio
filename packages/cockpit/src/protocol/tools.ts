@@ -226,6 +226,9 @@ export function activeTools(ctx: { focus?: string; screenMode?: string; pendingW
   active.add("get_release_matrix");
   active.add("workbench");
   active.add("work_get");
+  // Submitting work is always available once the cockpit is connected: the
+  // work line is a persistent surface, not a context-gated one.
+  active.add("work_submit");
   const focus = ctx.focus ?? "";
   if (focus.startsWith("resources:") || focus.startsWith("reservoir:")) {
     active.add("get_resources");

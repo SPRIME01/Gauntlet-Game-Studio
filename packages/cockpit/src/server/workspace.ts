@@ -325,10 +325,13 @@ export function workMove(state: WorkspaceState, seq: number, to: RequestStatus, 
   return { next, result: ok(next, [`work.${seq}.${to}`]) };
 }
 
-export function workInsert(state: WorkspaceState, text: string, kind: string): { next: WorkspaceState; result: CockpitResult; seq: number } {
+export function workInsert(state: WorkspaceState, text: string, kind: string, actor: Role | "owner" = "owner"): { next: WorkspaceState; result: CockpitResult; seq: number } {
   const next = structuredClone(state);
-  const seq = (next.work.at(-1)?.seq ?? 0) + 1;
-  next.work.push({ seq, text: text.slice(0, 2000), kind, status: "queued", actor: "owner", refs: [], history: [{ ts: new Date().toISOString(), status: "queued", by: "human" }] });
+  // Seq allocation is MAX(seq)+1 over the whole list, never position-based:
+  // the list is ordered newest-first after a rebuild, and aliasing a live
+  // request's handle would route owner review to the wrong request.
+  const seq = next.work.reduce((max, w) => Math.max(max, w.seq), 0) + 1;
+  next.work.push({ seq, text: text.slice(0, 2000), kind, status: "queued", actor, refs: [], history: [{ ts: new Date().toISOString(), status: "queued", by: actor }] });
   const result = ok(next, [`work.${seq}.queued`]);
   return { next, result, seq };
 }

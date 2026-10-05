@@ -138,9 +138,12 @@ export class CockpitDb {
 
   insertWorkRequest(text: string, kind: string, actor: string, refs: string[]): number {
     const now = new Date().toISOString();
+    // The queued step is part of the durable history from birth, and the actor
+    // records who actually submitted (agent on the owner's behalf, or owner).
+    const history = JSON.stringify([{ ts: now, status: "queued", by: actor }]);
     const result = this.db
-      .query("INSERT INTO work_requests (text, kind, actor, refs, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)")
-      .run(text, kind, actor, JSON.stringify(refs), now, now);
+      .query("INSERT INTO work_requests (text, kind, actor, refs, history, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
+      .run(text, kind, actor, JSON.stringify(refs), history, now, now);
     return Number(result.lastInsertRowid);
   }
 

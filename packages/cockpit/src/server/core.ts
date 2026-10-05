@@ -127,12 +127,13 @@ export class Cockpit {
     return result;
   }
 
-  /** Submit a work request (owner intent, routed by the executor). */
+  /** Submit a work request. The actor records who actually submitted —
+   * agent requests are queued on the owner's behalf and say so. */
   workSubmit(text: string, kind = "unclassified"): { ok: true; seq: number } | CockpitResult {
-    const { next, result, seq } = workInsert(this.workspace, text, kind);
+    const { next, result, seq } = workInsert(this.workspace, text, kind, this.role);
     if (!result.ok) return result;
     this.workspace = next;
-    this.db.insertWorkRequest(text, kind, "owner", []);
+    this.db.insertWorkRequest(text, kind, this.role, []);
     this.persist();
     return { ok: true, seq };
   }
@@ -346,7 +347,9 @@ export class Cockpit {
         }
         case "work_update": {
           const result = this.workMove(args.id as number, args.status as RequestStatus, args.note as string | undefined);
-          return compose(result);
+          // Tool contract shape: refusals carry error.{code,message} like every
+          // other tool, so schema-driven clients see the code.
+          return compose(result.ok ? result : { ok: false, error: { code: result.code, message: result.message } });
         }
         default:
           return compose({ ok: false, error: { code: "UNKNOWN_TOOL", message: `tool '${name}' has no implementation` } });

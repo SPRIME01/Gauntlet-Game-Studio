@@ -14,4 +14,7 @@ __pycache__/
 chrome-profile/
 
 # Tool-local editor state (synced from .gitignore by ZCode)
-.zcodeignore.cockpit/
+.zcodeignore
+
+# Disposable cockpit databases (projection + cockpit state; never truth)
+.cockpit/

@@ -351,8 +351,10 @@ export function replay(env: WorldEnv, expectationId: string): {
       if (settlements.length > 0) runs.push({ run: entry, settlements, decisions });
     }
   }
-  const needle = expectationId.replace(/^expectation[-:]?/, "").toLowerCase();
-  const matching = runs.filter((r) =>
+  const needle = expectationId.replace(/^expectation[-:]?/, "").trim().toLowerCase();
+  // A degenerate id (empty after prefix stripping) matches nothing: over-
+  // matching would present unrelated runs as if they answered the question.
+  const matching = needle.length === 0 ? [] : runs.filter((r) =>
     r.run.toLowerCase().includes(needle) ||
     r.settlements.some((s) => s.toLowerCase().includes(needle)),
   );
