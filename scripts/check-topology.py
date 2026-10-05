@@ -21,6 +21,7 @@ APPROVED_PACKAGES = {
     "packages/studio",
     "packages/runtime",
     "packages/adapters",
+    "packages/cockpit",
     "apps/studio-cli",
 }
 

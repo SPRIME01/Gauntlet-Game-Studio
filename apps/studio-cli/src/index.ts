@@ -6,6 +6,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { startCockpitServer, Cockpit as GameCockpit } from "@gauntlet/cockpit";
 import {
   getDoctorStudioResult,
   loadStudioConfig,
@@ -30,6 +31,7 @@ import {
   type QualityEvidenceRow,
   type ReleaseEvidenceRow,
   type ReleaseDimension,
+
   type ResourceSourceProvider,
   collectDerivativeStamps,
   evaluateProjectStaleness,
@@ -690,6 +692,80 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         console.log(JSON.stringify({ status: "failed", operation: "studio.case", diagnostics: { error: err instanceof Error ? err.message : String(err) } }, null, 2));
         return 1;
       }
+    }
+
+    case "cockpit": {
+      const sub = filteredArgs[1] || "status";
+      const projectIdx = filteredArgs.indexOf("--project");
+      const projectRoot = path.resolve(projectIdx >= 0 ? filteredArgs[projectIdx + 1] || process.cwd() : process.cwd());
+      const emitC = (res: StudioResult) => console.log(JSON.stringify(res, null, 2));
+
+      if (sub === "up") {
+        const portIdx = filteredArgs.indexOf("--port");
+        const port = portIdx >= 0 ? Number(filteredArgs[portIdx + 1]) : 7740;
+        try {
+          const { server, tokens, stop } = startCockpitServer({ projectRoot, port });
+          emitC({
+            status: "success",
+            operation: "studio.cockpit.up",
+            result: {
+              url: `http://127.0.0.1:${server.port}/#t=${tokens.human}`,
+              loopback_only: true,
+              note: "human token in the URL fragment; agent token is issued to the human via /api/boot. Ctrl+C stops the server.",
+            },
+            diagnostics: {},
+          });
+          const shutdown = () => {
+            stop();
+            process.exit(0);
+          };
+          process.on("SIGINT", shutdown);
+          process.on("SIGTERM", shutdown);
+          return 0; // long-running when not piped
+        } catch (err: unknown) {
+          emitC({ status: "failed", operation: "studio.cockpit.up", diagnostics: { error: err instanceof Error ? err.message : String(err) } });
+          return 1;
+        }
+      }
+
+      if (sub === "tool") {
+        // Headless single tool call against a temporary cockpit: studio cockpit tool <name> '<json>'
+        const name = filteredArgs[2];
+        let input: unknown = {};
+        const inputIdx = filteredArgs.indexOf("--input");
+        if (inputIdx >= 0) input = JSON.parse(filteredArgs[inputIdx + 1]);
+        try {
+          const cockpit = new GameCockpit({ projectRoot, role: "agent" });
+          const outcome = cockpit.tool(name ?? "get_status", input);
+          cockpit.close();
+          emitC({
+            status: outcome.ok ? "success" : "failed",
+            operation: `studio.cockpit.tool.${name}`,
+            ...(outcome.ok ? { result: outcome.result } : { diagnostics: { error: outcome.error?.message ?? "tool error", code: outcome.error?.code ?? "TOOL_ERROR" } }),
+          } as StudioResult);
+          return outcome.ok ? 0 : 1;
+        } catch (err: unknown) {
+          emitC({ status: "failed", operation: "studio.cockpit.tool", diagnostics: { error: err instanceof Error ? err.message : String(err) } });
+          return 1;
+        }
+      }
+
+      if (sub === "rebuild") {
+        try {
+          const cockpit = new GameCockpit({ projectRoot, role: "agent" });
+          cockpit.db.destroy();
+          cockpit.rebuild();
+          cockpit.close();
+          emitC({ status: "success", operation: "studio.cockpit.rebuild", result: { rebuilt: true, note: "projection rebuilt from canonical files; canonical truth untouched" }, diagnostics: {} });
+          return 0;
+        } catch (err: unknown) {
+          emitC({ status: "failed", operation: "studio.cockpit.rebuild", diagnostics: { error: err instanceof Error ? err.message : String(err) } });
+          return 1;
+        }
+      }
+
+      emitC({ status: "failed", operation: "studio.cockpit", diagnostics: { error: `unknown subcommand '${sub}' (up|tool|rebuild)`, code: "UNKNOWN_SUBCOMMAND" } });
+      return 1;
     }
 
     case "model": {

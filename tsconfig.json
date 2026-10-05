@@ -17,7 +17,8 @@
       "@gauntlet/contracts": ["./packages/contracts/src/index.ts"],
       "@gauntlet/studio": ["./packages/studio/src/index.ts"],
       "@gauntlet/runtime": ["./packages/runtime/src/index.ts"],
-      "@gauntlet/adapters": ["./packages/adapters/src/index.ts"]
+      "@gauntlet/adapters": ["./packages/adapters/src/index.ts"],
+      "@gauntlet/cockpit": ["./packages/cockpit/src/index.ts"]
     }
   },
   "include": [
