@@ -25,10 +25,9 @@ interface ModelContextLike {
 }
 
 function modelContext(): ModelContextLike | null {
-  const doc = document as Document & { modelContext?: ModelContextLike; navigator?: Navigator & { modelContext?: ModelContextLike } };
-  if (doc.modelContext) return doc.modelContext;
-  const nav = (globalThis as { navigator?: Navigator & { modelContext?: ModelContextLike } }).navigator;
-  return nav?.modelContext ?? null;
+  const globalObj = globalThis as { document?: { modelContext?: ModelContextLike }; navigator?: { modelContext?: ModelContextLike } };
+  if (globalObj.document?.modelContext) return globalObj.document.modelContext;
+  return globalObj.navigator?.modelContext ?? null;
 }
 
 const withdrawn = new Map<string, AbortController>();
