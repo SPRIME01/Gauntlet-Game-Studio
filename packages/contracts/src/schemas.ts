@@ -706,6 +706,29 @@ export const GameModelKnownSchema = z
       .strict()
       .optional(),
     north_star: z.object({ references: z.array(NorthStarReferenceSchema).max(256).optional() }).strict().optional(),
+    // Professional quality bar (REQ-QUAL-001): project-specific criteria across
+    // named dimensions. Criteria are declared; their states are DERIVED from
+    // evidence, never declared here. No numeric score exists anywhere.
+    quality_bar: z
+      .object({
+        criteria: z
+          .array(
+            z
+              .object({
+                id: z.string().regex(/^[a-z0-9_.-]+$/),
+                dimension: z.enum(["player-feel", "visual", "world", "audio", "ux", "technical", "release"]),
+                requirement: z.string().min(1).max(1000),
+                evidence_refs: z.array(z.string().min(1).max(160)).max(16).default([]),
+                not_applicable_reason: z.string().max(600).optional(),
+                target: z.string().max(60).optional(),
+              })
+              .strict(),
+          )
+          .min(1)
+          .max(256),
+      })
+      .strict()
+      .optional(),
     unknowns: z.array(UnknownSchema).max(256).optional(),
     contradictions: z.array(ContradictionSchema).max(128).optional(),
     decisions: z.array(GameModelDecisionSchema).max(4096).optional(),

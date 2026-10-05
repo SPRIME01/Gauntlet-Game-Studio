@@ -24,6 +24,12 @@ import {
   projectToGodot,
   checkGodotExportPreflight,
   WorldManifestError,
+  evaluateQualityBar,
+  deriveReleaseMatrix,
+  deriveGameCase,
+  type QualityEvidenceRow,
+  type ReleaseEvidenceRow,
+  type ReleaseDimension,
   type ResourceSourceProvider,
   collectDerivativeStamps,
   evaluateProjectStaleness,
@@ -626,6 +632,64 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         console.log(`\nOverall Status: ${result.status.toUpperCase()}\n`);
       }
       return result.status === "success" ? 0 : 1;
+    }
+
+    case "quality": {
+      const sub = filteredArgs[1] || "bar";
+      const projectIdx = filteredArgs.indexOf("--project");
+      const projectRoot = projectIdx >= 0 ? filteredArgs[projectIdx + 1] : process.cwd();
+      try {
+        if (sub !== "bar") throw new Error(`unknown subcommand '${sub}'`);
+        const model = loadGameModel(gameSpecPathFor(projectRoot));
+        const evidence = collectSettlementEvidence(projectRoot);
+        const evaluation = evaluateQualityBar(model, evidence);
+        console.log(JSON.stringify({ status: "success", operation: "studio.quality.bar", result: evaluation, diagnostics: { note: "states derive from evidence; unknown stays unknown; no numeric score exists" } }, null, 2));
+        return 0;
+      } catch (err: unknown) {
+        console.log(JSON.stringify({ status: "failed", operation: `studio.quality.${sub}`, diagnostics: { error: err instanceof Error ? err.message : String(err) } }, null, 2));
+        return 1;
+      }
+    }
+
+    case "release": {
+      const sub = filteredArgs[1] || "matrix";
+      const projectIdx = filteredArgs.indexOf("--project");
+      const projectRoot = projectIdx >= 0 ? filteredArgs[projectIdx + 1] : process.cwd();
+      try {
+        if (sub !== "matrix") throw new Error(`unknown subcommand '${sub}'`);
+        const model = loadGameModel(gameSpecPathFor(projectRoot));
+        const config = loadStudioConfig(projectRoot);
+        const declaredTargets = [
+          "web",
+          ...(config.production?.targets.map((t) => t.id) ?? []),
+        ];
+        const evidence = collectReleaseEvidence(projectRoot, declaredTargets);
+        const matrix = deriveReleaseMatrix({ model, declaredTargets, evidence });
+        console.log(JSON.stringify({ status: "success", operation: "studio.release.matrix", result: matrix, diagnostics: { note: matrix.note } }, null, 2));
+        return 0;
+      } catch (err: unknown) {
+        console.log(JSON.stringify({ status: "failed", operation: `studio.release.${sub}`, diagnostics: { error: err instanceof Error ? err.message : String(err) } }, null, 2));
+        return 1;
+      }
+    }
+
+    case "case": {
+      const projectIdx = filteredArgs.indexOf("--project");
+      const projectRoot = projectIdx >= 0 ? filteredArgs[projectIdx + 1] : process.cwd();
+      try {
+        const model = loadGameModel(gameSpecPathFor(projectRoot));
+        const staleness = evaluateProjectStaleness(model, collectDerivativeStamps(projectRoot));
+        const quality = evaluateQualityBar(model, collectSettlementEvidence(projectRoot));
+        const config = loadStudioConfig(projectRoot);
+        const declaredTargets = ["web", ...(config.production?.targets.map((t) => t.id) ?? [])];
+        const release = deriveReleaseMatrix({ model, declaredTargets, evidence: collectReleaseEvidence(projectRoot, declaredTargets) });
+        const gameCase = deriveGameCase({ model, staleness, quality, release });
+        console.log(JSON.stringify({ status: "success", operation: "studio.case", result: gameCase, diagnostics: { note: "derived, read-only, stored nowhere; the primary move is guidance, not authority" } }, null, 2));
+        return 0;
+      } catch (err: unknown) {
+        console.log(JSON.stringify({ status: "failed", operation: "studio.case", diagnostics: { error: err instanceof Error ? err.message : String(err) } }, null, 2));
+        return 1;
+      }
     }
 
     case "model": {
@@ -2325,4 +2389,45 @@ if (import.meta.main) {
   main().then((code) => {
     if (code !== 0) process.exit(code);
   });
+}
+
+
+/** Collect settlement records as quality evidence rows (target/dimension untagged). */
+function collectSettlementEvidence(projectRoot: string): QualityEvidenceRow[] {
+  const rows: QualityEvidenceRow[] = [];
+  const runsDir = path.join(projectRoot, "artifacts", "runs");
+  if (!fs.existsSync(runsDir)) return rows;
+  for (const entry of fs.readdirSync(runsDir)) {
+    const runDir = path.join(runsDir, entry);
+    if (!fs.statSync(runDir).isDirectory()) continue;
+    for (const file of fs.readdirSync(runDir).filter((f) => f.startsWith("settlement-") && f.endsWith(".json"))) {
+      try {
+        const body = JSON.parse(fs.readFileSync(path.join(runDir, file), "utf8")) as Record<string, unknown>;
+        rows.push({
+          id: String(body.id ?? file),
+          requirement_ids: Array.isArray(body.requirement_ids) ? (body.requirement_ids as string[]) : [],
+          decision: (body.decision as QualityEvidenceRow["decision"]) ?? "incomplete",
+          ...(body.blockage_class ? { result: "fail" as const } : {}),
+        });
+      } catch {
+        /* unreadable settlement is skipped; it cannot settle anything */
+      }
+    }
+  }
+  return rows;
+}
+
+/** Collect settlement evidence tagged for the release matrix (dimension unknown → unknown state). */
+function collectReleaseEvidence(projectRoot: string, declaredTargets: string[]): ReleaseEvidenceRow[] {
+  const rows: ReleaseEvidenceRow[] = [];
+  for (const row of collectSettlementEvidence(projectRoot)) {
+    for (const target of declaredTargets) {
+      rows.push({
+        ...row,
+        target,
+        dimension: "scenarios" as ReleaseDimension,
+      });
+    }
+  }
+  return rows;
 }
