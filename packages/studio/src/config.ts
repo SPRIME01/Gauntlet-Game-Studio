@@ -35,6 +35,25 @@ export const StudioConfigSchema = z
       }),
     providers: z.record(z.string(), z.string()).default({}),
     secrets: z.record(z.string(), z.string()).default({}),
+    // Production targets (REQ-GODOT-002): an explicit modeled distinction,
+    // additive and optional. The reference runtime above stays `three`; this
+    // never renames or replaces it.
+    production: z
+      .object({
+        engine: z.literal("godot").default("godot"),
+        targets: z
+          .array(
+            z
+              .object({
+                id: z.enum(["godot.web", "godot.android", "godot.ios"]),
+                quality_profile: z.string().max(120).optional(),
+              })
+              .strict(),
+          )
+          .min(1)
+          .max(8),
+      })
+      .optional(),
   })
   .strict();
 

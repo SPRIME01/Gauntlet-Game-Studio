@@ -101,3 +101,7 @@ export function validateDccJob(data: unknown) {
 export function validateAnimationResourceContract(data: unknown) {
   return S.AnimationResourceContractSchema.parse(data);
 }
+
+export function validateWorldManifest(data: unknown) {
+  return S.WorldManifestSchema.parse(data);
+}

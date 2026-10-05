@@ -26,3 +26,4 @@ export * from "./resources/exceptions";
 export * from "./normalize/plan";
 export * from "./normalize/abi";
 export * from "./dcc/jobs";
+export * from "./worldmanifest/manifest";

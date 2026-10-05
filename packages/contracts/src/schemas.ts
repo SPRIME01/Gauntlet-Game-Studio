@@ -1043,3 +1043,137 @@ export const AnimationResourceContractSchema = z
   .strict();
 
 export type AnimationResourceContract = z.infer<typeof AnimationResourceContractSchema>;
+
+// ── Engine-neutral World Manifest (REQ-GODOT-003, v0.5.0 amendment) ─────────
+
+export const WorldManifestSchema = z
+  .object({
+    schema: z.literal("gauntlet.world.manifest"),
+    schema_version: z.literal("1.0"),
+    id: z.string().min(1).max(160),
+    game_id: z.string().min(1).max(160),
+    zones: z
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^[a-z0-9_.-]+$/),
+            name: z.string().min(1).max(160),
+            summary: z.string().max(2000).optional(),
+            bounds: z.object({ min: z.tuple([z.number(), z.number(), z.number()]), max: z.tuple([z.number(), z.number(), z.number()]) }).strict().optional(),
+          })
+          .strict(),
+      )
+      .max(256),
+    placements: z
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^[a-z0-9_.-]+$/),
+            zone: z.string().regex(/^[a-z0-9_.-]+$/),
+            asset_ref: z.string().min(1).max(200),
+            position: z.tuple([z.number(), z.number(), z.number()]),
+            rotation_euler: z.tuple([z.number(), z.number(), z.number()]).optional(),
+            scale: z.tuple([z.number(), z.number(), z.number()]).optional(),
+            sockets: z.record(z.string(), z.tuple([z.number(), z.number(), z.number()])).optional(),
+          })
+          .strict(),
+      )
+      .max(8192),
+    scatter_rules: z
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^[a-z0-9_.-]+$/),
+            zone: z.string().regex(/^[a-z0-9_.-]+$/),
+            asset_ref: z.string().min(1).max(200),
+            density_per_100m2: z.number().nonnegative(),
+            seed: z.number().int(),
+            scale_range: z.tuple([z.number().nonnegative(), z.number()]).optional(),
+          })
+          .strict(),
+      )
+      .max(256),
+    lighting: z
+      .object({
+        summary: z.string().max(2000).optional(),
+        params: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
+      })
+      .strict(),
+    atmosphere: z
+      .object({
+        summary: z.string().max(2000).optional(),
+        params: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
+      })
+      .strict(),
+    colliders: z
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^[a-z0-9_.-]+$/),
+            placement_ref: z.string().regex(/^[a-z0-9_.-]+$/).optional(),
+            zone: z.string().regex(/^[a-z0-9_.-]+$/).optional(),
+            kind: z.enum(["box", "sphere", "capsule", "trimesh", "heightfield"]),
+            params: z.record(z.string(), z.unknown()).default({}),
+          })
+          .strict(),
+      )
+      .max(4096),
+    // Navigation is referenced, never generated here: navmesh authority stays
+    // with the navigation capability (REQ-GODOT-003).
+    navigation: z
+      .object({
+        surfaces: z.array(z.string().regex(/^[a-z0-9_.-]+$/)).max(64).default([]),
+        agent_radius: z.number().positive().optional(),
+        summary: z.string().max(1000).optional(),
+      })
+      .strict(),
+    // Terrain is referenced by asset id; terrain authority stays with the
+    // canonical TerrainHeightfield (REQ-GODOT-003).
+    terrain_ref: z.string().max(200).optional(),
+    spawn_points: z
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^[a-z0-9_.-]+$/),
+            zone: z.string().regex(/^[a-z0-9_.-]+$/),
+            position: z.tuple([z.number(), z.number(), z.number()]),
+            kind: z.enum(["player", "enemy", "npc", "objective"]),
+          })
+          .strict(),
+      )
+      .max(512),
+    interaction_anchors: z
+      .array(
+        z
+          .object({
+            id: z.string().regex(/^[a-z0-9_.-]+$/),
+            placement_ref: z.string().regex(/^[a-z0-9_.-]+$/).optional(),
+            position: z.tuple([z.number(), z.number(), z.number()]).optional(),
+            interaction: z.string().min(1).max(200),
+          })
+          .strict(),
+      )
+      .max(512),
+    lod_policy: z
+      .object({
+        summary: z.string().max(1000).optional(),
+        per_asset: z.record(z.string(), z.string().max(200)).default({}),
+      })
+      .strict(),
+    streaming_hints: z
+      .array(
+        z
+          .object({
+            zone: z.string().regex(/^[a-z0-9_.-]+$/),
+            policy: z.string().min(1).max(200),
+          })
+          .strict(),
+      )
+      .max(64)
+      .default([]),
+    built_from: z.number().int().nonnegative().optional(),
+    reads: z.array(z.string().min(1).max(120)).max(64).default([]),
+  })
+  .strict();
+
+export type WorldManifest = z.infer<typeof WorldManifestSchema>;

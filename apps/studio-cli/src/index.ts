@@ -18,6 +18,12 @@ import {
   listCreationExceptions,
   exceptionsPathFor,
   ResourceResolverError,
+  loadWorldManifest,
+  validateReferences,
+  projectToThree,
+  projectToGodot,
+  checkGodotExportPreflight,
+  WorldManifestError,
   type ResourceSourceProvider,
   collectDerivativeStamps,
   evaluateProjectStaleness,
@@ -1839,6 +1845,93 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
 
       emit({ status: "failed", operation: "studio.resource", diagnostics: { error: `unknown subcommand '${sub}' (resolve|reservoir|exceptions|exception)`, code: "UNKNOWN_SUBCOMMAND" } });
       return 1;
+    }
+
+    case "world": {
+      const sub = filteredArgs[1] || "validate";
+      try {
+        if (sub === "validate") {
+          const fileIdx = filteredArgs.indexOf("--file");
+          const path = fileIdx >= 0 ? filteredArgs[fileIdx + 1] : undefined;
+          if (!path) {
+            console.log(JSON.stringify({ status: "failed", operation: "studio.world.validate", diagnostics: { error: "usage: studio world validate --file <manifest.json>", code: "USAGE" } }, null, 2));
+            return 1;
+          }
+          const manifest = loadWorldManifest(path);
+          const problems = validateReferences(manifest);
+          const res: StudioResult = {
+            status: problems.length > 0 ? "degraded" : "success",
+            operation: "studio.world.validate",
+            result: { id: manifest.id, game_id: manifest.game_id, zones: manifest.zones.length, placements: manifest.placements.length, reference_problems: problems },
+            diagnostics: {},
+          };
+          console.log(JSON.stringify(res, null, 2));
+          return problems.length > 0 ? 2 : 0;
+        }
+        if (sub === "project") {
+          const fileIdx = filteredArgs.indexOf("--file");
+          const targetIdx = filteredArgs.indexOf("--target");
+          const target = targetIdx >= 0 ? filteredArgs[targetIdx + 1] : "three";
+          const manifest = loadWorldManifest(filteredArgs[fileIdx >= 0 ? fileIdx + 1 : 0] ?? "");
+          const projection = target === "godot" ? projectToGodot(manifest) : projectToThree(manifest);
+          console.log(JSON.stringify({ status: "success", operation: "studio.world.project", result: projection, diagnostics: { engine: projection.engine } }, null, 2));
+          return 0;
+        }
+        console.log(JSON.stringify({ status: "failed", operation: "studio.world", diagnostics: { error: `unknown subcommand '${sub}' (validate|project)`, code: "UNKNOWN_SUBCOMMAND" } }, null, 2));
+        return 1;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const code = err instanceof WorldManifestError ? err.code : "WORLD_ERROR";
+        console.log(JSON.stringify({ status: "failed", operation: `studio.world.${sub}`, diagnostics: { error: msg, code } }, null, 2));
+        return 1;
+      }
+    }
+
+    case "godot": {
+      const sub = filteredArgs[1] || "preflight";
+      try {
+        if (sub === "preflight") {
+          const targetIdx = filteredArgs.indexOf("--target");
+          const target = (targetIdx >= 0 ? filteredArgs[targetIdx + 1] : "godot.web") as "godot.web" | "godot.android" | "godot.ios";
+          const preflight = checkGodotExportPreflight(target);
+          const res: StudioResult = {
+            status: preflight.status === "available" ? "success" : "blocked",
+            operation: "studio.godot.preflight",
+            result: preflight,
+            diagnostics: { exit_code_semantics: "blocked = toolchain unavailable; this never claims readiness" },
+          };
+          console.log(JSON.stringify(res, null, 2));
+          return preflight.status === "available" ? 0 : 2;
+        }
+        if (sub === "generate") {
+          const projectIdx = filteredArgs.indexOf("--project");
+          const projectRoot = projectIdx >= 0 ? filteredArgs[projectIdx + 1] : process.cwd();
+          const fileIdx = filteredArgs.indexOf("--manifest");
+          const manifestPath = fileIdx >= 0 ? filteredArgs[fileIdx + 1] : `${projectRoot}/.studio/worlds/world.json`;
+          const manifest = loadWorldManifest(manifestPath);
+          const problems = validateReferences(manifest);
+          if (problems.length > 0) {
+            console.log(JSON.stringify({ status: "failed", operation: "studio.godot.generate", diagnostics: { error: "manifest reference problems", problems, code: "WORLD_MANIFEST_REFERENCE_MISSING" } }, null, 2));
+            return 1;
+          }
+          const projection = projectToGodot(manifest);
+          const outDir = `${projectRoot}/godot`;
+          for (const file of projection.files) {
+            const path = `${outDir}/${file.path}`;
+            const dir = path.substring(0, path.lastIndexOf("/"));
+            if (dir) fs.mkdirSync(dir, { recursive: true });
+            fs.writeFileSync(path, file.content);
+          }
+          console.log(JSON.stringify({ status: "success", operation: "studio.godot.generate", result: { engine: "godot", manifest_id: manifest.id, files: projection.files.map((f) => f.path), out_dir: outDir }, diagnostics: { note: "deterministic projection; regenerate freely — scene artifacts are projections, never semantic authority" } }, null, 2));
+          return 0;
+        }
+        console.log(JSON.stringify({ status: "failed", operation: "studio.godot", diagnostics: { error: `unknown subcommand '${sub}' (preflight|generate)`, code: "UNKNOWN_SUBCOMMAND" } }, null, 2));
+        return 1;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.log(JSON.stringify({ status: "failed", operation: `studio.godot.${sub}`, diagnostics: { error: msg, code: "GODOT_ERROR" } }, null, 2));
+        return 1;
+      }
     }
 
     case "observe": {

@@ -1,0 +1,19 @@
+{
+  "status": "blocked",
+  "operation": "studio.godot.preflight",
+  "result": {
+    "target": "godot.ios",
+    "status": "blocked",
+    "code": "TOOLCHAIN_UNAVAILABLE",
+    "requirements": [
+      "macOS host",
+      "Xcode",
+      "Apple signing identity",
+      "export templates for iOS"
+    ],
+    "detail": "godot binary is not available on PATH; export is typed-blocked, studio operation is unaffected, and no release readiness is claimed"
+  },
+  "diagnostics": {
+    "exit_code_semantics": "blocked = toolchain unavailable; this never claims readiness"
+  }
+}
