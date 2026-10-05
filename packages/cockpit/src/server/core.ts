@@ -9,7 +9,7 @@
  * accept or cancel its own work.
  */
 
-import { join } from "node:path";
+import { join, relative, isAbsolute } from "node:path";
 import { ReservoirStore, listCreationExceptions } from "@gauntlet/studio";
 import { CockpitDb } from "./db";
 import { projectCockpitState } from "./project";
@@ -24,6 +24,7 @@ import {
 } from "./workspace";
 import * as world from "./world";
 import { TOOLS, TOOL_NAMES, activeTools, type ToolDef } from "../protocol/tools";
+import { deriveRail } from "./rail";
 import type { CockpitResult, Role, RequestStatus } from "../protocol/blocks";
 import { SurfaceSchema } from "../protocol/blocks";
 
@@ -158,11 +159,11 @@ export class Cockpit {
     const projection = projectCockpitState(this.projectRoot, {
       workRequests: this.db.listWorkRequests().map((r) => ({ seq: r.seq, text: r.text, status: r.status, kind: r.kind })),
     });
-    const [root, rest] = source.split(/:(?=.)/);
-    const key = `${root}:`;
-    void key;
-    const rootName = root;
-    const selector = (rest ?? "").split("?")[0];
+    // Root is everything before the first colon; selector is the rest (a
+    // trailing colon means "the whole root" — `evidence:` lists all runs).
+    const colonAt = source.indexOf(":");
+    const rootName = colonAt >= 0 ? source.slice(0, colonAt) : source;
+    const selector = colonAt >= 0 ? source.slice(colonAt + 1).split("?")[0] : "";
     const matchRows = (kindPrefix: string) => {
       const found = projection.rows.filter((r) => r.kind === kindPrefix || r.kind.startsWith(kindPrefix));
       return found.map((r) => JSON.parse(r.data) as Record<string, unknown>);
@@ -190,17 +191,64 @@ export class Cockpit {
         return { kind: "work:request", rows: matchRows("work:request") };
       case "affordances":
         return { kind: "gm:scenario", rows: matchRows("gm:scenario") };
-      case "evidence":
-        return { kind: "resources:evidence", rows: [] };
-      case "recipes":
-        return { kind: "recipes:record", rows: [] };
+      case "evidence": {
+        // Recorded evidence runs with their settlement decisions (read-only).
+        const rows: Record<string, unknown>[] = [];
+        const runsRoot = join(this.projectRoot, "artifacts", "runs");
+        const fs = require("node:fs");
+        if (fs.existsSync(runsRoot)) {
+          for (const entry of fs.readdirSync(runsRoot)) {
+            const runDir = join(runsRoot, entry);
+            if (!fs.statSync(runDir).isDirectory()) continue;
+            const settlements: string[] = [];
+            const decisions: string[] = [];
+            for (const file of fs.readdirSync(runDir)) {
+              if (file.startsWith("settlement-") && file.endsWith(".json")) {
+                try {
+                  const body = JSON.parse(fs.readFileSync(join(runDir, file), "utf8"));
+                  settlements.push(String(body.id ?? file));
+                  decisions.push(String(body.decision ?? "unknown"));
+                } catch {
+                  settlements.push(file);
+                  decisions.push("unreadable");
+                }
+              }
+            }
+            if (settlements.length > 0) rows.push({ run: entry, settlements, decisions });
+          }
+        }
+        return { kind: "resources:evidence", rows };
+      }
+      case "recipes": {
+        // Recipe project content records (read-only).
+        const rows: Record<string, unknown>[] = [];
+        const recipesDir = join(this.projectRoot, ".studio", "recipes");
+        const fs = require("node:fs");
+        if (fs.existsSync(recipesDir)) {
+          for (const file of fs.readdirSync(recipesDir).filter((f: string) => f.endsWith(".json"))) {
+            try {
+              rows.push(JSON.parse(fs.readFileSync(join(recipesDir, file), "utf8")) as Record<string, unknown>);
+            } catch {
+              /* unreadable recipe content is skipped, not invented */
+            }
+          }
+        }
+        return { kind: "recipes:record", rows };
+      }
       case "graph":
         return { kind: "case:state", rows: matchRows("case:state") };
       case "file": {
+        // Path-containment check with a real boundary: joining must land
+        // inside the project, not merely share a prefix (a project at /repo
+        // must not serve /repo-evil).
+        const fs = require("node:fs");
         const target = join(this.projectRoot, selector);
-        if (!target.startsWith(this.projectRoot)) return { ok: false, code: "BAD_SOURCE", message: "file sources must stay inside the project" };
-        if (!require("node:fs").existsSync(target)) return { ok: false, code: "NOT_FOUND", message: `file '${selector}' not found` };
-        const text = require("node:fs").readFileSync(target, "utf8");
+        const rel = relative(this.projectRoot, target);
+        if (rel.startsWith("..") || isAbsolute(rel)) {
+          return { ok: false, code: "BAD_SOURCE", message: "file sources must stay inside the project" };
+        }
+        if (!fs.existsSync(target)) return { ok: false, code: "NOT_FOUND", message: `file '${selector}' not found` };
+        const text = fs.readFileSync(target, "utf8");
         return { kind: "file", rows: [{ path: selector, lines: text.split("\n").slice(0, 400) }] };
       }
       default:
@@ -208,10 +256,14 @@ export class Cockpit {
     }
   }
 
-  private readSource(source: string): unknown {
-    const resolved = this.resolveSource(source);
-    if ("ok" in resolved && resolved.ok === false) return resolved;
-    return resolved as { kind: string; rows: Record<string, unknown>[] };
+  /** Resolve a bounded-grammar source to rows. Read-only; shared by the
+   * list_items tool and the /api/data endpoint (source-bound rendering). */
+  readSource(source: string): { ok: true; kind: string; rows: Record<string, unknown>[] } | CockpitResult {
+    const resolved = this.resolveSource(source) as
+      | { kind: string; rows: Record<string, unknown>[] }
+      | CockpitResult;
+    if (!("kind" in resolved)) return resolved;
+    return { ok: true, kind: resolved.kind, rows: resolved.rows };
   }
 
   tool(name: string, input: unknown): { ok: boolean; result?: unknown; error?: { code: string; message: string } } {
@@ -231,6 +283,15 @@ export class Cockpit {
 
     try {
       switch (name) {
+        case "read_source": {
+          const resolved = this.readSource(args.source as string);
+          return compose(resolved);
+        }
+        case "get_rail":
+          return compose({ ok: true, result: deriveRail(this.projectRoot, {
+            openAsks: this.workspace.answers.filter((a) => a.outcome === "deferred").length,
+            readyForReview: this.workspace.work.filter((w) => w.status === "ready_for_review").length,
+          }) });
         case "get_status": {
           const projection = projectCockpitState(this.projectRoot);
           return compose({ ok: true, result: { role: this.role, model_version: this.env.model.modelVersion, screen_mode: this.workspace.screenMode, surfaces: this.workspace.surfaces.length, pending_work: this.workspace.work.filter((w) => !["accepted", "cancelled", "failed"].includes(w.status)).length, projection_kinds: [...new Set(projection.rows.map((r) => r.kind))], rail: "release-rail (system-owned)" } });

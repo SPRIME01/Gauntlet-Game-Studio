@@ -66,3 +66,7 @@ button:hover { border-color: var(--accent); }
 .terminal-label { color: var(--accent); letter-spacing: 2px; }
 .terminal-hint { color: var(--dim); }
 .work-request { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: 3px; padding: 2px 8px; }
+.rail-item.tone-danger { color: var(--danger); }
+.rail-item.tone-warning { color: var(--warning); }
+.rail-item.tone-dim { color: var(--dim); }
+.rail-next { color: var(--accent); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

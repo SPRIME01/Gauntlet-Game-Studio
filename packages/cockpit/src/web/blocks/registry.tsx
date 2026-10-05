@@ -8,7 +8,31 @@
  * by any surface.
  */
 
-import { useClientState, human, api } from "../store";
+import { useClientState, human, fetchSourceRows } from "../store";
+import { useEffect, useState } from "react";
+
+/** Source-bound rows: fetched from the bounded-grammar server resolution. */
+function useSourceRows(block: Record<string, unknown>): { rows: Record<string, unknown>[] | null; source: string | null } {
+  const source = (block.source as string | undefined) ?? null;
+  const [rows, setRows] = useState<Record<string, unknown>[] | null>(null);
+  useEffect(() => {
+    if (!source) return;
+    let alive = true;
+    void fetchSourceRows(source).then((fetched) => {
+      if (alive) setRows(fetched);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [source]);
+  return { rows, source };
+}
+
+/** Rows for a block: source-bound if declared, else inline agent-supplied data. */
+function blockRows(block: Record<string, unknown>, fetched: Record<string, unknown>[] | null): Record<string, unknown>[] {
+  if (block.source) return fetched ?? [];
+  return (block.data as Record<string, unknown>[]) ?? [];
+}
 
 function Badge({ label, tone = "neutral" }: { label: string; tone?: string }) {
   return <span className={`badge tone-${tone}`}>{label}</span>;
@@ -39,11 +63,12 @@ function Callout({ block }: { block: Record<string, unknown> }) {
 
 function Table({ block }: { block: Record<string, unknown> }) {
   const columns = (block.columns as { field: string; label?: string; kind?: string; unit?: string }[]) ?? [];
-  const rows = (block.data as Record<string, unknown>[]) ?? [];
+  const { rows: fetched, source } = useSourceRows(block);
+  const rows = blockRows(block, fetched);
   return (
     <div className="block table">
       {block.title ? <div className="block-title">{String(block.title)}</div> : null}
-      {!block.source && rows.length > 0 ? <Badge label="agent-supplied" tone="warning" /> : null}
+      {source ? <Badge label={`sourced: ${source}`} tone="ok" /> : rows.length > 0 ? <Badge label="agent-supplied" tone="warning" /> : null}
       <table>
         <thead>
           <tr>{columns.map((c) => <th key={c.field}>{c.label ?? c.field}</th>)}</tr>
@@ -66,10 +91,11 @@ function Table({ block }: { block: Record<string, unknown> }) {
 }
 
 function Tree({ block }: { block: Record<string, unknown> }) {
-  const rows = (block.data as { id?: string; label?: string; status?: string }[]) ?? [];
+  const { rows: fetched, source } = useSourceRows(block);
+  const rows = blockRows(block, fetched) as { id?: string; label?: string; status?: string }[];
   return (
     <div className="block tree">
-      {!block.source && rows.length > 0 ? <Badge label="agent-supplied" tone="warning" /> : null}
+      {source ? <Badge label={`sourced: ${source}`} tone="ok" /> : rows.length > 0 ? <Badge label="agent-supplied" tone="warning" /> : null}
       <ul>
         {rows.map((row, i) => (
           <li key={row.id ?? i} className={`status-${row.status ?? "unknown"}`}>
@@ -82,7 +108,8 @@ function Tree({ block }: { block: Record<string, unknown> }) {
 }
 
 function Timeline({ block }: { block: Record<string, unknown> }) {
-  const rows = (block.data as { at?: string; text?: string; lane?: string }[]) ?? [];
+  const { rows: fetched } = useSourceRows(block);
+  const rows = blockRows(block, fetched) as { at?: string; text?: string; lane?: string }[];
   return (
     <div className="block timeline">
       {rows.map((row, i) => (
@@ -165,9 +192,11 @@ function Media({ block }: { block: Record<string, unknown> }) {
 }
 
 function Document({ block }: { block: Record<string, unknown> }) {
-  const rows = (block.data as { path?: string; lines?: string[] }[]) ?? [];
+  const { rows: fetched } = useSourceRows(block);
+  const rows = blockRows(block, fetched) as { path?: string; lines?: string[] }[];
   return (
     <div className="block document">
+      {block.source ? <Badge label={`sourced: ${String(block.source)}`} tone="ok" /> : null}
       <pre>{(rows[0]?.lines ?? []).join("\n")}</pre>
     </div>
   );

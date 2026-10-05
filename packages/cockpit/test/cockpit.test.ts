@@ -365,3 +365,99 @@ describe("protocol constants", () => {
     for (const op of AGENT_OPS) expect(AUTHORITY_OPS).not.toContain(op);
   });
 });
+
+describe("rail derivation and source resolution (post-settlement follow-up)", () => {
+  test("get_rail derives all thirteen fields from canonical state; no percentage anywhere", () => {
+    const root = tmpProject();
+    const cockpit = new Cockpit({ projectRoot: root, role: "agent" });
+    const rail = cockpit.tool("get_rail", {}) as { ok: boolean; result?: Record<string, unknown> };
+    expect(rail.ok).toBe(true);
+    const r = rail.result as Record<string, unknown>;
+    for (const field of [
+      "game", "model_version", "phase", "milestone", "target_platforms", "quality_profiles",
+      "contradictions", "unknowns", "stale_derivatives", "blockers", "owner_input", "next_move",
+      "release_verdict",
+    ]) {
+      expect(r[field]).toBeDefined();
+    }
+    const serialized = JSON.stringify(r);
+    expect(/percent|%|score|aaa/i.test(serialized)).toBe(false);
+    expect(String(r.release_verdict)).toContain("owner-settled");
+    cockpit.close();
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("rail reflects canonical changes: a decision bump moves model_version and staleness", () => {
+    const root = tmpProject();
+    mkdirSync(join(root, "assets"), { recursive: true });
+    writeFileSync(join(root, "assets", "manifest.json"), JSON.stringify({
+      schema: "gauntlet.asset.manifest", schema_version: "1.0",
+      records: [{ id: "rifle", built_from: 1, reads: ["camera"] }],
+    }));
+    const cockpit = new Cockpit({ projectRoot: root, role: "agent" });
+    const before = (cockpit.tool("get_rail", {}) as { result?: Record<string, unknown> }).result;
+    expect(before?.stale_derivatives).toBe(0);
+    cockpit.close();
+    // The model tool path applies a decision (camera → touched).
+    const { applyDecision } = require("../../studio/src/model/model") as typeof import("../../studio/src/model/model");
+    applyDecision(join(root, ".agents", "specs", "game.spec.yaml"), { summary: "camera to first person", touched: ["camera"] });
+    const cockpit2 = new Cockpit({ projectRoot: root, role: "agent" });
+    const after = (cockpit2.tool("get_rail", {}) as { result?: Record<string, unknown> }).result;
+    expect(after?.model_version).toBe(2);
+    expect(after?.stale_derivatives).toBe(1);
+    cockpit2.close();
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("read_source resolves the bounded grammar; file: boundary is real", () => {
+    const root = tmpProject();
+    writeFileSync(join(root, "notes.txt"), "hello from inside\n");
+    const cockpit = new Cockpit({ projectRoot: root, role: "agent" });
+    const quality = cockpit.readSource("gm:decisions") as { ok: boolean; kind: string; rows: unknown[] };
+    expect(quality.ok).toBe(true);
+    expect(quality.kind).toBe("gm:decision");
+    expect(quality.rows.length).toBe(1); // the seeded decision
+    const file = cockpit.readSource("file:notes.txt") as { ok: boolean; rows: { lines: string[] }[] };
+    expect(file.ok).toBe(true);
+    expect(file.rows[0].lines.join("\n")).toContain("inside");
+    // Prefix escape: a sibling directory sharing a prefix must NOT resolve.
+    const outsideParent = join(root, "..");
+    const sibling = join(outsideParent, "gauntlet-cockpit-evil");
+    mkdirSync(sibling, { recursive: true });
+    writeFileSync(join(sibling, "secret.txt"), "outside");
+    const evil = cockpit.readSource("file:../gauntlet-cockpit-evil/secret.txt") as { ok: boolean; code?: string };
+    expect(evil.ok).toBe(false);
+    rmSync(sibling, { recursive: true, force: true });
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("evidence: and recipes: sources resolve from real project records", () => {
+    const root = tmpProject();
+    mkdirSync(join(root, "artifacts", "runs", "run-boot-x"), { recursive: true });
+    writeFileSync(join(root, "artifacts", "runs", "run-boot-x", "settlement-01.json"), JSON.stringify({ id: "settlement-boot", decision: "settled" }));
+    mkdirSync(join(root, ".studio", "recipes"), { recursive: true });
+    writeFileSync(join(root, ".studio", "recipes", "enemy.patrol.json"), JSON.stringify({ recipe_id: "enemy.patrol", built_from: 1, reads: ["entities"] }));
+    const cockpit = new Cockpit({ projectRoot: root, role: "agent" });
+    const evidence = cockpit.readSource("evidence:") as { ok: boolean; rows: { run: string; decisions: string[] }[] };
+    expect(evidence.ok).toBe(true);
+    expect(evidence.rows[0]?.decisions).toEqual(["settled"]);
+    const recipes = cockpit.readSource("recipes:") as { ok: boolean; rows: { recipe_id: string }[] };
+    expect(recipes.rows[0]?.recipe_id).toBe("enemy.patrol");
+    cockpit.close();
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  test("live server: /api/rail serves the derived rail to any authenticated role; unauthenticated refused", async () => {
+    const { startCockpitServer } = await import("../src/server/serve");
+    const root = tmpProject();
+    const { server, tokens, stop } = startCockpitServer({ projectRoot: root, port: 0 });
+    const base = `http://127.0.0.1:${server.port}`;
+    const anon = await fetch(`${base}/api/rail`);
+    expect(anon.status).toBe(401);
+    const agent = await (await fetch(`${base}/api/rail`, { headers: { "x-cockpit-token": tokens.agent } })).json() as Record<string, unknown>;
+    expect(agent.game).toBeDefined();
+    expect(agent.release_verdict).toContain("owner-settled");
+    stop();
+    rmSync(root, { recursive: true, force: true });
+  });
+});

@@ -15,6 +15,7 @@
 
 import { Cockpit, type CockpitOptions } from "./core";
 import { activeTools, toolSchemas, TOOLS } from "../protocol/tools";
+import { deriveRail } from "./rail";
 import type { Role } from "../protocol/blocks";
 
 export interface ServeOptions {
@@ -113,10 +114,17 @@ export function startCockpitServer(options: ServeOptions): { server: ReturnType<
 
       if (url.pathname === "/api/data" && request.method === "GET") {
         const source = url.searchParams.get("source") ?? "";
-        const result = cockpit.tool("list_items", { kind: source.replace(/:$/, "") }) as { ok: boolean; result?: unknown; error?: unknown };
-        void result;
-        const read = cockpitRead(cockpit, source);
+        const read = cockpit.readSource(source);
         return Response.json(read);
+      }
+
+      if (url.pathname === "/api/rail" && request.method === "GET") {
+        // The rail is system state, readable by any authenticated role; it is
+        // rendered by the shell and addressable by no agent action.
+        return Response.json(deriveRail(cockpit.projectRoot, {
+          openAsks: cockpit.state.answers.filter((a) => a.outcome === "deferred").length,
+          readyForReview: cockpit.state.work.filter((w) => w.status === "ready_for_review").length,
+        }));
       }
 
       if (url.pathname === "/mcp" && request.method === "POST") {
@@ -181,12 +189,6 @@ export function startCockpitServer(options: ServeOptions): { server: ReturnType<
   }
 
   return { server, tokens, cockpit, stop };
-}
-
-function cockpitRead(cockpit: Cockpit, source: string): unknown {
-  const kind = source.replace(/:$/, "");
-  const result = cockpit.tool("list_items", { kind }) as { ok: boolean; result?: unknown; error?: { code: string; message: string } };
-  return result;
 }
 
 export const COCKPIT_TOOL_COUNT = TOOLS.length;

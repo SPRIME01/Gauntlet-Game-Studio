@@ -13,13 +13,56 @@ import { connect, useClientState, human, api, refreshSnapshot, type ClientState 
 import { BlockView } from "./blocks/registry";
 
 function Rail({ state }: { state: ClientState }) {
+  // The rail's fields are shell-rendered from /api/rail (derived from canonical
+  // state). No agent action can address this header; no percentage, score, or
+  // decorative KPI is rendered — by REQ-COCKPIT-002.
+  const rail = state.rail as null | {
+    game?: { title?: string; game_id?: string };
+    model_version?: number;
+    phase?: string;
+    milestone?: string;
+    target_platforms?: { target: string; settlement: string }[];
+    quality_profiles?: { declared: string[]; production_bound: string[] };
+    contradictions?: number;
+    unknowns?: number;
+    stale_derivatives?: number;
+    blockers?: number;
+    owner_input?: { open_asks: number; ready_for_review: number; owner_moves: number };
+    next_move?: { id: string; label: string; why: string } | null;
+    release_verdict?: string;
+  };
+  const targets = rail?.target_platforms ?? [];
+  const owner = rail?.owner_input;
+  const ownerNeeds = (owner?.ready_for_review ?? 0) + (owner?.open_asks ?? 0);
   return (
     <header className="rail" id="release-rail">
       <span className="rail-title">GAUNTLET</span>
-      <span className="rail-mode">workbench: {state.screenMode}</span>
-      <span className="rail-item">connected: {state.connected ? "yes" : "no"}</span>
-      <span className="rail-item">contradictions · unknowns · stale · blockers · next move · release verdict</span>
-      <span className="rail-verdict">release verdict: owner-settled</span>
+      <span className="rail-mode">{rail?.game?.title ?? "…"} · workbench: {state.screenMode}</span>
+      <span className="rail-item">model@{rail?.model_version ?? "?"}</span>
+      <span className="rail-item">phase: {rail?.phase ?? "unknown"} · {rail?.milestone ?? "no milestone"}</span>
+      <span className="rail-item">
+        targets: {targets.length === 0 ? "none declared" : targets.map((t) => `${t.target}=${t.settlement}`).join(", ")}
+      </span>
+      <span className="rail-item">
+        profiles: {(rail?.quality_profiles?.declared ?? []).join(", ") || "none declared"}
+      </span>
+      <span className={`rail-item tone-${(rail?.contradictions ?? 0) > 0 ? "danger" : "dim"}`}>
+        contradictions: {rail?.contradictions ?? "?"}
+      </span>
+      <span className="rail-item">unknowns: {rail?.unknowns ?? "?"}</span>
+      <span className={`rail-item tone-${(rail?.stale_derivatives ?? 0) > 0 ? "warning" : "dim"}`}>
+        stale: {rail?.stale_derivatives ?? "?"}
+      </span>
+      <span className={`rail-item tone-${(rail?.blockers ?? 0) > 0 ? "danger" : "dim"}`}>
+        blockers: {rail?.blockers ?? "?"}
+      </span>
+      <span className={`rail-item tone-${ownerNeeds > 0 ? "warning" : "dim"}`}>
+        owner input: {ownerNeeds > 0 ? `${ownerNeeds} pending` : "none required"}
+      </span>
+      <span className="rail-item rail-next">
+        next move: {rail?.next_move ? rail.next_move.label : "none reachable"}
+      </span>
+      <span className="rail-verdict">{rail?.release_verdict ?? "release verdict: owner-settled"}</span>
     </header>
   );
 }

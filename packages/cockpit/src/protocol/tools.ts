@@ -29,6 +29,20 @@ const BASE_TOOLS: ToolDef[] = [
     effect: "read",
   },
   {
+    name: "get_rail",
+    description: "The release rail's derived fields: game, model version, phase, milestone, per-target settlement, quality profiles, contradictions, unknowns, stale derivatives, blockers, owner input, one next move, owner-settled verdict. No percentages, no scores. Read-only.",
+    input: z.object({}).strict(),
+    effect: "read",
+    untrusted: true,
+  },
+  {
+    name: "read_source",
+    description: "Resolve a bounded-grammar source (gm:, case:, release:, quality:, resources:, reservoir:, recipes:, evidence:, work:, file:) to rows for source-bound rendering. Read-only.",
+    input: z.object({ source: SourceRef }).strict(),
+    effect: "read",
+    untrusted: true,
+  },
+  {
     name: "get_workspace",
     description: "The current workspace: open surfaces with their block ids, focus, pins, and screen mode. Read-only.",
     input: z.object({}).strict(),
@@ -226,6 +240,8 @@ export function activeTools(ctx: { focus?: string; screenMode?: string; pendingW
   active.add("get_release_matrix");
   active.add("workbench");
   active.add("work_get");
+  active.add("get_rail");
+  active.add("read_source");
   // Submitting work is always available once the cockpit is connected: the
   // work line is a persistent surface, not a context-gated one.
   active.add("work_submit");

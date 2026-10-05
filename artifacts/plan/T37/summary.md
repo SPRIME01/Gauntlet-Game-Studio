@@ -55,3 +55,8 @@ environment-composition routes preserved; plan rebound; traceability re-verified
 Next highest-leverage move: wire the release rail's data fields to the projection and complete the
 web-client source binding — they convert the cockpit's proven machinery into the owner-visible
 experience the mission describes.
+
+## Follow-up (2026-10-05): gaps 1-2 closed
+
+The release rail now renders its thirteen derived fields (see followup-rail-and-source-binding.md)
+and the web client renders source-bound blocks from the bounded grammar. 542/542 tests; just ci green.

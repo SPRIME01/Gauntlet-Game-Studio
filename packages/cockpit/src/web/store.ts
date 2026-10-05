@@ -119,6 +119,36 @@ export async function refreshSnapshot(): Promise<void> {
     focused: (workspace.result?.focused as string) ?? null,
     work: (work.result?.requests ?? []) as ClientState["work"],
   });
+  void fetchRail();
+}
+
+/** The release rail is system state: fetched by the shell, never composed by agents. */
+export async function fetchRail(): Promise<void> {
+  try {
+    const response = await fetch(`/api/rail`, { headers: { "x-cockpit-token": agentToken ?? getHumanToken() ?? "" } });
+    const rail = (await response.json()) as ClientState["rail"];
+    setState({ rail });
+  } catch {
+    /* rail stays at its last known value; absence is rendered as unknown */
+  }
+}
+
+/** Resolve a bounded-grammar source to rows for source-bound blocks. */
+const sourceCache = new Map<string, Record<string, unknown>[]>();
+
+export async function fetchSourceRows(source: string): Promise<Record<string, unknown>[] | null> {
+  if (sourceCache.has(source)) return sourceCache.get(source)!;
+  try {
+    const response = await fetch(`/api/data?source=${encodeURIComponent(source)}`, {
+      headers: { "x-cockpit-token": agentToken ?? getHumanToken() ?? "" },
+    });
+    const body = (await response.json()) as { ok: boolean; rows?: Record<string, unknown>[] };
+    if (!body.ok || !Array.isArray(body.rows)) return null;
+    sourceCache.set(source, body.rows);
+    return body.rows;
+  } catch {
+    return null;
+  }
 }
 
 /** Human ops go over the human WebSocket. Agent tools go over HTTP with the agent token. */
