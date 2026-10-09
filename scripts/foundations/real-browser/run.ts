@@ -105,10 +105,17 @@ async function main(): Promise<void> {
     },
   });
   console.info("FOUNDATION_PHASE", "launch Chromium");
-  const browser = await chromium.launch({
-    headless: true, args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader",
-      "--enable-webgl", "--disable-web-security=false"],
-  });
+  let browser;
+  try {
+    browser = await chromium.launch({
+      headless: true, args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader",
+        "--enable-webgl"],
+      timeout: 15_000,
+    });
+  } catch (error) {
+    server.stop(true); // no leaking Bun.serve handle when Chromium cannot start
+    throw error;
+  }
   const final: {
     status: "pass"; sourceBacked: true; timestamp: string;
     assetCount: number; characters: Record<string, { poses: Pose[]; errors: string[] }>;
