@@ -36,3 +36,18 @@ ci:
     just lint
     just validate-agent-artifacts
     just doctor
+
+# Download Git LFS archives first; normalize into an ignored, reproducible catalog.
+foundations-import:
+    python3 scripts/foundations/import_quaternius.py
+
+# Safe offline source tests and runtime/catalog contract tests.
+foundations-test:
+    python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
+    bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts
+
+# Re-ingest archives (requires LFS payloads), verify contracts and static typing.
+foundations-verify:
+    just foundations-import
+    just foundations-test
+    bun x tsc --noEmit
