@@ -81,16 +81,30 @@ The example demonstrates integration signatures, **not** a complete playable gam
 ```sh
 just foundations-test
 just foundations-verify  # requires 4 LFS archives
+just foundations-real-browser # additionally requires matching Playwright Chromium
 bun test packages/studio/test/assets/resolve.test.ts packages/runtime/test/authority.test.ts
 ```
 
 The new GitHub Actions `Foundation library` workflow runs Python archive safety, Bun catalog/prefab/animation/lighting tests and monorepo TypeScript checking. An optional full LFS intake job is available via workflow_dispatch when the workflow is present on the default branch. The default PR check deliberately avoids downloading 437 MB of LFS content on every push.
 
-### Still requiring real-game proof
+### Real source-backed browser evidence — PASSED, October 9, 2026
 
-- Import and render both actual superhero bases with UAL1/UAL2 via Three.js GLTFLoader; inspect skin deformation, axis conventions, root tracks, crossfades, timing and foot contacts.
-- Bake retargeting only if necessary, produce optimized GLB derivatives/LODs and record texture/render budgets.
-- Add character collider measurements and sample gameplay under Rapier and browser Playwright; settle state/pixels/telemetry.
-- Build properly assembled outfit+head/hair variants, bespoke child proportion models and equipment sockets as follow-on audited derivatives.
+The opt-in real-source Chromium job completed successfully at [GitHub Actions run 38001290860](https://github.com/SPRIME01/Gauntlet-Game-Studio/actions/runs/38001290860). The [proof artifact](https://github.com/SPRIME01/Gauntlet-Game-Studio/actions/runs/38001290860/artifacts/11649956580) contains 12 PNG screenshots and a machine-readable report.
 
-Do not treat the PR as ready to merge until these integration results have been evaluated against the game's requested quality profile.
+- The real Git LFS archives yielded **10 primary assets and 85 unique clips**, with source hash and license evidence retained.
+- Real Three.js GLTFLoader + AnimationMixer + Gauntlet Koota loaded **distinct** female and male models. The test explicitly rejects selecting the female base when the request is male or when screenshots are identical.
+- All six sampled states **idle, walk, run, punch, sword attack, swim** rendered with visible geometry for both models.
+- Female: 15,060 visible triangles, 3 draw calls; 64 bones changed versus initial rig state. Male: 14,318 visible triangles, 3 draw calls; 62 bones changed.
+- Fixed-step Koota world positions did not change when animations played.
+- Captured per-state synchronous update + renderer invocation time in a CI software-rendered headless browser. These samples are **not** a production FPS guarantee.
+- The test constructs *fixture accepted records* solely for a source-backed browser proof, **not** an automatic production registry acceptance decision.
+
+### Remaining per-game production and feature work
+
+- Assess full video transitions, foot contacts, any retarget/rest-pose adjustment and visual style under the intended game camera before settling a game release.
+- Normalize and optimize runtime glTF/GLB, textures, and LOD levels to the target game's actual performance profile.
+- Measure Rapier collider fit, mobility, equipment sockets and combat interactions against real gameplay.
+- Implement proper outfit + head/hair modular assembly; the current catalog can acquire outfits but does not yet compose them.
+- Produce child-specific body types only from appropriately sourced/generated and verified assets; they are absent from the Standard ZIPs.
+
+The library can be reviewed as a reusable **foundation core**; production-game acceptance, full costume composition and game-release settlement remain independent of this library's proof.
