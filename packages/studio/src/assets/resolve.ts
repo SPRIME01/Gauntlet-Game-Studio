@@ -219,10 +219,14 @@ export class AssetResolver {
       }
     }
 
-    if (providerUnavailable > 0 && providerUnavailable === this.options.providers.length) {
-      steps.push({ step: "search", target: "providers", outcome: "unavailable", detail: "every registered provider was unavailable; absence of a match cannot be concluded" });
-      const decisionFile = this.record(request.projectRoot, { requestedId: request.requestedId, role, keywords, now, steps, decision: { route: "create-fallback", reason: "blocked: providers unavailable; the search step cannot be completed" } });
-      return { status: "blocked", operation: "studio.asset.resolve", diagnostics: { code: "PROVIDERS_UNAVAILABLE", error: "every registered provider was unavailable; resolve cannot conclude" }, result: { route: "unresolved", requested_id: requestedId, decision_file: decisionFile, steps, decision: { route: "create-fallback", reason: "blocked: providers unavailable; the search step could not be completed" } } };
+    if (providerUnavailable > 0) {
+      // Every configured discovery source must either be searched or explicitly
+      // excluded by policy before a create-fallback claim. One successful source
+      // cannot prove absence in another unavailable source.
+      steps.push({ step: "search", target: "providers", outcome: "unavailable", detail: `${providerUnavailable} registered provider(s) were unavailable; absence of an external match cannot be concluded` });
+      const decision: ResolutionDecision = { route: "create-fallback", reason: "blocked: not all configured discovery sources were searched" };
+      const decisionFile = this.record(request.projectRoot, { requestedId: request.requestedId, role, keywords, now, steps, decision });
+      return { status: "blocked", operation: "studio.asset.resolve", diagnostics: { code: "PROVIDERS_UNAVAILABLE", error: "one or more registered providers were unavailable; resolve cannot conclude" }, result: { route: "unresolved", requested_id: requestedId, decision_file: decisionFile, steps, decision } };
     }
 
     // Adapt: an existing project record that needs work is preferred over creation.
