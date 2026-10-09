@@ -44,7 +44,7 @@ foundations-import:
 # Safe offline source tests and runtime/catalog contract tests.
 foundations-test:
     python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
-    bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts
+    bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts packages/runtime/test/lighting-presets.test.ts
 
 # Re-ingest archives (requires LFS payloads), verify contracts and static typing.
 foundations-verify:
