@@ -4,10 +4,9 @@ import * as THREE from "three";
  * Visual-only humanoid animation. Game logic (Koota) owns the motion state and
  * the character's world position; this class owns no gameplay transitions.
  */
-export type HumanoidMotionState =
-  | "idle" | "walk" | "run" | "sprint" | "crouch" | "jump-start" | "jump-air"
-  | "jump-land" | "swim" | "swim-idle" | "punch" | "sword-attack"
-  | "sword-block" | "push" | "climb" | "interact" | "death";
+import { HumanoidMotion, type HumanoidMotionState } from "../state/traits";
+import type { GameWorld } from "../state/world";
+export type { HumanoidMotionState } from "../state/traits";
 
 export const HUMANOID_CLIP_MAP: Readonly<Record<HumanoidMotionState, readonly string[]>> = {
   idle: ["Idle_Loop"],
@@ -121,6 +120,13 @@ export class HumanoidAnimationProjector {
     this.mixer.update(dt);
     this.elapsed += dt;
     return this.observe();
+  }
+
+  /** Authoritative ECS adapter. Mesh animations can NEVER overwrite the input trait. */
+  updateFromWorld(world: GameWorld, entityId: string, dt: number): HumanoidAnimationObservation {
+    const motion = world.getEntity(entityId)?.get(HumanoidMotion);
+    if (!motion) throw new Error("No authoritative HumanoidMotion trait for entity " + entityId);
+    return this.update({ state: motion.state, rate: motion.rate }, dt);
   }
 
   observe(): HumanoidAnimationObservation {
