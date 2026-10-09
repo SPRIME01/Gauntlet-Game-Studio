@@ -14,6 +14,7 @@ export * from "./router/router";
 export * from "./generator";
 export * from "./skills/overlay";
 export * from "./assets";
+export * from "./foundations/catalog";
 export * from "./evidence";
 export * from "./gauntlet";
 export * from "./quality";
