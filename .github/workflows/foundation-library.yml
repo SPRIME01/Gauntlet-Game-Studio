@@ -1,4 +1,7 @@
 name: Foundation library
+concurrency:
+  group: foundations-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches: [feat/foundation-library]
@@ -94,7 +97,7 @@ jobs:
       - name: Install Playwright Chromium
         run: bunx playwright install --with-deps chromium
       - name: Real Quaternius browser and animation proof
-        run: bun run scripts/foundations/real-browser/run.ts
+        run: timeout --signal=TERM --kill-after=10s 180s bun run scripts/foundations/real-browser/run.ts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
