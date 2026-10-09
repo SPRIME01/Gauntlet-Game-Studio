@@ -53,6 +53,7 @@ function httpAsset(target: string): Response {
 }
 
 async function main(): Promise<void> {
+  console.info("FOUNDATION_PHASE", "import archives");
   const importer = path.join(ROOT, "scripts", "foundations", "import_quaternius.py");
   // Always rebuild from actual source ZIPs so the evidence cannot be satisfied by
   // a synthetic catalog or a stale derivative from a previous run.
@@ -68,6 +69,7 @@ async function main(): Promise<void> {
   assert(inv.assets.filter(x => x.kind === "character").length === 2, "expected both body types");
 
   fs.mkdirSync(OUT, { recursive: true });
+  console.info("FOUNDATION_PHASE", "bundle scene");
   let built: Awaited<ReturnType<typeof Bun.build>>;
   try {
     built = await Bun.build({
@@ -102,6 +104,7 @@ async function main(): Promise<void> {
     for (const item of built.logs) console.error(String(item));
     throw new Error("Failed to bundle actual Gauntlet browser scene");
   }
+  console.info("FOUNDATION_PHASE", "bundle success");
   const bundledPath = path.join(OUT, "scene.js");
   assert(fs.existsSync(bundledPath), "browser bundle missing");
   const server = Bun.serve({
@@ -115,6 +118,7 @@ async function main(): Promise<void> {
       return new Response("Not Found", { status: 404 });
     },
   });
+  console.info("FOUNDATION_PHASE", "launch Chromium");
   const browser = await chromium.launch({
     headless: true, args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader",
       "--enable-webgl", "--disable-web-security=false"],
@@ -126,31 +130,45 @@ async function main(): Promise<void> {
     status: "pass", sourceBacked: true, timestamp: new Date().toISOString(),
     assetCount: inv.assets.length, characters: {},
   };
+  console.info("FOUNDATION_PHASE", "Chromium launched");
   try {
     for (const gender of ["female", "male"]) {
+      console.info("FOUNDATION_PHASE", "test character", gender);
       const page = await browser.newPage({ viewport: { width: 720, height: 720 }, deviceScaleFactor: 1 });
       const errors: string[] = [];
-      page.on("pageerror", err => errors.push("pageerror: " + err.message));
+      page.on("pageerror", err => {
+        errors.push("pageerror: " + err.message);
+        console.error("FOUNDATION_PAGE_ERROR", gender, err.message);
+      });
       page.on("console", entry => {
-        if (entry.type() === "error" || entry.type() === "warning") errors.push(entry.type() + ": " + entry.text());
+        if (entry.type() === "error" || entry.type() === "warning") {
+          errors.push(entry.type() + ": " + entry.text());
+          console.error("FOUNDATION_CONSOLE", gender, entry.type(), entry.text().slice(0, 400));
+        }
       });
       page.on("response", response => {
         if (response.status() >= 400) errors.push("HTTP " + response.status() + " " + response.url());
       });
-      await page.goto(`http://127.0.0.1:${server.port}/?gender=${gender}`, { waitUntil: "load" });
+      await page.goto(`http://127.0.0.1:${server.port}/?gender=${gender}`, { waitUntil: "domcontentloaded", timeout: 20_000 });
+      console.info("FOUNDATION_PHASE", "page navigated", gender);
       await page.waitForFunction(() => {
         const proof = (window as any).__gauntletFoundation;
         return proof?.ready || proof?.error;
-      }, undefined, { timeout: 120_000 });
+      }, undefined, { timeout: 35_000 });
       const startup = await page.evaluate(() => {
         const proof = (window as any).__gauntletFoundation;
         return { ready: proof.ready, error: proof.error, provenance: proof.provenance };
       });
       assert(startup.ready, gender + " loader failed: " + String(startup.error));
+      console.info("FOUNDATION_PHASE", "model loaded", gender, JSON.stringify(startup.provenance));
       const poses: Pose[] = [];
       for (const state of ["idle", "walk", "run", "punch", "sword-attack", "swim"] as const) {
         const sample = await page.evaluate(({ state, frames }) =>
           (window as any).__gauntletFoundation.sample(state, frames), { state, frames: 52 });
+        console.info("FOUNDATION_PHASE", "pose", gender, state, JSON.stringify({
+          clip: sample.clip, bones: sample.animatedBones, pixels: sample.pixels,
+          renderCalls: sample.renderCalls, averageMs: sample.averageMs,
+        }));
         poses.push(sample);
         assert(Boolean(sample.clip), gender + " " + state + " has no clip");
         assert(sample.skinMeshes > 0 && sample.bones >= 65, gender + " missing skinned meshes or bones");
@@ -185,4 +203,9 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch(e => { console.error(e?.stack ?? String(e)); process.exitCode = 1; });
+const watchdog = setTimeout(() => {
+  console.error("FOUNDATION_BROWSER_WATCHDOG: executable did not finish within 100 seconds");
+  process.exit(124);
+}, 100_000);
+main().catch(e => { console.error(e?.stack ?? String(e)); process.exitCode = 1; })
+  .finally(() => clearTimeout(watchdog));
