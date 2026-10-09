@@ -334,6 +334,7 @@ export class GameWorld {
         physicsHandle: entityState.physicsHandle,
         navHandle: entityState.navHandle,
         assetBinding: entityState.assetBinding,
+        motion: entityState.humanoidMotion,
         tags: entityState.tags as any,
       });
     }
@@ -359,7 +360,7 @@ export class GameWorld {
    */
   public assertNoProviderObjectsInState(): void {
     for (const [id, entity] of this.entityRegistry.entries()) {
-      const traits = [Transform, Velocity, RenderProjectionHandle, PhysicsProjectionHandle, NavigationProjectionHandle, AssetBinding];
+      const traits = [Transform, Velocity, RenderProjectionHandle, PhysicsProjectionHandle, NavigationProjectionHandle, AssetBinding, HumanoidMotion];
       for (const t of traits) {
         if (entity.has(t)) {
           const val = entity.get(t);
