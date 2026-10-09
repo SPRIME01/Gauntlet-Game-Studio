@@ -73,26 +73,12 @@ async function main(): Promise<void> {
   let built: Awaited<ReturnType<typeof Bun.build>>;
   try {
     built = await Bun.build({
-      entrypoints: [path.join(ROOT, "scripts", "foundations", "real-browser", "scene.ts")],
+      entrypoints: [path.join(ROOT, "packages", "runtime", "test", "foundations", "scene.ts")],
       outdir: OUT,
       target: "browser",
       naming: "scene.js",
       minify: false,
-      plugins: [{
-        name: "foundation-scene-runtime-three",
-        setup(build) {
-          // The browser entrypoint is in scripts/, outside the workspace that
-          // owns Three.js. Resolve ONLY that import via the runtime package;
-          // runtime's own imports retain Bun's normal workspace resolution.
-          build.onResolve({ filter: /^three$/ }, args => {
-            if (!args.importer.endsWith("/scripts/foundations/real-browser/scene.ts")) return;
-            const requireFromRuntime = createRequire(path.join(ROOT, "packages", "runtime", "package.json"));
-            const installed = requireFromRuntime.resolve("three");
-            const browserEsm = path.resolve(path.dirname(installed), "three.module.js");
-            return { path: browserEsm };
-          });
-        },
-      }],
+
     });
   } catch (error) {
     const failures = error instanceof AggregateError ? error.errors : [error];
