@@ -1,0 +1,64 @@
+name: Foundation library
+on:
+  pull_request:
+    paths:
+      - "packages/studio/src/foundations/**"
+      - "packages/studio/src/assets/**"
+      - "packages/studio/test/foundations/**"
+      - "packages/runtime/src/projections/**"
+      - "packages/runtime/src/state/**"
+      - "packages/runtime/test/humanoid*.test.ts"
+      - "scripts/foundations/**"
+      - ".github/workflows/foundation-library.yml"
+  workflow_dispatch:
+    inputs:
+      validate_packs:
+        description: "Also download Git LFS archives and execute full source intake"
+        type: boolean
+        default: false
+jobs:
+  foundations-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false # tests operate on fixtures and avoid billing 437MB of LFS traffic
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+      - name: Install locked workspace
+        run: bun install --frozen-lockfile
+      - name: Python archive safety
+        run: python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
+      - name: Studio and runtime foundation integration tests
+        run: bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts
+      - name: Typecheck monorepo
+        run: bun x tsc --noEmit
+
+  quaternius-source-intake:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.validate_packs }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Import and inventory Quaternius Standard
+        run: |
+          python3 scripts/foundations/import_quaternius.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('.tmp/foundations/quaternius/inventory.json').read_text())
+          assert len(d['assets']) == 10, 'expected 2 characters, 4 outfits, 4 animation variants'
+          assert len(set(c for a in d['assets'] for c in a['animation_clips'])) == 85
+          assert all(a['acceptance'] == 'pending' for a in d['assets'])
+          print('Quaternius source gate passed')
+          PY
