@@ -10,6 +10,7 @@ on:
       - "packages/runtime/src/projections/**"
       - "packages/runtime/src/state/**"
       - "packages/runtime/test/humanoid*.test.ts"
+      - "packages/runtime/test/lighting-presets.test.ts"
       - "scripts/foundations/**"
       - ".github/workflows/foundation-library.yml"
   workflow_dispatch:
@@ -37,7 +38,7 @@ jobs:
       - name: Python archive safety
         run: python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
       - name: Studio and runtime foundation integration tests
-        run: bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts
+        run: bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts packages/runtime/test/lighting-presets.test.ts
       - name: Typecheck monorepo
         run: bun x tsc --noEmit
 
