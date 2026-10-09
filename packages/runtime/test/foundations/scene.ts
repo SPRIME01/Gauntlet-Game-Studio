@@ -130,7 +130,7 @@ async function boot(): Promise<void> {
   if (!canvas) throw new Error("Stage canvas missing");
   const inventory = (await (await fetch("/inventory.json")).json()) as Catalog;
   const modelAsset = getRequired(inventory,
-    a => a.kind === "character" && a.id.toLowerCase().includes(gender), gender + " body");
+    a => a.kind === "character" && a.id.toLowerCase().split(/[._-]+/).includes(gender), gender + " body");
   const first = getRequired(inventory,
     a => a.kind === "animation-library" && a.id.includes("animations-1") && !a.root_motion, "UAL1 in-place");
   const second = getRequired(inventory,
