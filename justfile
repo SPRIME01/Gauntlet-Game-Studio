@@ -51,3 +51,9 @@ foundations-verify:
     just foundations-import
     just foundations-test
     bun x tsc --noEmit
+
+# Run the actual LFS-backed character/animation proof in Playwright Chromium.
+# Requires the example workspace's matching browser: 
+# node examples/blackwater-relay/node_modules/playwright/cli.js install chromium
+foundations-real-browser:
+    bun run scripts/foundations/real-browser/run.ts
