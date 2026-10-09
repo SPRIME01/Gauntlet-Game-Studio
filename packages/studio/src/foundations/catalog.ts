@@ -236,6 +236,13 @@ export function createFoundationProvider(options: FoundationProviderOptions): As
             },
             runtime_representation: relative,
             acceptance_state: "pending",
+            // Policies are declarations, not claims that project-level collision/
+            // performance checks have passed. Final acceptance belongs to
+            // AssetRegistry and the enclosing game's tri-channel proof.
+            ...(asset.kind === "character" || asset.kind === "outfit" ? {
+              collider_policy: "project Rapier character capsule; sockets are inert until explicitly bound",
+              lod_policy: "source single-LOD; enforce target profile and measured performance at acceptance",
+            } : {}),
             budget: {},
             animation_contract: {
               skeleton_sha256: asset.skeleton_sha256,
