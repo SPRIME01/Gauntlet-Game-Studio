@@ -113,7 +113,7 @@ async function main(): Promise<void> {
       await page.waitForFunction(() => {
         const proof = (window as any).__gauntletFoundation;
         return proof?.ready || proof?.error;
-      }, { timeout: 120_000 });
+      }, undefined, { timeout: 120_000 });
       const startup = await page.evaluate(() => {
         const proof = (window as any).__gauntletFoundation;
         return { ready: proof.ready, error: proof.error, provenance: proof.provenance };
