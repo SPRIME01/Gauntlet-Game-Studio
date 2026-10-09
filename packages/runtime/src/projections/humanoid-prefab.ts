@@ -22,6 +22,7 @@ export interface SpawnHumanoidPrefabOptions {
   model: HumanoidPrefabAsset;
   animations: readonly HumanoidPrefabAsset[];
   position?: [number, number, number];
+  tags?: Array<"player" | "enemy">;
   /** Injectible loader for headless tests and application-owned fetch policy. */
   loader?: Pick<GLTFLoader, "loadAsync">;
   blendSeconds?: number;
@@ -95,7 +96,7 @@ export async function spawnHumanoidPrefab(options: SpawnHumanoidPrefabOptions): 
       renderHandle: { handleId, castShadow: true, receiveShadow: true },
       assetBinding: { assetId: options.model.asset.id },
       motion: { state: "idle", rate: 1 },
-      tags: ["player"],
+      tags: options.tags ?? ["player"],
     });
     options.scene.add(model);
     options.render.bind(options.entityId, handleId, model);
