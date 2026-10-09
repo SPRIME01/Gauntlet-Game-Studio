@@ -3,11 +3,11 @@
  * Driven by Playwright from run.ts. Never promotes source assets to production.
  */
 import * as THREE from "three";
-import {
-  GameWorld, RenderProjectionManager, HumanoidMotion,
-  spawnHumanoidPrefab, applyLightingPreset,
-  type HumanoidPrefabAsset, type HumanoidMotionState,
-} from "../../../packages/runtime/src/index";
+import { GameWorld } from "../../../packages/runtime/src/state/world";
+import { HumanoidMotion, type HumanoidMotionState } from "../../../packages/runtime/src/state/traits";
+import { RenderProjectionManager } from "../../../packages/runtime/src/projections/render";
+import { spawnHumanoidPrefab, type HumanoidPrefabAsset } from "../../../packages/runtime/src/projections/humanoid-prefab";
+import { applyLightingPreset } from "../../../packages/runtime/src/projections/lighting-presets";
 
 interface CatalogAsset {
   id: string;
