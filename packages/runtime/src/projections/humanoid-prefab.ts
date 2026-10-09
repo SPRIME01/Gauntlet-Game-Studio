@@ -48,7 +48,8 @@ function assertAccepted(subject: HumanoidPrefabAsset): void {
   if (subject.asset.acceptance_state !== "accepted") {
     throw new Error("FOUNDATION_ASSET_NOT_ACCEPTED: " + subject.asset.id);
   }
-  if (!subject.url || /^(?:https?:)?\/\//.test(subject.url)) {
+  if (!subject.url || /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(subject.url) ||
+      subject.url.includes("\\\\") || subject.url.split(/[?#]/)[0].split("/").includes("..")) {
     // The caller must provide an explicitly controlled same-origin project URL.
     throw new Error("FOUNDATION_ASSET_URL_NOT_LOCAL: " + subject.asset.id);
   }
