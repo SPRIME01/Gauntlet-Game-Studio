@@ -6,6 +6,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { spawnSync } from "node:child_process";
 import { startCockpitServer, Cockpit as GameCockpit } from "@gauntlet/cockpit";
 import {
   getDoctorStudioResult,
@@ -1707,6 +1708,27 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
         // catalog preserves existing Poly Haven behavior.
         const inventoryPath = process.env.GAUNTLET_FOUNDATION_INVENTORY ??
           path.join(REPO_ROOT, ".tmp", "foundations", "quaternius", "inventory.json");
+        // The source ZIPs are committed in Git LFS, whereas normalized derivatives
+        // are deliberately ignored. Bootstrap them only once on first asset lookup.
+        // Installed SDKs without source ZIPs and callers overriding the catalog path
+        // continue through the existing external-discovery route unchanged.
+        const sourceProbe = path.join(
+          REPO_ROOT, "assets", "sources", "quaternius",
+          "universal-base-characters", "Universal Base Characters[Standard].zip"
+        );
+        if (!process.env.GAUNTLET_FOUNDATION_INVENTORY &&
+            !fs.existsSync(inventoryPath) && fs.existsSync(sourceProbe)) {
+          const command = spawnSync(
+            "python3", ["scripts/foundations/import_quaternius.py"],
+            { cwd: REPO_ROOT, timeout: 180_000, encoding: "utf8" }
+          );
+          if (command.status !== 0) {
+            console.error(
+              "Foundation assets not prepared (normal external lookup remains available): " +
+              (command.stderr?.trim() || command.error?.message || "importer failed")
+            );
+          }
+        }
         const foundationProvider = createFoundationProvider({ inventoryPath });
         const resolver = new AssetResolver({ providers: [foundationProvider, polyhavenProvider] });
         const outcome = await resolver.resolve({
