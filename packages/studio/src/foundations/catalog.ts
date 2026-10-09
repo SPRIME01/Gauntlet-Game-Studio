@@ -231,6 +231,7 @@ export function createFoundationProvider(options: FoundationProviderOptions): As
             source_provenance: {
               uri: SOURCE_URIS[asset.id.split(".")[1]],
               license: inventory.license, author: "Quaternius", sha256: asset.sha256,
+              retrieved_at: new Date().toISOString(),
               donor_notice: "Source ZIP and derivative hashes recorded in foundation inventory",
             },
             runtime_representation: relative,
