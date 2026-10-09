@@ -6,9 +6,14 @@
  */
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { chromium } from "playwright";
+import { createRequire } from "node:module";
 
 const ROOT = path.resolve(import.meta.dir, "../../..");
+const requireFromExample = createRequire(path.join(ROOT, "examples", "blackwater-relay", "package.json"));
+// The example owns Playwright as an existing workspace dev dependency.
+// Resolve it through that package instead of adding a competing root install.
+const { chromium } = requireFromExample("playwright");
+
 const INPUT = path.join(ROOT, ".tmp", "foundations", "quaternius");
 const RAW = path.join(INPUT, "raw");
 const OUT = path.join(ROOT, ".tmp", "foundations", "browser-proof");
