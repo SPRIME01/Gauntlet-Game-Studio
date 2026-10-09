@@ -124,15 +124,16 @@ export function roleAllowsFoundation(role: string, kind: FoundationKind): boolea
 }
 
 export function findFoundationAssets(inventory: FoundationInventory, role: string, keywords: string[]): FoundationAsset[] {
-  const needles = keywords.flatMap(x => x.toLowerCase().split(/[^a-z0-9]+/)).filter(Boolean);
+  const needles = keywords.flatMap(x => x.toLowerCase().split(/[^a-z0-9]+/)).filter(Boolean).map(x =>
+    x === "woman" ? "female" : x === "man" ? "male" : x);
   // These body types are not available in Standard. Never imply a child asset is included.
   if (needles.some(x => ["child", "children", "kid", "boy", "girl", "baby", "toddler"].includes(x))) return [];
   const relevant = inventory.assets.filter(a => roleAllowsFoundation(role, a.kind));
   const scoring = (asset: FoundationAsset): number => {
-    const haystack = (asset.id + " " + asset.path).toLowerCase().replace(/[^a-z0-9]+/g, " ");
+    const tokens = new Set((asset.id + " " + asset.path).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
     let score = 0;
     for (const term of needles) {
-      if (haystack.includes(term)) score += 3;
+      if (tokens.has(term)) score += 3;
       if (["humanoid", "player", "character", "human", "hero", "npc", "enemy"].includes(term) && asset.kind === "character") score += 1;
       if (["locomotion", "animation", "motion", "run", "walk"].includes(term) && asset.kind === "animation-library") score += 1;
     }
