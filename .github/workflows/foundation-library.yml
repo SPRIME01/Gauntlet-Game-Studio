@@ -94,8 +94,10 @@ jobs:
           git lfs ls-files
       - name: Install locked workspace
         run: bun install --frozen-lockfile
-      - name: Install Playwright Chromium
-        run: bunx playwright install --with-deps chromium
+      - name: Install Chromium matching the test workspace's Playwright version
+        # bunx from the repo root can download a different Playwright release.
+        # The runner resolves Playwright from this exact workspace.
+        run: node examples/blackwater-relay/node_modules/playwright/cli.js install --with-deps chromium
       - name: Real Quaternius browser and animation proof
         run: timeout --signal=TERM --kill-after=10s 180s bun run scripts/foundations/real-browser/run.ts
       - uses: actions/upload-artifact@v4
