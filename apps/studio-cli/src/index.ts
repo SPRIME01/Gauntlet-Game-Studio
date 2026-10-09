@@ -53,6 +53,7 @@ import {
   bindQualityProfile,
   QualityProfileError,
   AssetResolver,
+  createFoundationProvider,
   defaultRecipeRegistry,
   compileRecipe,
   applyRecipe,
@@ -1701,7 +1702,13 @@ export async function main(args: string[] = process.argv.slice(2)): Promise<numb
           },
         };
 
-        const resolver = new AssetResolver({ providers: [polyhavenProvider] });
+        // Local CC0 foundations take priority over network discovery, but never over
+        // an accepted project asset. The generated catalog is optional; a missing
+        // catalog preserves existing Poly Haven behavior.
+        const inventoryPath = process.env.GAUNTLET_FOUNDATION_INVENTORY ??
+          path.join(REPO_ROOT, ".tmp", "foundations", "quaternius", "inventory.json");
+        const foundationProvider = createFoundationProvider({ inventoryPath });
+        const resolver = new AssetResolver({ providers: [foundationProvider, polyhavenProvider] });
         const outcome = await resolver.resolve({
           requestedId,
           role,
