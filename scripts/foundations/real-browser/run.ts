@@ -118,7 +118,7 @@ async function main(): Promise<void> {
   }
   const final: {
     status: "pass"; sourceBacked: true; timestamp: string;
-    assetCount: number; characters: Record<string, { poses: Pose[]; errors: string[] }>;
+    assetCount: number; characters: Record<string, { poses: Pose[]; errors: string[]; modelId: string }>;
   } = {
     status: "pass", sourceBacked: true, timestamp: new Date().toISOString(),
     assetCount: inv.assets.length, characters: {},
@@ -177,9 +177,18 @@ async function main(): Promise<void> {
       // failed to locate real model target bones. Treat as a hard test failure.
       assert(!errors.some(s => /PropertyBinding|No target node|Could not find|Error|HTTP 4|HTTP 5/i.test(s)),
         gender + " browser errors: " + errors.join(" | ").slice(0, 1000));
-      final.characters[gender] = { poses, errors };
+      const modelId = startup.provenance?.[0];
+      assert(typeof modelId === "string" && modelId.split(/[._-]+/).includes(gender),
+        gender + " resolved the wrong model: " + String(modelId));
+      final.characters[gender] = { poses, errors, modelId };
       await page.close();
     }
+    assert(final.characters.female.modelId !== final.characters.male.modelId,
+      "male and female screenshots must originate from different model records");
+    const femalePng = fs.readFileSync(path.join(OUT, "female-idle.png"));
+    const malePng = fs.readFileSync(path.join(OUT, "male-idle.png"));
+    assert(!femalePng.equals(malePng),
+      "male and female rendered images are byte-identical; distinct character proof failed");
     fs.writeFileSync(path.join(OUT, "report.json"), JSON.stringify(final, null, 2) + "\n");
     console.log("FOUNDATION_REAL_BROWSER_PASS", JSON.stringify({
       status: final.status,
