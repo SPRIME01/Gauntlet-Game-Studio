@@ -85,6 +85,17 @@ export const AssetBinding = trait({
   activeDestructionGroups: () => [] as string[],
 });
 
+/** Semantic motion intent (not visual clip name, blend time or mesh state). */
+export type HumanoidMotionState =
+  | "idle" | "walk" | "run" | "sprint" | "crouch" | "jump-start" | "jump-air"
+  | "jump-land" | "swim" | "swim-idle" | "punch" | "sword-attack"
+  | "sword-block" | "push" | "climb" | "interact" | "death";
+
+export const HumanoidMotion = trait({
+  state: "idle" as HumanoidMotionState,
+  rate: 1,
+});
+
 /**
  * Semantic marker traits.
  */
@@ -133,6 +144,7 @@ export interface SerializedEntityState {
     activeColliders: string[];
     activeDestructionGroups: string[];
   };
+  humanoidMotion?: { state: HumanoidMotionState; rate: number };
   tags?: string[];
 }
 
