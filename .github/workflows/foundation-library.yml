@@ -1,5 +1,7 @@
 name: Foundation library
 on:
+  push:
+    branches: [feat/foundation-library]
   pull_request:
     paths:
       - "packages/studio/src/foundations/**"
