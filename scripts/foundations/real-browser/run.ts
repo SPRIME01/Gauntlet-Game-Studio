@@ -68,13 +68,21 @@ async function main(): Promise<void> {
   assert(inv.assets.filter(x => x.kind === "character").length === 2, "expected both body types");
 
   fs.mkdirSync(OUT, { recursive: true });
-  const built = await Bun.build({
-    entrypoints: [path.join(ROOT, "scripts", "foundations", "real-browser", "scene.ts")],
-    outdir: OUT,
-    target: "browser",
-    naming: "scene.js",
-    minify: false,
-  });
+  let built: Awaited<ReturnType<typeof Bun.build>>;
+  try {
+    built = await Bun.build({
+      entrypoints: [path.join(ROOT, "scripts", "foundations", "real-browser", "scene.ts")],
+      outdir: OUT,
+      target: "browser",
+      naming: "scene.js",
+      minify: false,
+    });
+  } catch (error) {
+    const failures = error instanceof AggregateError ? error.errors : [error];
+    console.error("BROWSER_BUNDLE_DIAGNOSTICS", failures.map((x: unknown) =>
+      x instanceof Error ? { name: x.name, message: x.message, stack: x.stack } : String(x)));
+    throw error;
+  }
   if (!built.success) {
     for (const item of built.logs) console.error(String(item));
     throw new Error("Failed to bundle actual Gauntlet browser scene");
