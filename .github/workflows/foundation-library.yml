@@ -39,6 +39,8 @@ jobs:
         run: python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
       - name: Studio and runtime foundation integration tests
         run: bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts packages/runtime/test/lighting-presets.test.ts
+      - name: Existing resolver and ECS regressions
+        run: bun test packages/studio/test/assets/resolve.test.ts packages/runtime/test/authority.test.ts
       - name: Typecheck monorepo
         run: bun x tsc --noEmit
 
