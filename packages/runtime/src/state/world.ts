@@ -8,6 +8,8 @@ import {
   NavigationProjectionHandle,
   AudioProjectionHandle,
   AssetBinding,
+  HumanoidMotion,
+  type HumanoidMotionState,
   PlayerTag,
   EnemyTag,
   ObstacleTag,
@@ -53,6 +55,7 @@ export interface SpawnEntityOptions {
     activeColliders?: string[];
     activeDestructionGroups?: string[];
   };
+  motion?: { state?: HumanoidMotionState; rate?: number };
   tags?: ("player" | "enemy" | "obstacle" | "vehicle" | "item")[];
 }
 
@@ -142,6 +145,13 @@ export class GameWorld {
           activeDestructionGroups: options.assetBinding.activeDestructionGroups ?? [],
         })
       );
+    }
+
+    if (options.motion) {
+      traitsToApply.push(HumanoidMotion({
+        state: options.motion.state ?? "idle",
+        rate: options.motion.rate ?? 1,
+      }));
     }
 
     if (options.tags) {
@@ -279,6 +289,11 @@ export class GameWorld {
             activeDestructionGroups: [...ab.activeDestructionGroups],
           };
         }
+      }
+
+      if (entity.has(HumanoidMotion)) {
+        const motion = entity.get(HumanoidMotion);
+        if (motion) state.humanoidMotion = { state: motion.state, rate: motion.rate };
       }
 
       const tags: string[] = [];
