@@ -1,0 +1,111 @@
+name: Foundation library
+concurrency:
+  group: foundations-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  push:
+    branches: [feat/foundation-library]
+  pull_request:
+    paths:
+      - "packages/studio/src/foundations/**"
+      - "packages/studio/src/assets/**"
+      - "packages/studio/test/foundations/**"
+      - "packages/runtime/src/projections/**"
+      - "packages/runtime/src/state/**"
+      - "packages/runtime/test/humanoid*.test.ts"
+      - "packages/runtime/test/lighting-presets.test.ts"
+      - "scripts/foundations/**"
+      - ".github/workflows/foundation-library.yml"
+  workflow_dispatch:
+    inputs:
+      validate_packs:
+        description: "Also download Git LFS archives and execute full source intake"
+        type: boolean
+        default: false
+jobs:
+  foundations-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false # tests operate on fixtures and avoid billing 437MB of LFS traffic
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+      - name: Install locked workspace
+        run: bun install --frozen-lockfile
+      - name: Python archive safety
+        run: python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
+      - name: Studio and runtime foundation integration tests
+        run: bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts packages/runtime/test/lighting-presets.test.ts
+      - name: Existing resolver and ECS regressions
+        run: bun test packages/studio/test/assets/resolve.test.ts packages/runtime/test/authority.test.ts
+      - name: Typecheck monorepo
+        run: bun x tsc --noEmit
+
+  quaternius-source-intake:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.validate_packs }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Import and inventory Quaternius Standard
+        run: |
+          python3 scripts/foundations/import_quaternius.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('.tmp/foundations/quaternius/inventory.json').read_text())
+          assert len(d['assets']) == 10, 'expected 2 characters, 4 outfits, 4 animation variants'
+          assert len(set(c for a in d['assets'] for c in a['animation_clips'])) == 85
+          assert all(a['acceptance'] == 'pending' for a in d['assets'])
+          print('Quaternius source gate passed')
+          PY
+
+  real-source-browser:
+    # Full Quaternius LFS download (~437 MB) is intentionally opt-in per commit.
+    # Do not pay for it on every PR update; commit messages with [real-assets]
+    # trigger a real source-backed Chromium+WebGL proof on this feature branch.
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[real-assets]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify all four real Git LFS source files
+        run: |
+          git lfs pull
+          git lfs ls-files
+      - name: Install locked workspace
+        run: bun install --frozen-lockfile
+      - name: Install Chromium matching the test workspace's Playwright version
+        # bunx from the repo root can download a different Playwright release.
+        # The runner resolves Playwright from this exact workspace.
+        run: node examples/blackwater-relay/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Real Quaternius browser and animation proof
+        run: timeout --signal=TERM --kill-after=10s 180s bun run scripts/foundations/real-browser/run.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quaternius-chromium-proof
+          path: |
+            .tmp/foundations/browser-proof/*.png
+            .tmp/foundations/browser-proof/report.json
+          if-no-files-found: warn
+          retention-days: 7

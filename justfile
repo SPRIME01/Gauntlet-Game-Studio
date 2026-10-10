@@ -36,3 +36,24 @@ ci:
     just lint
     just validate-agent-artifacts
     just doctor
+
+# Download Git LFS archives first; normalize into an ignored, reproducible catalog.
+foundations-import:
+    python3 scripts/foundations/import_quaternius.py
+
+# Safe offline source tests and runtime/catalog contract tests.
+foundations-test:
+    python3 -m unittest discover -s scripts/foundations -p 'test_*.py'
+    bun test packages/studio/test/foundations/catalog.test.ts packages/runtime/test/humanoid-animation.test.ts packages/runtime/test/humanoid-prefab.test.ts packages/runtime/test/lighting-presets.test.ts
+
+# Re-ingest archives (requires LFS payloads), verify contracts and static typing.
+foundations-verify:
+    just foundations-import
+    just foundations-test
+    bun x tsc --noEmit
+
+# Run the actual LFS-backed character/animation proof in Playwright Chromium.
+# Requires the example workspace's matching browser: 
+# node examples/blackwater-relay/node_modules/playwright/cli.js install chromium
+foundations-real-browser:
+    bun run scripts/foundations/real-browser/run.ts

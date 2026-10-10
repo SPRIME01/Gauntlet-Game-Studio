@@ -208,6 +208,25 @@ describe("asset.resolve routing policy (REQ-ASSET-008..012)", () => {
     }
   });
 
+  it("an unavailable provider blocks premature create even when another catalog has no match", async () => {
+    const projectRoot = tempProject();
+    try {
+      const resolver = new AssetResolver({
+        providers: [fakeProvider({ matches: [] }), fakeProvider({ unavailable: "temporary network failure" })],
+      });
+      const outcome = await resolver.resolve({ ...base, requestedId: "unknown-new-prop", projectRoot });
+      expect(outcome.status).toBe("blocked");
+      if (outcome.status !== "blocked") return;
+      expect(outcome.diagnostics.code).toBe("PROVIDERS_UNAVAILABLE");
+      expect(outcome.result.route).toBe("unresolved");
+      const registry = new AssetRegistry(projectRoot);
+      registry.load();
+      expect(registry.records).toHaveLength(0);
+    } finally {
+      fs.rmSync(projectRoot, { recursive: true, force: true });
+    }
+  });
+
   it("an accepted project record routes reuse without touching providers", async () => {
     const projectRoot = tempProject();
     writeManifest(projectRoot, [acceptedRecord("barrel")]);

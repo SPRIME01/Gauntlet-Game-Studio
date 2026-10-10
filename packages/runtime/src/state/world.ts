@@ -8,6 +8,8 @@ import {
   NavigationProjectionHandle,
   AudioProjectionHandle,
   AssetBinding,
+  HumanoidMotion,
+  type HumanoidMotionState,
   PlayerTag,
   EnemyTag,
   ObstacleTag,
@@ -53,6 +55,7 @@ export interface SpawnEntityOptions {
     activeColliders?: string[];
     activeDestructionGroups?: string[];
   };
+  motion?: { state?: HumanoidMotionState; rate?: number; trigger?: number };
   tags?: ("player" | "enemy" | "obstacle" | "vehicle" | "item")[];
 }
 
@@ -142,6 +145,14 @@ export class GameWorld {
           activeDestructionGroups: options.assetBinding.activeDestructionGroups ?? [],
         })
       );
+    }
+
+    if (options.motion) {
+      traitsToApply.push(HumanoidMotion({
+        state: options.motion.state ?? "idle",
+        rate: options.motion.rate ?? 1,
+        trigger: options.motion.trigger ?? 0,
+      }));
     }
 
     if (options.tags) {
@@ -281,6 +292,11 @@ export class GameWorld {
         }
       }
 
+      if (entity.has(HumanoidMotion)) {
+        const motion = entity.get(HumanoidMotion);
+        if (motion) state.humanoidMotion = { state: motion.state, rate: motion.rate, trigger: motion.trigger };
+      }
+
       const tags: string[] = [];
       if (entity.has(PlayerTag)) tags.push("player");
       if (entity.has(EnemyTag)) tags.push("enemy");
@@ -319,6 +335,7 @@ export class GameWorld {
         physicsHandle: entityState.physicsHandle,
         navHandle: entityState.navHandle,
         assetBinding: entityState.assetBinding,
+        motion: entityState.humanoidMotion,
         tags: entityState.tags as any,
       });
     }
@@ -344,7 +361,7 @@ export class GameWorld {
    */
   public assertNoProviderObjectsInState(): void {
     for (const [id, entity] of this.entityRegistry.entries()) {
-      const traits = [Transform, Velocity, RenderProjectionHandle, PhysicsProjectionHandle, NavigationProjectionHandle, AssetBinding];
+      const traits = [Transform, Velocity, RenderProjectionHandle, PhysicsProjectionHandle, NavigationProjectionHandle, AssetBinding, HumanoidMotion];
       for (const t of traits) {
         if (entity.has(t)) {
           const val = entity.get(t);
