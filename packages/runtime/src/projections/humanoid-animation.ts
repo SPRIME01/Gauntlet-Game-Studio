@@ -37,6 +37,8 @@ export interface HumanoidMotionSample {
   state: HumanoidMotionState;
   /** Playback rate multiplier; does NOT move the authoritative entity. */
   rate?: number;
+  /** Monotonically increasing request counter owned by game logic; defaults to zero. */
+  trigger?: number;
 }
 
 export interface HumanoidAnimationOptions {
@@ -67,6 +69,7 @@ export class HumanoidAnimationProjector {
   private active: THREE.AnimationAction | null = null;
   private activeClip: string | null = null;
   private elapsed = 0;
+  private trigger = 0;
 
   constructor(options: HumanoidAnimationOptions) {
     if (options.rootMotion === true) {
@@ -99,7 +102,9 @@ export class HumanoidAnimationProjector {
     if (!candidates) throw new Error("Unknown authoritative humanoid motion state: " + sample.state);
     const nextName = candidates.find(name => this.actions.has(name));
     if (!nextName) throw new Error("No compatible clip for motion state: " + sample.state);
-    if (this.state !== sample.state || this.activeClip !== nextName) {
+    const trigger = sample.trigger ?? 0;
+    if (this.state !== sample.state || this.activeClip !== nextName ||
+        (!LOOPING.has(sample.state) && trigger !== this.trigger)) {
       const next = this.actions.get(nextName)!;
       next.reset();
       next.enabled = true;
@@ -116,6 +121,7 @@ export class HumanoidAnimationProjector {
       this.state = sample.state;
       this.elapsed = 0;
     }
+    this.trigger = trigger;
     this.active!.setEffectiveTimeScale(Math.max(0.1, Math.min(rate, 3)));
     this.mixer.update(dt);
     this.elapsed += dt;
@@ -126,7 +132,7 @@ export class HumanoidAnimationProjector {
   updateFromWorld(world: GameWorld, entityId: string, dt: number): HumanoidAnimationObservation {
     const motion = world.getEntity(entityId)?.get(HumanoidMotion);
     if (!motion) throw new Error("No authoritative HumanoidMotion trait for entity " + entityId);
-    return this.update({ state: motion.state, rate: motion.rate }, dt);
+    return this.update({ state: motion.state, rate: motion.rate, trigger: motion.trigger }, dt);
   }
 
   observe(): HumanoidAnimationObservation {

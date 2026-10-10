@@ -9,12 +9,23 @@ import {
   createFoundationProvider, findFoundationAssets, loadFoundationInventory, type FoundationInventory,
 } from "../../src/foundations/catalog";
 
-function fixture(): { root: string; inventory: string; project: string; data: FoundationInventory } {
+function fixture(withDependencies = false): { root: string; inventory: string; project: string; data: FoundationInventory } {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "foundations-"));
   const raw = path.join(root, "raw", "kit");
   fs.mkdirSync(raw, { recursive: true });
   const model = path.join(raw, "Female.gltf");
-  fs.writeFileSync(model, JSON.stringify({ asset: { version: "2.0" }, nodes: [], images: [], buffers: [] }));
+  const dependencyHashes: Record<string, string> = {};
+  if (withDependencies) {
+    for (const uri of ["mesh.bin", "texture.png"]) {
+      const bytes = Buffer.from("original " + uri);
+      fs.writeFileSync(path.join(raw, uri), bytes);
+      dependencyHashes[uri] = crypto.createHash("sha256").update(bytes).digest("hex");
+    }
+  }
+  fs.writeFileSync(model, JSON.stringify({ asset: { version: "2.0" }, nodes: [],
+    images: withDependencies ? [{ uri: "texture.png" }] : [],
+    buffers: withDependencies ? [{ uri: "mesh.bin" }] : [],
+  }));
   const sha = crypto.createHash("sha256").update(fs.readFileSync(model)).digest("hex");
   const sig = "a".repeat(64);
   const data: FoundationInventory = {
@@ -26,7 +37,7 @@ function fixture(): { root: string; inventory: string; project: string; data: Fo
     compatibility: { bone_names_match: true, skeleton_sha256: sig },
     assets: [{
       id: "quaternius.base.female", kind: "character", path: "kit/Female.gltf", sha256: sha,
-      skeleton_sha256: sig, skeleton_bone_names: ["root"],
+      skeleton_sha256: sig, skeleton_bone_names: ["root"], dependency_sha256: dependencyHashes,
       animation_clips: [], root_motion: false, repairs: [], acceptance: "pending",
     }],
   };
@@ -84,6 +95,50 @@ describe("offline foundation catalog and asset.resolve integration", () => {
       expect(fs.existsSync(path.join(f.project, "assets"))).toBe(false);
     } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
   });
+
+  test("verified external buffers and images are copied with the model", async () => {
+    const f = fixture(true);
+    try {
+      const provider = createFoundationProvider({ inventoryPath: f.inventory });
+      const found = await provider.search(["female"], "npc");
+      expect(found.status).toBe("success");
+      if (found.status !== "success") return;
+      const result = await provider.acquire(found.matches[0], "npc", f.project);
+      expect(result.status).toBe("success");
+      if (result.status !== "success") return;
+      expect(result.files).toHaveLength(3);
+      for (const file of result.files) {
+        expect(fs.readFileSync(file)).toEqual(fs.readFileSync(path.join(f.root, "raw", "kit", path.basename(file))));
+      }
+    } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+  });
+
+  for (const uri of ["mesh.bin", "texture.png"]) {
+    for (const mutation of ["changed bytes", "missing file", "missing hash", "invalid hash", "legacy inventory"]) {
+      test(`${uri}: ${mutation} blocks acquisition before any project writes`, async () => {
+        const f = fixture(true);
+        try {
+          const file = path.join(f.root, "raw", "kit", uri);
+          if (mutation === "changed bytes") fs.writeFileSync(file, "tampered");
+          if (mutation === "missing file") fs.unlinkSync(file);
+          if (mutation === "missing hash") delete f.data.assets[0].dependency_sha256![uri];
+          if (mutation === "invalid hash") f.data.assets[0].dependency_sha256![uri] = "invalid";
+          if (mutation === "legacy inventory") delete f.data.assets[0].dependency_sha256;
+          fs.writeFileSync(f.inventory, JSON.stringify(f.data));
+          const provider = createFoundationProvider({ inventoryPath: f.inventory });
+          const found = await provider.search(["female"], "npc");
+          expect(found.status).toBe("success");
+          if (found.status !== "success") return;
+          const result = await provider.acquire(found.matches[0], "npc", f.project);
+          expect(result.status).toBe("blocked");
+          if (result.status === "blocked") {
+            expect(result.code).toBe(mutation === "missing file" ? "FOUNDATION_INCOMPLETE" : "FOUNDATION_STALE");
+          }
+          expect(fs.existsSync(f.project)).toBe(false);
+        } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+      });
+    }
+  }
 
   test("rejects traversal paths from untrusted inventory", () => {
     const f = fixture();

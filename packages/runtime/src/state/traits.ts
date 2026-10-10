@@ -94,6 +94,8 @@ export type HumanoidMotionState =
 export const HumanoidMotion = trait({
   state: "idle" as HumanoidMotionState,
   rate: 1,
+  /** Increment for each one-shot request, even when the state is unchanged. */
+  trigger: 0,
 });
 
 /**
@@ -144,7 +146,7 @@ export interface SerializedEntityState {
     activeColliders: string[];
     activeDestructionGroups: string[];
   };
-  humanoidMotion?: { state: HumanoidMotionState; rate: number };
+  humanoidMotion?: { state: HumanoidMotionState; rate: number; trigger?: number };
   tags?: string[];
 }
 

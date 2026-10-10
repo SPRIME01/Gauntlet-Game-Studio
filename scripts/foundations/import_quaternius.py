@@ -114,6 +114,7 @@ def import_pack(kind: str, archive: Path, out: Path) -> tuple[dict, list[dict]]:
             raw = materialize(z, name, out, generated)
             rel = PurePosixPath(name)
             repairs = []
+            dependency_hashes = {}
             if name.endswith('.glb'):
                 document = read_glb_json(raw)
             else:
@@ -135,7 +136,8 @@ def import_pack(kind: str, archive: Path, out: Path) -> tuple[dict, list[dict]]:
                         dependency['uri'] = repaired
                         repairs.append({'from': uri, 'to': repaired})
                         full = alternate
-                    materialize(z, full, out, generated)
+                    data = materialize(z, full, out, generated)
+                    dependency_hashes[dependency['uri']] = digest(data)
                 if repairs:
                     (out / name).write_text(json.dumps(document, separators=(',', ':')), encoding='utf-8')
             bones = skeleton(document)
@@ -147,6 +149,7 @@ def import_pack(kind: str, archive: Path, out: Path) -> tuple[dict, list[dict]]:
                 'kind': 'animation-library' if name.endswith('.glb') else ('character' if kind == 'base' else 'outfit'),
                 'path': name,
                 'sha256': file_digest(out / name),
+                'dependency_sha256': dependency_hashes,
                 'skeleton_bone_names': bones,
                 'skeleton_sha256': digest('\x00'.join(bones).encode()),
                 'animation_clips': clips,

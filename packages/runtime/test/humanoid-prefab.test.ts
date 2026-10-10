@@ -1,9 +1,19 @@
-import { describe, test, expect } from "bun:test";
+import { describe, test, expect, afterEach } from "bun:test";
 import * as THREE from "three";
 import type { AssetRecord } from "@gauntlet/contracts";
 import {
   GameWorld, HumanoidMotion, RenderProjectionManager, spawnHumanoidPrefab,
 } from "../src/index";
+
+const worlds: GameWorld[] = [];
+function testWorld(): GameWorld {
+  const world = new GameWorld();
+  worlds.push(world);
+  return world;
+}
+afterEach(() => {
+  for (const world of worlds.splice(0)) world.world.destroy();
+});
 
 function asset(id: string, kind: string, status: "accepted" | "pending" = "accepted", rootMotion = false): AssetRecord {
   return {
@@ -19,7 +29,7 @@ const anim = { asset: asset("quaternius.animations-1.test", "animation-library")
 
 describe("humanoid prefab intake boundaries", () => {
   test("instantiates from accepted assets, Koota drives motion and render follows state", async () => {
-    const world = new GameWorld();
+    const world = testWorld();
     const render = new RenderProjectionManager();
     const scene = new THREE.Scene();
     const loader = {
@@ -47,8 +57,53 @@ describe("humanoid prefab intake boundaries", () => {
     expect(scene.children.includes(spawned.model)).toBe(false);
   });
 
+  test("an entity created during loading survives a failed spawn", async () => {
+    const world = testWorld();
+    const render = new RenderProjectionManager();
+    const scene = new THREE.Scene();
+    const existingModel = new THREE.Group();
+    let existingEntity: ReturnType<GameWorld["spawnEntity"]>;
+    const loader = {
+      async loadAsync(url: string) {
+        if (url === model.url) {
+          existingEntity = world.spawnEntity({ id: "hero" });
+          scene.add(existingModel);
+          render.bind("hero", "existing", existingModel);
+        }
+        return { scene: existingModel, animations: [new THREE.AnimationClip("Idle_Loop", 1, [])] };
+      },
+    } as any;
+    await expect(spawnHumanoidPrefab({
+      world, render, scene, entityId: "hero", model, animations: [anim], loader,
+    })).rejects.toThrow();
+    expect(world.getEntity("hero")).toBe(existingEntity!);
+    expect(scene.children).toEqual([existingModel]);
+    expect(render.registry.get("hero")).toBe(existingModel);
+  });
+
+  test("render failure rolls back the newly created entity and scene model", async () => {
+    const world = testWorld();
+    const scene = new THREE.Scene();
+    const loadedModel = new THREE.Group();
+    const failure = new Error("render binding failed");
+    class FailingRender extends RenderProjectionManager {
+      override bind(): void { throw failure; }
+    }
+    const loader = {
+      async loadAsync() {
+        return { scene: loadedModel, animations: [new THREE.AnimationClip("Idle_Loop", 1, [])] };
+      },
+    } as any;
+    await expect(spawnHumanoidPrefab({
+      world, render: new FailingRender(), scene, entityId: "hero", model, animations: [anim], loader,
+    })).rejects.toBe(failure);
+    expect(world.hasEntity("hero")).toBe(false);
+    expect(scene.children).toHaveLength(0);
+    expect(loadedModel.parent).toBeNull();
+  });
+
   test("pending source cannot spawn a production prefab", async () => {
-    const world = new GameWorld();
+    const world = testWorld();
     await expect(spawnHumanoidPrefab({
       world, render: new RenderProjectionManager(), scene: new THREE.Scene(), entityId: "x",
       model: { ...model, asset: asset("quaternius.base.test", "character", "pending") },
@@ -58,7 +113,7 @@ describe("humanoid prefab intake boundaries", () => {
   });
 
   test("root motion variants and differing skeleton signatures are blocked", async () => {
-    const base = { world: new GameWorld(), render: new RenderProjectionManager(),
+    const base = { world: testWorld(), render: new RenderProjectionManager(),
       scene: new THREE.Scene(), entityId: "x", model };
     await expect(spawnHumanoidPrefab({
       ...base, animations: [{ ...anim, asset: asset("quaternius.animations-1.test", "animation-library", "accepted", true) }],
@@ -70,7 +125,7 @@ describe("humanoid prefab intake boundaries", () => {
   });
 
   test("remote and traversal URLs cannot be loaded even with an accepted catalog record", async () => {
-    const base = { world: new GameWorld(), render: new RenderProjectionManager(),
+    const base = { world: testWorld(), render: new RenderProjectionManager(),
       scene: new THREE.Scene(), entityId: "x", animations: [anim] };
     for (const url of ["https://example.com/asset.glb", "../escape.glb", "data:asset"]) {
       await expect(spawnHumanoidPrefab({ ...base, model: { ...model, url } })).rejects.toThrow("NOT_LOCAL");

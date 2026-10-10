@@ -33,7 +33,9 @@ Two original superhero glTF JSON files reference three nonexistent texture filen
 - `T_Eye_Normal_png.png` -> `T_Eye_Normal.png` (female and male)
 - `T_Hair_1_Normal_png.png` -> `T_Hair_1_Normal.png` (male)
 
-The original ZIPs are never modified. The inventory records the repairs and SHA-256 of each derivative, together with original ZIP SHA-256 and CC0 license-file evidence.
+Re-run the importer for older inventories with external dependencies: acquisition blocks missing or stale dependency hashes before copying any files.
+
+The original ZIPs are never modified. The inventory records the repairs and SHA-256 of each derivative and every resolved external buffer/image (`dependency_sha256`, keyed by repaired glTF URI), together with original ZIP SHA-256 and CC0 license-file evidence.
 
 ## Safety and release boundary
 

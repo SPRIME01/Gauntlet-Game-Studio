@@ -22,6 +22,8 @@ export interface FoundationAsset {
   kind: FoundationKind;
   path: string;
   sha256: string;
+  /** Hashes keyed by resolved glTF URI; older inventories must be re-imported before acquisition. */
+  dependency_sha256?: Record<string, string>;
   skeleton_bone_names: string[];
   skeleton_sha256: string;
   animation_clips: string[];
@@ -207,6 +209,12 @@ export function createFoundationProvider(options: FoundationProviderOptions): As
         const srcFiles = [source, ...companions.map(uri => contained(path.dirname(source), uri))];
         if (srcFiles.some(f => !fs.existsSync(f))) {
           return { status: "blocked" as const, code: "FOUNDATION_INCOMPLETE", detail: "glTF dependencies not present" };
+        }
+        for (let i = 0; i < companions.length; i++) {
+          const expected = asset.dependency_sha256?.[companions[i]];
+          if (!isHexDigest(expected) || digest(srcFiles[i + 1]) !== expected) {
+            return { status: "blocked" as const, code: "FOUNDATION_STALE", detail: "glTF dependency hash missing or changed; re-run foundation import: " + companions[i] };
+          }
         }
         const targetRoot = path.resolve(projectRoot, "assets", "sources", "foundations", asset.id);
         const paths = srcFiles.map((file, i) => ({

@@ -90,6 +90,7 @@ export async function spawnHumanoidPrefab(options: SpawnHumanoidPrefabOptions): 
     skeletonSignature: rig, transitionSeconds: options.blendSeconds,
   });
   const handleId = "humanoid:" + options.entityId;
+  let createdEntity = false;
   try {
     options.world.spawnEntity({
       id: options.entityId,
@@ -99,11 +100,15 @@ export async function spawnHumanoidPrefab(options: SpawnHumanoidPrefabOptions): 
       motion: { state: "idle", rate: 1 },
       tags: options.tags ?? ["player"],
     });
+    createdEntity = true;
     options.scene.add(model);
     options.render.bind(options.entityId, handleId, model);
   } catch (error) {
     projector.dispose();
-    options.world.despawnEntity(options.entityId);
+    if (createdEntity) {
+      options.scene.remove(model);
+      options.world.despawnEntity(options.entityId);
+    }
     throw error;
   }
   let disposed = false;

@@ -170,7 +170,7 @@ async function boot(): Promise<void> {
   probe.sample = (state: HumanoidMotionState, frames: number): PoseEvidence => {
     if (frames < 1 || frames > 240) throw new Error("Invalid sample frame count");
     const before = world.takeSemanticSnapshot().entities[0];
-    entity.set(HumanoidMotion, { state, rate: 1 });
+    entity.set(HumanoidMotion, { state, rate: 1, trigger: entity.get(HumanoidMotion)!.trigger + 1 });
     let averageMs = 0;
     let maxMs = 0;
     for (let i = 0; i < frames; i++) {

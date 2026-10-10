@@ -55,7 +55,7 @@ export interface SpawnEntityOptions {
     activeColliders?: string[];
     activeDestructionGroups?: string[];
   };
-  motion?: { state?: HumanoidMotionState; rate?: number };
+  motion?: { state?: HumanoidMotionState; rate?: number; trigger?: number };
   tags?: ("player" | "enemy" | "obstacle" | "vehicle" | "item")[];
 }
 
@@ -151,6 +151,7 @@ export class GameWorld {
       traitsToApply.push(HumanoidMotion({
         state: options.motion.state ?? "idle",
         rate: options.motion.rate ?? 1,
+        trigger: options.motion.trigger ?? 0,
       }));
     }
 
@@ -293,7 +294,7 @@ export class GameWorld {
 
       if (entity.has(HumanoidMotion)) {
         const motion = entity.get(HumanoidMotion);
-        if (motion) state.humanoidMotion = { state: motion.state, rate: motion.rate };
+        if (motion) state.humanoidMotion = { state: motion.state, rate: motion.rate, trigger: motion.trigger };
       }
 
       const tags: string[] = [];
